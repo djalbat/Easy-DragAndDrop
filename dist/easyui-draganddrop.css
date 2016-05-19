@@ -1,0 +1,84 @@
+ul.explorer,
+ul.explorer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+ul.explorer li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 10000px;
+}
+ul.explorer li > button {
+  outline: none;
+  border: none;
+  height: 1.75rem;
+  background-color: transparent;
+}
+ul.explorer li > button.toggle {
+  width: 1.5rem;
+}
+ul.explorer li > button.name {
+  text-align: left;
+  padding-left: 1.5rem;
+  background-repeat: no-repeat;
+}
+
+ul.explorer li.file,
+ul.explorer li.marker {
+  margin-left: 3rem;
+}
+ul.explorer li.file > button.name,
+ul.explorer li.marker > button.name {
+  background-position: 0 0.25rem;
+}
+ul.explorer li.file > button.name {
+  background-image: url("file.png");
+}
+ul.explorer li.marker > button {
+  color: rgba(0, 0, 0, 0);
+  background-image: url("marker.png");
+}
+
+ul.explorer li.directory {
+  margin-left: 1.5rem;
+}
+ul.explorer li.directory > button.name {
+  background-image: url("directory.png");
+  background-position: 0 0.4375rem;
+}
+ul.explorer li.collapsed.directory > ul.entries {
+  display: none;
+}
+ul.explorer li.dragged.file,
+ul.explorer li.dragged.directory {
+  margin-left: 0;
+  position: absolute;
+  z-index: 10000;
+}
+
+ul.explorer > li.marker {
+  margin-left: 0.5rem;
+}
+ul.explorer > li.directory {
+  margin-left: 0;
+}
+
+.rubbishBin {
+  background-image: url("../dist/rubbishBin.png");
+  width: 2rem;
+  height: 2rem;
+}
+.rubbishBin:before {
+  width: 0;
+  height: 0;
+  content: "";
+  background-image: url("../dist/openRubbishBin.png");
+}
+.open.rubbishBin {
+  background-image: url("../dist/openRubbishBin.png");
+}
+
+

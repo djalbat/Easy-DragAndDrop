@@ -1,0 +1,12 @@
+html {
+  font-size: 13px;
+}
+
+html * {
+  font-size: 1rem;
+}
+
+.rubbishBin {
+  position: fixed;
+  top: 12rem;
+}
