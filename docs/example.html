@@ -63,25 +63,19 @@
         }
 
         function onMoveFile(sourcePath, targetPath, cb) {
-          console.log('move file: ' + sourcePath + ' -> ' + targetPath)
+          if (sourcePath === 'Second explorer/First directory/First file.fls') {
+            console.log('...deleted.')
 
-//          if (sourcePath === 'Second explorer/First directory/First file.fls') {
-//            console.log('...deleted.')
-//
-//            return null;
-//          }
-//
-//          if (sourcePath === 'Second explorer/First directory/Second file.fls') {
-//            console.log('...left in place.')
-//
-//            return sourcePath;
-//          }
-//
-//          return targetPath;
+            return null;
+          }
 
-          setTimeout(function() {
-            cb(targetPath);
-          }, 1000);
+          if (sourcePath === 'Second explorer/First directory/Second file.fls') {
+            console.log('...left in place.')
+
+            return sourcePath;
+          }
+
+          return targetPath;
         }
 
         function onMoveDirectory(sourcePath, targetPath, cb) {
