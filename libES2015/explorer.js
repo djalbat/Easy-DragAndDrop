@@ -102,13 +102,21 @@ class Explorer extends DroppableElement {
         sourcePath = entryPathWithoutBottommostName,
         targetPath = directoryPathContainingMarker;
 
-    super.stopDragging();
-
     if ((sourcePath === null)
      || (sourcePath !== targetPath)) {
       var entries = entry.getEntries();
 
-      elementHavingMarker.moveEntries(entries, sourcePath, targetPath, done);
+      elementHavingMarker.moveEntries(entries, sourcePath, targetPath, function() {
+        if (this.hasMarker()) {
+          this.removeMarker();
+        } else {
+          var droppableElementHavingMarker = this.droppableElementHavingMarker();
+
+          droppableElementHavingMarker.removeMarker();
+        }
+
+        done();
+      }.bind(this));
     }
   }
 
