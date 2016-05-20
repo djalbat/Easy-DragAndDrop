@@ -116,7 +116,11 @@ class DroppableElement extends Element {
     return true;
   }
 
-  stopDragging(entry, cb) {
+  stopDragging(entry) {
+    this.removeMarkerGlobally();
+  }
+
+  removeMarkerGlobally() {
     if (this.hasMarker()) {
       this.removeMarker();
     } else {

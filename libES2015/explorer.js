@@ -106,17 +106,13 @@ class Explorer extends DroppableElement {
       var entries = entry.getEntries();
 
       elementHavingMarker.moveEntries(entries, sourcePath, targetPath, function() {
-        if (this.hasMarker()) {
-          this.removeMarker();
-        } else {
-          var droppableElementHavingMarker = this.droppableElementHavingMarker();
-
-          droppableElementHavingMarker.removeMarker();
-        }
+        this.removeMarkerGlobally();
 
         done();
       }.bind(this));
     } else {
+      this.removeMarkerGlobally();
+
       done();
     }
   }
