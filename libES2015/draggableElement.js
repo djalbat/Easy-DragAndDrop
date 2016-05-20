@@ -24,7 +24,7 @@ class DraggableElement extends Element {
   }
 
   isDragged() {
-    var dragged = this.hasClass('dragged');
+    var dragged = this.hasClass('dragged') && !this.hasClass('stopDragging');
 
     return dragged;
   }
@@ -127,11 +127,15 @@ class DraggableElement extends Element {
   }
 
   stopDragging() {
-    this.removeClass('dragged');
+    this.addClass('stopDragging');
 
     var dragEvent = DragEvent.stop(this);
 
-    this.dragEventHandler(dragEvent);
+    this.dragEventHandler(dragEvent, function() {
+      this.removeClass('dragged');
+
+      this.removeClass('stopDragging');
+    }.bind(this));
   }
 
   drag(mouseTop, mouseLeft) {

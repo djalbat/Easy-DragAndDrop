@@ -87,7 +87,7 @@ class DroppableElement extends Element {
     return marker;
   }
 
-  onDragEvent(dragEvent) {
+  onDragEvent(dragEvent, done) {
     var entry = dragEvent.getEntry(),
         dragEventType = dragEvent.getType();
 
@@ -97,7 +97,7 @@ class DroppableElement extends Element {
         break;
 
       case DragEvent.types.STOP:
-        this.stopDragging(entry);
+        this.stopDragging(entry, done);
         break;
 
       case DragEvent.types.DRAG:
@@ -116,7 +116,7 @@ class DroppableElement extends Element {
     return true;
   }
 
-  stopDragging(entry) {
+  stopDragging(entry, cb) {
     if (this.hasMarker()) {
       this.removeMarker();
     } else {
@@ -149,19 +149,21 @@ class DroppableElement extends Element {
     }
   }
 
-  dragEntries(entries, sourcePath, targetPath) {
+  moveEntries(entries, sourcePath, targetPath, done) {
     entries.reverse();  ///
 
-    entries.forEach(function(entry) {
+    asyncForEach(entries, function(entry, next) {
       var entryPath = entry.getPath(),
           sourceEntryPath = entryPath,  ///
-          targetEntryPath = targetPath === null ? null : util.replaceTopmostPath(entryPath, sourcePath, targetPath), ///
+          targetEntryPath = targetPath === null ? 
+                              null : 
+                                util.replaceTopmostPath(entryPath, sourcePath, targetPath), ///
           entryIsDirectory = entry.isDirectory();
 
       entryIsDirectory ?
-        this.dragDirectory(entry, sourceEntryPath, targetEntryPath) :
-          this.dragFile(entry, sourceEntryPath, targetEntryPath);
-    }.bind(this));
+        this.moveDirectory(entry, sourceEntryPath, targetEntryPath, next) :
+          this.moveFile(entry, sourceEntryPath, targetEntryPath, next);
+    }.bind(this), done)
   }
 
   isOverlappingEntry(entry) {
@@ -238,4 +240,25 @@ function indexOf(element, array) {
   });
 
   return index;
+}
+
+function asyncForEach(array, cb, done) {
+  var arrayLength = array.length,
+      index = -1;
+
+  var next = function() {
+    index++;
+
+    if (index === arrayLength) {
+      if (done) {
+        done();
+      }
+    } else {
+      var element = array[index];
+
+      cb(element, next);
+    }
+  };
+
+  next();
 }

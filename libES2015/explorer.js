@@ -92,7 +92,7 @@ class Explorer extends DroppableElement {
     return true;
   }
 
-  stopDragging(entry) {
+  stopDragging(entry, done) {
     var entryPath = entry.getPath(),
         elementHavingMarker = this.hasMarker() ?
                                 this :
@@ -102,14 +102,14 @@ class Explorer extends DroppableElement {
         sourcePath = entryPathWithoutBottommostName,
         targetPath = directoryPathContainingMarker;
 
+    super.stopDragging();
+
     if ((sourcePath === null)
      || (sourcePath !== targetPath)) {
       var entries = entry.getEntries();
 
-      elementHavingMarker.dragEntries(entries, sourcePath, targetPath);
+      elementHavingMarker.moveEntries(entries, sourcePath, targetPath, done);
     }
-
-    super.stopDragging();
   }
 
   isKeepingMarker(entry) {
@@ -138,7 +138,7 @@ class Explorer extends DroppableElement {
     return addMarker;
   }
 
-  dragDirectory(directory, sourcePath, targetPath) {
+  moveDirectory(directory, sourcePath, targetPath, next) {
     function afterMove(movedPath) {
       if (false) {
 
@@ -153,6 +153,8 @@ class Explorer extends DroppableElement {
       } else if (movedPath === sourcePath) {
 
       }
+      
+      next();
     }
     
     var movedPath = this.moveDirectoryHandler(sourcePath, targetPath, afterMove.bind(this));
@@ -162,7 +164,7 @@ class Explorer extends DroppableElement {
     }
   }
 
-  dragFile(file, sourcePath, targetPath) {
+  moveFile(file, sourcePath, targetPath, next) {
     function afterMove(movedPath) {
       if (false) {
 
@@ -177,6 +179,8 @@ class Explorer extends DroppableElement {
       } else if (movedPath === sourcePath) {
 
       }
+      
+      next();
     }
 
     var movedPath = this.moveFileHandler(sourcePath, targetPath, afterMove.bind(this));
