@@ -29,27 +29,39 @@ class RubbishBin extends DroppableElement {
     return this.isOpen();
   }
 
-  dragDirectory(directory, sourceDirectoryPath, targetDirectoryPath) {
-    var movedDirectoryPath = this.removeDirectoryHandler(sourceDirectoryPath);
+  dragDirectory(directory, sourcePath, targetPath) {
+    function afterRemove(removedPath) {
+      if (false) {
 
-    if (false) {
+      } else if (removedPath === null) {
+        directory.remove();
+      } else if (removedPath === sourcePath) {
 
-    } else if (movedDirectoryPath === null) {
-      directory.remove();
-    } else if (movedDirectoryPath === sourceDirectoryPath) {
+      }
+    }
 
+    var removedPath = this.removeDirectoryHandler(sourcePath, afterRemove.bind(this));
+
+    if (removedPath !== undefined) {
+      afterRemove(removedPath);
     }
   }
 
-  dragFile(file, sourceFilePath, targetFilePath) {
-    var movedFilePath = this.removeFileHandler(sourceFilePath);
+  dragFile(file, sourcePath, targetPath) {
+    function afterRemove(removedPath) {
+      if (false) {
 
-    if (false) {
+      } else if (removedPath === null) {
+        file.remove();
+      } else if (removedPath === sourcePath) {
 
-    } else if (movedFilePath === null) {
-      file.remove();
-    } else if (movedFilePath === sourceFilePath) {
+      }
+    }
 
+    var removedPath = this.removeFileHandler(sourcePath, afterRemove.bind(this));
+
+    if (removedPath !== undefined) {
+      afterRemove(removedPath);
     }
   }
 

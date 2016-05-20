@@ -32,7 +32,7 @@
 
       (function() {
 
-        var Body = easyui.Body;
+        var Body = easyUI.Body;
 
         var Explorer = easyUIDragAndDrop.Explorer,
             RubbishBin = easyUIDragAndDrop.RubbishBin;
@@ -58,75 +58,73 @@
         secondExplorer.addFile('Second explorer/First directory/First file.fls');
         secondExplorer.addFile('Second explorer/First directory/Second file.fls');
 
-        function onActivateFile(filePath) {
-          console.log('activateFile: ' + filePath)
+        function onActivateFile(path) {
+          console.log('activateFile: ' + path)
         }
 
-        function onMoveFile(sourceFilePath, targetFilePath) {
-          console.log('move file: ' + sourceFilePath + ' -> ' + targetFilePath)
+        function onMoveFile(sourcePath, targetPath) {
+          console.log('move file: ' + sourcePath + ' -> ' + targetPath)
 
-          if (sourceFilePath === 'Second explorer/First directory/First file.fls') {
+          if (sourcePath === 'Second explorer/First directory/First file.fls') {
             console.log('...deleted.')
 
             return null;
           }
 
-          if (sourceFilePath === 'Second explorer/First directory/Second file.fls') {
+          if (sourcePath === 'Second explorer/First directory/Second file.fls') {
             console.log('...left in place.')
 
-            return sourceFilePath;
+            return sourcePath;
           }
 
-          return targetFilePath;
+          return targetPath;
         }
 
-        function onMoveDirectory(sourceDirectoryPath, targetDirectoryPath) {
-          console.log('move directory: ' + sourceDirectoryPath + ' -> ' + targetDirectoryPath)
+        function onMoveDirectory(sourcePath, targetPath, cb) {
+          console.log('move directory: ' + sourcePath + ' -> ' + targetPath)
 
-          if (sourceDirectoryPath === 'Second explorer/First directory') {
+          if (sourcePath === 'Second explorer/First directory') {
             console.log('...left in place.')
 
-            return sourceDirectoryPath;
+            cb(sourcePath);
+
+            return;
           }
 
-          return targetDirectoryPath;
+          cb(targetPath);
+
+          return;
         }
 
-        function onRemoveFile(sourceFilePath) {
-          console.log('remove file: ' + sourceFilePath)
+        function onRemoveFile(sourcePath, cb) {
+          console.log('remove file: ' + sourcePath)
 
-          if (sourceFilePath === 'Second explorer/First directory/Second file.fls') {
+          if (sourcePath === 'Second explorer/First directory/Second file.fls') {
             console.log('...left in place.')
 
-            return sourceFilePath;
+            cb(sourcePath);
+
+            return;
           }
 
-          return null;
+          cb(null);
+
+          return;
         }
 
-        function onRemoveDirectory(sourceDirectoryPath) {
-          console.log('remove directory: ' + sourceDirectoryPath)
+        function onRemoveDirectory(sourcePath) {
+          console.log('remove directory: ' + sourcePath)
 
-          if (sourceDirectoryPath === 'Second explorer/First directory') {
+          if (sourcePath === 'Second explorer/First directory') {
             console.log('...left in place.')
 
-            return sourceDirectoryPath;
+            return sourcePath;
           }
 
-          if (sourceDirectoryPath === 'Second explorer/First directory') {
+          if (sourcePath === 'Second explorer/First directory') {
             console.log('...left in place.')
 
-            return sourceDirectoryPath;
-          }
-
-          if (sourceDirectoryPath === 'First explorer') {
-            console.log('...remving entire explorer.')
-
-            secondExplorer.removeDroppableElement(firstExplorer);
-
-            firstExplorer.remove();
-
-            return sourceDirectoryPath;
+            return sourcePath;
           }
 
           return null;

@@ -138,39 +138,51 @@ class Explorer extends DroppableElement {
     return addMarker;
   }
 
-  dragDirectory(directory, sourceDirectoryPath, targetDirectoryPath) {
-    var movedDirectoryPath = this.moveDirectoryHandler(sourceDirectoryPath, targetDirectoryPath);
+  dragDirectory(directory, sourcePath, targetPath) {
+    function afterMove(movedPath) {
+      if (false) {
 
-    if (false) {
+      } else if (movedPath === null) {
+        directory.remove();
+      } else if (movedPath === targetPath) {
+        directory.remove();
 
-    } else if (movedDirectoryPath === null) {
-      directory.remove();
-    } else if (movedDirectoryPath === targetDirectoryPath) {
-      directory.remove();
+        var collapsed = directory.isCollapsed();
 
-      var collapsed = directory.isCollapsed();
+        this.addDirectory(movedPath, collapsed);
+      } else if (movedPath === sourcePath) {
 
-      this.addDirectory(movedDirectoryPath, collapsed);
-    } else if (movedDirectoryPath === sourceDirectoryPath) {
+      }
+    }
+    
+    var movedPath = this.moveDirectoryHandler(sourcePath, targetPath, afterMove.bind(this));
 
+    if (movedPath !== undefined) {
+      afterMove(movedPath);
     }
   }
 
-  dragFile(file, sourceFilePath, targetFilePath) {
-    var movedFilePath = this.moveFileHandler(sourceFilePath, targetFilePath);
+  dragFile(file, sourcePath, targetPath) {
+    function afterMove(movedPath) {
+      if (false) {
 
-    if (false) {
+      } else if (movedPath === null) {
+        file.remove();
+      } else if (movedPath === targetPath) {
+        file.remove();
 
-    } else if (movedFilePath === null) {
-      file.remove();
-    } else if (movedFilePath === targetFilePath) {
-      file.remove();
+        var readOnly = file.getReadOnly();
 
-      var readOnly = file.getReadOnly();
+        this.addFile(movedPath, readOnly);
+      } else if (movedPath === sourcePath) {
 
-      this.addFile(movedFilePath, readOnly);
-    } else if (movedFilePath === sourceFilePath) {
+      }
+    }
 
+    var movedPath = this.moveFileHandler(sourcePath, targetPath, afterMove.bind(this));
+
+    if (movedPath !== undefined) {
+      afterMove(movedPath);
     }
   }
 }

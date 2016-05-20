@@ -155,24 +155,12 @@ class DroppableElement extends Element {
     entries.forEach(function(entry) {
       var entryPath = entry.getPath(),
           sourceEntryPath = entryPath,  ///
-          targetEntryPath = targetPath === null ?
-                              null : 
-                                util.replaceTopmostPath(entryPath, sourcePath, targetPath), ///
+          targetEntryPath = targetPath === null ? null : util.replaceTopmostPath(entryPath, sourcePath, targetPath), ///
           entryIsDirectory = entry.isDirectory();
 
-      if (entryIsDirectory) {
-        var directory = entry,  ///
-            sourceDirectoryPath = sourceEntryPath, ///
-            targetDirectoryPath = targetEntryPath; ///
-
-        this.dragDirectory(directory, sourceDirectoryPath, targetDirectoryPath);
-      } else {
-        var file = entry,  ///
-            sourceFilePath = sourceEntryPath, ///
-            targetFilePath = targetEntryPath; ///
-
-        this.dragFile(file, sourceFilePath, targetFilePath);
-      }
+      entryIsDirectory ?
+        this.dragDirectory(entry, sourceEntryPath, targetEntryPath) :
+          this.dragFile(entry, sourceEntryPath, targetEntryPath);
     }.bind(this));
   }
 

@@ -29,7 +29,7 @@ var Explorer = easyUIDragAndDrop.Explorer,
 If you're using AMD require client-side or CommonJS server-side the syntax for requiring EasyUI is the same:
 
 ```js
-var easyUIDragAndDrop = require('./../dist/easyui-draganddrop'),
+var easyUIDragAndDrop = require('lib/easyui-draganddrop'),
     Explorer = easyUIDragAndDrop.Explorer,
     RubbishBin = easyUIDragAndDrop.RubbishBin;
 ```
@@ -109,88 +109,96 @@ In the case of a single file, the `onMoveFile` handler is called with the file's
 In the case of a directory, the relevant `onMoveFile` and `onMoveDirectory` handlers are called for each entry, starting with the outermost entries then working in and finishing with the directory itself. Handlers for subdirectories are guaranteed to only be called after handlers have been called for all their entries. 
 
 ```js
-function onMoveFile(sourceFilePath, targetFilePath) {
-  console.log('move file: ' + sourceFilePath + ' -> ' + targetFilePath)
+function onMoveFile(sourcePath, targetPath) {
+  console.log('move file: ' + sourcePath + ' -> ' + targetPath)
 
-  if (sourceFilePath === 'Second explorer/First directory/First file.fls') {
+  if (sourcePath === 'Second explorer/First directory/First file.fls') {
     console.log('...deleted.')
 
     return null;
   }
 
-  if (sourceFilePath === 'Second explorer/First directory/Second file.fls') {
+  if (sourcePath === 'Second explorer/First directory/Second file.fls') {
     console.log('...left in place.')
 
-    return sourceFilePath;
+    return sourcePath;
   }
 
-  return targetFilePath;
+  return targetPath;
 }
 
-function onMoveDirectory(sourceDirectoryPath, targetDirectoryPath) {
-  console.log('move directory: ' + sourceDirectoryPath + ' -> ' + targetDirectoryPath)
+function onMoveDirectory(sourcePath, targetPath, cb) {
+  console.log('move directory: ' + sourcePath + ' -> ' + targetPath)
 
-  if (sourceDirectoryPath === 'Second explorer/First directory') {
+  if (sourcePath === 'Second explorer/First directory') {
     console.log('...left in place.')
 
-    return sourceDirectoryPath;
+    cb(sourcePath);
+
+    return;
   }
 
-  return targetDirectoryPath;
+  cb(targetPath);
+
+  return;
 }
 ```
 
-In this way it is possible to manage moving directories even when some of their entries cannot be moved. In the code sample above, for example, the `onMoveFile` handler returns `null` to signifiy that the `First file.fls` file has somehow disappeared and should be discarded in the move. On the other hand it results the source file path to signify that the `Second file.fls` cannot be dislodged and should be left in place in the move. If files cannot be moved their directories must also be left in place. The `onMoveDirectory` handler does just this for the folder containing these files. *It is important to note that the explorer will not automatically leave directories in place if their contents are signified ummoveable.* You must explicitly signify that it must do so.
+In this way it is possible to manage moving directories even when some of their entries cannot be moved. In the code sample above, for example, the `onMoveFile` handler returns `null` to signifiy that the `First file.fls` file has somehow disappeared and should be discarded in the move. On the other hand it results the source file path to signify that the `Second file.fls` cannot be dislodged and should be left in place in the move. If files cannot be moved their directories must also be left in place. The `onMoveDirectory` handler does just this for the folder containing these files. *It is important to note that the explorer will not automatically leave directories in place if their contents are signified ummoveable.* You must explicitly signify that it must do so. Callbacks are supported for asynchronous behaviour. The `onMoveDirectory` handler makes use of these.
    
 #### Removing files and directories   
   
 This is accomplished by dragging them in the rubbish bin.
   
 ```js
-function onRemoveFile(sourceFilePath) {
-  console.log('remove file: ' + sourceFilePath)
+function onRemoveFile(sourcePath, cb) {
+  console.log('remove file: ' + sourcePath)
 
-  if (sourceFilePath === 'Second explorer/First directory/Second file.fls') {
+  if (sourcePath === 'Second explorer/First directory/Second file.fls') {
     console.log('...left in place.')
 
-    return sourceFilePath;
+    cb(sourcePath);
+    
+    return;
   }
 
-  return null;
+  cb(null);
+  
+  return;
 }
 
-function onRemoveDirectory(sourceDirectoryPath) {
-  console.log('remove directory: ' + sourceDirectoryPath)
+function onRemoveDirectory(sourcePath) {
+  console.log('remove directory: ' + sourcePath)
 
-  if (sourceDirectoryPath === 'Second explorer/First directory') {
+  if (sourcePath === 'Second explorer/First directory') {
     console.log('...left in place.')
 
-    return sourceDirectoryPath;
+    return sourcePath;
   }
 
-  if (sourceDirectoryPath === 'Second explorer/First directory') {
+  if (sourcePath === 'Second explorer/First directory') {
     console.log('...left in place.')
 
-    return sourceDirectoryPath;
+    return sourcePath;
   }
 
   return null;
 }
 ```
  
-The process for handling files and directories dragged into the rubbish bin is much the same as that for files and directcories dragged in or between explorers. Only source paths are provided as arguments, however, target paths being superfluous. Again, returning `null` signifies that the file or directory should be deleted and this should be done explicitly by default. Files or directories to be left in place should have their handlers return the source path.
+The process for handling files and directories dragged into the rubbish bin is much the same as that for files and directories dragged in or between explorers. Only source paths are provided as arguments, however, target paths being superfluous. Again, returning or calling back with `null` signifies that the file or directory should be deleted and this should be done explicitly by default. Files or directories to be left in place should have their handlers return the source path.
 
 If the root directory of an explorer is dragged into the rubbish bin you can check for this and remove the entire explorer if you choose:
 
 ```js
-if (sourceDirectoryPath === 'First explorer') {
-  console.log('...remving entire explorer.')
+if (sourcePath === 'First explorer') {
+  console.log('...removing entire explorer.')
 
   secondExplorer.removeDroppableElement(firstExplorer);
 
   firstExplorer.remove();
 
-  return sourceDirectoryPath;
+  return sourcePath;
 }
 ```
 
