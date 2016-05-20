@@ -102,8 +102,7 @@ class Explorer extends DroppableElement {
         sourcePath = entryPathWithoutBottommostName,
         targetPath = directoryPathContainingMarker;
 
-    if ((sourcePath === null)
-     || (sourcePath !== targetPath)) {
+    if ((sourcePath === null) || (sourcePath !== targetPath)) {
       var entries = entry.getEntries();
 
       elementHavingMarker.moveEntries(entries, sourcePath, targetPath, function() {
@@ -117,6 +116,8 @@ class Explorer extends DroppableElement {
 
         done();
       }.bind(this));
+    } else {
+      done();
     }
   }
 
