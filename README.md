@@ -40,6 +40,8 @@ var easyUIDragAndDrop = require('./../dist/easyui-draganddrop'),
 
 See the `example.html` file in the `docs/` folder for an example. 
 
+You must include the `easyui-draganddrop.html` and `easyui-draganddrop.css` files in the `dist/` directory or their contents somehow in your application as well as the four PNG files. The HTML snippet in the `easyui-draganddrop.html` file includes an `img` element to preload the `marker.png` file. You may need to adjust the relative URL.
+
 Creating instances can be done with constructors:
 
 ```js
@@ -194,7 +196,7 @@ if (sourceDirectoryPath === 'First explorer') {
 
 #### Changing the CSS
 
-Feel free to change the CSS with care. Check the `example.css` file in the `dist/` folder for some CSS that works well. Note that the triangles used are defined in the `ToggleButton` class in the `lib/` folder. You'll need to re-build the package if you want to change these.
+Feel free to change the CSS with care. Check the `example.css` file in the `docs/` folder for some CSS that works well. Note that the triangles used are defined in the `ToggleButton` class in the `lib/` folder. You'll need to re-build the package if you want to change these.
 
 ## Contact
 

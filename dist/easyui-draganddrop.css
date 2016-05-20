@@ -67,18 +67,10 @@ ul.explorer > li.directory {
 }
 
 .rubbishBin {
-  background-image: url("../dist/rubbishBin.png");
+  background-image: url("rubbishBin.png");
   width: 2rem;
   height: 2rem;
 }
-.rubbishBin:before {
-  width: 0;
-  height: 0;
-  content: "";
-  background-image: url("../dist/openRubbishBin.png");
-}
 .open.rubbishBin {
-  background-image: url("../dist/openRubbishBin.png");
+  background-image: url("openRubbishBin.png");
 }
-
-

@@ -70,7 +70,7 @@ class Directory extends DraggableEntry {
     return entries;
   }
 
-  getBounds() {
+  getCollapsedBounds() {
     var collapsed = this.isCollapsed();
 
     this.collapse();
@@ -230,7 +230,10 @@ class Directory extends DraggableEntry {
     }
 
     var bounds = this.getBounds(),
-        entryBounds = entry.getBounds(),
+        entryIsDirectory = entry.isDirectory(),
+        entryBounds = entryIsDirectory ?
+                        entry.getCollapsedBounds() :
+                          entry.getBounds(),
         overlapping = bounds.areOverlapping(entryBounds);
 
     if (!overlapping) {
