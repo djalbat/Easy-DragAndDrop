@@ -12,8 +12,6 @@ class RubbishBin extends DroppableElement {
     this.removeFileHandler = removeFileHandler;
     this.removeDirectoryHandler = removeDirectoryHandler;
     
-    this.options = options;
-
     this.close();
   }
 
