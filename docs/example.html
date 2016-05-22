@@ -63,6 +63,8 @@
         }
 
         function onMoveFile(sourcePath, targetPath, cb) {
+          console.log('move file: ' + sourcePath + ' -> ' + targetPath)
+
           if (sourcePath === 'Second explorer/First directory/First file.fls') {
             console.log('...deleted.')
 

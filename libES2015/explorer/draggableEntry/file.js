@@ -48,15 +48,14 @@ class File extends DraggableEntry {
     }
   }
 
-  getEntries() {
-    var entry = this, ///
-        entries = [entry];
-
-    return entries;
-  }
-
   getReadOnly() {
     return this.readOnly;
+  }
+  
+  getSubEntries() {
+    var subEntries = [];
+    
+    return subEntries;
   }
 
   update() {

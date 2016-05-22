@@ -8,15 +8,15 @@ var util = require('./util'),
     RootDirectory = require('./explorer/draggableEntry/rootDirectory');
 
 class Explorer extends DroppableElement {
-  constructor(selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler) {
-    super(selector);
+  constructor(selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler, options) {
+    super(selector, options);
 
     var rootDirectory = RootDirectory.clone(rootDirectoryName, this.onDragEvent.bind(this), this.onActivateFileEvent.bind(this));
 
     this.activateFileHandler = activateFileHandler;
     this.moveFileHandler = moveFileHandler;
     this.moveDirectoryHandler = moveDirectoryHandler;
-
+    
     this.rootDirectory = rootDirectory;
 
     this.append(rootDirectory);
@@ -103,7 +103,10 @@ class Explorer extends DroppableElement {
         targetPath = directoryPathContainingMarker;
 
     if ((sourcePath === null) || (sourcePath !== targetPath)) {
-      var entries = entry.getEntries();
+      var entries = [entry],
+          subEntries = entry.getSubEntries();
+
+      entries = entries.concat(subEntries);
 
       elementHavingMarker.moveEntries(entries, sourcePath, targetPath, function() {
         this.removeMarkerGlobally();
@@ -143,7 +146,7 @@ class Explorer extends DroppableElement {
     return addMarker;
   }
 
-  moveDirectory(directory, sourcePath, targetPath, next) {
+  moveDirectory(directory, sourcePath, targetPath, handle, next) {
     function afterMove(movedPath) {
       if (false) {
 
@@ -161,15 +164,17 @@ class Explorer extends DroppableElement {
       
       next();
     }
-    
-    var movedPath = this.moveDirectoryHandler(sourcePath, targetPath, afterMove.bind(this));
+
+    var movedPath = !handle ?
+                      targetPath :
+                        this.moveDirectoryHandler(sourcePath, targetPath, afterMove.bind(this));
 
     if (movedPath !== undefined) {
-      afterMove(movedPath);
+      afterMove.call(this, movedPath);
     }
   }
 
-  moveFile(file, sourcePath, targetPath, next) {
+  moveFile(file, sourcePath, targetPath, handle, next) {
     function afterMove(movedPath) {
       if (false) {
 
@@ -188,20 +193,22 @@ class Explorer extends DroppableElement {
       next();
     }
 
-    var movedPath = this.moveFileHandler(sourcePath, targetPath, afterMove.bind(this));
+    var movedPath = !handle ?
+                      targetPath :
+                        this.moveFileHandler(sourcePath, targetPath, afterMove.bind(this));
 
     if (movedPath !== undefined) {
-      afterMove(movedPath);
+      afterMove.call(this, movedPath);
     }
   }
 }
 
-Explorer.clone = function(selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler) {
-  return Element.clone(Explorer, selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler);
+Explorer.clone = function(selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler, options) {
+  return Element.clone(Explorer, selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler, options);
 };
 
-Explorer.fromHTML = function(html, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler) {
-  return Element.fromHTML(Explorer, html, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler);
+Explorer.fromHTML = function(html, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler, options) {
+  return Element.fromHTML(Explorer, html, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler, options);
 };
 
 module.exports = Explorer;
