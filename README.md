@@ -100,7 +100,7 @@ IF the `HANDLE_SUB_ENTRIES` property is explicity set to `false`, handlers are n
 
 #### Dragging between elements
 
-Use the `addDroppableElement()` method to have one element listen for the drag events of another.
+Use the `addDroppableElement()` method to have one element listen for the dragging events of another.
 
 ```js
 firstExplorer.addDroppableElement(secondExplorer);
@@ -109,7 +109,7 @@ firstExplorer.addDroppableElement(rubbishBin);
 secondExplorer.addDroppableElement(rubbishBin);
 ```
 
-Here the rubbish bin will listen for drag events from both of the explorers. Each of the explorers will listen for drag events of the other's.
+Here the rubbish bin will listen for dragging events from both of the explorers. Each of the explorers will listen for dragging events of the other's.
 
 #### Moving files and directories
 

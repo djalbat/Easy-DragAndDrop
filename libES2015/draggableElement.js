@@ -15,7 +15,8 @@ class DraggableElement extends Element {
 
     this.timeout = null;
 
-    this.offset = null;
+    this.topOffset = null;
+    this.leftOffset = null;
 
     this.onMouseDown(this.mouseDown.bind(this));
     this.onMouseUp(this.mouseUp.bind(this));
@@ -59,7 +60,7 @@ class DraggableElement extends Element {
     var dragged = this.isDragged();
 
     if (dragged) {
-      this.drag(mouseTop, mouseLeft);
+      this.dragging(mouseTop, mouseLeft);
     }
   }
 
@@ -95,32 +96,22 @@ class DraggableElement extends Element {
   startDragging(mouseTop, mouseLeft) {
     this.timeout = null;
 
-    var dragEvent = DragEvent.start(this);
-
-    var startDragging = this.dragEventHandler(dragEvent);
+    var dragEvent = DragEvent.start(this),
+        startDragging = this.dragEventHandler(dragEvent);
 
     if (startDragging) {
-      var bounds = this.getBounds(),
-          top = bounds.top, ///
-          left = bounds.left; ///
-
-      var css = {
-        top: top + 'px',
-        left: left + 'px'
-      };
+      var position = this.getPosition(),
+          top = position.getTop(),
+          left = position.getLeft(),
+          css = {
+            top: top,
+            left: left
+          };
 
       this.css(css);
 
-      var topOffset = top - mouseTop,
-          leftOffset = left - mouseLeft;
-
-      top = topOffset;  ///
-      left = leftOffset;  ///
-
-      this.offset = {
-        top: top,
-        left: left
-      };
+      this.topOffset = top - mouseTop;
+      this.leftOffset = left - mouseLeft;
 
       this.addClass('dragged');
     }
@@ -132,26 +123,22 @@ class DraggableElement extends Element {
     var dragEvent = DragEvent.stop(this);
 
     this.dragEventHandler(dragEvent, function() {
-      this.removeClass('dragged');
-
       this.removeClass('stopDragging');
+      this.removeClass('dragged');
     }.bind(this));
   }
 
-  drag(mouseTop, mouseLeft) {
-    var topOffset = this.offset.top,
-        leftOffset = this.offset.left,
-        top = mouseTop + topOffset,
-        left = mouseLeft + leftOffset;
-
-    var css = {
-      top: top + 'px',
-      left: left + 'px'
-    };
+  dragging(mouseTop, mouseLeft) {
+    var top = mouseTop + this.topOffset,
+        left = mouseLeft + this.leftOffset,
+        css = {
+          top: top,
+          left: left
+        };
 
     this.css(css);
 
-    var dragEvent = DragEvent.drag(this);
+    var dragEvent = DragEvent.dragging(this);
 
     this.dragEventHandler(dragEvent);
   }

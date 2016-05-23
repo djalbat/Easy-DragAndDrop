@@ -17,12 +17,12 @@ class DragEvent {
 
 DragEvent.start = function(entry) { return new DragEvent(entry, DragEvent.types.START); };
 DragEvent.stop = function(entry) { return new DragEvent(entry, DragEvent.types.STOP); };
-DragEvent.drag = function(entry) { return new DragEvent(entry, DragEvent.types.DRAG); };
+DragEvent.dragging = function(entry) { return new DragEvent(entry, DragEvent.types.DRAGGING); };
 
 DragEvent.types = {
   START: 'START',
   STOP: 'STOP',
-  DRAG: 'DRAG'
+  DRAGGING: 'DRAGGING'
 };
 
 module.exports = DragEvent;

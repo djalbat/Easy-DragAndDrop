@@ -103,8 +103,8 @@ class DroppableElement extends Element {
         this.stopDragging(entry, done);
         break;
 
-      case DragEvent.types.DRAG:
-        this.drag(entry);
+      case DragEvent.types.DRAGGING:
+        this.dragging(entry);
         break;
     }
   }
@@ -133,7 +133,7 @@ class DroppableElement extends Element {
     }
   }
 
-  drag(entry) {
+  dragging(entry) {
     if (this.hasMarker()) {
       if (!this.isKeepingMarker(entry)) {
         var droppableElementToAddMarker = this.droppableElementToAddMarker(entry);
