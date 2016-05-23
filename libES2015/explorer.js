@@ -103,12 +103,9 @@ class Explorer extends DroppableElement {
         targetPath = directoryPathContainingMarker;
 
     if ((sourcePath === null) || (sourcePath !== targetPath)) {
-      var entries = [entry],
-          subEntries = entry.getSubEntries();
+      var subEntries = entry.getSubEntries();
 
-      entries = entries.concat(subEntries);
-
-      elementHavingMarker.moveEntries(entries, sourcePath, targetPath, function() {
+      elementHavingMarker.moveEntries(entry, subEntries, sourcePath, targetPath, function() {
         this.removeMarkerGlobally();
 
         done();

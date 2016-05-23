@@ -156,14 +156,11 @@ class DroppableElement extends Element {
     }
   }
 
-  moveEntries(entries, sourcePath, targetPath, done) {
-    var entry = entries.shift(),
-        subEntries = entries;
-
+  moveEntries(entry, subEntries, sourcePath, targetPath, done) {
     this.moveSubEntries(subEntries, sourcePath, targetPath, function() {
-      var handleEntry = true;
+      var handle = true;
 
-      this.moveEntry(entry, sourcePath, targetPath, handleEntry, done);
+      this.moveEntry(entry, sourcePath, targetPath, handle, done);
     }.bind(this));
   }
 
@@ -171,31 +168,28 @@ class DroppableElement extends Element {
     subEntries.reverse();
 
     var HANDLE_SUB_ENTRIES = options.HANDLE_SUB_ENTRIES,
-        handleSubEntries = this.options[HANDLE_SUB_ENTRIES] !== false,
-        handleEntry = handleSubEntries;
+        handle = this.options[HANDLE_SUB_ENTRIES] !== false;
 
     asyncForEach(
       subEntries,
       function(entry, next) {
-        this.moveEntry(entry, sourcePath, targetPath, handleEntry, next);
+        this.moveEntry(entry, sourcePath, targetPath, handle, next);
       }.bind(this),
       done
     )
   }
   
-  moveEntry(entry, sourcePath, targetPath, handleEntry, next) {
+  moveEntry(entry, sourcePath, targetPath, handle, next) {
     var entryPath = entry.getPath(),
         sourceEntryPath = entryPath,  ///
         targetEntryPath = targetPath === null ?
                             null :
                               util.replaceTopmostPath(entryPath, sourcePath, targetPath), ///
-        entryIsDirectory = entry.isDirectory(),
-        handleDirectory = handleEntry,
-        handleFile = handleEntry;
+        entryIsDirectory = entry.isDirectory();
 
     entryIsDirectory ?
-      this.moveDirectory(entry, sourceEntryPath, targetEntryPath, handleDirectory, next) :
-        this.moveFile(entry, sourceEntryPath, targetEntryPath, handleFile, next);
+      this.moveDirectory(entry, sourceEntryPath, targetEntryPath, handle, next) :
+        this.moveFile(entry, sourceEntryPath, targetEntryPath, handle, next);
   }
 
   isOverlappingEntry(entry) {
