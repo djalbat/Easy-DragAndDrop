@@ -100,9 +100,9 @@ class DraggableElement extends Element {
         startDragging = this.dragEventHandler(dragEvent);
 
     if (startDragging) {
-      var position = this.getPosition(),
-          top = position.getTop(),
-          left = position.getLeft(),
+      var bounds = this.getBounds(),
+          top = bounds.getTop(),
+          left = bounds.getLeft(),
           css = {
             top: top,
             left: left

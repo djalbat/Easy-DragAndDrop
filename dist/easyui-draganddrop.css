@@ -25,7 +25,7 @@ ul.explorer li.collapsed.directory > ul.entries {
 
 ul.explorer li.dragged.file,
 ul.explorer li.dragged.directory {
-  position: absolute;
+  position: fixed;
   z-index: 10000;
 }
 
