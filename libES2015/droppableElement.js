@@ -139,9 +139,9 @@ class DroppableElement extends Element {
         var droppableElementToAddMarker = this.droppableElementToAddMarker(entry);
 
         if (droppableElementToAddMarker !== null) {
-          this.removeMarker();
-
           droppableElementToAddMarker.addMarker(entry);
+
+          this.removeMarker();
         }
       }
     } else {
