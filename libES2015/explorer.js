@@ -8,8 +8,8 @@ var util = require('./util'),
     RootDirectory = require('./explorer/draggableEntry/rootDirectory');
 
 class Explorer extends DroppableElement {
-  constructor(selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler, options) {
-    super(selector, options);
+  constructor(selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler) {
+    super(selector);
 
     var rootDirectory = RootDirectory.clone(rootDirectoryName, this.onDragEvent.bind(this), this.onActivateFileEvent.bind(this));
 
@@ -143,7 +143,7 @@ class Explorer extends DroppableElement {
     return addMarker;
   }
 
-  moveDirectory(directory, sourcePath, targetPath, handle, next) {
+  moveDirectory(directory, sourcePath, targetPath, isSubEntry, next) {
     function afterMove(movedPath) {
       if (false) {
 
@@ -162,16 +162,14 @@ class Explorer extends DroppableElement {
       next();
     }
 
-    var movedPath = !handle ?
-                      targetPath :
-                        this.moveDirectoryHandler(sourcePath, targetPath, afterMove.bind(this));
+    var movedPath = this.moveDirectoryHandler(sourcePath, targetPath, isSubEntry, afterMove.bind(this));
 
     if (movedPath !== undefined) {
       afterMove.call(this, movedPath);
     }
   }
 
-  moveFile(file, sourcePath, targetPath, handle, next) {
+  moveFile(file, sourcePath, targetPath, isSubEntry, next) {
     function afterMove(movedPath) {
       if (false) {
 
@@ -190,9 +188,7 @@ class Explorer extends DroppableElement {
       next();
     }
 
-    var movedPath = !handle ?
-                      targetPath :
-                        this.moveFileHandler(sourcePath, targetPath, afterMove.bind(this));
+    var movedPath = this.moveFileHandler(sourcePath, targetPath, isSubEntry, afterMove.bind(this));
 
     if (movedPath !== undefined) {
       afterMove.call(this, movedPath);
@@ -200,12 +196,12 @@ class Explorer extends DroppableElement {
   }
 }
 
-Explorer.clone = function(selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler, options) {
-  return Element.clone(Explorer, selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler, options);
+Explorer.clone = function(selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler) {
+  return Element.clone(Explorer, selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler);
 };
 
-Explorer.fromHTML = function(html, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler, options) {
-  return Element.fromHTML(Explorer, html, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler, options);
+Explorer.fromHTML = function(html, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler) {
+  return Element.fromHTML(Explorer, html, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler);
 };
 
 module.exports = Explorer;

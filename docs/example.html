@@ -62,7 +62,7 @@
           console.log('activateFile: ' + path)
         }
 
-        function onMoveFile(sourcePath, targetPath, cb) {
+        function onMoveFile(sourcePath, targetPath, isSubEntry, cb) {
           console.log('move file: ' + sourcePath + ' -> ' + targetPath)
 
           if (sourcePath === 'Second explorer/First directory/First file.fls') {
@@ -80,7 +80,7 @@
           return targetPath;
         }
 
-        function onMoveDirectory(sourcePath, targetPath, cb) {
+        function onMoveDirectory(sourcePath, targetPath, isSubEntry, cb) {
           console.log('move directory: ' + sourcePath + ' -> ' + targetPath)
 
           if (sourcePath === 'Second explorer/First directory') {
@@ -96,7 +96,7 @@
           return;
         }
 
-        function onRemoveFile(sourcePath, cb) {
+        function onRemoveFile(sourcePath, isSubEntry, cb) {
           console.log('remove file: ' + sourcePath)
 
           if (sourcePath === 'Second explorer/First directory/Second file.fls') {
@@ -112,7 +112,7 @@
           return;
         }
 
-        function onRemoveDirectory(sourcePath) {
+        function onRemoveDirectory(sourcePath, isSubEntry, cb) {
           console.log('remove directory: ' + sourcePath)
 
           if (sourcePath === 'Second explorer/First directory') {

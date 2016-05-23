@@ -87,17 +87,6 @@ The explorer will add the directories for you whenever you add a file. If you tr
 
 There are no `addFiles()` or `addDirectories()` methods, create your own loops!
 
-#### Options
-
-Both the explorer and rubbish bin accept a last, optional options argument:
-
-```js
-var options = {
-      HANDLE_SUB_ENTRIES: false
-    };
-```
-IF the `HANDLE_SUB_ENTRIES` property is explicity set to `false`, handlers are not called for sub-entries when directories are moved or removed.
-
 #### Dragging between elements
 
 Use the `addDroppableElement()` method to have one element listen for the dragging events of another.
@@ -115,12 +104,12 @@ Here the rubbish bin will listen for dragging events from both of the explorers.
 
 Only a single file or a directory can be moved in one go. 
 
-In the case of a single file, the `onMoveFile` handler is called with the file's source and target paths. The handler should return either the file's target path if the file has been moved successfully; the file's source path if the file cannot be moved and has been left in place; or null if the file has disappeared.
+In the case of a single file, the `onMoveFile` handler is called with the file's source and target paths. A third argument is passed specifying whether or not the file is a sub-entry, in this case it will always be set to true. The handler should return either the file's target path if the file has been moved successfully; the file's source path if the file cannot be moved and has been left in place; or null if the file has disappeared.
   
-In the case of a directory, the relevant `onMoveFile` and `onMoveDirectory` handlers are called for each sub-entry unless the `HANDLE_SUB_ENTRIES` option is explicitly set to false, starting with the outermost entries then working in. Finally the `onMoveDirectory` handler is called for the directory itself. Again the source and target paths are passed as arguments and should be treated in the same way as for files.  
+In the case of a directory, the relevant `onMoveFile` and `onMoveDirectory` handlers are called for each sub-entry, starting with the outermost entries then working in. Finally the `onMoveDirectory` handler is called for the directory itself. Again the source and target paths are passed as arguments and should be treated in the same way as for files. And again a third argument is passed specifying whether or not the file or directory is a sub-entry.
 
 ```js
-function onMoveFile(sourcePath, targetPath) {
+function onMoveFile(sourcePath, targetPath, isSubEntry, cb) {
   console.log('move file: ' + sourcePath + ' -> ' + targetPath)
 
   if (sourcePath === 'Second explorer/First directory/First file.fls') {
@@ -138,7 +127,7 @@ function onMoveFile(sourcePath, targetPath) {
   return targetPath;
 }
 
-function onMoveDirectory(sourcePath, targetPath, cb) {
+function onMoveDirectory(sourcePath, targetPath, isSubEntry, cb) {
   console.log('move directory: ' + sourcePath + ' -> ' + targetPath)
 
   if (sourcePath === 'Second explorer/First directory') {
@@ -162,7 +151,7 @@ In this way it is possible to manage moving directories even when some of their 
 This is accomplished by dragging them in the rubbish bin.
   
 ```js
-function onRemoveFile(sourcePath, cb) {
+function onRemoveFile(sourcePath, isSubEntry, cb) {
   console.log('remove file: ' + sourcePath)
 
   if (sourcePath === 'Second explorer/First directory/Second file.fls') {
@@ -178,7 +167,7 @@ function onRemoveFile(sourcePath, cb) {
   return;
 }
 
-function onRemoveDirectory(sourcePath) {
+function onRemoveDirectory(sourcePath, isSubEntry, cb) {
   console.log('remove directory: ' + sourcePath)
 
   if (sourcePath === 'Second explorer/First directory') {
@@ -199,9 +188,9 @@ function onRemoveDirectory(sourcePath) {
 
 Only a single file or a directory can be removed in one go. 
 
-In the case of a single file, the `onRemoveFile` handler is called with the file's source path. The handler should return either null if the file has been moved successfully; or the file's source path if the file cannot be removed and has been left in place.
+In the case of a single file, the `onRemoveFile` handler is called with the file's source path and whether or not the file is a sub-entry, in this case it will always be set to true. The handler should return either null if the file has been moved successfully; or the file's source path if the file cannot be removed and has been left in place.
   
-In the case of a directory, the relevant `onRemoveFile` and `onRemoveDirectory` handlers are called for each sub-entry unless the `HANDLE_SUB_ENTRIES` option is explicitly set to false, starting with the outermost entries then working in. Finally the `onRemoveDirectory` handler is called for the directory itself. Again the source path is passed as an argument and should be treated in the same way as for files.  
+In the case of a directory, the relevant `onRemoveFile` and `onRemoveDirectory` handlers are called for each sub-entry, starting with the outermost entries then working in. Finally the `onRemoveDirectory` handler is called for the directory itself. Again the source path is passed as an argument and should be treated in the same way as for files. And again a third argument is passed specifying whether or not the file or directory is a sub-entry.  
 
 If the root directory of an explorer is dragged into the rubbish bin you can check for this and remove the entire explorer if you choose:
 

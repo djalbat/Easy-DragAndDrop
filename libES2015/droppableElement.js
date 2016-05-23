@@ -3,19 +3,16 @@
 var easyui = require('easyui'),
     Element = easyui.Element;
 
-var options = require('./options'),
-    util = require('./util'),
+var util = require('./util'),
     DragEvent = require('./dragEvent'),
     Entry = require('./explorer/entry'),
     FileMarker = require('./explorer/entry/fileMarker'),
     DirectoryMarker = require('./explorer/entry/directoryMarker');
 
 class DroppableElement extends Element {
-  constructor(selector, options) {
+  constructor(selector) {
     super(selector);
     
-    this.options = options || {};
-
     this.droppableElements = [];
   }
 
@@ -158,28 +155,27 @@ class DroppableElement extends Element {
 
   moveEntries(entry, subEntries, sourcePath, targetPath, done) {
     this.moveSubEntries(subEntries, sourcePath, targetPath, function() {
-      var handle = true;
+      var isSubEntry = false;
 
-      this.moveEntry(entry, sourcePath, targetPath, handle, done);
+      this.moveEntry(entry, sourcePath, targetPath, isSubEntry, done);
     }.bind(this));
   }
 
   moveSubEntries(subEntries, sourcePath, targetPath, done) {
-    subEntries.reverse();
+    subEntries.reverse(); ///
 
-    var HANDLE_SUB_ENTRIES = options.HANDLE_SUB_ENTRIES,
-        handle = this.options[HANDLE_SUB_ENTRIES] !== false;
+    var isSubEntry = true;
 
     asyncForEach(
       subEntries,
-      function(entry, next) {
-        this.moveEntry(entry, sourcePath, targetPath, handle, next);
+      function(subEntry, next) {
+        this.moveEntry(subEntry, sourcePath, targetPath, isSubEntry, next);
       }.bind(this),
       done
     )
   }
   
-  moveEntry(entry, sourcePath, targetPath, handle, next) {
+  moveEntry(entry, sourcePath, targetPath, isSubEntry, next) {
     var entryPath = entry.getPath(),
         sourceEntryPath = entryPath,  ///
         targetEntryPath = targetPath === null ?
@@ -188,8 +184,8 @@ class DroppableElement extends Element {
         entryIsDirectory = entry.isDirectory();
 
     entryIsDirectory ?
-      this.moveDirectory(entry, sourceEntryPath, targetEntryPath, handle, next) :
-        this.moveFile(entry, sourceEntryPath, targetEntryPath, handle, next);
+      this.moveDirectory(entry, sourceEntryPath, targetEntryPath, isSubEntry, next) :
+        this.moveFile(entry, sourceEntryPath, targetEntryPath, isSubEntry, next);
   }
 
   isOverlappingEntry(entry) {
