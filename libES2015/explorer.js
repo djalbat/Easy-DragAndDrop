@@ -22,6 +22,7 @@ class Explorer extends DroppableElement {
     this.append(rootDirectory);
   }
 
+  getRootDirectoryName() { return this.rootDirectory.getName(); }
   addFile(filePath, readOnly) { this.rootDirectory.addFile(filePath, readOnly); }
   addDirectory(directoryPath, collapsed) { this.rootDirectory.addDirectory(directoryPath, collapsed); }
   directoryPathContainingMarker() { return this.rootDirectory.directoryPathContainingMarker(); }
