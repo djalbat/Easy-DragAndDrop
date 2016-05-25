@@ -19,6 +19,7 @@ class DraggableElement extends Element {
     this.leftOffset = null;
 
     this.onMouseDown(this.mouseDown.bind(this));
+    this.onMouseUp(this.mouseUp.bind(this));
   }
 
   isDragged() {
