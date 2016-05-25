@@ -48,12 +48,7 @@ class Explorer extends DroppableElement {
     } else {
       var entryName = entry.getName(),
           entryType = entry.getType(),
-          entryPath = entry.getPath(),
-          rootDirectoryName = this.rootDirectory.getName(),
-          entryTopmostDirectoryName = util.topmostDirectoryName(entryPath),
-          markerPath = (entryTopmostDirectoryName !== rootDirectoryName) ?
-                         rootDirectoryName + '/' + entryName :
-                           directoryPathOverlappingEntry + '/' + entryName;
+          markerPath = directoryPathOverlappingEntry + '/' + entryName;
 
       this.rootDirectory.addMarker(markerPath, entryType);
     }
