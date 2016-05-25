@@ -5,7 +5,7 @@ var easyui = require('easyui'),
 
 var DragEvent = require('./dragEvent');
 
-var START_DRAGGING_DELAY = 250;
+var START_DRAGGING_DELAY = 175;
 
 class DraggableElement extends Element {
   constructor(selector, dragEventHandler) {
@@ -65,16 +65,16 @@ class DraggableElement extends Element {
   }
 
   mouseOut(mouseTop, mouseLeft, mouseButton) {
-    var dragged = this.isDragged(),
-        waitingToDrag = this.isWaitingToDrag();
-
-    if (dragged) {
-      this.stopDragging();
-    } else {
-      if (waitingToDrag) {
-        this.stopWaitingToDrag();
-      }
-    }
+    // var dragged = this.isDragged(),
+    //     waitingToDrag = this.isWaitingToDrag();
+    //
+    // if (dragged) {
+    //   this.stopDragging();
+    // } else {
+    //   if (waitingToDrag) {
+    //     this.stopWaitingToDrag();
+    //   }
+    // }
   }
 
   startWaitingToDrag(mouseTop, mouseLeft, mouseButton) {
