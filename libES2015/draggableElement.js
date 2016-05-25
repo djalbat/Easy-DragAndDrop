@@ -19,9 +19,6 @@ class DraggableElement extends Element {
     this.leftOffset = null;
 
     this.onMouseDown(this.mouseDown.bind(this));
-    this.onMouseUp(this.mouseUp.bind(this));
-    this.onMouseMove(this.mouseMove.bind(this));
-    this.onMouseOut(this.mouseOut.bind(this));
   }
 
   isDragged() {
@@ -65,16 +62,16 @@ class DraggableElement extends Element {
   }
 
   mouseOut(mouseTop, mouseLeft, mouseButton) {
-    // var dragged = this.isDragged(),
-    //     waitingToDrag = this.isWaitingToDrag();
-    //
-    // if (dragged) {
-    //   this.stopDragging();
-    // } else {
-    //   if (waitingToDrag) {
-    //     this.stopWaitingToDrag();
-    //   }
-    // }
+    var dragged = this.isDragged(),
+        waitingToDrag = this.isWaitingToDrag();
+
+    if (dragged) {
+      this.stopDragging();
+    } else {
+      if (waitingToDrag) {
+        this.stopWaitingToDrag();
+      }
+    }
   }
 
   startWaitingToDrag(mouseTop, mouseLeft, mouseButton) {

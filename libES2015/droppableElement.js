@@ -1,6 +1,7 @@
 'use strict';
 
 var easyui = require('easyui'),
+    Body = easyui.Body,
     Element = easyui.Element;
 
 var util = require('./util'),
@@ -14,6 +15,32 @@ class DroppableElement extends Element {
     super(selector);
     
     this.droppableElements = [];
+
+    this.draggedEntry = null;
+    
+    var body = new Body();
+
+    body.onMouseUp(this.mouseUp.bind(this));
+    body.onMouseMove(this.mouseMove.bind(this));
+    body.onMouseOut(this.mouseOut.bind(this));
+  }
+
+  mouseUp(mouseTop, mouseLeft, mouseButton) {
+    if (this.draggedEntry !== null) {
+      this.draggedEntry.mouseUp(mouseTop, mouseLeft, mouseButton);
+    }
+  }
+
+  mouseMove(mouseTop, mouseLeft, mouseButton) {
+    if (this.draggedEntry !== null) {
+      this.draggedEntry.mouseMove(mouseTop, mouseLeft, mouseButton);
+    }
+  }
+
+  mouseOut(mouseTop, mouseLeft, mouseButton) {
+    if (this.draggedEntry !== null) {
+      this.draggedEntry.mouseOut(mouseTop, mouseLeft, mouseButton);
+    }
   }
 
   addDroppableElement(droppableElement) {
@@ -113,10 +140,14 @@ class DroppableElement extends Element {
 
     this.addMarker(entry);
 
+    this.draggedEntry = entry;
+
     return true;
   }
 
   stopDragging(entry) {
+    this.draggedEntry = null;
+
     this.removeMarkerGlobally();
   }
 

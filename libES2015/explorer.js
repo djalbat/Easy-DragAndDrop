@@ -89,10 +89,14 @@ class Explorer extends DroppableElement {
 
     this.addMarkerInPlace(entry);
 
+    this.draggedEntry = entry;
+
     return true;
   }
 
   stopDragging(entry, done) {
+    this.draggedEntry = null;
+
     var entryPath = entry.getPath(),
         elementHavingMarker = this.hasMarker() ?
                                 this :
@@ -102,7 +106,8 @@ class Explorer extends DroppableElement {
         sourcePath = entryPathWithoutBottommostName,
         targetPath = directoryPathContainingMarker;
 
-    if ((sourcePath === null) || (sourcePath !== targetPath)) {
+    if ((sourcePath !== targetPath)
+     || (sourcePath === null) && (targetPath === null) && (elementHavingMarker !== this)) {
       var subEntries = entry.getSubEntries();
 
       elementHavingMarker.moveEntries(entry, subEntries, sourcePath, targetPath, function() {
