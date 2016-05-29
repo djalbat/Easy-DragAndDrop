@@ -1,11 +1,15 @@
 'use strict';
 
 var easyui = require('easyui'),
+    Body = easyui.Body,
     Element = easyui.Element;
 
 var DragEvent = require('./dragEvent');
 
-var START_DRAGGING_DELAY = 175;
+const START_DRAGGING_DELAY = 175,
+      NAMESPACE = 'EasyUI-DragAndDrop/dragging';
+
+var body = new Body();
 
 class DraggableElement extends Element {
   constructor(selector, dragEventHandler) {
@@ -14,116 +18,43 @@ class DraggableElement extends Element {
     this.dragEventHandler = dragEventHandler;
 
     this.timeout = null;
-
     this.topOffset = null;
     this.leftOffset = null;
 
     this.onMouseDown(this.mouseDown.bind(this));
-    this.onMouseUp(this.mouseUp.bind(this));
+  }
+  
+  getDraggingBounds() {
+    return this.getBounds();
   }
 
-  isDragged() {
-    var dragged = this.hasClass('dragged') && !this.hasClass('stopDragging');
+  isOverlappingDraggableElement(draggableElement) {
+    var bounds = this.getBounds(),
+        draggableElementDraggingBounds = draggableElement.getDraggingBounds(),
+        overlappingDraggableElement = bounds.areOverlapping(draggableElementDraggingBounds);
 
-    return dragged;
-  }
-
-  isWaitingToDrag() {
-    var waitingToDrag = this.timeout !== null;
-
-    return waitingToDrag;
-  }
-
-  mouseUp(mouseTop, mouseLeft, mouseButton) {
-    var dragged = this.isDragged();
-
-    if (dragged) {
-      this.stopDragging();
-    } else {
-      this.stopWaitingToDrag();
-    }
-  }
-
-  mouseDown(mouseTop, mouseLeft, mouseButton) {
-    if (mouseButton === Element.LEFT_MOUSE_BUTTON) {
-      var dragged = this.isDragged();
-
-      if (!dragged) {
-        this.startWaitingToDrag(mouseTop, mouseLeft);
-      }
-    }
-  }
-
-  mouseMove(mouseTop, mouseLeft, mouseButton) {
-    var dragged = this.isDragged();
-
-    if (dragged) {
-      this.dragging(mouseTop, mouseLeft);
-    }
-  }
-
-  mouseOut(mouseTop, mouseLeft, mouseButton) {
-    var dragged = this.isDragged(),
-        waitingToDrag = this.isWaitingToDrag();
-
-    if (dragged) {
-      this.stopDragging();
-    } else {
-      if (waitingToDrag) {
-        this.stopWaitingToDrag();
-      }
-    }
-  }
-
-  startWaitingToDrag(mouseTop, mouseLeft, mouseButton) {
-    if (this.timeout === null) {
-      this.timeout = setTimeout(function() {
-        this.startDragging(mouseTop, mouseLeft);
-      }.bind(this), START_DRAGGING_DELAY);
-    }
-  }
-
-  stopWaitingToDrag() {
-    if (this.timeout !== null) {
-      clearTimeout(this.timeout);
-
-      this.timeout = null;
-    }
+    return overlappingDraggableElement;
   }
 
   startDragging(mouseTop, mouseLeft) {
-    this.timeout = null;
+    var bounds = this.getBounds(),
+        top = bounds.getTop(),
+        left = bounds.getLeft(),
+        css = {
+          top: top,
+          left: left
+        };
 
-    var dragEvent = DragEvent.start(this),
-        startDragging = this.dragEventHandler(dragEvent);
+    this.css(css);
 
-    if (startDragging) {
-      var bounds = this.getBounds(),
-          top = bounds.getTop(),
-          left = bounds.getLeft(),
-          css = {
-            top: top,
-            left: left
-          };
+    this.topOffset = top - mouseTop;
+    this.leftOffset = left - mouseLeft;
 
-      this.css(css);
-
-      this.topOffset = top - mouseTop;
-      this.leftOffset = left - mouseLeft;
-
-      this.addClass('dragged');
-    }
+    this.addClass('dragging');
   }
 
   stopDragging() {
-    this.addClass('stopDragging');
-
-    var dragEvent = DragEvent.stop(this);
-
-    this.dragEventHandler(dragEvent, function() {
-      this.removeClass('stopDragging');
-      this.removeClass('dragged');
-    }.bind(this));
+    this.removeClass('dragging');
   }
 
   dragging(mouseTop, mouseLeft) {
@@ -136,9 +67,79 @@ class DraggableElement extends Element {
 
     this.css(css);
 
-    var dragEvent = DragEvent.dragging(this);
+    var draggingEvent = DragEvent.dragging(this);
 
-    this.dragEventHandler(dragEvent);
+    this.dragEventHandler(draggingEvent);
+  }
+
+  startWaitingToDrag(mouseTop, mouseLeft, mouseButton) {
+    if (this.timeout === null) {
+      this.timeout = setTimeout(function() {
+        this.timeout = null;
+        var startDraggingEvent = DragEvent.startDragging(this),
+            startDragging = this.dragEventHandler(startDraggingEvent);
+
+        if (startDragging) {
+          this.startDragging(mouseTop, mouseLeft);
+        }
+      }.bind(this), START_DRAGGING_DELAY);
+    }
+  }
+
+  stopWaitingToDrag() {
+    if (this.timeout !== null) {
+      clearTimeout(this.timeout);
+
+      this.timeout = null;
+    }
+  }
+
+  isDragging() {
+    return this.hasClass('dragging');
+  }
+
+  isWaitingToDrag() {
+    var waitingToDrag = this.timeout !== null;
+
+    return waitingToDrag;
+  }
+
+  mouseDown(mouseTop, mouseLeft, mouseButton) {
+    body.onMouseUp(this.mouseUp.bind(this), NAMESPACE);
+    body.onMouseMove(this.mouseMove.bind(this), NAMESPACE);
+
+    if (mouseButton === Element.LEFT_MOUSE_BUTTON) {
+      var dragging = this.isDragging();
+
+      if (!dragging) {
+        this.startWaitingToDrag(mouseTop, mouseLeft);
+      }
+    }
+  }
+
+  mouseUp(mouseTop, mouseLeft, mouseButton) {
+    body.offMouseMove(NAMESPACE);
+    body.offMouseUp(NAMESPACE);
+
+    var dragging = this.isDragging();
+
+    if (dragging) {
+      var stopDraggingEvent = DragEvent.stopDragging(this);
+
+      this.dragEventHandler(stopDraggingEvent);
+      
+      this.stopDragging();
+    } else {
+      this.stopWaitingToDrag();
+    }
+  }
+
+  mouseMove(mouseTop, mouseLeft, mouseButton) {
+    var dragging = this.isDragging();
+
+    if (dragging) {
+      this.dragging(mouseTop, mouseLeft);
+    }
   }
 }
 

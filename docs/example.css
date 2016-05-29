@@ -10,3 +10,7 @@ html * {
   position: fixed;
   top: 12rem;
 }
+
+ul.explorer {
+  margin-top: 20rem;
+}

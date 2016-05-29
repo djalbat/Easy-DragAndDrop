@@ -1,3 +1,8 @@
+.dragging {
+  position: fixed;
+  z-index: 10000;
+}
+
 ul.explorer {
   position: relative;
 }
@@ -23,11 +28,6 @@ ul.explorer li.collapsed.directory > ul.entries {
   display: none;
 }
 
-ul.explorer li.dragged.file,
-ul.explorer li.dragged.directory {
-  position: fixed;
-  z-index: 10000;
-}
 
 ul.explorer li > button {
   outline: none;

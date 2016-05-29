@@ -105,6 +105,38 @@ class Entries extends Element {
     return marker;
   }
 
+  directoryOverlappingEntry(entry) {
+    var directoryOverlappingEntry = null;
+
+    this.someDirectory(function(directory) {
+      directoryOverlappingEntry = directory.directoryOverlappingEntry(entry);
+      
+      if (directoryOverlappingEntry !== null) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    
+    return directoryOverlappingEntry;
+  }
+
+  directoryHavingMarker(entry) {
+    var directoryHavingMarker = null;
+
+    this.someDirectory(function(directory) {
+      directoryHavingMarker = directory.directoryHavingMarker(entry);
+
+      if (directoryHavingMarker !== null) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    return directoryHavingMarker;
+  }
+
   forEachFile(cb) { this.forEachEntryByType(cb, Entry.types.FILE) }
 
   forEachDirectory(cb) { this.forEachEntryByType(cb, Entry.types.DIRECTORY) }

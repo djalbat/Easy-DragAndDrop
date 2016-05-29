@@ -1,27 +1,27 @@
 'use strict';
 
 class DragEvent {
-  constructor(entry, type) {
-    this.entry = entry;
-    this.type = type;
+  constructor(draggableElement, action) {
+    this.draggableElement = draggableElement;
+    this.action = action;
   }
 
-  getEntry() {
-    return this.entry;
+  getDraggableElement() {
+    return this.draggableElement;
   }
 
-  getType() {
-    return this.type;
+  getAction() {
+    return this.action;
   }
 }
 
-DragEvent.start = function(entry) { return new DragEvent(entry, DragEvent.types.START); };
-DragEvent.stop = function(entry) { return new DragEvent(entry, DragEvent.types.STOP); };
-DragEvent.dragging = function(entry) { return new DragEvent(entry, DragEvent.types.DRAGGING); };
+DragEvent.startDragging = function(draggableElement) { return new DragEvent(draggableElement, DragEvent.actions.START_DRAGGING); };
+DragEvent.stopDragging = function(draggableElement) { return new DragEvent(draggableElement, DragEvent.actions.STOP_DRAGGING); };
+DragEvent.dragging = function(draggableElement) { return new DragEvent(draggableElement, DragEvent.actions.DRAGGING); };
 
-DragEvent.types = {
-  START: 'START',
-  STOP: 'STOP',
+DragEvent.actions = {
+  START_DRAGGING: 'START_DRAGGING',
+  STOP_DRAGGING: 'STOP_DRAGGING',
   DRAGGING: 'DRAGGING'
 };
 

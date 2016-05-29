@@ -15,8 +15,6 @@ class RubbishBin extends DroppableElement {
     this.close();
   }
 
-  directoryPathContainingMarker() { return null; }
-
   addMarker(entry) {
     this.open();
   }

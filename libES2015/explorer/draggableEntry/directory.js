@@ -19,18 +19,18 @@ class Directory extends DraggableEntry {
 
     this.activateFileEventHandler = activateFileEventHandler;
 
-    this.toggleButton = new ToggleButton(this, this.onToggleUpdate.bind(this));
+    this.toggleButton = new ToggleButton(this, function(collapsed) { collapsed ? this.addClass('collapsed') : this.removeClass('collapsed'); }.bind(this) );
 
     this.entries = new Entries(this, Directory);
 
-    !collapsed ? this.expand() : this.collapse(); ///
+    !collapsed ?
+      this.expand() :
+        this.collapse();
   }
 
   isDirectory() {
     return true;
   }
-
-  isCollapsed() { return this.toggleButton.isCollapsed(); }
 
   isBefore(entry) {
     var entryType = entry.getType();
@@ -72,19 +72,36 @@ class Directory extends DraggableEntry {
     return subEntries;
   }
 
-  getCollapsedBounds() {
+  getDraggingBounds() {
     var collapsed = this.isCollapsed();
 
     this.collapse();
 
-    var bounds = super.getBounds();
+    var bounds = super.getBounds(),
+        draggingBounds = bounds;
 
     if (!collapsed) {
       this.expand();
     }
 
-    return bounds;
+    return draggingBounds;
   }
+
+  isOverlappingDraggableElement(draggableElement) {
+    if (this === draggableElement) {
+      return false;
+    }
+
+    var collapsed = this.isCollapsed();
+
+    if (collapsed) {
+      return false;
+    }
+
+    return super.isOverlappingDraggableElement(draggableElement);
+  }
+
+  isCollapsed() { return this.toggleButton.isCollapsed(); }
 
   expand() { this.toggleButton.expand(); }
 
@@ -193,74 +210,6 @@ class Directory extends DraggableEntry {
     }
   }
 
-  directoryPathContainingMarker(directoryPath) {
-    var name = this.getName(),
-        directoryPathContainingMarker = null;
-
-    directoryPath = directoryPath ? directoryPath + '/' + name : name;  ///
-
-    if (this.entries.hasMarker()) {
-      directoryPathContainingMarker = directoryPath;
-    } else {
-      this.entries.someDirectory(function(directory) {
-        directoryPathContainingMarker = directory.directoryPathContainingMarker(directoryPath);
-
-        if (directoryPathContainingMarker !== null) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    }
-
-    return directoryPathContainingMarker;
-  }
-
-  directoryPathOverlappingEntry(entry, directoryPath) {
-    if (entry === this) {
-      return null;
-    }
-
-    var name = this.getName();
-
-    directoryPath = directoryPath ? directoryPath + '/' + name : name;  ///
-
-    var collapsed = this.isCollapsed();
-
-    if (collapsed) {
-      return null;
-    }
-
-    var bounds = this.getBounds(),
-        entryIsDirectory = entry.isDirectory(),
-        entryBounds = entryIsDirectory ?
-                        entry.getCollapsedBounds() :
-                          entry.getBounds(),
-        overlapping = bounds.areOverlapping(entryBounds);
-
-    if (!overlapping) {
-      return null;
-    }
-
-    var directoryPathOverlappingEntry = null;
-
-    this.entries.someDirectory(function(directory) {
-      directoryPathOverlappingEntry = directory.directoryPathOverlappingEntry(entry, directoryPath);
-
-      if (directoryPathOverlappingEntry !== null) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-
-    if (directoryPathOverlappingEntry === null) {
-      directoryPathOverlappingEntry = directoryPath;
-    }
-
-    return directoryPathOverlappingEntry;
-  }
-
   topmostDirectory(path) {
     var topmostDirectoryName = util.topmostDirectoryName(path);
 
@@ -279,8 +228,31 @@ class Directory extends DraggableEntry {
     }
   }
 
-  onToggleUpdate(collapsed) {
-    collapsed ? this.addClass('collapsed') : this.removeClass('collapsed');
+  directoryOverlappingEntry(entry) {
+    var directoryOverlappingEntry = this.entries.directoryOverlappingEntry(entry);
+    
+    if (directoryOverlappingEntry === null) {
+      var draggableElement = entry, ///
+          overlappingDraggableElement = this.isOverlappingDraggableElement(draggableElement);
+      
+      if (overlappingDraggableElement) {
+        directoryOverlappingEntry = this;
+      }
+    }
+    
+    return directoryOverlappingEntry;
+  }
+
+  directoryHavingMarker() {
+    var directoryHavingMarker = this.entries.directoryHavingMarker();
+
+    if (directoryHavingMarker === null) {
+      if (this.hasMarker()) {
+        directoryHavingMarker = this;
+      }
+    }
+
+    return directoryHavingMarker;
   }
 }
 

@@ -45,7 +45,7 @@ You must include the `easyui-draganddrop.html` and `easyui-draganddrop.css` file
 Creating instances can be done with constructors:
 
 ```js
-var explorer = new Explorer('#explorer', 'Explorer', onActivateFile, onMoveFile, onMoveDirectory),
+var explorer = new Explorer('#explorer', 'Explorer, onMoveFile, onMoveDirectory', onActivateFile),
     rubbishBin = new RubbishBin('#rubbishBin', onRemoveFile, onRemoveDirectory);
 ```
 
@@ -56,8 +56,8 @@ Activating files is done by double clicking on them, in which case the `onActiva
 You can also create instances using the `clone()` factory or instance methods. Remember to remove the `id` attribute if you've used the `clone()` factory method and the jQuery selector used it. Or you can use the `fromHTML()` methods, as in the examples: 
 
 ```js
-var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onActivateFile, onMoveFile, onMoveDirectory),
-    secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onActivateFile, onMoveFile, onMoveDirectory),
+var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onMoveFile, onMoveDirectory, onActivateFile),
+    secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onMoveFile, onMoveDirectory, onActivateFile),
     rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemoveFile, onRemoveDirectory);
 
 var body = new Body();

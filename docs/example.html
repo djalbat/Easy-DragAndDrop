@@ -37,63 +37,69 @@
         var Explorer = easyUIDragAndDrop.Explorer,
             RubbishBin = easyUIDragAndDrop.RubbishBin;
 
-        var firstExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'First explorer', onActivateFile, onMoveFile, onMoveDirectory),
-            secondExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'Second explorer', onActivateFile, onMoveFile, onMoveDirectory),
+        var firstExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'First explorer', onMoveFile, onMoveDirectory, onActivateFile),
+            secondExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'Second explorer', onMoveFile, onMoveDirectory, onActivateFile),
             rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemoveFile, onRemoveDirectory);
 
-        firstExplorer.addDroppableElement(secondExplorer);
-        secondExplorer.addDroppableElement(firstExplorer);
-        firstExplorer.addDroppableElement(rubbishBin);
-        secondExplorer.addDroppableElement(rubbishBin);
+//        firstExplorer.addDroppableElement(secondExplorer);
+//        secondExplorer.addDroppableElement(firstExplorer);
+//        firstExplorer.addDroppableElement(rubbishBin);
+//        secondExplorer.addDroppableElement(rubbishBin);
 
         var body = new Body();
 
         body.append(firstExplorer);
-        body.append(secondExplorer);
-        body.append(rubbishBin);
 
-        secondExplorer.addDirectory('Second explorer/First directory');
-        secondExplorer.addDirectory('Second explorer/Second directory');
+        firstExplorer.addFile('First explorer/First directory/First file.fls');
+        firstExplorer.addFile('First explorer/First directory/Second file.fls');
+        firstExplorer.addFile('First explorer/Second directory/Third file.fls');
+        firstExplorer.addFile('First explorer/Second directory/Fourth file.fls');
 
-        secondExplorer.addFile('Second explorer/First directory/First file.fls');
-        secondExplorer.addFile('Second explorer/First directory/Second file.fls');
+//        body.append(secondExplorer);
+//        body.append(rubbishBin);
 
-        function onActivateFile(path) {
-          console.log('activateFile: ' + path)
-        }
+//        secondExplorer.addDirectory('Second explorer/First directory');
+//        secondExplorer.addDirectory('Second explorer/Second directory');
+//
+//        secondExplorer.addFile('Second explorer/First directory/First file.fls');
+//        secondExplorer.addFile('Second explorer/First directory/Second file.fls');
 
         function onMoveFile(sourcePath, targetPath, isSubEntry, cb) {
-          console.log('move file: ' + sourcePath + ' -> ' + targetPath)
-
-          if (sourcePath === 'Second explorer/First directory/First file.fls') {
-            console.log('...deleted.')
-
-            return null;
-          }
-
-          if (sourcePath === 'Second explorer/First directory/Second file.fls') {
-            console.log('...left in place.')
-
-            return sourcePath;
-          }
+//          console.log('move file: ' + sourcePath + ' -> ' + targetPath)
+//
+//          if (sourcePath === 'Second explorer/First directory/First file.fls') {
+//            console.log('...deleted.')
+//
+//            return null;
+//          }
+//
+//          if (sourcePath === 'Second explorer/First directory/Second file.fls') {
+//            console.log('...left in place.')
+//
+//            return sourcePath;
+//          }
 
           return targetPath;
         }
 
         function onMoveDirectory(sourcePath, targetPath, isSubEntry, cb) {
-          console.log('move directory: ' + sourcePath + ' -> ' + targetPath)
-
-          if (sourcePath === 'Second explorer/First directory') {
-            console.log('...left in place.')
-
-            cb(sourcePath);
-
-            return;
-          }
+//          console.log('move directory: ' + sourcePath + ' -> ' + targetPath)
+//
+//          if (sourcePath === 'Second explorer/First directory') {
+//            console.log('...left in place.')
+//
+//            cb(sourcePath);
+//
+//            return;
+//          }
 
           cb(targetPath);
 
           return;
+        }
+
+        function onActivateFile(path) {
+          console.log('activateFile: ' + path)
         }
 
         function onRemoveFile(sourcePath, isSubEntry, cb) {
