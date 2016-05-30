@@ -141,7 +141,10 @@ class Explorer extends DroppableElement {
     if (entryIsTopmostDirectory) {
       return false;
     } else {
-      return super.isToHaveMarker(entry);
+      var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry),
+          toHaveMarker = (directoryOverlappingEntry !== null);
+
+      return toHaveMarker;
     }
   }
 

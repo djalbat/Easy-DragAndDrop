@@ -94,10 +94,12 @@ class DroppableElement extends Element {
   }
 
   isToHaveMarker(entry) {
-    var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry),
-        haveMarker = (directoryOverlappingEntry !== null);
+    var bounds = this.getBounds(),
+        draggingBounds = entry.getDraggingBounds(),
+        overlappingDraggingBounds = bounds.areOverlapping(draggingBounds),
+        toHaveMarker = overlappingDraggingBounds; ///
 
-    return haveMarker;
+    return toHaveMarker;
   }
 
   getDroppableElementToHaveMarker(entry) {

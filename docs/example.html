@@ -43,20 +43,15 @@
 
         firstExplorer.addDroppableElement(secondExplorer);
         secondExplorer.addDroppableElement(firstExplorer);
-//        firstExplorer.addDroppableElement(rubbishBin);
-//        secondExplorer.addDroppableElement(rubbishBin);
+        firstExplorer.addDroppableElement(rubbishBin);
+        secondExplorer.addDroppableElement(rubbishBin);
 
         var body = new Body();
 
         body.append(firstExplorer);
 
-//        firstExplorer.addFile('First explorer/First directory/First file.fls');
-//        firstExplorer.addFile('First explorer/First directory/Second file.fls');
-//        firstExplorer.addFile('First explorer/Second directory/Third file.fls');
-//        firstExplorer.addFile('First explorer/Second directory/Fourth file.fls');
-
         body.append(secondExplorer);
-//        body.append(rubbishBin);
+        body.append(rubbishBin);
 
         secondExplorer.addDirectory('Second explorer/First directory');
         secondExplorer.addDirectory('Second explorer/Second directory');
