@@ -29,6 +29,12 @@ class Entries extends Element {
     this.addEntry(entry);
   }
 
+  hasDirectory(directoryName) {
+    var directory = this.retrieveDirectory(directoryName);
+
+    return !!directory; ///
+  }
+
   addMarker(markerName, entryType) {
     var marker;
 
@@ -57,12 +63,6 @@ class Entries extends Element {
     var marker = this.retrieveMarker();
 
     return !!marker;  ///
-  }
-
-  hasDirectory(directoryName) {
-    var directory = this.retrieveDirectory(directoryName);
-
-    return !!directory; ///
   }
 
   addEntry(entry) {

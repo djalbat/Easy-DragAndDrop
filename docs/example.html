@@ -41,8 +41,8 @@
             secondExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'Second explorer', onMoveFile, onMoveDirectory, onActivateFile),
             rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemoveFile, onRemoveDirectory);
 
-//        firstExplorer.addDroppableElement(secondExplorer);
-//        secondExplorer.addDroppableElement(firstExplorer);
+        firstExplorer.addDroppableElement(secondExplorer);
+        secondExplorer.addDroppableElement(firstExplorer);
 //        firstExplorer.addDroppableElement(rubbishBin);
 //        secondExplorer.addDroppableElement(rubbishBin);
 
@@ -50,19 +50,19 @@
 
         body.append(firstExplorer);
 
-        firstExplorer.addFile('First explorer/First directory/First file.fls');
-        firstExplorer.addFile('First explorer/First directory/Second file.fls');
-        firstExplorer.addFile('First explorer/Second directory/Third file.fls');
-        firstExplorer.addFile('First explorer/Second directory/Fourth file.fls');
+//        firstExplorer.addFile('First explorer/First directory/First file.fls');
+//        firstExplorer.addFile('First explorer/First directory/Second file.fls');
+//        firstExplorer.addFile('First explorer/Second directory/Third file.fls');
+//        firstExplorer.addFile('First explorer/Second directory/Fourth file.fls');
 
-//        body.append(secondExplorer);
+        body.append(secondExplorer);
 //        body.append(rubbishBin);
 
-//        secondExplorer.addDirectory('Second explorer/First directory');
-//        secondExplorer.addDirectory('Second explorer/Second directory');
-//
-//        secondExplorer.addFile('Second explorer/First directory/First file.fls');
-//        secondExplorer.addFile('Second explorer/First directory/Second file.fls');
+        secondExplorer.addDirectory('Second explorer/First directory');
+        secondExplorer.addDirectory('Second explorer/Second directory');
+
+        secondExplorer.addFile('Second explorer/First directory/First file.fls');
+        secondExplorer.addFile('Second explorer/First directory/Second file.fls');
 
         function onMoveFile(sourcePath, targetPath, isSubEntry, cb) {
 //          console.log('move file: ' + sourcePath + ' -> ' + targetPath)

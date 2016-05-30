@@ -12,6 +12,20 @@ var util = require('./util'),
 class DroppableElement extends Element {
   constructor(selector) {
     super(selector);
+
+    this.droppableElements = [];
+  }
+
+  addDroppableElement(droppableElement) {
+    this.droppableElements.push(droppableElement);
+  }
+
+  removeDroppableElement(droppableElement) {
+    var index = indexOf(droppableElement, this.droppableElements);
+
+    if (index !== null) {
+      this.droppableElements.splice(index, 1);
+    }
   }
 
   isOverlappingDraggableElement(draggableElementDraggingBounds) {
@@ -40,6 +54,80 @@ class DroppableElement extends Element {
     }
   }
 
+  startDragging(entry) {
+    if (this.hasMarker()) {
+      return false;
+    }
+
+    this.addMarker(entry);
+
+    return true;
+  }
+
+  stopDragging(entry) {
+    this.removeMarkerGlobally();
+  }
+
+  dragging(entry) {
+    if (this.hasMarker()) {
+      var notToHaveMarker = !this.isToHaveMarker(entry);
+
+      if (notToHaveMarker) {
+        var droppableElementToHaveMarker = this.getDroppableElementToHaveMarker(entry);
+
+        if (droppableElementToHaveMarker !== null) {
+          droppableElementToHaveMarker.addMarker(entry);
+
+          this.removeMarker();
+        }
+      }
+    } else {
+      var droppableElementHavingMarker = this.getDroppableElementHavingMarker(),
+          droppableElementHavingMarkerIsNotToHaveMarker = !droppableElementHavingMarker.isToHaveMarker(entry);
+
+      if (droppableElementHavingMarkerIsNotToHaveMarker) {
+        droppableElementHavingMarker.removeMarker();
+
+        this.addMarkerInPlace(entry);
+      }
+    }
+  }
+
+  isToHaveMarker(entry) {
+    var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry),
+        haveMarker = (directoryOverlappingEntry !== null);
+
+    return haveMarker;
+  }
+
+  getDroppableElementToHaveMarker(entry) {
+    var droppableElementToHaveMarker = this.droppableElements.reduce(function(droppableElementToHaveMarker, droppableElement) {
+      if (droppableElementToHaveMarker === null) {
+        if (droppableElement.isToHaveMarker(entry)) {
+          droppableElementToHaveMarker = droppableElement;
+        }
+      }
+
+      return droppableElementToHaveMarker;
+    }, null);
+
+    return droppableElementToHaveMarker;
+  }
+
+  getDroppableElementHavingMarker() {
+    var droppableElementHavingMarker = this.droppableElements.reduce(function(droppableElementHavingMarker, droppableElement) {
+      if (droppableElementHavingMarker === null) {
+        if (droppableElement.hasMarker()) {
+          droppableElementHavingMarker = droppableElement;
+        }
+      }
+
+      return droppableElementHavingMarker;
+    }, null);
+
+    return droppableElementHavingMarker;
+  }
+
   addMarker(entry) {
     var entryName = entry.getName(),
         entryType = entry.getType(),
@@ -63,6 +151,16 @@ class DroppableElement extends Element {
     var marker = this.retrieveMarker();
 
     marker.remove();
+  }
+
+  removeMarkerGlobally() {
+    if (this.hasMarker()) {
+      this.removeMarker();
+    } else {
+      var droppableElementHavingMarker = this.getDroppableElementHavingMarker();
+
+      droppableElementHavingMarker.removeMarker();
+    }
   }
 
   hasMarker() {
@@ -142,4 +240,20 @@ function asyncForEach(array, cb, done) {
   };
 
   next();
+}
+
+function indexOf(element, array) {
+  var index = null;
+
+  array.some(function(currentElement, currentElementIndex) {
+    if (currentElement === element) {
+      index = currentElementIndex;
+
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+  return index;
 }
