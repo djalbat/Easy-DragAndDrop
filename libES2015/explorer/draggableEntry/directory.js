@@ -87,18 +87,20 @@ class Directory extends DraggableEntry {
     return draggingBounds;
   }
 
-  isOverlappingDraggableElement(draggableElement) {
-    if (this === draggableElement) {
+  isOverlappingEntry(entry) {
+    if (this === entry) {
       return false;
     }
-
+    
     var collapsed = this.isCollapsed();
 
     if (collapsed) {
       return false;
     }
 
-    return super.isOverlappingDraggableElement(draggableElement);
+    var draggingBounds = entry.getDraggingBounds();
+
+    return super.isOverlappingDraggingBounds(draggingBounds);
   }
 
   isCollapsed() { return this.toggleButton.isCollapsed(); }
@@ -228,23 +230,8 @@ class Directory extends DraggableEntry {
     }
   }
 
-  directoryOverlappingEntry(entry) {
-    var directoryOverlappingEntry = this.entries.directoryOverlappingEntry(entry);
-    
-    if (directoryOverlappingEntry === null) {
-      var draggableElement = entry, ///
-          overlappingDraggableElement = this.isOverlappingDraggableElement(draggableElement);
-      
-      if (overlappingDraggableElement) {
-        directoryOverlappingEntry = this;
-      }
-    }
-    
-    return directoryOverlappingEntry;
-  }
-
-  directoryHavingMarker() {
-    var directoryHavingMarker = this.entries.directoryHavingMarker();
+  getDirectoryHavingMarker() {
+    var directoryHavingMarker = this.entries.getDirectoryHavingMarker();
 
     if (directoryHavingMarker === null) {
       if (this.hasMarker()) {
@@ -253,6 +240,21 @@ class Directory extends DraggableEntry {
     }
 
     return directoryHavingMarker;
+  }
+
+  getDirectoryOverlappingEntry(entry) {
+    var directoryOverlappingDraggingBounds = null,
+        overlappingDraggingBounds = this.isOverlappingEntry(entry);
+
+    if (overlappingDraggingBounds) {
+      directoryOverlappingDraggingBounds = this.entries.getDirectoryOverlappingEntry(entry);
+
+      if (directoryOverlappingDraggingBounds === null) {
+        directoryOverlappingDraggingBounds = this;
+      }
+    }
+
+    return directoryOverlappingDraggingBounds;
   }
 }
 

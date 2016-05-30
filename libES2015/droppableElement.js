@@ -3,21 +3,90 @@
 var easyui = require('easyui'),
     Element = easyui.Element;
 
-var util = require('./util');
+var util = require('./util'),
+    Entry = require('./explorer/entry'),
+    DragEvent = require('./dragEvent'),
+    FileMarker = require('./explorer/entry/fileMarker'),
+    DirectoryMarker = require('./explorer/entry/directoryMarker');
 
 class DroppableElement extends Element {
   constructor(selector) {
     super(selector);
   }
 
-  isOverlappingDraggableElement(draggableElement) {
+  isOverlappingDraggableElement(draggableElementDraggingBounds) {
     var bounds = this.getBounds(),
-        draggableElementDraggingBounds = draggableElement.getDraggingBounds(),
         overlappingDraggableElement = bounds.areOverlapping(draggableElementDraggingBounds);
 
     return overlappingDraggableElement;
   }
-  
+
+  onDragEvent(dragEvent) {
+    var action = dragEvent.getAction(),
+        draggableElement = dragEvent.getDraggableElement(),
+        entry = draggableElement;  ///
+
+    switch (action) {
+      case DragEvent.actions.START_DRAGGING:
+        return this.startDragging(entry);
+
+      case DragEvent.actions.STOP_DRAGGING:
+        this.stopDragging(entry);
+        break;
+
+      case DragEvent.actions.DRAGGING:
+        this.dragging(entry);
+        break;
+    }
+  }
+
+  addMarker(entry) {
+    var entryName = entry.getName(),
+        entryType = entry.getType(),
+        markerName = entryName, ///
+        marker;
+
+    switch (entryType) {
+      case Entry.types.FILE:
+        marker = FileMarker.clone(markerName);
+        break;
+
+      case Entry.types.DIRECTORY:
+        marker = DirectoryMarker.clone(markerName);
+        break;
+    }
+
+    this.append(marker);
+  }
+
+  removeMarker() {
+    var marker = this.retrieveMarker();
+
+    marker.remove();
+  }
+
+  hasMarker() {
+    var marker = this.retrieveMarker();
+
+    return marker !== null;
+  }
+
+  retrieveMarker() {
+    var childElements = this.childElements(),
+        marker = childElements.reduce(function(marker, childElement) {
+          if (marker === null) {
+            if ((childElement instanceof FileMarker)
+                || (childElement instanceof DirectoryMarker)) {
+              marker = childElement;  ///
+            }
+          }
+
+          return marker;
+        }, null);
+
+    return marker;
+  }
+
   moveEntries(entry, subEntries, sourcePath, targetPath, done) {
     this.moveSubEntries(subEntries, sourcePath, targetPath, function() {
       var isSubEntry = false;
@@ -45,7 +114,7 @@ class DroppableElement extends Element {
         sourceEntryPath = entryPath,  ///
         targetEntryPath = targetPath === null ?
           null :
-            util.replaceTopmostPath(entryPath, sourcePath, targetPath), ///
+            util.replaceTopPath(entryPath, sourcePath, targetPath), ///
         entryIsDirectory = entry.isDirectory();
 
     entryIsDirectory ?

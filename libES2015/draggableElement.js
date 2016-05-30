@@ -28,12 +28,11 @@ class DraggableElement extends Element {
     return this.getBounds();
   }
 
-  isOverlappingDraggableElement(draggableElement) {
+  isOverlappingDraggingBounds(draggingBounds) {
     var bounds = this.getBounds(),
-        draggableElementDraggingBounds = draggableElement.getDraggingBounds(),
-        overlappingDraggableElement = bounds.areOverlapping(draggableElementDraggingBounds);
+        overlappingDraggingBounds = bounds.areOverlapping(draggingBounds);
 
-    return overlappingDraggableElement;
+    return overlappingDraggingBounds;
   }
 
   startDragging(mouseTop, mouseLeft) {

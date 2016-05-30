@@ -11,6 +11,8 @@ html * {
   top: 12rem;
 }
 
-ul.explorer {
-  margin-top: 20rem;
+html,
+body {
+  width: 100%;
+  height: 100%;
 }

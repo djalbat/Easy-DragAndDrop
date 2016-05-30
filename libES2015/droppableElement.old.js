@@ -6,7 +6,6 @@ var easyui = require('easyui'),
 
 var util = require('./util'),
     DragEvent = require('./dragEvent'),
-    Entry = require('./explorer/entry'),
     FileMarker = require('./explorer/entry/fileMarker'),
     DirectoryMarker = require('./explorer/entry/directoryMarker');
 
@@ -55,36 +54,6 @@ class DroppableElement extends Element {
     }
   }
 
-  addMarker(entry) {
-    var entryName = entry.getName(),
-        entryType = entry.getType(),
-        markerName = entryName, ///
-        marker;
-
-    switch (entryType) {
-      case Entry.types.FILE:
-        marker = FileMarker.clone(markerName);
-        break;
-
-      case Entry.types.DIRECTORY:
-        marker = DirectoryMarker.clone(markerName);
-        break;
-    }
-
-    this.append(marker);
-  }
-
-  removeMarker() {
-    var marker = this.retrieveMarker();
-    
-    marker.remove();
-  }
-
-  hasMarker() {
-    var marker = this.retrieveMarker();
-
-    return marker !== null;
-  }
 
   showMarker() {
     var marker = this.retrieveMarker();
@@ -96,22 +65,6 @@ class DroppableElement extends Element {
     var marker = this.retrieveMarker();
 
     marker.hide();
-  }
-
-  retrieveMarker() {
-    var childElements = this.childElements(),
-        marker = childElements.reduce(function(marker, childElement) {
-          if (marker === null) {
-            if ((childElement instanceof FileMarker)
-             || (childElement instanceof DirectoryMarker)) {
-              marker = childElement;  ///
-            }
-          }
-
-          return marker;
-        }, null);
-
-    return marker;
   }
 
   onDragEvent(dragEvent, done) {

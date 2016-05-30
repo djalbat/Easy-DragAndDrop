@@ -1,7 +1,7 @@
 'use strict';
 
 var util = {
-  isTopmost: function(path) {
+  isTopmostDirectoryName: function(path) {
     var topmostDirectoryName = util.topmostDirectoryName(path),
         topmost = topmostDirectoryName === null;
 
@@ -36,7 +36,7 @@ var util = {
     return pathWithoutTopmostDirectoryName;
   },
 
-  replaceTopmostPath: function(path, sourcePath, targetPath) {
+  replaceTopPath: function(path, sourcePath, targetPath) {
     var regExp = new RegExp('^' + sourcePath + '(.*$)'),
         matches = path.match(regExp);
 

@@ -105,27 +105,11 @@ class Entries extends Element {
     return marker;
   }
 
-  directoryOverlappingEntry(entry) {
-    var directoryOverlappingEntry = null;
-
-    this.someDirectory(function(directory) {
-      directoryOverlappingEntry = directory.directoryOverlappingEntry(entry);
-      
-      if (directoryOverlappingEntry !== null) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    
-    return directoryOverlappingEntry;
-  }
-
-  directoryHavingMarker(entry) {
+  getDirectoryHavingMarker() {
     var directoryHavingMarker = null;
 
     this.someDirectory(function(directory) {
-      directoryHavingMarker = directory.directoryHavingMarker(entry);
+      directoryHavingMarker = directory.getDirectoryHavingMarker();
 
       if (directoryHavingMarker !== null) {
         return true;
@@ -135,6 +119,22 @@ class Entries extends Element {
     });
 
     return directoryHavingMarker;
+  }
+
+  getDirectoryOverlappingEntry(entry) {
+    var directoryOverlappingDraggingBounds = null;
+
+    this.someDirectory(function(directory) {
+      directoryOverlappingDraggingBounds = directory.getDirectoryOverlappingEntry(entry);
+
+      if (directoryOverlappingDraggingBounds !== null) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    return directoryOverlappingDraggingBounds;
   }
 
   forEachFile(cb) { this.forEachEntryByType(cb, Entry.types.FILE) }
