@@ -45,7 +45,7 @@ You must include the `easyui-draganddrop.html` and `easyui-draganddrop.css` file
 Creating instances can be done with constructors:
 
 ```js
-var explorer = new Explorer('#explorer', 'Explorer, onMove, onActivate),
+var explorer = new Explorer('#explorer', Explorer, onMove, onActivate),
     rubbishBin = new RubbishBin('#rubbishBin', onRemove);
 ```
 
