@@ -149,11 +149,27 @@ class Directory extends DraggableEntry {
     var topmostDirectoryName = util.topmostDirectoryName(directoryPath);
 
     if (topmostDirectoryName !== null) {
-      var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+      var topmostDirectory = null;
 
-      return this.someDirectory(function(directory) {
-        return directory.hasDirectory(directoryPathWithoutTopmostDirectoryName);
+      this.someDirectory(function(directory) {
+        var directoryName = directory.getName();
+
+        if (directoryName === topmostDirectoryName) {
+          topmostDirectory = directory;
+
+          return true;
+        } else {
+          return false;
+        }
       });
+
+      if (topmostDirectory !== null) {
+        var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+
+        return topmostDirectory.hasDirectory(directoryPathWithoutTopmostDirectoryName);
+      } else {
+        return false;
+      }
     } else {
       var directoryName = directoryPath;  ///
 
@@ -166,17 +182,25 @@ class Directory extends DraggableEntry {
         topmostDirectoryName = util.topmostDirectoryName(directoryPath);
 
     if (topmostDirectoryName !== null) {
-      var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+      var topmostDirectory = null;
 
-      return this.someDirectory(function(directory) {
-        retrievedDirectory = directory.retrieveDirectory(directoryPathWithoutTopmostDirectoryName);
+      this.someDirectory(function(directory) {
+        var directoryName = directory.getName();
 
-        if (retrievedDirectory !== null) {
+        if (directoryName === topmostDirectoryName) {
+          topmostDirectory = directory;
+
           return true;
         } else {
           return false;
         }
       });
+
+      if (topmostDirectory !== null) {
+        var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+
+        retrievedDirectory = topmostDirectory.retrieveDirectory(directoryPathWithoutTopmostDirectoryName);
+      }
     } else {
       var directoryName = directoryPath;  ///
 
@@ -190,11 +214,27 @@ class Directory extends DraggableEntry {
     var topmostDirectoryName = util.topmostDirectoryName(directoryPath);
 
     if (topmostDirectoryName !== null) {
-      var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+      var topmostDirectory = null;
 
-      return this.someDirectory(function(directory) {
-        return directory.removeDirectory(directoryPathWithoutTopmostDirectoryName);
+      this.someDirectory(function(directory) {
+        var directoryName = directory.getName();
+
+        if (directoryName === topmostDirectoryName) {
+          topmostDirectory = directory;
+
+          return true;
+        } else {
+          return false;
+        }
       });
+
+      if (topmostDirectory !== null) {
+        var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+
+        return topmostDirectory.removeDirectory(directoryPathWithoutTopmostDirectoryName);
+      } else {
+        return false;
+      }
     } else {
       var directoryName = directoryPath;  ///
 
