@@ -24,7 +24,10 @@ class Explorer extends DroppableElement {
 
   addFile(filePath, readOnly) { this.rootDirectory.addFile(filePath, readOnly); }
   addDirectory(directoryPath, collapsed) { this.rootDirectory.addDirectory(directoryPath, collapsed); }
-  
+  hasDirectory(directoryPath) { return this.rootDirectory.hasDirectory(directoryPath); }
+  retrieveDirectory(directoryPath) { return this.rootDirectory.retrieveDirectory(directoryPath); }
+  removeDirectory(directoryPath) { this.rootDirectory.removeDirectory(directoryPath); }
+
   getRootDirectoryName() { return this.rootDirectory.getName(); }
   getDirectoryHavingMarker() { return this.rootDirectory.getDirectoryHavingMarker(); }
   getDirectoryOverlappingEntry(entry) { return this.rootDirectory.getDirectoryOverlappingEntry(entry); }

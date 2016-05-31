@@ -50,6 +50,10 @@ class Directory extends DraggableEntry {
         return before;
     }
   }
+  
+  isEmpty() {
+    return this.entries.isEmpty();
+  }
 
   getSubEntries() {
     var subEntries = [];
@@ -140,6 +144,37 @@ class Directory extends DraggableEntry {
       }
     }
   }
+  
+  hasDirectory(directoryPath) {
+    var directory = this.retrieveDirectory(directoryPath);
+
+    return !!directory; ///
+  }
+
+  retrieveDirectory(directoryPath) {
+    var retrievedDirectory = null,
+        topmostDirectory = this.addTopmostDirectory(directoryPath);
+
+    if (topmostDirectory !== null) {
+      var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+
+      return this.someDirectory(function(directory) {
+        retrievedDirectory = directory.retrieveDirectory(directoryPathWithoutTopmostDirectoryName);
+
+        if (retrievedDirectory !== null) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    } else {
+      var directoryName = directoryPath;  ///
+
+      retrievedDirectory = entries.retrieveDirectory(directoryName);
+    }
+    
+    return retrievedDirectory;
+  }
 
   addMarker(markerPath, entryType) {
     var topmostDirectoryName = util.topmostDirectoryName(markerPath);
@@ -182,24 +217,7 @@ class Directory extends DraggableEntry {
 
   forEachDirectory(cb) { this.entries.forEachDirectory(cb); }
 
-  retrieveDirectory(directoryPath) {
-    var topmostDirectoryName = util.topmostDirectoryName(directoryPath),
-        directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath),
-        directory = null;
-
-    if (topmostDirectoryName === null) {
-      var directoryName = directoryPath,  ///
-          name = this.getName();
-
-      if (name === directoryName) {
-        directory = this;
-      }
-    } else {
-      directory = this.entries.retrieveDirectory(directoryPathWithoutTopmostDirectoryName);
-    }
-
-    return directory;
-  }
+  someDirectory(cb) { this.entries.someDirectory(cb); }
 
   addTopmostDirectory(path) {
     var topmostDirectoryName = util.topmostDirectoryName(path);

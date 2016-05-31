@@ -14,7 +14,14 @@ class Entries extends Element {
 
     this.Directory = Directory;
   }
-
+  
+  isEmpty() {
+    var entries = this.getEntries(),
+        empty = (entries.length === 0);
+    
+    return empty;    
+  }
+  
   addFile(fileName, readOnly, dragEventHandler, activateFileEventHandler) {
     var file = File.clone(fileName, readOnly, dragEventHandler, activateFileEventHandler),
         entry = file; ///
@@ -68,8 +75,7 @@ class Entries extends Element {
   addEntry(entry) {
     var nextEntry = entry,
         previousEntry = undefined,
-        childElements = this.childElements('li'),
-        entries = childElements;  ///
+        entries = this.getEntries();
 
     entries.some(function(entry) {
       if (nextEntry.isBefore(entry)) {
@@ -144,8 +150,7 @@ class Entries extends Element {
   someDirectory(cb) { return this.someEntryByType(cb, Entry.types.DIRECTORY) }
 
   forEachEntry(cb) {
-    var childElements = this.childElements('li'),
-        entries = childElements;  ///
+    var entries = this.getEntries();
 
     entries.forEach(function(entry) {
       cb(entry);
@@ -153,8 +158,7 @@ class Entries extends Element {
   }
 
   forEachEntryByType(cb, type) {
-    var childElements = this.childElements('li'),
-        entries = childElements;  ///
+    var entries = this.getEntries();
 
     entries.forEach(function(entry) {
       var entryType = entry.getType();
@@ -166,8 +170,7 @@ class Entries extends Element {
   }
 
   someEntryByType(cb, type) {
-    var childElements = this.childElements('li'),
-        entries = childElements;  ///
+    var entries = this.getEntries();
 
     return entries.some(function(entry) {
       var entryType = entry.getType();
@@ -198,6 +201,13 @@ class Entries extends Element {
     var entry = foundEntry; ///
 
     return entry;
+  }
+
+  getEntries() {
+    var childListElements = this.childElements('li'),
+        entries = childListElements;  ///
+
+    return entries;
   }
 }
 
