@@ -157,7 +157,7 @@ class Directory extends DraggableEntry {
     } else {
       var directoryName = directoryPath;  ///
 
-      return entries.hasDirectory(directoryName);
+      return this.entries.hasDirectory(directoryName);
     }
   }
 
