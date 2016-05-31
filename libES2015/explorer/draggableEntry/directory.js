@@ -146,9 +146,9 @@ class Directory extends DraggableEntry {
   }
   
   hasDirectory(directoryPath) {
-    var topmostDirectory = this.addTopmostDirectory(directoryPath);
+    var topmostDirectoryName = util.topmostDirectoryName(directoryPath);
 
-    if (topmostDirectory !== null) {
+    if (topmostDirectoryName !== null) {
       var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
       return this.someDirectory(function(directory) {
@@ -163,9 +163,9 @@ class Directory extends DraggableEntry {
 
   retrieveDirectory(directoryPath) {
     var retrievedDirectory = null,
-        topmostDirectory = this.addTopmostDirectory(directoryPath);
+        topmostDirectoryName = util.topmostDirectoryName(directoryPath);
 
-    if (topmostDirectory !== null) {
+    if (topmostDirectoryName !== null) {
       var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
       return this.someDirectory(function(directory) {
@@ -187,9 +187,9 @@ class Directory extends DraggableEntry {
   }
 
   removeDirectory(directoryPath) {
-    var topmostDirectory = this.addTopmostDirectory(directoryPath);
+    var topmostDirectoryName = util.topmostDirectoryName(directoryPath);
 
-    if (topmostDirectory !== null) {
+    if (topmostDirectoryName !== null) {
       var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
       return this.someDirectory(function(directory) {
