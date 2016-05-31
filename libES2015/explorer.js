@@ -111,7 +111,8 @@ class Explorer extends DroppableElement {
      || (sourcePath === null) && (targetPath === null) && (droppableElementHavingMarker !== this)) {
       var subEntries = entry.getSubEntries(),
           entries = subEntries;
-      
+
+      entries.reverse();
       entries.push(entry);
 
       droppableElementHavingMarker.moveEntries(entries, sourcePath, targetPath, function() {
