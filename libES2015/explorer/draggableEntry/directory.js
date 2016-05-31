@@ -146,9 +146,19 @@ class Directory extends DraggableEntry {
   }
   
   hasDirectory(directoryPath) {
-    var directory = this.retrieveDirectory(directoryPath);
+    var topmostDirectory = this.addTopmostDirectory(directoryPath);
 
-    return !!directory; ///
+    if (topmostDirectory !== null) {
+      var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+
+      return this.someDirectory(function(directory) {
+        return directory.hasDirectory(directoryPathWithoutTopmostDirectoryName);
+      });
+    } else {
+      var directoryName = directoryPath;  ///
+
+      return entries.hasDirectory(directoryName);
+    }
   }
 
   retrieveDirectory(directoryPath) {
