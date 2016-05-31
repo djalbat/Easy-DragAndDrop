@@ -8,14 +8,12 @@ var util = require('./util'),
     RootDirectory = require('./explorer/draggableEntry/rootDirectory');
 
 class Explorer extends DroppableElement {
-  constructor(selector, rootDirectoryName, moveFileHandler, moveDirectoryHandler, activateFileHandler) {
-    super(selector);
+  constructor(selector, rootDirectoryName, activateHandler, moveHandler) {
+    super(selector, moveHandler);
 
-    var rootDirectory = RootDirectory.clone(rootDirectoryName, this.onDragEvent.bind(this), this.onActivateFileEvent.bind(this));
+    var rootDirectory = RootDirectory.clone(rootDirectoryName, this.onDragEvent.bind(this), this.onActivateEvent.bind(this));
 
-    this.moveFileHandler = moveFileHandler;
-    this.moveDirectoryHandler = moveDirectoryHandler;
-    this.activateFileHandler = activateFileHandler;
+    this.activateHandler = activateHandler;
 
     this.rootDirectory = rootDirectory;
 
@@ -24,8 +22,6 @@ class Explorer extends DroppableElement {
 
   addFile(filePath, readOnly) { this.rootDirectory.addFile(filePath, readOnly); }
   addDirectory(directoryPath, collapsed) { this.rootDirectory.addDirectory(directoryPath, collapsed); }
-  hasDirectory(directoryPath) { return this.rootDirectory.hasDirectory(directoryPath); }
-  retrieveDirectory(directoryPath) { return this.rootDirectory.retrieveDirectory(directoryPath); }
   removeDirectory(directoryPath) { this.rootDirectory.removeDirectory(directoryPath); }
 
   getRootDirectoryName() { return this.rootDirectory.getName(); }
@@ -79,11 +75,11 @@ class Explorer extends DroppableElement {
     }
   }
 
-  onActivateFileEvent(activateFileEvent) {
+  onActivateEvent(activateFileEvent) {
     var file = activateFileEvent.getFile(),
         filePath = file.getPath(this.rootDirectory);
 
-    this.activateFileHandler(filePath);
+    this.activateHandler(filePath);
   }
 
   startDragging(entry) {
@@ -113,9 +109,12 @@ class Explorer extends DroppableElement {
 
     if ((sourcePath !== targetPath)
      || (sourcePath === null) && (targetPath === null) && (droppableElementHavingMarker !== this)) {
-      var subEntries = entry.getSubEntries();
+      var subEntries = entry.getSubEntries(),
+          entries = subEntries;
+      
+      entries.push(entry);
 
-      droppableElementHavingMarker.moveEntries(entry, subEntries, sourcePath, targetPath, function() {
+      droppableElementHavingMarker.moveEntries(entries, sourcePath, targetPath, function() {
         this.removeMarkerGlobally();
       }.bind(this));
     } else {
@@ -151,65 +150,47 @@ class Explorer extends DroppableElement {
     }
   }
 
-  moveDirectory(directory, sourcePath, targetPath, isSubEntry, next) {
-    function afterMove(movedPath) {
-      if (false) {
+  moveDirectory(directory, sourcePath, movedPath) {
+    if (false) {
 
-      } else if (movedPath === null) {
-        directory.remove();
-      } else if (movedPath === targetPath) {
-        directory.remove();
+    } else if (movedPath === sourcePath) {
 
-        var collapsed = directory.isCollapsed();
+    } else if (movedPath === null) {
+      directory.remove();
+    } else {
+      directory.remove();
 
-        this.addDirectory(movedPath, collapsed);
-      } else if (movedPath === sourcePath) {
+      var collapsed = directory.isCollapsed(),
+          directoryPath = movedPath;
 
-      }
-      
-      next();
-    }
-
-    var movedPath = this.moveDirectoryHandler(sourcePath, targetPath, isSubEntry, afterMove.bind(this));
-
-    if (movedPath !== undefined) {
-      afterMove.call(this, movedPath);
+      this.addDirectory(directoryPath, collapsed);
     }
   }
 
-  moveFile(file, sourcePath, targetPath, isSubEntry, next) {
-    function afterMove(movedPath) {
-      if (false) {
+  moveFile(file, sourcePath, movedPath) {
+    if (false) {
 
-      } else if (movedPath === null) {
-        file.remove();
-      } else if (movedPath === targetPath) {
-        file.remove();
+    } else if (movedPath === sourcePath) {
 
-        var readOnly = file.getReadOnly();
+    } else if (movedPath === null) {
+      file.remove();
+    } else {
+      file.remove();
 
-        this.addFile(movedPath, readOnly);
-      } else if (movedPath === sourcePath) {
+      var readOnly = file.getReadOnly(),
+          filePath = movedPath;
 
-      }
-      
-      next();
-    }
-
-    var movedPath = this.moveFileHandler(sourcePath, targetPath, isSubEntry, afterMove.bind(this));
-
-    if (movedPath !== undefined) {
-      afterMove.call(this, movedPath);
+      this.addFile(filePath, readOnly);
     }
   }
 }
 
-Explorer.clone = function(selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler) {
-  return Element.clone(Explorer, selector, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler);
+Explorer.clone = function(selector, rootDirectoryName, moveHandler, activateHandler) {
+  return Element.clone(Explorer, selector, rootDirectoryName, moveHandler, activateHandler);
 };
 
-Explorer.fromHTML = function(html, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler) {
-  return Element.fromHTML(Explorer, html, rootDirectoryName, activateFileHandler, moveFileHandler, moveDirectoryHandler);
+Explorer.fromHTML = function(html, rootDirectoryName, moveHandler, activateHandler) {
+  return Element.fromHTML(Explorer, html, rootDirectoryName, moveHandler, activateHandler);
 };
 
 module.exports = Explorer;

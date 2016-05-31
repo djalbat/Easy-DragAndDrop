@@ -6,12 +6,11 @@ var easyui = require('easyui'),
 var DroppableElement = require('./droppableElement');
 
 class RubbishBin extends DroppableElement {
-  constructor(selector, removeFileHandler, removeDirectoryHandler) {
-    super(selector);
-
-    this.removeFileHandler = removeFileHandler;
-    this.removeDirectoryHandler = removeDirectoryHandler;
+  constructor(selector, removeHandler) {
+    var moveHandler = removeHandler;
     
+    super(selector, moveHandler);
+
     this.close();
   }
 
@@ -29,51 +28,27 @@ class RubbishBin extends DroppableElement {
     return this.isOpen();
   }
 
-  moveDirectory(directory, sourcePath, targetPath, isSubEntry, next) {
-    this.removeDirectory(directory, sourcePath, isSubEntry, next);
+  moveDirectory(directory, sourcePath, movedPath) {
+    var removedPath = movedPath;  ///
+    
+    this.removeDirectory(directory, removedPath);
   }
 
-  moveFile(file, sourcePath, targetPath, isSubEntry, next) {
-    this.removeFile(file, sourcePath, isSubEntry, next);
+  moveFile(file, sourcePath, movedPath) {
+    var removedPath = movedPath;  ///
+    
+    this.removeFile(file, removedPath);
   }
 
-  removeDirectory(directory, sourcePath, isSubEntry, next) {
-    function afterRemove(removedPath) {
-      if (false) {
-
-      } else if (removedPath === null) {
-        directory.remove();
-      } else if (removedPath === sourcePath) {
-
-      }
-
-      next();
-    }
-
-    var removedPath = this.removeDirectoryHandler(sourcePath, isSubEntry, afterRemove.bind(this));
-
-    if (removedPath !== undefined) {
-      afterRemove.call(this, removedPath);
+  removeDirectory(directory, removedPath) {
+    if (removedPath === null) {
+      directory.remove();
     }
   }
 
-  removeFile(file, sourcePath, isSubEntry, next) {
-    function afterRemove(removedPath) {
-      if (false) {
-
-      } else if (removedPath === null) {
-        file.remove();
-      } else if (removedPath === sourcePath) {
-
-      }
-
-      next();
-    }
-
-    var removedPath = this.removeFileHandler(sourcePath, isSubEntry, afterRemove.bind(this));
-
-    if (removedPath !== undefined) {
-      afterRemove.call(this, removedPath);
+  removeFile(file, removedPath) {
+    if (removedPath === null) {
+      file.remove();
     }
   }
 
@@ -90,12 +65,12 @@ class RubbishBin extends DroppableElement {
   }
 }
 
-RubbishBin.clone = function(selector, removeFileHandler, removeDirectoryHandler) {
-  return Element.clone(RubbishBin, selector, removeFileHandler, removeDirectoryHandler);
+RubbishBin.clone = function(selector, removeHandler) {
+  return Element.clone(RubbishBin, selector, removeHandler);
 };
 
-RubbishBin.fromHTML = function(html, removeFileHandler, removeDirectoryHandler) {
-  return Element.fromHTML(RubbishBin, html, removeFileHandler, removeDirectoryHandler);
+RubbishBin.fromHTML = function(html, removeHandler) {
+  return Element.fromHTML(RubbishBin, html, removeHandler);
 };
 
 module.exports = RubbishBin;

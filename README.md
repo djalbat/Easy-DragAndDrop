@@ -45,20 +45,20 @@ You must include the `easyui-draganddrop.html` and `easyui-draganddrop.css` file
 Creating instances can be done with constructors:
 
 ```js
-var explorer = new Explorer('#explorer', 'Explorer, onMoveFile, onMoveDirectory', onActivateFile),
-    rubbishBin = new RubbishBin('#rubbishBin', onRemoveFile, onRemoveDirectory);
+var explorer = new Explorer('#explorer', 'Explorer, onMove, onActivate),
+    rubbishBin = new RubbishBin('#rubbishBin', onRemove);
 ```
 
-Activating files is done by double clicking on them, in which case the `onActivateFile` handler is called with the file's path.
+Activating files is done by double clicking on them, in which case the `onActivate` handler is called with the file's path.
 
 #### Cloning or creating instances from HTML
 
 You can also create instances using the `clone()` factory or instance methods. Remember to remove the `id` attribute if you've used the `clone()` factory method and the jQuery selector used it. Or you can use the `fromHTML()` methods, as in the examples: 
 
 ```js
-var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onMoveFile, onMoveDirectory, onActivateFile),
-    secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onMoveFile, onMoveDirectory, onActivateFile),
-    rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemoveFile, onRemoveDirectory);
+var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onMove, onActivate),
+    secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onMove, onActivate),
+    rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemove);
 
 var body = new Body();
 
@@ -102,97 +102,70 @@ Here the rubbish bin will listen for dragging events from both of the explorers.
 
 #### Moving files and directories
 
-Only a single file or a directory can be moved in one go. 
-
-In the case of a single file, the `onMoveFile` handler is called with the file's source and target paths. A third argument is passed specifying whether or not the file is a sub-entry, in this case it will always be set to true. The handler should return either the file's target path if the file has been moved successfully; the file's source path if the file cannot be moved and has been left in place; or null if the file has disappeared.
-  
-In the case of a directory, the relevant `onMoveFile` and `onMoveDirectory` handlers are called for each sub-entry, starting with the outermost entries then working in. Finally the `onMoveDirectory` handler is called for the directory itself. Again the source and target paths are passed as arguments and should be treated in the same way as for files. And again a third argument is passed specifying whether or not the file or directory is a sub-entry.
+The `onMove()` handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable object with one key, namely the entries source path. Its value is the entries target path. If you want the entry to be moved, leave the object as-is. If you want the entry to be left in place, change the value to the target path. If you want it removed, change the value to `null`.
 
 ```js
-function onMoveFile(sourcePath, targetPath, isSubEntry, cb) {
-  console.log('move file: ' + sourcePath + ' -> ' + targetPath)
+function onMove(pathMaps, done) {
+  pathMaps.forEach(function(pathMap) {
+    var keys = Object.keys(pathMap),
+        sourcePath = keys[0], ///
+        targetPath = pathMap[sourcePath],
+        movedPath = targetPath;
 
-  if (sourcePath === 'Second explorer/First directory/First file.fls') {
-    console.log('...deleted.')
+    console.log('move file: ' + sourcePath + ' -> ' + targetPath)
 
-    return null;
-  }
+    switch(sourcePath) {
+      case 'Second explorer/First directory/First file.fls':
+        console.log('...deleted.')
 
-  if (sourcePath === 'Second explorer/First directory/Second file.fls') {
-    console.log('...left in place.')
+        movedPath = null;
+        break;
 
-    return sourcePath;
-  }
+      case 'Second explorer/First directory/Second file.fls':
+      case 'Second explorer/First directory':
+        console.log('...left in place.')
 
-  return targetPath;
-}
+        movedPath = sourcePath;
+        break;
+    }
 
-function onMoveDirectory(sourcePath, targetPath, isSubEntry, cb) {
-  console.log('move directory: ' + sourcePath + ' -> ' + targetPath)
+    pathMap[sourcePath] = movedPath;
+  });
 
-  if (sourcePath === 'Second explorer/First directory') {
-    console.log('...left in place.')
-
-    cb(sourcePath);
-
-    return;
-  }
-
-  cb(targetPath);
-
-  return;
+  done();
 }
 ```
-
-In this way it is possible to manage moving directories even when some of their entries cannot be moved. In the code sample above, for example, the `onMoveFile` handler returns `null` to signifiy that the `First file.fls` file has somehow disappeared and should be discarded in the move. On the other hand it results the source file path to signify that the `Second file.fls` cannot be dislodged and should be left in place in the move. If files cannot be moved their directories must also be left in place. The `onMoveDirectory` handler does just this for the folder containing these files. *It is important to note that the explorer will not automatically leave directories in place if their contents are signified ummoveable.* You must explicitly signify that it must do so. Callbacks are supported for asynchronous behaviour. The `onMoveDirectory` handler makes use of these, for example.
    
 #### Removing files and directories   
   
-This is accomplished by dragging them in the rubbish bin.
-  
+The `onRemove()` handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable object with one key, namely the entries source path. If you want the entry to be removed, leave the object as-is. If you want the entry to be left in place, change the value to the target path.
+
 ```js
-function onRemoveFile(sourcePath, isSubEntry, cb) {
-  console.log('remove file: ' + sourcePath)
+function onRemove(pathMaps, done) {
+  pathMaps.forEach(function(pathMap) {
+    var keys = Object.keys(pathMap),
+      sourcePath = keys[0], ///
+      removedPath = null;
 
-  if (sourcePath === 'Second explorer/First directory/Second file.fls') {
-    console.log('...left in place.')
+    console.log('remove file: ' + sourcePath)
 
-    cb(sourcePath);
-    
-    return;
-  }
+    switch(sourcePath) {
+      case 'Second explorer/First directory/Second file.fls':
+      case 'Second explorer/First directory':
+        console.log('...left in place.')
 
-  cb(null);
-  
-  return;
-}
+        removedPath = sourcePath;
+        break;
+    }
 
-function onRemoveDirectory(sourcePath, isSubEntry, cb) {
-  console.log('remove directory: ' + sourcePath)
+    pathMap[sourcePath] = removedPath;
+  });
 
-  if (sourcePath === 'Second explorer/First directory') {
-    console.log('...left in place.')
-
-    return sourcePath;
-  }
-
-  if (sourcePath === 'Second explorer/First directory') {
-    console.log('...left in place.')
-
-    return sourcePath;
-  }
-
-  return null;
+  done();
 }
 ```
 
-Only a single file or a directory can be removed in one go. 
-
-In the case of a single file, the `onRemoveFile` handler is called with the file's source path and whether or not the file is a sub-entry, in this case it will always be set to true. The handler should return either null if the file has been moved successfully; or the file's source path if the file cannot be removed and has been left in place.
-  
-In the case of a directory, the relevant `onRemoveFile` and `onRemoveDirectory` handlers are called for each sub-entry, starting with the outermost entries then working in. Finally the `onRemoveDirectory` handler is called for the directory itself. Again the source path is passed as an argument and should be treated in the same way as for files. And again a third argument is passed specifying whether or not the file or directory is a sub-entry.  
-
-If the root directory of an explorer is dragged into the rubbish bin you can check for this and remove the entire explorer if you choose:
+You can check to see if the source path is that of the explorer's root directory in which case you can remove the whole explorer if you wish.
 
 ```js
 if (sourcePath === 'First explorer') {
@@ -201,8 +174,6 @@ if (sourcePath === 'First explorer') {
   secondExplorer.removeDroppableElement(firstExplorer);
 
   firstExplorer.remove();
-
-  return sourcePath;
 }
 ```
 

@@ -25,18 +25,6 @@ class RootDirectory extends Directory {
     super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
   }
   
-  hasDirectory(directoryPath) {
-    var directoryPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(directoryPath);
-
-    return super.hasDirectory(directoryPathWithoutRootDirectoryName);
-  }
-
-  retrieveDirectory(directoryPath) {
-    var directoryPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(directoryPath);
-
-    return super.retrieveDirectory(directoryPathWithoutRootDirectoryName);
-  }
-
   removeDirectory(directoryPath) {
     var directoryPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(directoryPath);
 

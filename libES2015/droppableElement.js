@@ -10,8 +10,10 @@ var util = require('./util'),
     DirectoryMarker = require('./explorer/entry/directoryMarker');
 
 class DroppableElement extends Element {
-  constructor(selector) {
+  constructor(selector, moveHandler) {
     super(selector);
+    
+    this.moveHandler = moveHandler;
 
     this.droppableElements = [];
   }
@@ -21,7 +23,7 @@ class DroppableElement extends Element {
   }
 
   removeDroppableElement(droppableElement) {
-    var index = indexOf(droppableElement, this.droppableElements);
+    var index = indexOf(this.droppableElements, droppableElement);
 
     if (index !== null) {
       this.droppableElements.splice(index, 1);
@@ -187,64 +189,53 @@ class DroppableElement extends Element {
     return marker;
   }
 
-  moveEntries(entry, subEntries, sourcePath, targetPath, done) {
-    this.moveSubEntries(subEntries, sourcePath, targetPath, function() {
-      var isSubEntry = false;
+  moveEntries(entries, sourcePath, targetPath, done) {
+    var entryPathMaps = entries.map(function(entry) {
+      var entryPath = entry.getPath(),
+          sourceEntryPath = entryPath,  ///
+          targetEntryPath = targetPath === null ?
+                              null :
+                                util.replaceTopPath(entryPath, sourcePath, targetPath); ///
+      
+      var entryPathMap = {};
 
-      this.moveEntry(entry, sourcePath, targetPath, isSubEntry, done);
+      entryPathMap[sourceEntryPath] = targetEntryPath;
+      
+      return entryPathMap;
+    });
+      
+    this.moveHandler(entryPathMaps, function() {
+      entries.forEach(function(entry) {
+        var entryPath = entry.getPath(),
+            sourcePath = entryPath,  ///
+            pathMap = find(entryPathMaps, function(entryPathMap) {
+              var sourceEntryPath = sourcePath,
+                  movedPath = entryPathMap[sourceEntryPath],
+                  found = (movedPath !== undefined);
+              
+              return found;              
+            }),
+            movedPath = pathMap[sourcePath];
+        
+        this.moveEntry(entry, sourcePath, movedPath);
+      }.bind(this));
     }.bind(this));
+    
+    done();
   }
 
-  moveSubEntries(subEntries, sourcePath, targetPath, done) {
-    subEntries.reverse(); ///
-
-    var isSubEntry = true;
-
-    asyncForEach(
-      subEntries,
-      function(subEntry, next) {
-        this.moveEntry(subEntry, sourcePath, targetPath, isSubEntry, next);
-      }.bind(this),
-      done
-    )
-  }
-
-  moveEntry(entry, sourcePath, targetPath, isSubEntry, next) {
-    var entryPath = entry.getPath(),
-        sourceEntryPath = entryPath,  ///
-        targetEntryPath = targetPath === null ?
-          null :
-            util.replaceTopPath(entryPath, sourcePath, targetPath), ///
-        entryIsDirectory = entry.isDirectory();
+  moveEntry(entry, sourcePath, movedPath) {
+    var entryIsDirectory = entry.isDirectory();
 
     entryIsDirectory ?
-      this.moveDirectory(entry, sourceEntryPath, targetEntryPath, isSubEntry, next) :
-        this.moveFile(entry, sourceEntryPath, targetEntryPath, isSubEntry, next);
+      this.moveDirectory(entry, sourcePath, movedPath) :
+        this.moveFile(entry, sourcePath, movedPath);
   }
 }
 
 module.exports = DroppableElement;
 
-function asyncForEach(array, cb, done) {
-  var arrayLength = array.length,
-      index = -1;
-
-  var next = function() {
-    index++;
-
-    if (index === arrayLength) {
-      done();
-    } else {
-      var element = array[index];
-
-      cb(element, next);
-    }
-  };
-
-  next();
-}
-
-function indexOf(element, array) {
+function indexOf(array, element) {
   var index = null;
 
   array.some(function(currentElement, currentElementIndex) {
@@ -258,4 +249,20 @@ function indexOf(element, array) {
   });
 
   return index;
+}
+
+function find(array, cb) {
+  var element = null;
+  
+  array.some(function(currentElement) {
+    if (cb(currentElement)) {
+      element = currentElement;
+      
+      return true;
+    } else {
+      return false;
+    }
+  });
+  
+  return element;  
 }
