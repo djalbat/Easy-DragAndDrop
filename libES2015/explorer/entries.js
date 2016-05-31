@@ -98,6 +98,12 @@ class Entries extends Element {
 
   retrieveDirectory(directoryName) { return this.retrieveEntryByType(directoryName, Entry.types.DIRECTORY) }
 
+  removeDirectory(directoryName) {
+    var directory = this.retrieveDirectory(directoryName);
+
+    directory.remove();
+  }
+
   retrieveMarker() {
     var marker = undefined,
         type = Entry.types.MARKER;
