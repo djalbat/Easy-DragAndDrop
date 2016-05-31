@@ -180,7 +180,7 @@ class Directory extends DraggableEntry {
     } else {
       var directoryName = directoryPath;  ///
 
-      retrievedDirectory = entries.retrieveDirectory(directoryName);
+      retrievedDirectory = this.entries.retrieveDirectory(directoryName);
     }
     
     return retrievedDirectory;
