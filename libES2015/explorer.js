@@ -22,7 +22,6 @@ class Explorer extends DroppableElement {
 
   addFile(filePath, readOnly) { this.rootDirectory.addFile(filePath, readOnly); }
   addDirectory(directoryPath, collapsed) { this.rootDirectory.addDirectory(directoryPath, collapsed); }
-  removeDirectory(directoryPath) { this.rootDirectory.removeDirectory(directoryPath); }
 
   getRootDirectoryName() { return this.rootDirectory.getName(); }
   getDirectoryHavingMarker() { return this.rootDirectory.getDirectoryHavingMarker(); }
@@ -77,9 +76,18 @@ class Explorer extends DroppableElement {
 
   onActivateEvent(activateFileEvent) {
     var file = activateFileEvent.getFile(),
-        filePath = file.getPath(this.rootDirectory);
+        filePath = file.getPath(this.rootDirectory),
+        sourcePath = filePath,  ///
+        success = this.activateHandler(sourcePath, fail),
+        failure = (success === false);
+    
+    if (failure) {
+      fail();
+    }
 
-    this.activateHandler(filePath);
+    function fail() {
+      file.remove();
+    }
   }
 
   startDragging(entry) {

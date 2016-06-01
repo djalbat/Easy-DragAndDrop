@@ -25,12 +25,6 @@ class RootDirectory extends Directory {
     super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
   }
   
-  removeDirectory(directoryPath) {
-    var directoryPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(directoryPath);
-
-    super.removeDirectory(directoryPathWithoutRootDirectoryName);
-  }
-
   addMarker(markerPath, entryType) {
     var markerPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(markerPath);
 

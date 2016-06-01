@@ -145,38 +145,6 @@ class Directory extends DraggableEntry {
     }
   }
   
-  removeDirectory(directoryPath) {
-    var topmostDirectoryName = util.topmostDirectoryName(directoryPath);
-
-    if (topmostDirectoryName !== null) {
-      var topmostDirectory = null;
-
-      this.someDirectory(function(directory) {
-        var directoryName = directory.getName();
-
-        if (directoryName === topmostDirectoryName) {
-          topmostDirectory = directory;
-
-          return true;
-        } else {
-          return false;
-        }
-      });
-
-      if (topmostDirectory !== null) {
-        var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
-
-        return topmostDirectory.removeDirectory(directoryPathWithoutTopmostDirectoryName);
-      } else {
-        return false;
-      }
-    } else {
-      var directoryName = directoryPath;  ///
-
-      return this.entries.removeDirectory(directoryName);
-    }
-  }
-
   addMarker(markerPath, entryType) {
     var topmostDirectoryName = util.topmostDirectoryName(markerPath);
 

@@ -57,10 +57,17 @@
         secondExplorer.addDirectory('Second explorer/Second directory');
 
         secondExplorer.addFile('Second explorer/First directory/First file.fls');
-        secondExplorer.addFile('Second explorer/Second directory/Second file.fls');
+        secondExplorer.addFile('Second explorer/First directory/Second file.fls');
+        secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 
-        function onActivate(path) {
-          console.log('activate: ' + path)
+        function onActivate(sourcePath, fail) {
+          console.log('activate: ' + sourcePath)
+
+          switch(sourcePath) {
+            case 'Second explorer/Second directory/Third file.fls':
+              fail();
+              break;
+          }
         }
 
         function onMove(pathMaps, done) {

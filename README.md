@@ -49,8 +49,6 @@ var explorer = new Explorer('#explorer', Explorer, onActivate, onMove),
     rubbishBin = new RubbishBin('#rubbishBin', onRemove);
 ```
 
-Activating files is done by double clicking on them, in which case the `onActivate` handler is called with the file's path.
-
 #### Cloning or creating instances from HTML
 
 You can also create instances using the `clone()` factory or instance methods. Remember to remove the `id` attribute if you've used the `clone()` factory method and the jQuery selector used it. Or you can use the `fromHTML()` methods, as in the examples: 
@@ -79,9 +77,10 @@ secondExplorer.addDirectory('Second explorer/Second directory');
 
 secondExplorer.addFile('Second explorer/First directory/First file.fls');
 secondExplorer.addFile('Second explorer/First directory/Second file.fls');
+secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 ```
 
-The `addFile()` method has second, optional `readOnly` argument. The default is false. The `addDirectory()` method has a second, optional `collapsed` argument. The default is false.
+The `addFile()` method has second, optional `readOnly` argument. The `addDirectory()` method has a second, optional `collapsed` argument. The defaults are false in both cases.
 
 The explorer will add the directories for you whenever you add a file. If you try to add a directory or file more than once, it will be ignored.
 
@@ -99,6 +98,22 @@ secondExplorer.addDroppableElement(rubbishBin);
 ```
 
 Here the rubbish bin will listen for dragging events from both of the explorers. Each of the explorers will listen for dragging events of the other's.
+
+#### Activating files
+
+This is done by double clicking on them, in which case the `onActivate` handler is called with the file's source path. A failure callback is passed as a second argument. If this is invoked, or if the handler explicitly returns `false`, the file will be removed.
+
+```js
+function onActivate(sourcePath, fail) {
+  console.log('activate: ' + sourcePath)
+
+  switch(sourcePath) {
+    case 'Second explorer/Second directory/Third file.fls':
+      fail();
+      break;
+  }
+}
+```
 
 #### Moving files and directories
 
