@@ -84,8 +84,11 @@ class DroppableElement extends Element {
         }
       }
     } else {
-      var droppableElementHavingMarker = this.getDroppableElementHavingMarker(),
-          droppableElementHavingMarkerIsNotToHaveMarker = !droppableElementHavingMarker.isToHaveMarker(entry);
+      var droppableElementHavingMarker = this.getDroppableElementHavingMarker();
+
+      droppableElementHavingMarker.dragging(entry);
+
+      var droppableElementHavingMarkerIsNotToHaveMarker = !droppableElementHavingMarker.isToHaveMarker(entry);
 
       if (droppableElementHavingMarkerIsNotToHaveMarker) {
         droppableElementHavingMarker.removeMarker();
