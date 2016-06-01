@@ -22,7 +22,9 @@ class RootDirectory extends Directory {
   addDirectory(directoryPath, collapsed) {
     var directoryPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(directoryPath);
 
-    super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
+    if (directoryPathWithoutRootDirectoryName !== null) {
+      super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
+    }
   }
   
   addMarker(markerPath, entryType) {
