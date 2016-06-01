@@ -51,10 +51,6 @@ class Directory extends DraggableEntry {
     }
   }
   
-  isEmpty() {
-    return this.entries.isEmpty();
-  }
-
   getSubEntries() {
     var subEntries = [];
 

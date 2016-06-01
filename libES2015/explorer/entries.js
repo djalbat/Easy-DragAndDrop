@@ -15,13 +15,6 @@ class Entries extends Element {
     this.Directory = Directory;
   }
   
-  isEmpty() {
-    var entries = this.getEntries(),
-        empty = (entries.length === 0);
-    
-    return empty;    
-  }
-  
   addFile(fileName, readOnly, dragEventHandler, activateFileEventHandler) {
     var file = File.clone(fileName, readOnly, dragEventHandler, activateFileEventHandler),
         entry = file; ///
