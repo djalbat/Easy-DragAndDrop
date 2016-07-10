@@ -5,7 +5,7 @@ Drag and drop elements including a file explorer and rubbish bin.
 ## Related projects
 
 - [EasyUI](https://github.com/djalbat/EasyUI) A V-framework.
-- [Florence](https://github.com/jecs-imperial/Florence) A collaborative proof assistant that depends on all three EasyUI projects. 
+- [Florence](http://djalbat.com/florence) A collaborative proof assistant that depends on all three EasyUI projects. 
  
 ## Installation
 
