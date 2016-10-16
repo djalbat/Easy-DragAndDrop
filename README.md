@@ -5,7 +5,6 @@ Drag and drop elements including a file explorer and rubbish bin.
 ## Related projects
 
 - [EasyUI](https://github.com/djalbat/EasyUI) A V-framework.
-- [Florence](http://djalbat.com/florence) A collaborative proof assistant that depends on all three EasyUI projects. 
  
 ## Installation
 
@@ -19,22 +18,24 @@ Client-side you can take the `easyui-draganddrop.js` file in the `dist/` folder 
 <script src="scripts/lib/easyui-draganddrop.js"> </script>
 ```
 
-This will give you a global `easyUIDragAndDrop` variable which you use directly:
+This will give you a global `easyuidraganddrop` variable, note the lack of a hyphen which you use directly:
   
 ```js
-var Explorer = easyUIDragAndDrop.Explorer,
-    RubbishBin = easyUIDragAndDrop.RubbishBin;
+var Explorer = easyuidraganddrop.Explorer,
+    RubbishBin = easyuidraganddrop.RubbishBin;
 ```
 
 If you're using AMD require client-side or CommonJS server-side the syntax for requiring EasyUI is the same:
 
 ```js
-var easyUIDragAndDrop = require('lib/easyui-draganddrop'),
-    Explorer = easyUIDragAndDrop.Explorer,
-    RubbishBin = easyUIDragAndDrop.RubbishBin;
+var easyuidraganddrop = require('lib/easyui-draganddrop'),
+    Explorer = easyuidraganddrop.Explorer,
+    RubbishBin = easyuidraganddrop.RubbishBin;
 ```
  
-## Documentation
+## Examples
+
+See the `examples.html` file in the root of the repository, or read on.
 
 #### Creating instances
 
@@ -192,7 +193,7 @@ if (sourcePath === 'First explorer') {
 }
 ```
 
-#### Changing the CSS
+## Changing the CSS
 
 Feel free to change the CSS with care. Check the `example.css` file in the `docs/` folder for some CSS that works well. Note that the triangles used are defined in the `ToggleButton` class in the `lib/` folder. You'll need to re-build the package if you want to change these.
 

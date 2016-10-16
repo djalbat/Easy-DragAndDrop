@@ -2,7 +2,7 @@
 <html>
     <head>
       <meta charset="utf-8">
-      <link href="../dist/easyui-draganddrop.css" rel="stylesheet" type="text/css" media="all"/>
+      <link href="./dist/easyui-draganddrop.css" rel="stylesheet" type="text/css" media="all"/>
       <link href="example.css" rel="stylesheet" type="text/css" media="all"/>
 
       <title>EasyUI-DragAndDrop Example</title>
@@ -24,18 +24,18 @@
             </ul>
         </div>
 
-        <script src="./lib/easyui.js"> </script>
+        <script src="./easyui.js"> </script>
 
-        <script src="../dist/easyui-draganddrop.js"> </script>
+        <script src="./dist/easyui-draganddrop.js"> </script>
 
         <script>
 
       (function() {
 
-        var Body = easyUI.Body;
+        var Body = easyui.Body;
 
-        var Explorer = easyUIDragAndDrop.Explorer,
-            RubbishBin = easyUIDragAndDrop.RubbishBin;
+        var Explorer = easyuidraganddrop.Explorer,
+            RubbishBin = easyuidraganddrop.RubbishBin;
 
         var firstExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'First explorer', onActivate, onMove),
             secondExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'Second explorer', onActivate, onMove),
