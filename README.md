@@ -5,39 +5,61 @@ Drag and drop elements including a file explorer and rubbish bin.
 ## Related projects
 
 - [EasyUI](https://github.com/djalbat/EasyUI) A V-framework.
- 
+
 ## Installation
 
-If you're running [Node.js](http://nodejs.org) you can install EasyUI-DragAndDrop with [npm](https://www.npmjs.com/):
+You can install EasyUI-DragAndDrop with [npm](https://www.npmjs.com/):
 
     npm install easyui-draganddrop
 
-Client-side you can take the `easyui-draganddrop.js` file in the `dist/` folder put it somewhere and reference it via the usual script element:
- 
+You can also clone the repository with [git](https://git-scm.com/)...
+
+    git clone https://github.com/djalbat/EasyUI-DragAndDrop.git
+
+...and then install the necessary modules with npm from within the project's root directory:
+
+    npm install
+
+You will need to do this if you want to look at the examples.
+
+## Usage
+
+If you're building with [Node.js](http://nodejs.org) the usage is as follows:
+
+```js
+var easyuidraganddrop = require('easyui-draganddrop'),
+    Explorer = easyuidraganddrop.Explorer,
+    RubbishBin = easyuidraganddrop.RubbishBin;
+```
+
+To use EasyUI-DragAndDrop in the browser, take the `easyui-draganddrop.js` file from the project's `dist/` folder and put it somewhere such as a `public/scripts/lib` directory. Referencing this distribution file from a `script` element...
+
 ```html
 <script src="scripts/lib/easyui-draganddrop.js"> </script>
 ```
 
-This will give you a global `easyuidraganddrop` variable, note the lack of a hyphen which you use directly:
-  
+...will give you a global `easyuidraganddrop` variable which can be used directly:
+
 ```js
 var Explorer = easyuidraganddrop.Explorer,
     RubbishBin = easyuidraganddrop.RubbishBin;
 ```
 
-If you're using AMD require client-side or CommonJS server-side the syntax for requiring EasyUI is the same:
+Note the lack of a hyphen.
+
+Alternatively, if you're using an AMD style `require` the usage is similar to the Node.js case, only make sure that the path to the distribution file is correct. The following script should work, assuming it lives in the the `public/scripts/` directory:
 
 ```js
 var easyuidraganddrop = require('lib/easyui-draganddrop'),
     Explorer = easyuidraganddrop.Explorer,
     RubbishBin = easyuidraganddrop.RubbishBin;
 ```
- 
+
 ## Examples
 
-See the `examples.html` file in the root of the repository, or read on.
+See the `examples.html` file in the project's root directory, or read on.
 
-#### Creating instances
+### Creating instances
 
 See the `example.html` file in the `docs/` folder for an example. 
 
@@ -50,7 +72,7 @@ var explorer = new Explorer('#explorer', Explorer, onActivate, onMove),
     rubbishBin = new RubbishBin('#rubbishBin', onRemove);
 ```
 
-#### Cloning or creating instances from HTML
+### Cloning or creating instances from HTML
 
 You can also create instances using the `clone()` factory or instance methods. Remember to remove the `id` attribute if you've used the `clone()` factory method and the jQuery selector used it. Or you can use the `fromHTML()` methods, as in the examples: 
 
@@ -68,7 +90,7 @@ body.append(rubbishBin);
 
 Remember when cloning or creating from HTML that you actually then attach the explorer to an existing DOM element.
 
-#### Adding files and directories
+### Adding files and directories
 
 You can add files or empty directories:
 
@@ -87,7 +109,7 @@ The explorer will add the directories for you whenever you add a file. If you tr
 
 There are no `addFiles()` or `addDirectories()` methods, create your own loops!
 
-#### Dragging between elements
+### Dragging between elements
 
 Use the `addDroppableElement()` method to have one element listen for the dragging events of another.
 
@@ -100,7 +122,7 @@ secondExplorer.addDroppableElement(rubbishBin);
 
 Here the rubbish bin will listen for dragging events from both of the explorers. Each of the explorers will listen for dragging events of the other's.
 
-#### Activating files
+### Activating files
 
 This is done by double clicking on them, in which case the `onActivate` handler is called with the file's source path. A failure callback is passed as a second argument. If this is invoked, or if the handler explicitly returns `false`, the file will be removed.
 
@@ -116,7 +138,7 @@ function onActivate(sourcePath, fail) {
 }
 ```
 
-#### Moving files and directories
+### Moving files and directories
 
 The `onMove()` handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable object with one key, namely the entries source path. Its value is the entries target path. If you want the entry to be moved, leave the object as-is. If you want the entry to be left in place, change the value to the target path. If you want it removed, change the value to `null`. Simply leaving the array of path maps alone with therefore move the entries as expected.
 
@@ -152,7 +174,7 @@ function onMove(pathMaps, done) {
 }
 ```
    
-#### Removing files and directories   
+### Removing files and directories
   
 The `onRemove()` handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable object with one key, namely the entries source path. If you want the entry to be removed, leave the object as-is. If you want the entry to be left in place, change the value to the target path. Simply leaving the array of path maps alone will therefore remove the entries as expected.
 
