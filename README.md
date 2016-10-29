@@ -55,6 +55,13 @@ var easyuidraganddrop = require('lib/easyui-draganddrop'),
     RubbishBin = easyuidraganddrop.RubbishBin;
 ```
 
+## Compiling from source
+
+Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have a look at the `package.json` file. The pertinent commands are:
+
+    npm run build-debug
+    npm run watch-debug
+
 ## Examples
 
 See the `examples.html` file in the project's root directory, or read on.
