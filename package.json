@@ -1,7 +1,7 @@
 {
   "name": "easyui-draganddrop",
   "author": "James Smith",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "license": "MIT",
   "homepage": "https://github.com/djalbat/EasyUI-DragAndDrop",
   "description": "Drag and drop elements including a file explorer and a rubbish bin.",
@@ -22,7 +22,7 @@
   },
   "scripts": {
     "copy": "copyfiles -f ./node_modules/easyui/dist/easyui.js .",
-    "clean": "rm -rf ./lib/*",
+    "clean": "rm -rf ./lib",
     "babel": "babel ./es6 --presets=es2015 --out-dir=./lib",
     "babel-debug": "babel ./es6 --presets=es2015 --source-maps inline --out-dir=./lib",
     "browserify": "browserify ./index.js --standalone easyuidraganddrop > ./dist/easyui-draganddrop.js",
