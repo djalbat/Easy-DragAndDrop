@@ -78,7 +78,7 @@ class Directory extends DraggableEntry {
     this.collapse();
 
     var bounds = super.getBounds(),
-        draggingBounds = bounds;
+        draggingBounds = bounds;  ///
 
     if (!collapsed) {
       this.expand();
@@ -88,19 +88,24 @@ class Directory extends DraggableEntry {
   }
 
   isOverlappingEntry(entry) {
-    if (this === entry) {
-      return false;
-    }
+    var overlapping;
     
-    var collapsed = this.isCollapsed();
+    if (this === entry) {
+      overlapping = false;
+    } else {
+      var collapsed = this.isCollapsed();
+      
+      if (collapsed) {
+        overlapping = false;
+      } else {
+        var draggingBounds = entry.getDraggingBounds(),
+            overlappingDraggingBounds = super.isOverlappingDraggingBounds(draggingBounds);
 
-    if (collapsed) {
-      return false;
+        overlapping = overlappingDraggingBounds;
+      }
     }
 
-    var draggingBounds = entry.getDraggingBounds();
-
-    return super.isOverlappingDraggingBounds(draggingBounds);
+    return overlapping;
   }
 
   isCollapsed() { return this.toggleButton.isCollapsed(); }
@@ -129,9 +134,10 @@ class Directory extends DraggableEntry {
 
       topmostDirectory.addDirectory(directoryPathWithoutTopmostDirectoryName, collapsed);
     } else {
-      var directoryName = directoryPath;  ///
+      var directoryName = directoryPath,  ///
+          entriesDirectory = this.entries.hasDirectory(directoryName);
 
-      if (!this.entries.hasDirectory(directoryName)) {
+      if (!entriesDirectory) {
         this.entries.addDirectory(directoryName, collapsed, this.dragEventHandler, this.activateFileEventHandler);
       } else {
         var directory = this.entries.retrieveDirectory(directoryName);
@@ -159,22 +165,22 @@ class Directory extends DraggableEntry {
   }
 
   removeMarker() {
-    var markerRemoved,
+    var removed,
         entriesMarked = this.entries.isMarked();
     
     if (entriesMarked) {
       this.entries.removeMarker();
 
-      markerRemoved = true;
+      removed = true;
     } else {
       var someDirectoryMarkerRemoved = this.entries.someDirectory(function(directory) {
         return directory.removeMarker();
       });
       
-      markerRemoved = someDirectoryMarkerRemoved;
+      removed = someDirectoryMarkerRemoved;
     }
     
-    return markerRemoved;
+    return removed;
   }
 
   isMarked() {
@@ -221,18 +227,18 @@ class Directory extends DraggableEntry {
     return topmostDirectory;
   }
 
-  getDirectoryHavingMarker() {
-    var directoryHavingMarker = this.entries.getDirectoryHavingMarker();
+  getMarkedDirectory() {
+    var markedDirectory = this.entries.getMarkedDirectory();
 
-    if (directoryHavingMarker === null) {
+    if (markedDirectory === null) {
       var marked = this.isMarked();
       
       if (marked) {
-        directoryHavingMarker = this;
+        markedDirectory = this;
       }
     }
 
-    return directoryHavingMarker;
+    return markedDirectory;
   }
 
   getDirectoryOverlappingEntry(entry) {

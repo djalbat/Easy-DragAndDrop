@@ -23,7 +23,7 @@ class Explorer extends DroppableElement {
   addFile(filePath, readOnly) { this.rootDirectory.addFile(filePath, readOnly); }
   addDirectory(directoryPath, collapsed) { this.rootDirectory.addDirectory(directoryPath, collapsed); }
   getRootDirectoryName() { return this.rootDirectory.getName(); }
-  getDirectoryHavingMarker() { return this.rootDirectory.getDirectoryHavingMarker(); }
+  getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }
   getDirectoryOverlappingEntry(entry) { return this.rootDirectory.getDirectoryOverlappingEntry(entry); }
 
   addMarker(entry, directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry)) {
@@ -98,27 +98,27 @@ class Explorer extends DroppableElement {
   stopDragging(entry) {
     var entryPath = entry.getPath(),
         marked = this.isMarked(),
-        droppableElementHavingMarker = marked ?
-                                         this :
-                                           this.getDroppableElementHavingMarker(),
-        directoryHavingMarker = droppableElementHavingMarker.getDirectoryHavingMarker(),
-        noDirectoryHasMarker = (directoryHavingMarker === null ),
-        directoryHavingMarkerPath = noDirectoryHasMarker ?
-                                      null :
-                                        directoryHavingMarker.getPath(),
+        markedDroppableElement = marked ?
+                                   this :
+                                     this.getMarkedDroppableElement(),
+        markedDirectory = markedDroppableElement.getMarkedDirectory(),
+        noMarkedDirectory = (markedDirectory === null),
+        markedDirectoryPath = noMarkedDirectory ?
+                                null :
+                                  markedDirectory.getPath(),
         entryPathWithoutBottommostName = util.pathWithoutBottommostName(entryPath),
         sourcePath = entryPathWithoutBottommostName,
-        targetPath = directoryHavingMarkerPath;
+        targetPath = markedDirectoryPath;
 
     if ((sourcePath !== targetPath)
-     || (sourcePath === null) && (targetPath === null) && (droppableElementHavingMarker !== this)) {
+     || (sourcePath === null) && (targetPath === null) && (markedDroppableElement !== this)) {
       var subEntries = entry.getSubEntries(),
           entries = subEntries;
 
       entries.reverse();
       entries.push(entry);
 
-      droppableElementHavingMarker.moveEntries(entries, sourcePath, targetPath, function() {
+      markedDroppableElement.moveEntries(entries, sourcePath, targetPath, function() {
         this.removeMarkerGlobally();
       }.bind(this));
     } else {
@@ -127,11 +127,11 @@ class Explorer extends DroppableElement {
   }
 
   dragging(entry) {
-    var directoryHavingMarker = this.getDirectoryHavingMarker(),
+    var markedDirectory = this.getMarkedDirectory(),
         directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
 
     if ((directoryOverlappingEntry !== null)
-     && (directoryOverlappingEntry !== directoryHavingMarker)) {
+     && (directoryOverlappingEntry !== markedDirectory)) {
       this.removeMarkerGlobally();
 
       this.addMarker(entry, directoryOverlappingEntry);

@@ -12,10 +12,10 @@ class File extends DraggableEntry {
     var type = Entry.types.FILE;
 
     super(selector, name, type, dragEventHandler);
-    
-    this.activateFileEventHandler = activateFileEventHandler;
 
-    this.readOnly = !!readOnly;
+    this.readOnly = readOnly;
+
+    this.activateFileEventHandler = activateFileEventHandler;
 
     this.onDoubleClick(this.doubleClickHandler.bind(this));
 

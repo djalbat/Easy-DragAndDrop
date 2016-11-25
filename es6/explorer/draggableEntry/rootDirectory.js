@@ -30,9 +30,7 @@ class RootDirectory extends Directory {
   addMarker(markerPath, entryType) {
     var markerPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(markerPath);
 
-    var marker = super.addMarker(markerPathWithoutRootDirectoryName, entryType);
-
-    return marker;
+    super.addMarker(markerPathWithoutRootDirectoryName, entryType);
   }
 
   pathWithoutRootDirectoryName(path) {

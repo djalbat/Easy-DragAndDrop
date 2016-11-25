@@ -107,36 +107,36 @@ class Entries extends Element {
     return marker;
   }
 
-  getDirectoryHavingMarker() {
-    var directoryHavingMarker = null;
+  getMarkedDirectory() {
+    var markedDirectory = null;
 
     this.someDirectory(function(directory) {
-      directoryHavingMarker = directory.getDirectoryHavingMarker();
+      markedDirectory = directory.getMarkedDirectory();
 
-      if (directoryHavingMarker !== null) {
+      if (markedDirectory !== null) {
         return true;
       } else {
         return false;
       }
     });
 
-    return directoryHavingMarker;
+    return markedDirectory;
   }
 
   getDirectoryOverlappingEntry(entry) {
-    var directoryOverlappingDraggingBounds = null;
+    var directoryOverlappingEntry = null;
 
     this.someDirectory(function(directory) {
-      directoryOverlappingDraggingBounds = directory.getDirectoryOverlappingEntry(entry);
+      directoryOverlappingEntry = directory.getDirectoryOverlappingEntry(entry);
 
-      if (directoryOverlappingDraggingBounds !== null) {
+      if (directoryOverlappingEntry !== null) {
         return true;
       } else {
         return false;
       }
     });
 
-    return directoryOverlappingDraggingBounds;
+    return directoryOverlappingEntry;
   }
 
   forEachFile(cb) { this.forEachEntryByType(cb, Entry.types.FILE) }

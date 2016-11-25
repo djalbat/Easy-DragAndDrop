@@ -14,10 +14,10 @@ class RubbishBin extends DroppableElement {
     this.close();
   }
 
-  getDirectoryHavingMarker() {
-    var directoryHavingMarker = null;
+  getMarkedDirectory() {
+    var markedDirectory = null;
     
-    return directoryHavingMarker; 
+    return markedDirectory;
   }
 
   addMarker(entry) {

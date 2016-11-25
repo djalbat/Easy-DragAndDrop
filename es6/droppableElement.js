@@ -83,67 +83,69 @@ class DroppableElement extends Element {
     var marked = this.isMarked();
     
     if (marked) {
-      var notToHaveMarker = !this.isToHaveMarker(entry);
+      var toBeMarked = this.isToBeMarked(entry);
 
-      if (notToHaveMarker) {
-        var droppableElementToHaveMarker = this.getDroppableElementToHaveMarker(entry);
+      if (!toBeMarked) {
+        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(entry);
 
-        if (droppableElementToHaveMarker !== null) {
-          droppableElementToHaveMarker.addMarker(entry);
+        if (droppableElementToBeMarked !== null) {
+          droppableElementToBeMarked.addMarker(entry);
 
           this.removeMarker();
         }
       }
     } else {
-      var droppableElementHavingMarker = this.getDroppableElementHavingMarker();
+      var markedDroppableElement = this.getMarkedDroppableElement();
 
-      droppableElementHavingMarker.dragging(entry);
+      markedDroppableElement.dragging(entry);
 
-      var droppableElementHavingMarkerIsNotToHaveMarker = !droppableElementHavingMarker.isToBeMarked(entry);
+      var markedDroppableElementToBeMarked = markedDroppableElement.isToBeMarked(entry);
 
-      if (droppableElementHavingMarkerIsNotToHaveMarker) {
-        droppableElementHavingMarker.removeMarker();
+      if (!markedDroppableElementToBeMarked) {
+        markedDroppableElement.removeMarker();
 
         this.addMarkerInPlace(entry);
       }
     }
   }
 
-  isToHaveMarker(entry) {
+  isToBeMarked(entry) {
     var bounds = this.getBounds(),
         draggingBounds = entry.getDraggingBounds(),
         overlappingDraggingBounds = bounds.areOverlapping(draggingBounds),
-        toHaveMarker = overlappingDraggingBounds; ///
+        toBeMarked = overlappingDraggingBounds; ///
 
-    return toHaveMarker;
+    return toBeMarked;
   }
 
-  getDroppableElementToHaveMarker(entry) {
-    var droppableElementToHaveMarker = this.droppableElements.reduce(function(droppableElementToHaveMarker, droppableElement) {
-      if (droppableElementToHaveMarker === null) {
-        if (droppableElement.isToBeMarked(entry)) {
-          droppableElementToHaveMarker = droppableElement;
+  getDroppableElementToBeMarked(entry) {
+    var droppableElementToBeMarked = this.droppableElements.reduce(function(droppableElementToBeMarked, droppableElement) {
+      if (droppableElementToBeMarked === null) {
+        if (droppableElement.isToBeMarked(entry)) { ///
+          droppableElementToBeMarked = droppableElement;
         }
       }
 
-      return droppableElementToHaveMarker;
+      return droppableElementToBeMarked;
     }, null);
 
-    return droppableElementToHaveMarker;
+    return droppableElementToBeMarked;
   }
 
-  getDroppableElementHavingMarker() {
-    var droppableElementHavingMarker = this.droppableElements.reduce(function(droppableElementHavingMarker, droppableElement) {
-      if (droppableElementHavingMarker === null) {
-        if (droppableElement.isMarked()) {
-          droppableElementHavingMarker = droppableElement;
+  getMarkedDroppableElement() {
+    var markedDroppableElement = this.droppableElements.reduce(function(markedDroppableElement, droppableElement) {
+      if (markedDroppableElement === null) {
+        var droppableElementMarked = droppableElement.isMarked();
+        
+        if (droppableElementMarked) {
+          markedDroppableElement = droppableElement;
         }
       }
 
-      return droppableElementHavingMarker;
+      return markedDroppableElement;
     }, null);
 
-    return droppableElementHavingMarker;
+    return markedDroppableElement;
   }
 
   addMarker(entry) {
@@ -177,9 +179,9 @@ class DroppableElement extends Element {
     if (marked) {
       this.removeMarker();
     } else {
-      var droppableElementHavingMarker = this.getDroppableElementHavingMarker();
+      var markedDroppableElement = this.getMarkedDroppableElement();
 
-      droppableElementHavingMarker.removeMarker();
+      markedDroppableElement.removeMarker();
     }
   }
 
@@ -195,7 +197,7 @@ class DroppableElement extends Element {
         marker = childElements.reduce(function(marker, childElement) {
           if (marker === null) {
             if ((childElement instanceof FileMarker)
-                || (childElement instanceof DirectoryMarker)) {
+             || (childElement instanceof DirectoryMarker)) {
               marker = childElement;  ///
             }
           }
