@@ -97,11 +97,13 @@ class DraggableElement extends Element {
   }
 
   isDragging() {
-    return this.hasClass('dragging');
+    var dragging = this.hasClass('dragging');
+    
+    return dragging;
   }
 
   isWaitingToDrag() {
-    var waitingToDrag = this.timeout !== null;
+    var waitingToDrag = (this.timeout !== null);
 
     return waitingToDrag;
   }

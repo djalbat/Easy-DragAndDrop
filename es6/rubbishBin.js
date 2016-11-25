@@ -7,15 +7,17 @@ var DroppableElement = require('./droppableElement');
 
 class RubbishBin extends DroppableElement {
   constructor(selector, removeHandler) {
-    var moveHandler = removeHandler;
+    var droppableElementMoveHandler = removeHandler;  ///
     
-    super(selector, moveHandler);
+    super(selector, droppableElementMoveHandler);
 
     this.close();
   }
 
-  getDirectoryHavingMarker() { 
-    return null; 
+  getDirectoryHavingMarker() {
+    var directoryHavingMarker = null;
+    
+    return directoryHavingMarker; 
   }
 
   addMarker(entry) {
@@ -27,7 +29,10 @@ class RubbishBin extends DroppableElement {
   }
 
   hasMarker() {
-    return this.isOpen();
+    var open = this.isOpen(),
+        marker = open;  ///
+    
+    return marker;
   }
 
   moveDirectory(directory, sourcePath, movedPath) {
@@ -63,7 +68,9 @@ class RubbishBin extends DroppableElement {
   }
 
   isOpen() {
-    return this.hasClass('open');
+    var open = this.hasClass('open');
+    
+    return open;
   }
 
   static clone(selector, removeHandler) {

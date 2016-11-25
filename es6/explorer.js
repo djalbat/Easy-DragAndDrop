@@ -145,17 +145,19 @@ class Explorer extends DroppableElement {
   }
 
   isToHaveMarker(entry) {
-    var entryPath = entry.getPath(),
+    var toHaveMarker,
+        entryPath = entry.getPath(),
         entryIsTopmostDirectory = util.isTopmostDirectoryName(entryPath);
 
     if (entryIsTopmostDirectory) {
-      return false;
+      toHaveMarker = false;
     } else {
-      var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry),
-          toHaveMarker = (directoryOverlappingEntry !== null);
-
-      return toHaveMarker;
+      var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
+      
+      toHaveMarker = (directoryOverlappingEntry !== null);
     }
+
+    return toHaveMarker;
   }
 
   moveDirectory(directory, sourcePath, movedPath) {
