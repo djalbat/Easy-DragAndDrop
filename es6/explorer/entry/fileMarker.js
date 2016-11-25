@@ -16,7 +16,9 @@ class FileMarker extends Entry {
     var name = this.getName(),
         entryName = entry.getName(),
         entryType = entry.getType(),
-        before = entryType === Entry.types.DIRECTORY ? false : (name.localeCompare(entryName) < 0);
+        before = (entryType === Entry.types.DIRECTORY) ? 
+                   false : 
+                     (name.localeCompare(entryName) < 0);
 
     return before;
   }

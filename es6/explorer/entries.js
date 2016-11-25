@@ -62,7 +62,9 @@ class Entries extends Element {
   hasMarker() {
     var marker = this.retrieveMarker();
 
-    return !!marker;  ///
+    marker = !!marker;  ///
+    
+    return marker;
   }
 
   addEntry(entry) {

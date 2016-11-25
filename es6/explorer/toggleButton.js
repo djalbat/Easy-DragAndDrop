@@ -9,7 +9,7 @@ class ToggleButton extends Button {
 
     this.updateHandler = updateHandler;
 
-    this.onClick(this.toggle.bind(this));
+    this.onClick(this.clickHandler.bind(this));
   }
 
   isCollapsed() {
@@ -33,9 +33,15 @@ class ToggleButton extends Button {
 
     this.update();
   }
+  
+  clickHandler() {
+    this.toggle();
+  }
 
   update() {
-    var html = this.collapsed ? ToggleButton.BLACK_RIGHT_POINTING_TRIANGLE : ToggleButton.BLACK_DOWN_POINTING_TRIANGLE;
+    var html = this.collapsed ? 
+                 ToggleButton.BLACK_RIGHT_POINTING_TRIANGLE : 
+                   ToggleButton.BLACK_DOWN_POINTING_TRIANGLE;
 
     this.html(html);
 

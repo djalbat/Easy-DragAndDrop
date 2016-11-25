@@ -21,11 +21,14 @@ class DraggableElement extends Element {
     this.topOffset = null;
     this.leftOffset = null;
 
-    this.onMouseDown(this.mouseDown.bind(this));
+    this.onMouseDown(this.mouseDownHandler.bind(this));
   }
   
   getDraggingBounds() {
-    return this.getBounds();
+    var bounds = this.getBounds(),
+        draggingBounds = bounds;  ///
+
+    return draggingBounds;
   }
 
   isOverlappingDraggingBounds(draggingBounds) {
@@ -103,9 +106,9 @@ class DraggableElement extends Element {
     return waitingToDrag;
   }
 
-  mouseDown(mouseTop, mouseLeft, mouseButton) {
-    body.onMouseUp(this.mouseUp.bind(this), NAMESPACE);
-    body.onMouseMove(this.mouseMove.bind(this), NAMESPACE);
+  mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
+    body.onMouseUp(this.mouseUpHandler.bind(this), NAMESPACE);
+    body.onMouseMove(this.mouseMoveHandler.bind(this), NAMESPACE);
 
     if (mouseButton === Element.LEFT_MOUSE_BUTTON) {
       var dragging = this.isDragging();
@@ -116,7 +119,7 @@ class DraggableElement extends Element {
     }
   }
 
-  mouseUp(mouseTop, mouseLeft, mouseButton) {
+  mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
     body.offMouseMove(NAMESPACE);
     body.offMouseUp(NAMESPACE);
 
@@ -133,7 +136,7 @@ class DraggableElement extends Element {
     }
   }
 
-  mouseMove(mouseTop, mouseLeft, mouseButton) {
+  mouseMoveHandler(mouseTop, mouseLeft, mouseButton) {
     var dragging = this.isDragging();
 
     if (dragging) {

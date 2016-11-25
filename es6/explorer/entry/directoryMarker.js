@@ -16,7 +16,9 @@ class DirectoryMarker extends Entry {
     var name = this.getName(),
         entryName = entry.getName(),
         entryType = entry.getType(),
-        before = entryType === Entry.types.FILE ? true : (name.localeCompare(entryName) < 0);
+        before = (entryType === Entry.types.FILE) ? 
+                   true : 
+                     (name.localeCompare(entryName) < 0);
 
     return before;
   }

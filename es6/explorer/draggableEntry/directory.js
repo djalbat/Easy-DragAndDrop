@@ -19,7 +19,7 @@ class Directory extends DraggableEntry {
 
     this.activateFileEventHandler = activateFileEventHandler;
 
-    this.toggleButton = new ToggleButton(this, function(collapsed) { collapsed ? this.addClass('collapsed') : this.removeClass('collapsed'); }.bind(this) );
+    this.toggleButton = new ToggleButton(this, this.toggleButtonUpdateHandler.bind(this) );
 
     this.entries = new Entries(this, Directory);
 
@@ -229,6 +229,12 @@ class Directory extends DraggableEntry {
     }
 
     return directoryOverlappingDraggingBounds;
+  }
+  
+  toggleButtonUpdateHandler(collapsed) {
+    collapsed ? 
+      this.addClass('collapsed') : 
+        this.removeClass('collapsed');
   }
 
   static clone(name, collapsed, dragEventHandler, activateFileEventHandler) {

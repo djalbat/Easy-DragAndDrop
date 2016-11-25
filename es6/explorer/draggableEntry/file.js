@@ -12,15 +12,12 @@ class File extends DraggableEntry {
     var type = Entry.types.FILE;
 
     super(selector, name, type, dragEventHandler);
+    
+    this.activateFileEventHandler = activateFileEventHandler;
 
     this.readOnly = !!readOnly;
 
-    this.onDoubleClick(function() {
-      var file = this,
-          activateFileEvent = new ActivateFileEvent(file);
-
-      activateFileEventHandler(activateFileEvent);
-    }.bind(this));
+    this.onDoubleClick(this.doubleClickHandler.bind(this));
 
     this.update();
   }
@@ -30,22 +27,25 @@ class File extends DraggableEntry {
   }
 
   isBefore(entry) {
-    var entryType = entry.getType();
+    var before,
+        entryType = entry.getType();
 
     switch (entryType) {
       case Entry.types.FILE:
       case Entry.types.MARKER:
 
         var name = this.getName(),
-            entryName = entry.getName(),
-            before = name.localeCompare(entryName) < 0;
-
-        return before;
+            entryName = entry.getName();
+          
+        before = name.localeCompare(entryName) < 0;      
+        break;
 
       case Entry.types.DIRECTORY:
-
-        return false;
+        before = false;          
+        break;
     }
+    
+    return before;
   }
 
   getReadOnly() {
@@ -53,13 +53,22 @@ class File extends DraggableEntry {
   }
   
   getSubEntries() {
-    var subEntries = [];
+    var subEntries = [];  ///
     
     return subEntries;
   }
 
   update() {
-    this.readOnly ? this.addClass('readOnly') : this.removeClass('readOnly');
+    this.readOnly ? 
+      this.addClass('readOnly') : 
+        this.removeClass('readOnly');
+  }
+  
+  doubleClickHandler() {
+    var file = this,
+        activateFileEvent = new ActivateFileEvent(file);
+
+    this.activateFileEventHandler(activateFileEvent);
   }
 
   static clone(name, readOnly, dragEventHandler, activateFileEventHandler) {
