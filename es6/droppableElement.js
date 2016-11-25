@@ -98,14 +98,6 @@ class DroppableElement extends Element {
       var markedDroppableElement = this.getMarkedDroppableElement();
 
       markedDroppableElement.dragging(entry);
-
-      var markedDroppableElementToBeMarked = markedDroppableElement.isToBeMarked(entry);
-
-      if (!markedDroppableElementToBeMarked) {
-        markedDroppableElement.removeMarker();
-
-        this.addMarkerInPlace(entry);
-      }
     }
   }
 
