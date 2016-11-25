@@ -45,14 +45,14 @@ class RootDirectory extends Directory {
 
     return pathWithoutRootDirectoryName;
   }
+
+  static clone(name, dragEventHandler, activateFileEventHandler) {
+    var rootDirectory = Element.clone(RootDirectory, '#directory', name, dragEventHandler, activateFileEventHandler);
+
+    rootDirectory.removeAttribute('id');
+
+    return rootDirectory;
+  }
 }
-
-RootDirectory.clone = function(name, dragEventHandler, activateFileEventHandler) {
-  var rootDirectory = Element.clone(RootDirectory, '#directory', name, dragEventHandler, activateFileEventHandler);
-
-  rootDirectory.removeAttribute('id');
-
-  return rootDirectory;
-};
 
 module.exports = RootDirectory;

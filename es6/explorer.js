@@ -192,14 +192,14 @@ class Explorer extends DroppableElement {
       this.addFile(filePath, readOnly);
     }
   }
+
+  static clone(selector, rootDirectoryName, moveHandler, activateHandler) {
+    return Element.clone(Explorer, selector, rootDirectoryName, moveHandler, activateHandler);
+  }
+
+  static fromHTML(html, rootDirectoryName, moveHandler, activateHandler) {
+    return Element.fromHTML(Explorer, html, rootDirectoryName, moveHandler, activateHandler);
+  }
 }
-
-Explorer.clone = function(selector, rootDirectoryName, moveHandler, activateHandler) {
-  return Element.clone(Explorer, selector, rootDirectoryName, moveHandler, activateHandler);
-};
-
-Explorer.fromHTML = function(html, rootDirectoryName, moveHandler, activateHandler) {
-  return Element.fromHTML(Explorer, html, rootDirectoryName, moveHandler, activateHandler);
-};
 
 module.exports = Explorer;

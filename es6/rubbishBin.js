@@ -14,7 +14,9 @@ class RubbishBin extends DroppableElement {
     this.close();
   }
 
-  getDirectoryHavingMarker() { return null; }
+  getDirectoryHavingMarker() { 
+    return null; 
+  }
 
   addMarker(entry) {
     this.open();
@@ -63,14 +65,14 @@ class RubbishBin extends DroppableElement {
   isOpen() {
     return this.hasClass('open');
   }
+
+  static clone(selector, removeHandler) {
+    return Element.clone(RubbishBin, selector, removeHandler);
+  }
+
+  static fromHTML(html, removeHandler) {
+    return Element.fromHTML(RubbishBin, html, removeHandler);
+  }
 }
-
-RubbishBin.clone = function(selector, removeHandler) {
-  return Element.clone(RubbishBin, selector, removeHandler);
-};
-
-RubbishBin.fromHTML = function(html, removeHandler) {
-  return Element.fromHTML(RubbishBin, html, removeHandler);
-};
 
 module.exports = RubbishBin;

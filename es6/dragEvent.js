@@ -13,11 +13,25 @@ class DragEvent {
   getAction() {
     return this.action;
   }
-}
 
-DragEvent.startDragging = function(draggableElement) { return new DragEvent(draggableElement, DragEvent.actions.START_DRAGGING); };
-DragEvent.stopDragging = function(draggableElement) { return new DragEvent(draggableElement, DragEvent.actions.STOP_DRAGGING); };
-DragEvent.dragging = function(draggableElement) { return new DragEvent(draggableElement, DragEvent.actions.DRAGGING); };
+  static startDragging(draggableElement) {
+    var startDraggingEvent = new DragEvent(draggableElement, DragEvent.actions.START_DRAGGING);
+    
+    return startDraggingEvent;
+  }
+
+  static stopDragging(draggableElement) {
+    var stopDraggingEvent = new DragEvent(draggableElement, DragEvent.actions.STOP_DRAGGING);
+    
+    return stopDraggingEvent;
+  }
+
+  static dragging(draggableElement) {
+    var draggingEvent = new DragEvent(draggableElement, DragEvent.actions.DRAGGING);
+    
+    return draggingEvent;
+  }
+}
 
 DragEvent.actions = {
   START_DRAGGING: 'START_DRAGGING',

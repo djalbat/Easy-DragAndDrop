@@ -61,14 +61,14 @@ class File extends DraggableEntry {
   update() {
     this.readOnly ? this.addClass('readOnly') : this.removeClass('readOnly');
   }
+
+  static clone(name, readOnly, dragEventHandler, activateFileEventHandler) {
+    var file = Element.clone(File, '#file', name, readOnly, dragEventHandler, activateFileEventHandler);
+
+    file.removeAttribute('id');
+
+    return file;
+  }
 }
-
-File.clone = function(name, readOnly, dragEventHandler, activateFileEventHandler) {
-  var file = Element.clone(File, '#file', name, readOnly, dragEventHandler, activateFileEventHandler);
-
-  file.removeAttribute('id');
-
-  return file;
-};
 
 module.exports = File;

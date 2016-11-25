@@ -20,14 +20,14 @@ class FileMarker extends Entry {
 
     return before;
   }
+
+  static clone(name) {
+    var fileMarker = Element.clone(FileMarker, '#marker', name);
+
+    fileMarker.removeAttribute('id');
+
+    return fileMarker;
+  }
 }
-
-FileMarker.clone = function(name) {
-  var fileMarker = Element.clone(FileMarker, '#marker', name);
-
-  fileMarker.removeAttribute('id');
-
-  return fileMarker;
-};
 
 module.exports = FileMarker;

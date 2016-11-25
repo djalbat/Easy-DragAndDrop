@@ -230,14 +230,14 @@ class Directory extends DraggableEntry {
 
     return directoryOverlappingDraggingBounds;
   }
+
+  static clone(name, collapsed, dragEventHandler, activateFileEventHandler) {
+    var directory = Element.clone(Directory, '#directory', name, collapsed, dragEventHandler, activateFileEventHandler);
+
+    directory.removeAttribute('id');
+
+    return directory;
+  }
 }
-
-Directory.clone = function(name, collapsed, dragEventHandler, activateFileEventHandler) {
-  var directory = Element.clone(Directory, '#directory', name, collapsed, dragEventHandler, activateFileEventHandler);
-
-  directory.removeAttribute('id');
-
-  return directory;
-};
 
 module.exports = Directory;

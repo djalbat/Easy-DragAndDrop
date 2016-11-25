@@ -20,14 +20,14 @@ class DirectoryMarker extends Entry {
 
     return before;
   }
+
+  static clone(name) {
+    var directoryMarker = Element.clone(DirectoryMarker, '#marker', name);
+
+    directoryMarker.removeAttribute('id');
+
+    return directoryMarker;
+  }
 }
-
-DirectoryMarker.clone = function(name) {
-  var directoryMarker = Element.clone(DirectoryMarker, '#marker', name);
-
-  directoryMarker.removeAttribute('id');
-
-  return directoryMarker;
-};
 
 module.exports = DirectoryMarker;
