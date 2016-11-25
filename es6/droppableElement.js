@@ -23,16 +23,18 @@ class DroppableElement extends Element {
   }
 
   removeDroppableElement(droppableElement) {
-    var index = indexOf(this.droppableElements, droppableElement);
+    var index = indexOf(this.droppableElements, droppableElement),
+        found = (index !== -1);
 
-    if (index !== null) {
+    if (found) {
       this.droppableElements.splice(index, 1);
     }
   }
 
   isOverlappingDraggableElement(draggableElementDraggingBounds) {
     var bounds = this.getBounds(),
-        overlappingDraggableElement = bounds.areOverlapping(draggableElementDraggingBounds);
+        boundsOverlappingDraggableElement = bounds.areOverlapping(draggableElementDraggingBounds),
+        overlappingDraggableElement = boundsOverlappingDraggableElement;
 
     return overlappingDraggableElement;
   }
@@ -40,11 +42,13 @@ class DroppableElement extends Element {
   dragEventHandler(dragEvent) {
     var action = dragEvent.getAction(),
         draggableElement = dragEvent.getDraggableElement(),
-        entry = draggableElement;  ///
+        entry = draggableElement,  ///
+        startDragging = false;
 
     switch (action) {
       case DragEvent.actions.START_DRAGGING:
-        return this.startDragging(entry);
+        startDragging = this.startDragging(entry);
+        break;
 
       case DragEvent.actions.STOP_DRAGGING:
         this.stopDragging(entry);
@@ -54,16 +58,21 @@ class DroppableElement extends Element {
         this.dragging(entry);
         break;
     }
+    
+    return startDragging;
   }
 
   startDragging(entry) {
-    if (this.hasMarker()) {
-      return false;
+    var startDragging = false,
+        marked = this.isMarked();
+    
+    if (!marked) {
+      this.addMarker(entry);
+
+      startDragging = true;
     }
 
-    this.addMarker(entry);
-
-    return true;
+    return startDragging;
   }
 
   stopDragging(entry) {
@@ -71,7 +80,9 @@ class DroppableElement extends Element {
   }
 
   dragging(entry) {
-    if (this.hasMarker()) {
+    var marked = this.isMarked();
+    
+    if (marked) {
       var notToHaveMarker = !this.isToHaveMarker(entry);
 
       if (notToHaveMarker) {
@@ -88,7 +99,7 @@ class DroppableElement extends Element {
 
       droppableElementHavingMarker.dragging(entry);
 
-      var droppableElementHavingMarkerIsNotToHaveMarker = !droppableElementHavingMarker.isToHaveMarker(entry);
+      var droppableElementHavingMarkerIsNotToHaveMarker = !droppableElementHavingMarker.isToBeMarked(entry);
 
       if (droppableElementHavingMarkerIsNotToHaveMarker) {
         droppableElementHavingMarker.removeMarker();
@@ -110,7 +121,7 @@ class DroppableElement extends Element {
   getDroppableElementToHaveMarker(entry) {
     var droppableElementToHaveMarker = this.droppableElements.reduce(function(droppableElementToHaveMarker, droppableElement) {
       if (droppableElementToHaveMarker === null) {
-        if (droppableElement.isToHaveMarker(entry)) {
+        if (droppableElement.isToBeMarked(entry)) {
           droppableElementToHaveMarker = droppableElement;
         }
       }
@@ -124,7 +135,7 @@ class DroppableElement extends Element {
   getDroppableElementHavingMarker() {
     var droppableElementHavingMarker = this.droppableElements.reduce(function(droppableElementHavingMarker, droppableElement) {
       if (droppableElementHavingMarker === null) {
-        if (droppableElement.hasMarker()) {
+        if (droppableElement.isMarked()) {
           droppableElementHavingMarker = droppableElement;
         }
       }
@@ -161,7 +172,9 @@ class DroppableElement extends Element {
   }
 
   removeMarkerGlobally() {
-    if (this.hasMarker()) {
+    var marked = this.isMarked();
+    
+    if (marked) {
       this.removeMarker();
     } else {
       var droppableElementHavingMarker = this.getDroppableElementHavingMarker();
@@ -170,10 +183,11 @@ class DroppableElement extends Element {
     }
   }
 
-  hasMarker() {
-    var marker = this.retrieveMarker();
+  isMarked() {
+    var marker = this.retrieveMarker(),
+        marked = (marker !== null); ///
 
-    return marker !== null;
+    return marked;
   }
 
   retrieveMarker() {
@@ -239,7 +253,7 @@ class DroppableElement extends Element {
 module.exports = DroppableElement;
 
 function indexOf(array, element) {
-  var index = null;
+  var index = -1;
 
   array.some(function(currentElement, currentElementIndex) {
     if (currentElement === element) {

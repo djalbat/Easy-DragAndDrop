@@ -37,9 +37,8 @@ class RootDirectory extends Directory {
 
   pathWithoutRootDirectoryName(path) {
     var topmostDirectoryName = util.topmostDirectoryName(path),
-        rootDirectoryName = this.getName();
-
-    var pathWithoutRootDirectoryName = topmostDirectoryName === rootDirectoryName ?
+        rootDirectoryName = this.getName(),
+        pathWithoutRootDirectoryName = topmostDirectoryName === rootDirectoryName ?
                                          util.pathWithoutTopmostDirectoryName(path) :
                                            null;  ///
 

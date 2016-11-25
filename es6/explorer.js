@@ -26,37 +26,32 @@ class Explorer extends DroppableElement {
   getDirectoryHavingMarker() { return this.rootDirectory.getDirectoryHavingMarker(); }
   getDirectoryOverlappingEntry(entry) { return this.rootDirectory.getDirectoryOverlappingEntry(entry); }
 
-  addMarker(entry, directoryOverlappingEntry) {
-    if (directoryOverlappingEntry === undefined) {
-      directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
-    }
-
+  addMarker(entry, directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry)) {
     var entryName = entry.getName(),
         entryType = entry.getType(),
-        directoryPathOverlappingEntry = directoryOverlappingEntry.getPath(),
-        markerPath = directoryPathOverlappingEntry + '/' + entryName;
+        directoryOverlappingEntryPath = directoryOverlappingEntry.getPath(),
+        markerPath = directoryOverlappingEntryPath + '/' + entryName;
 
     this.rootDirectory.addMarker(markerPath, entryType);
   }
 
   removeMarker() {
-    var rootDirectoryHasMarker = this.rootDirectory.hasMarker();
+    var rootDirectoryMarked = this.rootDirectory.isMarked();
 
-    if (rootDirectoryHasMarker) {
+    if (rootDirectoryMarked) {
       this.rootDirectory.removeMarker();
     } else {
       super.removeMarker();
     }
   }
 
-  hasMarker() {
-    var rootDirectoryHasMarker = this.rootDirectory.hasMarker();
+  isMarked() {
+    var rootDirectoryMarked = this.rootDirectory.isMarked(),
+        marked = rootDirectoryMarked ?
+                   true :
+                     super.isMarked();
 
-    if (rootDirectoryHasMarker) {
-      return true;
-    } else {
-      return super.hasMarker();
-    }
+    return marked;
   }
 
   addMarkerInPlace(entry) {
@@ -90,29 +85,30 @@ class Explorer extends DroppableElement {
   }
 
   startDragging(entry) {
-    var marker = this.hasMarker();
+    var marked = this.isMarked(),
+        startingDragging = !marked;
 
-    if (marker) {
-      return false;
+    if (startingDragging) {
+      this.addMarkerInPlace(entry);
     }
 
-    this.addMarkerInPlace(entry);
-
-    return true;
+    return startingDragging;
   }
 
   stopDragging(entry) {
     var entryPath = entry.getPath(),
-        droppableElementHavingMarker = this.hasMarker() ?
+        marked = this.isMarked(),
+        droppableElementHavingMarker = marked ?
                                          this :
                                            this.getDroppableElementHavingMarker(),
         directoryHavingMarker = droppableElementHavingMarker.getDirectoryHavingMarker(),
-        directoryPathHavingMarker = (directoryHavingMarker === null ) ?
+        noDirectoryHasMarker = (directoryHavingMarker === null ),
+        directoryHavingMarkerPath = noDirectoryHasMarker ?
                                       null :
                                         directoryHavingMarker.getPath(),
         entryPathWithoutBottommostName = util.pathWithoutBottommostName(entryPath),
         sourcePath = entryPathWithoutBottommostName,
-        targetPath = directoryPathHavingMarker;
+        targetPath = directoryHavingMarkerPath;
 
     if ((sourcePath !== targetPath)
      || (sourcePath === null) && (targetPath === null) && (droppableElementHavingMarker !== this)) {
@@ -144,20 +140,20 @@ class Explorer extends DroppableElement {
     }
   }
 
-  isToHaveMarker(entry) {
-    var toHaveMarker,
+  isToBeMarked(entry) {
+    var toBeMarked,
         entryPath = entry.getPath(),
         entryIsTopmostDirectory = util.isTopmostDirectoryName(entryPath);
 
     if (entryIsTopmostDirectory) {
-      toHaveMarker = false;
+      toBeMarked = false;
     } else {
       var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
       
-      toHaveMarker = (directoryOverlappingEntry !== null);
+      toBeMarked = (directoryOverlappingEntry !== null);
     }
 
-    return toHaveMarker;
+    return toBeMarked;
   }
 
   moveDirectory(directory, sourcePath, movedPath) {

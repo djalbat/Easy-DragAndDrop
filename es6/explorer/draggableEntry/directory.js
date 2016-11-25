@@ -136,7 +136,9 @@ class Directory extends DraggableEntry {
       } else {
         var directory = this.entries.retrieveDirectory(directoryName);
 
-        collapsed ? directory.collapse() : directory.expand();
+        collapsed ? 
+          directory.collapse() : 
+            directory.expand();
       }
     }
   }
@@ -157,25 +159,39 @@ class Directory extends DraggableEntry {
   }
 
   removeMarker() {
-    if (this.entries.hasMarker()) {
+    var markerRemoved,
+        entriesMarked = this.entries.isMarked();
+    
+    if (entriesMarked) {
       this.entries.removeMarker();
 
-      return true;
+      markerRemoved = true;
     } else {
-      return this.entries.someDirectory(function(directory) {
+      var someDirectoryMarkerRemoved = this.entries.someDirectory(function(directory) {
         return directory.removeMarker();
       });
+      
+      markerRemoved = someDirectoryMarkerRemoved;
     }
+    
+    return markerRemoved;
   }
 
-  hasMarker() {
-    if (this.entries.hasMarker()) {
-      return true;
+  isMarked() {
+    var marked,
+        entriesMarked = this.entries.isMarked();
+    
+    if (entriesMarked) {
+      marked = entriesMarked;
     } else {
-      return this.entries.someDirectory(function(directory) {
-        return directory.hasMarker();
-      })
+      var someDirectoryMarked = this.entries.someDirectory(function(directory) {
+        return directory.isMarked();
+      });
+
+      marked = someDirectoryMarked;
     }
+    
+    return marked;
   }
 
   forEachFile(cb) { this.entries.forEachFile(cb); }
@@ -185,30 +201,33 @@ class Directory extends DraggableEntry {
   someDirectory(cb) { this.entries.someDirectory(cb); }
 
   addTopmostDirectory(path) {
-    var topmostDirectoryName = util.topmostDirectoryName(path);
+    var topmostDirectory,
+        topmostDirectoryName = util.topmostDirectoryName(path);
 
     if (topmostDirectoryName === null) {
-      return null;
+      topmostDirectory = null;
     } else {
-      var entriesHasDirectory = this.entries.hasDirectory(topmostDirectoryName);
+      var entriesDirectory = this.entries.hasDirectory(topmostDirectoryName);
 
-      if (!entriesHasDirectory) {
+      if (!entriesDirectory) {
         var collapsed = true;
 
         this.entries.addDirectory(topmostDirectoryName, collapsed, this.dragEventHandler, this.activateFileEventHandler);
       }
 
-      var topmostDirectory = this.entries.retrieveDirectory(topmostDirectoryName);
-
-      return topmostDirectory;
+      topmostDirectory = this.entries.retrieveDirectory(topmostDirectoryName);
     }
+
+    return topmostDirectory;
   }
 
   getDirectoryHavingMarker() {
     var directoryHavingMarker = this.entries.getDirectoryHavingMarker();
 
     if (directoryHavingMarker === null) {
-      if (this.hasMarker()) {
+      var marked = this.isMarked();
+      
+      if (marked) {
         directoryHavingMarker = this;
       }
     }

@@ -31,8 +31,10 @@ class Entries extends Element {
 
   hasDirectory(directoryName) {
     var directory = this.retrieveDirectory(directoryName);
+    
+    directory = (directory !== null); ///
 
-    return !!directory; ///
+    return directory;
   }
 
   addMarker(markerName, entryType) {
@@ -59,12 +61,11 @@ class Entries extends Element {
     marker.remove();
   }
 
-  hasMarker() {
-    var marker = this.retrieveMarker();
+  isMarked() {
+    var marker = this.retrieveMarker(),
+        marked = (marker!== null);
 
-    marker = !!marker;  ///
-    
-    return marker;
+    return marked;
   }
 
   addEntry(entry) {
@@ -94,7 +95,7 @@ class Entries extends Element {
   retrieveDirectory(directoryName) { return this.retrieveEntryByType(directoryName, Entry.types.DIRECTORY) }
 
   retrieveMarker() {
-    var marker = undefined,
+    var marker = null,
         type = Entry.types.MARKER;
 
     this.someEntryByType(function(entry) {
@@ -179,7 +180,7 @@ class Entries extends Element {
   }
 
   retrieveEntryByType(name, type) {
-    var foundEntry = undefined;
+    var foundEntry = null;
 
     this.someEntryByType(function(entry) {
       var entryName = entry.getName();
