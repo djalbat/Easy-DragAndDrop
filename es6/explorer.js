@@ -11,7 +11,7 @@ class Explorer extends DroppableElement {
   constructor(selector, rootDirectoryName, activateHandler, moveHandler) {
     super(selector, moveHandler);
 
-    var rootDirectory = RootDirectory.clone(rootDirectoryName, this.onDragEvent.bind(this), this.onActivateEvent.bind(this));
+    var rootDirectory = RootDirectory.clone(rootDirectoryName, this.dragEventHandler.bind(this), this.activateFileEventHandler.bind(this));
 
     this.activateHandler = activateHandler;
 
@@ -22,7 +22,6 @@ class Explorer extends DroppableElement {
 
   addFile(filePath, readOnly) { this.rootDirectory.addFile(filePath, readOnly); }
   addDirectory(directoryPath, collapsed) { this.rootDirectory.addDirectory(directoryPath, collapsed); }
-
   getRootDirectoryName() { return this.rootDirectory.getName(); }
   getDirectoryHavingMarker() { return this.rootDirectory.getDirectoryHavingMarker(); }
   getDirectoryOverlappingEntry(entry) { return this.rootDirectory.getDirectoryOverlappingEntry(entry); }
@@ -74,7 +73,7 @@ class Explorer extends DroppableElement {
     }
   }
 
-  onActivateEvent(activateFileEvent) {
+  activateFileEventHandler(activateFileEvent) {
     var file = activateFileEvent.getFile(),
         filePath = file.getPath(this.rootDirectory),
         sourcePath = filePath,  ///

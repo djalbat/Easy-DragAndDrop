@@ -37,7 +37,7 @@ class DroppableElement extends Element {
     return overlappingDraggableElement;
   }
 
-  onDragEvent(dragEvent) {
+  dragEventHandler(dragEvent) {
     var action = dragEvent.getAction(),
         draggableElement = dragEvent.getDraggableElement(),
         entry = draggableElement;  ///
