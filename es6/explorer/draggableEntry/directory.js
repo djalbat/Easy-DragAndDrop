@@ -23,6 +23,8 @@ class Directory extends DraggableEntry {
 
     this.entries = new Entries(this, Directory);
 
+    this.onDoubleClick(this.doubleClickHandler.bind(this));
+
     !collapsed ?
       this.expand() :
         this.collapse();
@@ -260,6 +262,10 @@ class Directory extends DraggableEntry {
     collapsed ? 
       this.addClass('collapsed') : 
         this.removeClass('collapsed');
+  }
+
+  doubleClickHandler() {
+    this.toggleButton.toggle();
   }
 
   static clone(name, collapsed, dragEventHandler, activateFileEventHandler) {
