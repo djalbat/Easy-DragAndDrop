@@ -123,7 +123,7 @@ class Explorer extends DroppableElement {
       super.dragging(entry);
     }
   }
-
+  
   escapeDragging(entry) {
     this.removeMarkerGlobally();
   }
@@ -182,15 +182,14 @@ class Explorer extends DroppableElement {
     var file = activateFileEvent.getFile(),
         filePath = file.getPath(this.rootDirectory),
         sourcePath = filePath,  ///
-        success = this.activateHandler(sourcePath, fail),
-        failure = (success === false);
+        result = this.activateHandler(sourcePath, cb);
 
-    if (failure) {
-      fail();
-    }
-
-    function fail() {
-      file.remove();
+    cb(result);
+    
+    function cb(result) {
+      if (result === false) {
+        file.remove();
+      }
     }
   }
 

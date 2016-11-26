@@ -39,13 +39,10 @@
 
         var firstExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'First explorer', onActivate, onMove),
             secondExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'Second explorer', onActivate, onMove),
-            thirdExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'Third explorer', onActivate, onMove),
             rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemove);
 
         firstExplorer.addDroppableElement(secondExplorer);
         secondExplorer.addDroppableElement(firstExplorer);
-        thirdExplorer.addDroppableElement(firstExplorer);
-        thirdExplorer.addDroppableElement(secondExplorer);
         firstExplorer.addDroppableElement(rubbishBin);
         secondExplorer.addDroppableElement(rubbishBin);
 
@@ -53,7 +50,6 @@
 
         body.append(firstExplorer);
         body.append(secondExplorer);
-        body.append(thirdExplorer);
         body.append(rubbishBin);
 
         secondExplorer.addDirectory('Second explorer/First directory');
@@ -63,14 +59,12 @@
         secondExplorer.addFile('Second explorer/First directory/Second file.fls');
         secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 
-        thirdExplorer.addFile('Third explorer/first file.fls');
-
-        function onActivate(sourcePath, fail) {
+        function onActivate(sourcePath, cb) {
           console.log('activate: ' + sourcePath)
 
           switch(sourcePath) {
             case 'Second explorer/Second directory/Third file.fls':
-              fail();
+              cb(false);
               break;
           }
         }
