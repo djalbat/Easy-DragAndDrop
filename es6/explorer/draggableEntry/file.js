@@ -8,18 +8,14 @@ var Entry = require('../entry'),
     ActivateFileEvent = require('../activateFileEvent');
 
 class File extends DraggableEntry {
-  constructor(selector, name, readOnly, dragEventHandler, activateFileEventHandler) {
+  constructor(selector, name, dragEventHandler, activateFileEventHandler) {
     var type = Entry.types.FILE;
 
     super(selector, name, type, dragEventHandler);
 
-    this.readOnly = readOnly;
-
     this.activateFileEventHandler = activateFileEventHandler;
 
     this.onDoubleClick(this.doubleClickHandler.bind(this));
-
-    this.update();
   }
 
   isDirectory() {
@@ -48,20 +44,10 @@ class File extends DraggableEntry {
     return before;
   }
 
-  getReadOnly() {
-    return this.readOnly;
-  }
-  
   getSubEntries() {
     var subEntries = [];  ///
     
     return subEntries;
-  }
-
-  update() {
-    this.readOnly ? 
-      this.addClass('readOnly') : 
-        this.removeClass('readOnly');
   }
   
   doubleClickHandler() {
@@ -71,8 +57,8 @@ class File extends DraggableEntry {
     this.activateFileEventHandler(activateFileEvent);
   }
 
-  static clone(name, readOnly, dragEventHandler, activateFileEventHandler) {
-    var file = Element.clone(File, '#file', name, readOnly, dragEventHandler, activateFileEventHandler);
+  static clone(name, dragEventHandler, activateFileEventHandler) {
+    var file = Element.clone(File, '#file', name, dragEventHandler, activateFileEventHandler);
 
     file.removeAttribute('id');
 

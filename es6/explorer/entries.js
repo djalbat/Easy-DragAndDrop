@@ -15,8 +15,8 @@ class Entries extends Element {
     this.Directory = Directory;
   }
   
-  addFile(fileName, readOnly, dragEventHandler, activateFileEventHandler) {
-    var file = File.clone(fileName, readOnly, dragEventHandler, activateFileEventHandler),
+  addFile(fileName, dragEventHandler, activateFileEventHandler) {
+    var file = File.clone(fileName, dragEventHandler, activateFileEventHandler),
         entry = file; ///
 
     this.addEntry(entry);

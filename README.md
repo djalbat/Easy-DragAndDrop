@@ -110,7 +110,7 @@ secondExplorer.addFile('Second explorer/First directory/Second file.fls');
 secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 ```
 
-The `addFile()` method has second, optional `readOnly` argument. The `addDirectory()` method has a second, optional `collapsed` argument. The defaults are false in both cases.
+The `addDirectory()` method has a second, optional `collapsed` argument. The default is false;
 
 The explorer will add the directories for you whenever you add a file. If you try to add a directory or file more than once, it will be ignored.
 

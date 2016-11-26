@@ -13,10 +13,10 @@ class RootDirectory extends Directory {
     super(selector, name, collapsed, dragEventHandler, activateFileEventHandler);
   }
 
-  addFile(filePath, readOnly) {
+  addFile(filePath) {
     var filePathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(filePath);
 
-    super.addFile(filePathWithoutRootDirectoryName, readOnly);
+    super.addFile(filePathWithoutRootDirectoryName);
   }
 
   addDirectory(directoryPath, collapsed) {

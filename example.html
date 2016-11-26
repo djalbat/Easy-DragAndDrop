@@ -96,7 +96,7 @@
             pathMap[sourcePath] = movedPath;
           });
 
-          done();
+          setTimeout(done, 1000);
         }
 
         function onRemove(pathMaps, done) {

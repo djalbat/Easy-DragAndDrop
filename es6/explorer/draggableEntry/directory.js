@@ -116,15 +116,15 @@ class Directory extends DraggableEntry {
 
   collapse() { this.toggleButton.collapse(); }
 
-  addFile(filePath, readOnly) {
+  addFile(filePath) {
     var topmostDirectory = this.addTopmostDirectory(filePath);
 
     if (topmostDirectory !== null) {
       var filePathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
 
-      topmostDirectory.addFile(filePathWithoutTopmostDirectoryName, readOnly);
+      topmostDirectory.addFile(filePathWithoutTopmostDirectoryName);
     } else {
-      this.entries.addFile(filePath, readOnly, this.dragEventHandler, this.activateFileEventHandler);
+      this.entries.addFile(filePath, this.dragEventHandler, this.activateFileEventHandler);
     }
   }
 

@@ -20,7 +20,7 @@ class Explorer extends DroppableElement {
     this.append(rootDirectory);
   }
 
-  addFile(filePath, readOnly) { this.rootDirectory.addFile(filePath, readOnly); }
+  addFile(filePath) { this.rootDirectory.addFile(filePath); }
   addDirectory(directoryPath, collapsed) { this.rootDirectory.addDirectory(directoryPath, collapsed); }
   getRootDirectoryName() { return this.rootDirectory.getName(); }
   getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }
@@ -171,10 +171,9 @@ class Explorer extends DroppableElement {
     } else {
       file.remove();
 
-      var readOnly = file.getReadOnly(),
-          filePath = movedPath;
+      var filePath = movedPath; ///
 
-      this.addFile(filePath, readOnly);
+      this.addFile(filePath);
     }
   }
 
