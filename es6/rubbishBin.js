@@ -28,11 +28,11 @@ class RubbishBin extends DroppableElement {
     this.close();
   }
 
-  hasMarker() {
+  isMarked() {
     var open = this.isOpen(),
-        marker = open;  ///
+        marked = open;  ///
     
-    return marker;
+    return marked;
   }
 
   moveDirectory(directory, sourcePath, movedPath) {
