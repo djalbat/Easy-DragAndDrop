@@ -135,9 +135,9 @@ class DraggableElement extends Element {
     if (dragging) {
       var stopDraggingEvent = DragEvent.stopDragging(this);
 
-      this.dragEventHandler(stopDraggingEvent);
-      
-      this.stopDragging();
+      this.dragEventHandler(stopDraggingEvent, function() {
+        this.stopDragging();
+      }.bind(this));
     } else {
       this.stopWaitingToDrag();
     }
@@ -160,9 +160,9 @@ class DraggableElement extends Element {
       if (dragging) {
         var escapeDraggingEvent = DragEvent.escapeDragging(this);
 
-        this.dragEventHandler(escapeDraggingEvent);
-
-        this.stopDragging();
+        this.dragEventHandler(escapeDraggingEvent, function() {
+          this.stopDragging();
+        }.bind(this));
       }
     }
   }

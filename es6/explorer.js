@@ -79,7 +79,7 @@ class Explorer extends DroppableElement {
     return startingDragging;
   }
 
-  stopDragging(entry) {
+  stopDragging(entry, done) {
     var entryPath = entry.getPath(),
         marked = this.isMarked(),
         markedDroppableElement = marked ?
@@ -94,8 +94,7 @@ class Explorer extends DroppableElement {
         sourcePath = entryPathWithoutBottommostName,
         targetPath = markedDirectoryPath;
 
-    if ((sourcePath !== targetPath)
-     || (sourcePath === null) && (targetPath === null) && (markedDroppableElement !== this)) {
+    if ((sourcePath !== targetPath) || (sourcePath === null) && (targetPath === null) && (markedDroppableElement !== this)) {
       var subEntries = entry.getSubEntries(),
           entries = subEntries;
 
@@ -104,9 +103,13 @@ class Explorer extends DroppableElement {
 
       markedDroppableElement.moveEntries(entries, sourcePath, targetPath, function() {
         this.removeMarkerGlobally();
+
+        done();
       }.bind(this));
     } else {
       this.removeMarkerGlobally();
+
+      done();
     }
   }
 

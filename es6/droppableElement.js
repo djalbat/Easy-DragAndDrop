@@ -39,7 +39,7 @@ class DroppableElement extends Element {
     return overlappingDraggableElement;
   }
 
-  dragEventHandler(dragEvent) {
+  dragEventHandler(dragEvent, done) {
     var action = dragEvent.getAction(),
         draggableElement = dragEvent.getDraggableElement(),
         entry = draggableElement,  ///
@@ -51,7 +51,7 @@ class DroppableElement extends Element {
         break;
 
       case DragEvent.actions.STOP_DRAGGING:
-        this.stopDragging(entry);
+        this.stopDragging(entry, done);
         break;
 
       case DragEvent.actions.DRAGGING:
@@ -205,38 +205,30 @@ class DroppableElement extends Element {
   }
 
   moveEntries(entries, sourcePath, targetPath, done) {
-    var entryPathMaps = entries.map(function(entry) {
-      var entryPath = entry.getPath(),
-          sourceEntryPath = entryPath,  ///
-          targetEntryPath = targetPath === null ?
-                              null :
-                                util.replaceTopPath(entryPath, sourcePath, targetPath); ///
-      
-      var entryPathMap = {};
-
-      entryPathMap[sourceEntryPath] = targetEntryPath;
-      
-      return entryPathMap;
-    });
+    var entryPathMaps = entryPathMapsFromEntries(entries, sourcePath, targetPath);
       
     this.moveHandler(entryPathMaps, function() {
-      entries.forEach(function(entry) {
-        var entryPath = entry.getPath(),
-            sourcePath = entryPath,  ///
-            pathMap = find(entryPathMaps, function(entryPathMap) {
-              var sourceEntryPath = sourcePath,
-                  movedPath = entryPathMap[sourceEntryPath],
-                  found = (movedPath !== undefined);
-              
-              return found;              
-            }),
-            movedPath = pathMap[sourcePath];
-        
-        this.moveEntry(entry, sourcePath, movedPath);
-      }.bind(this));
+      this.moveEntriesEx(entries, entryPathMaps);
+
+      done();
     }.bind(this));
-    
-    done();
+  }
+
+  moveEntriesEx(entries, entryPathMaps) {
+    entries.forEach(function(entry) {
+      var entryPath = entry.getPath(),
+          sourcePath = entryPath,  ///
+          pathMap = find(entryPathMaps, function(entryPathMap) {
+            var sourceEntryPath = sourcePath,
+                movedPath = entryPathMap[sourceEntryPath],
+                found = (movedPath !== undefined);
+
+            return found;
+          }),
+          movedPath = pathMap[sourcePath];
+
+      this.moveEntry(entry, sourcePath, movedPath);
+    }.bind(this));
   }
 
   moveEntry(entry, sourcePath, movedPath) {
@@ -249,6 +241,24 @@ class DroppableElement extends Element {
 }
 
 module.exports = DroppableElement;
+
+function entryPathMapsFromEntries(entries, sourcePath, targetPath) {
+  var entryPathMaps = entries.map(function(entry) {
+    var entryPath = entry.getPath(),
+        sourceEntryPath = entryPath,  ///
+        targetEntryPath = targetPath === null ?
+            null :
+            util.replaceTopPath(entryPath, sourcePath, targetPath); ///
+
+    var entryPathMap = {};
+
+    entryPathMap[sourceEntryPath] = targetEntryPath;
+
+    return entryPathMap;
+  });
+
+  return entryPathMaps;
+}
 
 function indexOf(array, element) {
   var index = -1;
