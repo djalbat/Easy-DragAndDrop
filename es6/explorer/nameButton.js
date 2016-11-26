@@ -4,7 +4,7 @@ var easyui = require('easyui'),
     Button = easyui.Button;
 
 class NameButton extends Button {
-  constructor(parentElement, name) {
+  constructor(parentElement, name, doubleClickHandler) {
     super([parentElement, '>button.name']);
 
     this.setName(name);
