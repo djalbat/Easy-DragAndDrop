@@ -31,12 +31,19 @@ class DragEvent {
     
     return draggingEvent;
   }
+
+  static escapeDragging(draggableElement) {
+    var escapeDraggingEvent = new DragEvent(draggableElement, DragEvent.actions.ESCAPE_DRAGGING);
+
+    return escapeDraggingEvent;
+  }
 }
 
 DragEvent.actions = {
   START_DRAGGING: 'START_DRAGGING',
   STOP_DRAGGING: 'STOP_DRAGGING',
-  DRAGGING: 'DRAGGING'
+  DRAGGING: 'DRAGGING',
+  ESCAPE_DRAGGING: 'ESCAPE_DRAGGING'
 };
 
 module.exports = DragEvent;

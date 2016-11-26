@@ -6,7 +6,8 @@ var easyui = require('easyui'),
 
 var DragEvent = require('./dragEvent');
 
-const START_DRAGGING_DELAY = 175,
+const ESCAPE_KEYCODE = 27,
+      START_DRAGGING_DELAY = 175,
       NAMESPACE = 'EasyUI-DragAndDrop/dragging';
 
 var body = new Body();
@@ -53,9 +54,13 @@ class DraggableElement extends Element {
     this.leftOffset = left - mouseLeft;
 
     this.addClass('dragging');
+
+    this.on('keydown', this.keyDownHandler.bind(this));
   }
 
   stopDragging() {
+    this.off('keydown', this.keyDownHandler.bind(this));
+
     this.removeClass('dragging');
   }
 
@@ -143,6 +148,22 @@ class DraggableElement extends Element {
 
     if (dragging) {
       this.dragging(mouseTop, mouseLeft);
+    }
+  }
+
+  keyDownHandler(event) {
+    var keyCode = event.keyCode || event.which;
+
+    if (keyCode === ESCAPE_KEYCODE) {
+      var dragging = this.isDragging();
+
+      if (dragging) {
+        var escapeDraggingEvent = DragEvent.escapeDragging(this);
+
+        this.dragEventHandler(escapeDraggingEvent);
+
+        this.stopDragging();
+      }
     }
   }
 }

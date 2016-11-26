@@ -68,22 +68,6 @@ class Explorer extends DroppableElement {
     }
   }
 
-  activateFileEventHandler(activateFileEvent) {
-    var file = activateFileEvent.getFile(),
-        filePath = file.getPath(this.rootDirectory),
-        sourcePath = filePath,  ///
-        success = this.activateHandler(sourcePath, fail),
-        failure = (success === false);
-    
-    if (failure) {
-      fail();
-    }
-
-    function fail() {
-      file.remove();
-    }
-  }
-
   startDragging(entry) {
     var marked = this.isMarked(),
         startingDragging = !marked;
@@ -140,6 +124,10 @@ class Explorer extends DroppableElement {
     }
   }
 
+  escapeDragging(entry) {
+    this.removeMarkerGlobally();
+  }
+
   isToBeMarked(entry) {
     var toBeMarked,
         entryPath = entry.getPath(),
@@ -187,6 +175,22 @@ class Explorer extends DroppableElement {
           filePath = movedPath;
 
       this.addFile(filePath, readOnly);
+    }
+  }
+
+  activateFileEventHandler(activateFileEvent) {
+    var file = activateFileEvent.getFile(),
+        filePath = file.getPath(this.rootDirectory),
+        sourcePath = filePath,  ///
+        success = this.activateHandler(sourcePath, fail),
+        failure = (success === false);
+
+    if (failure) {
+      fail();
+    }
+
+    function fail() {
+      file.remove();
     }
   }
 

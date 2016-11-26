@@ -57,6 +57,10 @@ class DroppableElement extends Element {
       case DragEvent.actions.DRAGGING:
         this.dragging(entry);
         break;
+
+      case DragEvent.actions.ESCAPE_DRAGGING:
+        this.escapeDragging(entry);
+        break;
     }
     
     return startDragging;
