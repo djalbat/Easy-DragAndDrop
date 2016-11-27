@@ -141,40 +141,40 @@ class Entries extends Element {
     return directoryOverlappingEntry;
   }
 
-  forEachFile(cb) { this.forEachEntryByType(cb, Entry.types.FILE) }
+  forEachFile(callback) { this.forEachEntryByType(callback, Entry.types.FILE) }
 
-  forEachDirectory(cb) { this.forEachEntryByType(cb, Entry.types.DIRECTORY) }
+  forEachDirectory(callback) { this.forEachEntryByType(callback, Entry.types.DIRECTORY) }
 
-  someDirectory(cb) { return this.someEntryByType(cb, Entry.types.DIRECTORY) }
+  someDirectory(callback) { return this.someEntryByType(callback, Entry.types.DIRECTORY) }
 
-  forEachEntry(cb) {
+  forEachEntry(callback) {
     var entries = this.getEntries();
 
     entries.forEach(function(entry) {
-      cb(entry);
+      callback(entry);
     });
   }
 
-  forEachEntryByType(cb, type) {
+  forEachEntryByType(callback, type) {
     var entries = this.getEntries();
 
     entries.forEach(function(entry) {
       var entryType = entry.getType();
 
       if (entryType === type) {
-        cb(entry);
+        callback(entry);
       }
     });
   }
 
-  someEntryByType(cb, type) {
+  someEntryByType(callback, type) {
     var entries = this.getEntries();
 
     return entries.some(function(entry) {
       var entryType = entry.getType();
 
       if (entryType === type) {
-        return cb(entry);
+        return callback(entry);
       } else {
         return false;
       }

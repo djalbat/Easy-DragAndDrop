@@ -185,11 +185,11 @@ class Explorer extends DroppableElement {
     var file = activateFileEvent.getFile(),
         filePath = file.getPath(this.rootDirectory),
         sourcePath = filePath,  ///
-        result = this.activateHandler(sourcePath, cb);
+        result = this.activateHandler(sourcePath, callback);
 
-    cb(result);
+    callback(result);
     
-    function cb(result) {
+    function callback(result) {
       if (result === false) {
         file.remove();
       }

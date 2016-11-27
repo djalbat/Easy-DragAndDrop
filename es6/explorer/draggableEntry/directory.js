@@ -204,11 +204,11 @@ class Directory extends DraggableEntry {
     return marked;
   }
 
-  forEachFile(cb) { this.entries.forEachFile(cb); }
+  forEachFile(callback) { this.entries.forEachFile(callback); }
 
-  forEachDirectory(cb) { this.entries.forEachDirectory(cb); }
+  forEachDirectory(callback) { this.entries.forEachDirectory(callback); }
 
-  someDirectory(cb) { this.entries.someDirectory(cb); }
+  someDirectory(callback) { this.entries.someDirectory(callback); }
 
   addTopmostDirectory(path) {
     var topmostDirectory,

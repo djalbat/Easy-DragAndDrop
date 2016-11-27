@@ -273,11 +273,11 @@ function indexOf(array, element) {
   return index;
 }
 
-function find(array, cb) {
+function find(array, callback) {
   var element = null;
   
   array.some(function(currentElement) {
-    if (cb(currentElement)) {
+    if (callback(currentElement)) {
       element = currentElement;
       
       return true;
