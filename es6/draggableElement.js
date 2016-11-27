@@ -160,9 +160,9 @@ class DraggableElement extends Element {
       if (dragging) {
         var escapeDraggingEvent = DragEvent.escapeDragging(this);
 
-        this.dragEventHandler(escapeDraggingEvent, function() {
-          this.stopDragging();
-        }.bind(this));
+        this.dragEventHandler(escapeDraggingEvent);
+
+        this.stopDragging();
       }
     }
   }
