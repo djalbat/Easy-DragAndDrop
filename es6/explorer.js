@@ -57,9 +57,9 @@ class Explorer extends DroppableElement {
   addMarkerInPlace(entry) {
     var entryPath = entry.getPath(),
         entryType = entry.getType(),
-        entryIsTopmost = util.isTopmostDirectoryName(entryPath);
+        entryTopmostDirectoryName = util.isTopmostDirectoryName(entryPath);
 
-    if (!entryIsTopmost) {
+    if (!entryTopmostDirectoryName) {
       var markerPath = entryPath;
 
       this.rootDirectory.addMarker(markerPath, entryType);
@@ -70,13 +70,13 @@ class Explorer extends DroppableElement {
 
   startDragging(entry) {
     var marked = this.isMarked(),
-        startingDragging = !marked;
+        startDragging = !marked;
 
-    if (startingDragging) {
+    if (startDragging) {
       this.addMarkerInPlace(entry);
     }
 
-    return startingDragging;
+    return startDragging;
   }
 
   stopDragging(entry, done) {
@@ -134,9 +134,9 @@ class Explorer extends DroppableElement {
   isToBeMarked(entry) {
     var toBeMarked,
         entryPath = entry.getPath(),
-        entryIsTopmostDirectory = util.isTopmostDirectoryName(entryPath);
+        entryTopmostDirectory = util.isTopmostDirectoryName(entryPath);
 
-    if (entryIsTopmostDirectory) {
+    if (entryTopmostDirectory) {
       toBeMarked = false;
     } else {
       var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);

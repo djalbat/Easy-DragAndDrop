@@ -74,7 +74,9 @@ class Entries extends Element {
         entries = this.getEntries();
 
     entries.some(function(entry) {
-      if (nextEntry.isBefore(entry)) {
+      var nextEntryBefore = nextEntry.isBefore(entry);
+      
+      if (nextEntryBefore) {
         previousEntry = entry;
 
         return true;

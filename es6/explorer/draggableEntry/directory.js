@@ -193,7 +193,9 @@ class Directory extends DraggableEntry {
       marked = entriesMarked;
     } else {
       var someDirectoryMarked = this.entries.someDirectory(function(directory) {
-        return directory.isMarked();
+        var directoryMarked = directory.isMarked();
+        
+        return directoryMarked;
       });
 
       marked = someDirectoryMarked;
@@ -244,18 +246,18 @@ class Directory extends DraggableEntry {
   }
 
   getDirectoryOverlappingEntry(entry) {
-    var directoryOverlappingDraggingBounds = null,
-        overlappingDraggingBounds = this.isOverlappingEntry(entry);
+    var directoryOverlappingEntry = null,
+        overlappingEntry = this.isOverlappingEntry(entry);
 
-    if (overlappingDraggingBounds) {
-      directoryOverlappingDraggingBounds = this.entries.getDirectoryOverlappingEntry(entry);
+    if (overlappingEntry) {
+      directoryOverlappingEntry = this.entries.getDirectoryOverlappingEntry(entry);
 
-      if (directoryOverlappingDraggingBounds === null) {
-        directoryOverlappingDraggingBounds = this;
+      if (directoryOverlappingEntry === null) {
+        directoryOverlappingEntry = this;
       }
     }
 
-    return directoryOverlappingDraggingBounds;
+    return directoryOverlappingEntry;
   }
   
   toggleButtonUpdateHandler(collapsed) {
