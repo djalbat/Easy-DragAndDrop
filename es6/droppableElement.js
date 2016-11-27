@@ -206,29 +206,27 @@ class DroppableElement extends Element {
 
   moveEntries(entries, sourcePath, targetPath, done) {
     var entryPathMaps = entryPathMapsFromEntries(entries, sourcePath, targetPath);
-      
-    this.moveHandler(entryPathMaps, function() {
-      this.moveEntriesEx(entries, entryPathMaps);
+
+    function moveEntriesDone() {
+      entries.forEach(function(entry) {
+        var entryPath = entry.getPath(),
+            sourcePath = entryPath,  ///
+            pathMap = find(entryPathMaps, function(entryPathMap) {
+              var sourceEntryPath = sourcePath,
+                  movedPath = entryPathMap[sourceEntryPath],
+                  found = (movedPath !== undefined);
+
+              return found;
+            }),
+            movedPath = pathMap[sourcePath];
+
+        this.moveEntry(entry, sourcePath, movedPath);
+      }.bind(this));
 
       done();
-    }.bind(this));
-  }
-
-  moveEntriesEx(entries, entryPathMaps) {
-    entries.forEach(function(entry) {
-      var entryPath = entry.getPath(),
-          sourcePath = entryPath,  ///
-          pathMap = find(entryPathMaps, function(entryPathMap) {
-            var sourceEntryPath = sourcePath,
-                movedPath = entryPathMap[sourceEntryPath],
-                found = (movedPath !== undefined);
-
-            return found;
-          }),
-          movedPath = pathMap[sourcePath];
-
-      this.moveEntry(entry, sourcePath, movedPath);
-    }.bind(this));
+    }
+      
+    this.moveHandler(entryPathMaps, moveEntriesDone.bind(this));
   }
 
   moveEntry(entry, sourcePath, movedPath) {
@@ -244,13 +242,12 @@ module.exports = DroppableElement;
 
 function entryPathMapsFromEntries(entries, sourcePath, targetPath) {
   var entryPathMaps = entries.map(function(entry) {
-    var entryPath = entry.getPath(),
+    var entryPathMap = {},
+        entryPath = entry.getPath(),
         sourceEntryPath = entryPath,  ///
         targetEntryPath = targetPath === null ?
-            null :
-            util.replaceTopPath(entryPath, sourcePath, targetPath); ///
-
-    var entryPathMap = {};
+                            null :
+                              util.replaceSourcePathWithTargetPath(entryPath, sourcePath, targetPath);
 
     entryPathMap[sourceEntryPath] = targetEntryPath;
 

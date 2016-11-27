@@ -57,9 +57,9 @@ class Explorer extends DroppableElement {
   addMarkerInPlace(entry) {
     var entryPath = entry.getPath(),
         entryType = entry.getType(),
-        entryTopmostDirectoryName = util.isTopmostDirectoryName(entryPath);
+        entryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(entryPath);
 
-    if (!entryTopmostDirectoryName) {
+    if (!entryPathTopmostDirectoryName) {
       var markerPath = entryPath;
 
       this.rootDirectory.addMarker(markerPath, entryType);
@@ -134,7 +134,8 @@ class Explorer extends DroppableElement {
   isToBeMarked(entry) {
     var toBeMarked,
         entryPath = entry.getPath(),
-        entryTopmostDirectory = util.isTopmostDirectoryName(entryPath);
+        entryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(entryPath),
+        entryTopmostDirectory = entryPathTopmostDirectoryName;  ///
 
     if (entryTopmostDirectory) {
       toBeMarked = false;

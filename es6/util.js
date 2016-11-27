@@ -1,49 +1,77 @@
 'use strict';
 
 var util = {
-  isTopmostDirectoryName: function(path) {
-    var topmostDirectoryName = util.topmostDirectoryName(path),
-        topmost = topmostDirectoryName === null;
+  isPathTopmostDirectoryName: function(path) {
+    var pathTopmostDirectoryName = util.topmostDirectoryName(path);
 
-    return topmost;
+    pathTopmostDirectoryName = (pathTopmostDirectoryName === null); ///
+
+    return pathTopmostDirectoryName;
   },
 
   bottommostName: function(path) {
-    var matches = path.match(/^.*\/([^\/]*$)/),
-        bottommostName = matches ? matches[1] : null;
+    var bottommostName = null,
+        matches = path.match(/^.*\/([^\/]*$)/);
+    
+    if (matches !== null) {
+      var secondMatch = second(matches);
+      
+      bottommostName = secondMatch;  ///
+    }
 
     return bottommostName;
   },
 
   topmostDirectoryName: function(path) {
-    var matches = path.match(/^([^\/]*)\//),
-        topmostDirectoryName = matches ? matches[1] : null;
+    var topmostDirectoryName = null,
+        matches = path.match(/^([^\/]*)\//);
+
+    if (matches !== null) {
+      var secondMatch = second(matches);
+
+      topmostDirectoryName = secondMatch;  ///
+    }
 
     return topmostDirectoryName;
   },
 
   pathWithoutBottommostName: function(path) {
-    var matches = path.match(/(^.*)\/[^\/]*$/),
-        pathWithoutBottommostName = matches ? matches[1] : null;
+    var pathWithoutBottommostName = null,
+        matches = path.match(/(^.*)\/[^\/]*$/);
+
+    if (matches !== null) {
+      var secondMatch = second(matches);
+
+      pathWithoutBottommostName = secondMatch; ///
+    }
 
     return pathWithoutBottommostName;
   },
 
   pathWithoutTopmostDirectoryName: function(path) {
-    var matches = path.match(/^[^\/]*\/(.*$)/),
-        pathWithoutTopmostDirectoryName = matches ? matches[1] : null;
+    var pathWithoutTopmostDirectoryName = null,
+        matches = path.match(/^[^\/]*\/(.*$)/);
+
+    if (matches !== null) {
+      var secondMatch = second(matches);
+
+      pathWithoutTopmostDirectoryName = secondMatch;
+    }
 
     return pathWithoutTopmostDirectoryName;
   },
 
-  replaceTopPath: function(path, sourcePath, targetPath) {
+  replaceSourcePathWithTargetPath: function(path, sourcePath, targetPath) {
     var regExp = new RegExp('^' + sourcePath + '(.*$)'),
-        matches = path.match(regExp);
+        matches = path.match(regExp),
+        secondMatch = second(matches);
 
-    path = targetPath + matches[1]; ///
+    path = targetPath + secondMatch; ///
 
     return path;
   }
 };
 
 module.exports = util;
+
+function second(array) { return array[1]; }
