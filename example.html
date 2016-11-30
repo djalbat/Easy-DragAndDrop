@@ -37,14 +37,17 @@
         var Explorer = easyuidraganddrop.Explorer,
             RubbishBin = easyuidraganddrop.RubbishBin;
 
-        var firstExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'First explorer', onActivate, onMove),
-            secondExplorer = Explorer.fromHTML('<ul class="explorer"> </ul>', 'Second explorer', onActivate, onMove),
+        var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onActivate, onMove),
+            secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onActivate, onMove),
             rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemove);
 
         firstExplorer.addDroppableElement(secondExplorer);
         secondExplorer.addDroppableElement(firstExplorer);
         firstExplorer.addDroppableElement(rubbishBin);
         secondExplorer.addDroppableElement(rubbishBin);
+
+        rubbishBin.addDroppableElement(firstExplorer);
+        rubbishBin.addDroppableElement(secondExplorer);
 
         var body = new Body();
 
