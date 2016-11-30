@@ -26,6 +26,20 @@ class Explorer extends DroppableElement {
   getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }
   getDirectoryOverlappingEntry(entry) { return this.rootDirectory.getDirectoryOverlappingEntry(entry); }
 
+  addMarkerInPlace(entry) {
+    var entryPath = entry.getPath(),
+        entryType = entry.getType(),
+        entryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(entryPath);
+
+    if (!entryPathTopmostDirectoryName) {
+      var markerPath = entryPath;
+
+      this.rootDirectory.addMarker(markerPath, entryType);
+    } else {
+      super.addMarker(entry)
+    }
+  }
+
   addMarker(entry, directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry)) {
     var entryName = entry.getName(),
         entryType = entry.getType(),
@@ -52,20 +66,6 @@ class Explorer extends DroppableElement {
                      super.isMarked();
 
     return marked;
-  }
-
-  addMarkerInPlace(entry) {
-    var entryPath = entry.getPath(),
-        entryType = entry.getType(),
-        entryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(entryPath);
-
-    if (!entryPathTopmostDirectoryName) {
-      var markerPath = entryPath;
-
-      this.rootDirectory.addMarker(markerPath, entryType);
-    } else {
-      super.addMarker(entry)
-    }
   }
 
   startDragging(entry) {
@@ -113,24 +113,41 @@ class Explorer extends DroppableElement {
     }
   }
 
-  dragging(entry) {
-    var markedDirectory = this.getMarkedDirectory(),
-        directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
-
-    if ((directoryOverlappingEntry !== null)
-     && (directoryOverlappingEntry !== markedDirectory)) {
-      this.removeMarkerGlobally();
-
-      this.addMarker(entry, directoryOverlappingEntry);
-    } else {
-      super.dragging(entry);
-    }
-  }
-  
   escapeDragging(entry) {
     this.removeMarkerGlobally();
   }
 
+  dragging(entry, explorer = this) {
+    var marked = this.isMarked();
+    
+    if (marked) {
+      var toBeMarked = this.isToBeMarked(entry);
+      
+      if (toBeMarked) {
+        var markedDirectory = this.getMarkedDirectory(),
+            directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
+
+        if (markedDirectory !== directoryOverlappingEntry) {
+          this.removeMarker();
+
+          this.addMarker(entry, directoryOverlappingEntry);
+        }
+      } else {
+        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(entry);
+
+        this.removeMarker();
+
+        (droppableElementToBeMarked !== null) ?
+          droppableElementToBeMarked.addMarker(entry) :
+            explorer.addMarkerInPlace(entry);
+      }
+    } else {
+      var markedDroppableElement = this.getMarkedDroppableElement();
+
+      markedDroppableElement.dragging(entry, explorer);
+    }
+  }
+  
   isToBeMarked(entry) {
     var toBeMarked,
         entryPath = entry.getPath(),

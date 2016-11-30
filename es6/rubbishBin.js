@@ -35,6 +35,24 @@ class RubbishBin extends DroppableElement {
     return marked;
   }
 
+  dragging(entry, explorer) {
+    var marked = this.isMarked();
+
+    if (marked) {
+      var toBeMarked = this.isToBeMarked(entry);
+
+      if (!toBeMarked) {
+        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(entry);
+
+        this.removeMarker();
+
+        (droppableElementToBeMarked !== null) ?
+          droppableElementToBeMarked.addMarker(entry) :
+            explorer.addMarkerInPlace(entry);          
+      }
+    }
+  }
+
   moveDirectory(directory, sourcePath, movedPath) {
     var removedPath = movedPath;  ///
     

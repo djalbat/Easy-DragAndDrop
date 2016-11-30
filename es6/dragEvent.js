@@ -26,24 +26,24 @@ class DragEvent {
     return stopDraggingEvent;
   }
 
-  static dragging(draggableElement) {
-    var draggingEvent = new DragEvent(draggableElement, DragEvent.actions.DRAGGING);
-    
-    return draggingEvent;
-  }
-
   static escapeDragging(draggableElement) {
     var escapeDraggingEvent = new DragEvent(draggableElement, DragEvent.actions.ESCAPE_DRAGGING);
 
     return escapeDraggingEvent;
+  }
+
+  static dragging(draggableElement) {
+    var draggingEvent = new DragEvent(draggableElement, DragEvent.actions.DRAGGING);
+
+    return draggingEvent;
   }
 }
 
 DragEvent.actions = {
   START_DRAGGING: 'START_DRAGGING',
   STOP_DRAGGING: 'STOP_DRAGGING',
-  DRAGGING: 'DRAGGING',
-  ESCAPE_DRAGGING: 'ESCAPE_DRAGGING'
+  ESCAPE_DRAGGING: 'ESCAPE_DRAGGING',
+  DRAGGING: 'DRAGGING'
 };
 
 module.exports = DragEvent;

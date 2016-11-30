@@ -16,3 +16,8 @@ html * {
   position: fixed;
   top: 18rem;
 }
+
+.first.explorer {
+  position: fixed;
+  top: 24rem;
+}

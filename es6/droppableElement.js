@@ -66,45 +66,6 @@ class DroppableElement extends Element {
     return startDragging;
   }
 
-  startDragging(entry) {
-    var startDragging = false,
-        marked = this.isMarked();
-    
-    if (!marked) {
-      this.addMarker(entry);
-
-      startDragging = true;
-    }
-
-    return startDragging;
-  }
-
-  stopDragging(entry) {
-    this.removeMarkerGlobally();
-  }
-
-  dragging(entry) {
-    var marked = this.isMarked();
-    
-    if (marked) {
-      var toBeMarked = this.isToBeMarked(entry);
-
-      if (!toBeMarked) {
-        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(entry);
-
-        if (droppableElementToBeMarked !== null) {
-          droppableElementToBeMarked.addMarker(entry);
-
-          this.removeMarker();
-        }
-      }
-    } else {
-      var markedDroppableElement = this.getMarkedDroppableElement();
-
-      markedDroppableElement.dragging(entry);
-    }
-  }
-
   isToBeMarked(entry) {
     var bounds = this.getBounds(),
         draggingBounds = entry.getDraggingBounds(),
