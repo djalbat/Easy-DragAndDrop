@@ -68,6 +68,13 @@ class Explorer extends DroppableElement {
     return marked;
   }
 
+  isToBeMarked(entry) {
+    var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry),
+        toBeMarked = (directoryOverlappingEntry !== null);
+
+    return toBeMarked;
+  }
+
   startDragging(entry) {
     var marked = this.isMarked(),
         startDragging = !marked;
@@ -135,11 +142,11 @@ class Explorer extends DroppableElement {
       } else {
         var droppableElementToBeMarked = this.getDroppableElementToBeMarked(entry);
 
-        this.removeMarker();
-
         (droppableElementToBeMarked !== null) ?
           droppableElementToBeMarked.addMarker(entry) :
             explorer.addMarkerInPlace(entry);
+
+        this.removeMarker();
       }
     } else {
       var markedDroppableElement = this.getMarkedDroppableElement();
@@ -148,23 +155,6 @@ class Explorer extends DroppableElement {
     }
   }
   
-  isToBeMarked(entry) {
-    var toBeMarked,
-        entryPath = entry.getPath(),
-        entryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(entryPath),
-        entryTopmostDirectory = entryPathTopmostDirectoryName;  ///
-
-    if (entryTopmostDirectory) {
-      toBeMarked = false;
-    } else {
-      var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
-      
-      toBeMarked = (directoryOverlappingEntry !== null);
-    }
-
-    return toBeMarked;
-  }
-
   moveDirectory(directory, sourcePath, movedPath) {
     if (false) {
 

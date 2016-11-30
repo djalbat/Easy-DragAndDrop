@@ -35,6 +35,15 @@ class RubbishBin extends DroppableElement {
     return marked;
   }
 
+  isToBeMarked(entry) {
+    var bounds = this.getBounds(),
+        draggingBounds = entry.getDraggingBounds(),
+        overlappingDraggingBounds = bounds.areOverlapping(draggingBounds),
+        toBeMarked = overlappingDraggingBounds; ///
+
+    return toBeMarked;
+  }
+  
   dragging(entry, explorer) {
     var marked = this.isMarked();
 
@@ -44,11 +53,11 @@ class RubbishBin extends DroppableElement {
       if (!toBeMarked) {
         var droppableElementToBeMarked = this.getDroppableElementToBeMarked(entry);
 
-        this.removeMarker();
-
         (droppableElementToBeMarked !== null) ?
           droppableElementToBeMarked.addMarker(entry) :
-            explorer.addMarkerInPlace(entry);          
+            explorer.addMarkerInPlace(entry);
+
+        this.removeMarker();
       }
     }
   }

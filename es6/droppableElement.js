@@ -66,15 +66,6 @@ class DroppableElement extends Element {
     return startDragging;
   }
 
-  isToBeMarked(entry) {
-    var bounds = this.getBounds(),
-        draggingBounds = entry.getDraggingBounds(),
-        overlappingDraggingBounds = bounds.areOverlapping(draggingBounds),
-        toBeMarked = overlappingDraggingBounds; ///
-
-    return toBeMarked;
-  }
-
   getDroppableElementToBeMarked(entry) {
     var droppableElementToBeMarked = this.droppableElements.reduce(function(droppableElementToBeMarked, droppableElement) {
       if (droppableElementToBeMarked === null) {
