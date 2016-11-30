@@ -41,11 +41,10 @@
             secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onActivate, onMove),
             rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemove);
 
+        firstExplorer.addDroppableElement(rubbishBin);
         firstExplorer.addDroppableElement(secondExplorer);
         secondExplorer.addDroppableElement(firstExplorer);
-        firstExplorer.addDroppableElement(rubbishBin);
         secondExplorer.addDroppableElement(rubbishBin);
-
         rubbishBin.addDroppableElement(firstExplorer);
         rubbishBin.addDroppableElement(secondExplorer);
 
