@@ -20,7 +20,13 @@ class RubbishBin extends DroppableElement {
     return markedDirectory;
   }
 
-  addMarker(entry) {
+  getDirectoryOverlappingEntry(entry) {
+    var directoryOverlappingEntry = null;
+
+    return directoryOverlappingEntry;
+  }
+
+  addMarker(entry, directoryOverlappingEntry) {
     this.open();
   }
 
@@ -37,9 +43,9 @@ class RubbishBin extends DroppableElement {
 
   isToBeMarked(entry) {
     var bounds = this.getBounds(),
-        draggingBounds = entry.getDraggingBounds(),
-        overlappingDraggingBounds = bounds.areOverlapping(draggingBounds),
-        toBeMarked = overlappingDraggingBounds; ///
+        collapsedBounds = entry.getCollapsedBounds(),
+        overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds),
+        toBeMarked = overlappingCollapsedBounds; ///
 
     return toBeMarked;
   }

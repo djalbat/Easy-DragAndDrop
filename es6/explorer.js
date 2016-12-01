@@ -17,14 +17,36 @@ class Explorer extends DroppableElement {
 
     this.rootDirectory = rootDirectory;
 
+    this.options = {};
+
     this.append(rootDirectory);
+  }
+
+  setOption(option) {
+    this.options[option] = true;
+  }
+
+  unsetOption(option) {
+    delete(this.options[option]);
+  }
+
+  hasOption(option) {
+    option = (this.options[option] === true); ///
+
+    return option;
   }
 
   addFile(filePath) { this.rootDirectory.addFile(filePath); }
   addDirectory(directoryPath, collapsed) { this.rootDirectory.addDirectory(directoryPath, collapsed); }
   getRootDirectoryName() { return this.rootDirectory.getName(); }
   getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }
-  getDirectoryOverlappingEntry(entry) { return this.rootDirectory.getDirectoryOverlappingEntry(entry); }
+  
+  getDirectoryOverlappingEntry(entry) {
+    var noDragsToSubdirectories = this.hasOption(Explorer.options.NO_DRAGS_TO_SUBDIRECTORIES),
+        directoryOverlappingEntry = this.rootDirectory.getDirectoryOverlappingEntry(entry, noDragsToSubdirectories);
+
+    return directoryOverlappingEntry;
+  }
 
   addMarkerInPlace(entry) {
     var entryPath = entry.getPath(),
@@ -40,7 +62,7 @@ class Explorer extends DroppableElement {
     }
   }
 
-  addMarker(entry, directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry)) {
+  addMarker(entry, directoryOverlappingEntry) {
     var entryName = entry.getName(),
         entryType = entry.getType(),
         directoryOverlappingEntryPath = directoryOverlappingEntry.getPath(),
@@ -69,18 +91,36 @@ class Explorer extends DroppableElement {
   }
 
   isToBeMarked(entry) {
-    var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry),
-        toBeMarked = (directoryOverlappingEntry !== null);
-
+    var toBeMarked,
+        entryPath = entry.getPath(),
+        noExplorerDrags = this.hasOption(Explorer.options.NO_EXPLORER_DRAGS),
+        entryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(entryPath);
+    
+    if (noExplorerDrags && entryPathTopmostDirectoryName) {
+      toBeMarked = false;
+    } else {
+      var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
+      
+      toBeMarked = (directoryOverlappingEntry !== null);
+    }
+        
     return toBeMarked;
   }
 
   startDragging(entry) {
-    var marked = this.isMarked(),
-        startDragging = !marked;
+    var startDragging,
+        noDraggingEntries = this.hasOption(Explorer.options.NO_DRAGGING);
 
-    if (startDragging) {
-      this.addMarkerInPlace(entry);
+    if (noDraggingEntries) {
+      startDragging = false;
+    } else {
+      var marked = this.isMarked();
+
+      startDragging = !marked;
+
+      if (startDragging) {
+        this.addMarkerInPlace(entry);
+      }
     }
 
     return startDragging;
@@ -128,11 +168,13 @@ class Explorer extends DroppableElement {
     var marked = this.isMarked();
     
     if (marked) {
-      var toBeMarked = this.isToBeMarked(entry);
+      var toBeMarked = this.isToBeMarked(entry),
+          directoryOverlappingEntry;
       
       if (toBeMarked) {
-        var markedDirectory = this.getMarkedDirectory(),
-            directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
+        var markedDirectory = this.getMarkedDirectory();
+
+        directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
 
         if (markedDirectory !== directoryOverlappingEntry) {
           this.removeMarker();
@@ -142,9 +184,13 @@ class Explorer extends DroppableElement {
       } else {
         var droppableElementToBeMarked = this.getDroppableElementToBeMarked(entry);
 
-        (droppableElementToBeMarked !== null) ?
-          droppableElementToBeMarked.addMarker(entry) :
-            explorer.addMarkerInPlace(entry);
+        if (droppableElementToBeMarked !== null) {
+          directoryOverlappingEntry = droppableElementToBeMarked.getDirectoryOverlappingEntry(entry);
+
+          droppableElementToBeMarked.addMarker(entry, directoryOverlappingEntry);
+        } else {
+          explorer.addMarkerInPlace(entry);
+        }
 
         this.removeMarker();
       }
@@ -211,5 +257,11 @@ class Explorer extends DroppableElement {
     return Element.fromHTML(Explorer, html, rootDirectoryName, moveHandler, activateHandler);
   }
 }
+
+Explorer.options = {
+  NO_DRAGGING: 'NO_DRAGGING',
+  NO_EXPLORER_DRAGS: 'NO_EXPLORER_DRAGS',
+  NO_DRAGS_TO_SUBDIRECTORIES: 'NO_DRAGS_TO_SUBDIRECTORIES'
+};
 
 module.exports = Explorer;

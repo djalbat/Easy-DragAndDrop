@@ -13,6 +13,22 @@ class RootDirectory extends Directory {
     super(selector, name, collapsed, dragEventHandler, activateFileEventHandler);
   }
 
+  getDirectoryOverlappingEntry(entry, noDragsToSubdirectories) {
+    var directoryOverlappingEntry;
+    
+    if (noDragsToSubdirectories) {
+      var overlappingEntry = this.isOverlappingEntry(entry);
+
+      directoryOverlappingEntry = overlappingEntry ?
+                                    this :
+                                      null;
+    } else {
+      directoryOverlappingEntry = super.getDirectoryOverlappingEntry(entry);
+    }
+    
+    return directoryOverlappingEntry;    
+  }
+
   addFile(filePath) {
     var filePathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(filePath);
 

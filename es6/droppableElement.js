@@ -31,9 +31,9 @@ class DroppableElement extends Element {
     }
   }
 
-  isOverlappingDraggableElement(draggableElementDraggingBounds) {
+  isOverlappingDraggableElement(draggableElementCollapsedBounds) {
     var bounds = this.getBounds(),
-        boundsOverlappingDraggableElement = bounds.areOverlapping(draggableElementDraggingBounds),
+        boundsOverlappingDraggableElement = bounds.areOverlapping(draggableElementCollapsedBounds),
         overlappingDraggableElement = boundsOverlappingDraggableElement;
 
     return overlappingDraggableElement;
@@ -197,9 +197,15 @@ function entryPathMapsFromEntries(entries, sourcePath, targetPath) {
     var entryPathMap = {},
         entryPath = entry.getPath(),
         sourceEntryPath = entryPath,  ///
-        targetEntryPath = targetPath === null ?
-                            null :
-                              util.replaceSourcePathWithTargetPath(entryPath, sourcePath, targetPath);
+        targetEntryPath;
+    
+    if (targetPath === null) {
+      targetEntryPath = null;
+    } else if (sourcePath === null) {
+      targetEntryPath = targetPath;
+    } else {
+      targetEntryPath = util.replaceSourcePathWithTargetPath(entryPath, sourcePath, targetPath);
+    }
 
     entryPathMap[sourceEntryPath] = targetEntryPath;
 

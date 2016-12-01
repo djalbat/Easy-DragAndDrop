@@ -25,18 +25,18 @@ class DraggableElement extends Element {
     this.onMouseDown(this.mouseDownHandler.bind(this));
   }
   
-  getDraggingBounds() {
+  getCollapsedBounds() {
     var bounds = this.getBounds(),
-        draggingBounds = bounds;  ///
+        collapsedBounds = bounds;  ///
 
-    return draggingBounds;
+    return collapsedBounds;
   }
 
-  isOverlappingDraggingBounds(draggingBounds) {
+  isOverlappingCollapsedBounds(collapsedBounds) {
     var bounds = this.getBounds(),
-        overlappingDraggingBounds = bounds.areOverlapping(draggingBounds);
+        overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds);
 
-    return overlappingDraggingBounds;
+    return overlappingCollapsedBounds;
   }
 
   startDragging(mouseTop, mouseLeft) {

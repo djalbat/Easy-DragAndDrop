@@ -74,40 +74,40 @@ class Directory extends DraggableEntry {
     return subEntries;
   }
 
-  getDraggingBounds() {
+  getCollapsedBounds() {
     var collapsed = this.isCollapsed();
 
     this.collapse();
 
     var bounds = super.getBounds(),
-        draggingBounds = bounds;  ///
+        collapsedBounds = bounds;  ///
 
     if (!collapsed) {
       this.expand();
     }
 
-    return draggingBounds;
+    return collapsedBounds;
   }
 
   isOverlappingEntry(entry) {
-    var overlapping;
+    var overlappingEntry;
     
     if (this === entry) {
-      overlapping = false;
+      overlappingEntry = false;
     } else {
       var collapsed = this.isCollapsed();
       
       if (collapsed) {
-        overlapping = false;
+        overlappingEntry = false;
       } else {
-        var draggingBounds = entry.getDraggingBounds(),
-            overlappingDraggingBounds = super.isOverlappingDraggingBounds(draggingBounds);
+        var entryCollapsedBounds = entry.getCollapsedBounds(),
+            overlappingCollapsedBounds = super.isOverlappingCollapsedBounds(entryCollapsedBounds);
 
-        overlapping = overlappingDraggingBounds;
+        overlappingEntry = overlappingCollapsedBounds;
       }
     }
 
-    return overlapping;
+    return overlappingEntry;
   }
 
   isCollapsed() { return this.toggleButton.isCollapsed(); }

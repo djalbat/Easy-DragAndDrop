@@ -1,15 +1,14 @@
 'use strict';
 
-var util = {
-  isPathTopmostDirectoryName: function(path) {
-    var pathTopmostDirectoryName = util.topmostDirectoryName(path);
-
-    pathTopmostDirectoryName = (pathTopmostDirectoryName === null); ///
+class util {
+  static isPathTopmostDirectoryName(path) {
+    var topmostDirectoryName = util.topmostDirectoryName(path),
+        pathTopmostDirectoryName = (topmostDirectoryName=== null); ///
 
     return pathTopmostDirectoryName;
-  },
+  }
 
-  bottommostName: function(path) {
+  static bottommostName(path) {
     var bottommostName = null,
         matches = path.match(/^.*\/([^\/]*$)/);
     
@@ -20,9 +19,9 @@ var util = {
     }
 
     return bottommostName;
-  },
+  }
 
-  topmostDirectoryName: function(path) {
+  static topmostDirectoryName(path) {
     var topmostDirectoryName = null,
         matches = path.match(/^([^\/]*)\//);
 
@@ -33,9 +32,9 @@ var util = {
     }
 
     return topmostDirectoryName;
-  },
+  }
 
-  pathWithoutBottommostName: function(path) {
+  static pathWithoutBottommostName(path) {
     var pathWithoutBottommostName = null,
         matches = path.match(/(^.*)\/[^\/]*$/);
 
@@ -46,9 +45,9 @@ var util = {
     }
 
     return pathWithoutBottommostName;
-  },
+  }
 
-  pathWithoutTopmostDirectoryName: function(path) {
+  static pathWithoutTopmostDirectoryName(path) {
     var pathWithoutTopmostDirectoryName = null,
         matches = path.match(/^[^\/]*\/(.*$)/);
 
@@ -59,9 +58,9 @@ var util = {
     }
 
     return pathWithoutTopmostDirectoryName;
-  },
+  }
 
-  replaceSourcePathWithTargetPath: function(path, sourcePath, targetPath) {
+  static replaceSourcePathWithTargetPath(path, sourcePath, targetPath) {
     var regExp = new RegExp('^' + sourcePath + '(.*$)'),
         matches = path.match(regExp),
         secondMatch = second(matches);
@@ -70,7 +69,7 @@ var util = {
 
     return path;
   }
-};
+}
 
 module.exports = util;
 
