@@ -123,7 +123,7 @@ class DroppableElement extends Element {
 
   removeMarkerGlobally() {
     var marked = this.isMarked();
-    
+
     if (marked) {
       this.removeMarker();
     } else {
@@ -157,7 +157,7 @@ class DroppableElement extends Element {
   }
 
   moveEntries(entries, sourcePath, targetPath, done) {
-    var entryPathMaps = entryPathMapsFromEntries(entries, sourcePath, targetPath);
+    var entryPathMaps = this.entryPathMapsFromEntries(entries, sourcePath, targetPath);
 
     function moveEntriesDone() {
       entries.forEach(function(entry) {
@@ -191,29 +191,6 @@ class DroppableElement extends Element {
 }
 
 module.exports = DroppableElement;
-
-function entryPathMapsFromEntries(entries, sourcePath, targetPath) {
-  var entryPathMaps = entries.map(function(entry) {
-    var entryPathMap = {},
-        entryPath = entry.getPath(),
-        sourceEntryPath = entryPath,  ///
-        targetEntryPath;
-    
-    if (targetPath === null) {
-      targetEntryPath = null;
-    } else if (sourcePath === null) {
-      targetEntryPath = targetPath;
-    } else {
-      targetEntryPath = util.replaceSourcePathWithTargetPath(entryPath, sourcePath, targetPath);
-    }
-
-    entryPathMap[sourceEntryPath] = targetEntryPath;
-
-    return entryPathMap;
-  });
-
-  return entryPathMaps;
-}
 
 function indexOf(array, element) {
   var index = -1;

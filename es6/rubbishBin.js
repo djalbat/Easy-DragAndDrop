@@ -106,6 +106,21 @@ class RubbishBin extends DroppableElement {
     return open;
   }
 
+  entryPathMapsFromEntries(entries, sourcePath, targetPath) {
+    var entryPathMaps = entries.map(function(entry) {
+      var entryPathMap = {},
+          entryPath = entry.getPath(),
+          sourceEntryPath = entryPath,  ///
+          targetEntryPath = null;
+
+      entryPathMap[sourceEntryPath] = targetEntryPath;
+
+      return entryPathMap;
+    });
+
+    return entryPathMaps;
+  }
+
   static clone(selector, removeHandler) {
     return Element.clone(RubbishBin, selector, removeHandler);
   }

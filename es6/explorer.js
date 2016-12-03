@@ -133,31 +133,32 @@ class Explorer extends DroppableElement {
                                    this :
                                      this.getMarkedDroppableElement(),
         markedDirectory = markedDroppableElement.getMarkedDirectory(),
-        noMarkedDirectory = (markedDirectory === null),
-        markedDirectoryPath = noMarkedDirectory ?
-                                null :
-                                  markedDirectory.getPath(),
+        markedDirectoryPath = (markedDirectory !== null) ?
+                                markedDirectory.getPath() :
+                                  null,
         entryPathWithoutBottommostName = util.pathWithoutBottommostName(entryPath),
         sourcePath = entryPathWithoutBottommostName,
         targetPath = markedDirectoryPath;
 
-    if ((sourcePath !== targetPath) || (sourcePath === null) && (targetPath === null) && (markedDroppableElement !== this)) {
-      var subEntries = entry.getSubEntries(),
-          entries = subEntries;
-
-      entries.reverse();
-      entries.push(entry);
-
-      markedDroppableElement.moveEntries(entries, sourcePath, targetPath, function() {
-        this.removeMarkerGlobally();
+    if (marked) {
+      if (sourcePath === targetPath) {
+        this.removeMarker();
 
         done();
-      }.bind(this));
-    } else {
-      this.removeMarkerGlobally();
+      }
+    }
+
+    var subEntries = entry.getSubEntries(),
+        entries = subEntries; ///
+
+    entries.reverse();
+    entries.push(entry);
+
+    markedDroppableElement.moveEntries(entries, sourcePath, targetPath, function() {
+      markedDroppableElement.removeMarker();
 
       done();
-    }
+    });
   }
 
   escapeDragging(entry) {
@@ -247,6 +248,23 @@ class Explorer extends DroppableElement {
         file.remove();
       }
     }
+  }
+
+  entryPathMapsFromEntries(entries, sourcePath, targetPath) {
+    var entryPathMaps = entries.map(function(entry) {
+      var entryPathMap = {},
+          entryPath = entry.getPath(),
+          sourceEntryPath = entryPath,  ///
+          targetEntryPath = (sourcePath === null) ?
+                              util.prependTargetPath(entryPath, targetPath) :
+                                util.replaceSourcePathWithTargetPath(entryPath, sourcePath, targetPath);
+
+      entryPathMap[sourceEntryPath] = targetEntryPath;
+
+      return entryPathMap;
+    });
+
+    return entryPathMaps;
   }
 
   static clone(selector, rootDirectoryName, moveHandler, activateHandler) {

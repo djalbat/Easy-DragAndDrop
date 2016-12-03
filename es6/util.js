@@ -59,15 +59,21 @@ class util {
 
     return pathWithoutTopmostDirectoryName;
   }
+  
+  static prependTargetPath(entryPath,  targetPath) {
+    entryPath = targetPath + '/' + entryPath;
+    
+    return entryPath;
+  }
 
-  static replaceSourcePathWithTargetPath(path, sourcePath, targetPath) {
+  static replaceSourcePathWithTargetPath(entryPath, sourcePath, targetPath) {
     var regExp = new RegExp('^' + sourcePath + '(.*$)'),
-        matches = path.match(regExp),
+        matches = entryPath.match(regExp),
         secondMatch = second(matches);
 
-    path = targetPath + secondMatch; ///
+    entryPath = targetPath + secondMatch; ///
 
-    return path;
+    return entryPath;
   }
 }
 

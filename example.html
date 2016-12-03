@@ -78,7 +78,7 @@
                 targetPath = pathMap[sourcePath],
                 movedPath = targetPath;
 
-            console.log('move file: ' + sourcePath + ' -> ' + targetPath)
+            console.log('move: ' + sourcePath + ' -> ' + targetPath)
 
             switch(sourcePath) {
               case 'Second explorer/First directory/First file.fls':
@@ -98,7 +98,7 @@
             pathMap[sourcePath] = movedPath;
           });
 
-          setTimeout(done, 100);
+          done();
         }
 
         function onRemove(pathMaps, done) {
@@ -107,7 +107,7 @@
               sourcePath = keys[0], ///
               removedPath = null;
 
-            console.log('remove file: ' + sourcePath)
+            console.log('remove: ' + sourcePath)
 
             switch(sourcePath) {
               case 'Second explorer/First directory/Second file.fls':
