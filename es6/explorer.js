@@ -203,9 +203,7 @@ class Explorer extends DroppableElement {
   }
   
   moveDirectory(directory, sourcePath, movedPath) {
-    if (false) {
-
-    } else if (movedPath === sourcePath) {
+    if (movedPath === sourcePath) {
 
     } else if (movedPath === null) {
       directory.remove();
@@ -220,9 +218,7 @@ class Explorer extends DroppableElement {
   }
 
   moveFile(file, sourcePath, movedPath) {
-    if (false) {
-
-    } else if (movedPath === sourcePath) {
+    if (movedPath === sourcePath) {
 
     } else if (movedPath === null) {
       file.remove();

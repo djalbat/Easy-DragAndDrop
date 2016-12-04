@@ -166,7 +166,7 @@ class DroppableElement extends Element {
             pathMap = find(entryPathMaps, function(entryPathMap) {
               var sourceEntryPath = sourcePath,
                   movedPath = entryPathMap[sourceEntryPath],
-                  found = (movedPath !== null);
+                  found = (movedPath !== undefined);
 
               return found;
             }),
@@ -182,11 +182,17 @@ class DroppableElement extends Element {
   }
 
   moveEntry(entry, sourcePath, movedPath) {
-    var entryIsDirectory = entry.isDirectory();
+    var entryDirectory = entry.isDirectory();
 
-    entryIsDirectory ?
-      this.moveDirectory(entry, sourcePath, movedPath) :
-        this.moveFile(entry, sourcePath, movedPath);
+    if (entryDirectory) {
+      var directory = entry;  ///
+
+      this.moveDirectory(directory, sourcePath, movedPath);
+    } else {
+      var file = entry; ///
+
+      this.moveFile(file, sourcePath, movedPath);
+    }
   }
 }
 
