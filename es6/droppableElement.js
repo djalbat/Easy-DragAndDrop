@@ -166,7 +166,7 @@ class DroppableElement extends Element {
             pathMap = find(entryPathMaps, function(entryPathMap) {
               var sourceEntryPath = sourcePath,
                   movedPath = entryPathMap[sourceEntryPath],
-                  found = (movedPath !== undefined);
+                  found = (movedPath !== null);
 
               return found;
             }),

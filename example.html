@@ -61,12 +61,12 @@
         secondExplorer.addFile('Second explorer/First directory/Second file.fls');
         secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 
-        function onActivate(sourcePath, cb) {
+        function onActivate(sourcePath, callback) {
           console.log('activate: ' + sourcePath)
 
           switch(sourcePath) {
             case 'Second explorer/Second directory/Third file.fls':
-              cb(false);
+              callback(false);
               break;
           }
         }

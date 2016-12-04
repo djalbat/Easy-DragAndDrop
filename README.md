@@ -134,12 +134,12 @@ Here the rubbish bin will listen for dragging events from both of the explorers.
 This is done by double clicking on them, in which case the `onActivate` handler is called with the file's source path. A callback is passed as a second argument. If this is invoked with `false` or if the handler explicitly returns `false`, the file will be removed.
 
 ```js
-function onActivate(sourcePath, cb) {
+function onActivate(sourcePath, callback) {
   console.log('activate: ' + sourcePath)
 
   switch(sourcePath) {
     case 'Second explorer/Second directory/Third file.fls':
-      cb(false);
+      callback(false);
       break;
   }
 }
