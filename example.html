@@ -74,7 +74,8 @@
         function onMove(pathMaps, done) {
           pathMaps.forEach(function(pathMap) {
             var keys = Object.keys(pathMap),
-                sourcePath = keys[0], ///
+                firstKey = first(keys),
+                sourcePath = firstKey, ///
                 targetPath = pathMap[sourcePath],
                 movedPath = targetPath;
 
@@ -104,8 +105,9 @@
         function onRemove(pathMaps, done) {
           pathMaps.forEach(function(pathMap) {
             var keys = Object.keys(pathMap),
-              sourcePath = keys[0], ///
-              removedPath = null;
+                firstKey = first(keys),
+                sourcePath = firstKey, ///
+                removedPath = null;
 
             console.log('remove: ' + sourcePath)
 
@@ -123,6 +125,8 @@
 
           done();
         }
+
+        function first(array) { return array[0]; }
 
       })();
 
