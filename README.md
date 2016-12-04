@@ -189,8 +189,8 @@ The `onRemove()` handler is invoked with an array of path maps and a `done` argu
 function onRemove(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
     var keys = Object.keys(pathMap),
-      sourcePath = keys[0], ///
-      removedPath = null;
+        sourcePath = keys[0], ///
+        removedPath = null;
 
     console.log('remove file: ' + sourcePath)
 
