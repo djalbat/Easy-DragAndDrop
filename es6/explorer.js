@@ -42,8 +42,8 @@ class Explorer extends DroppableElement {
   getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }
   
   getDirectoryOverlappingEntry(entry) {
-    var noDragsToSubdirectories = this.hasOption(Explorer.options.NO_DRAGS_TO_SUBDIRECTORIES),
-        directoryOverlappingEntry = this.rootDirectory.getDirectoryOverlappingEntry(entry, noDragsToSubdirectories);
+    var noDraggingIntoSubdirectories = this.hasOption(Explorer.options.NO_DRAGGING_INTO_SUBDIRECTORIES),
+        directoryOverlappingEntry = this.rootDirectory.getDirectoryOverlappingEntry(entry, noDraggingIntoSubdirectories);
 
     return directoryOverlappingEntry;
   }
@@ -140,25 +140,23 @@ class Explorer extends DroppableElement {
         sourcePath = entryPathWithoutBottommostName,
         targetPath = markedDirectoryPath;
 
-    if (marked) {
-      if (sourcePath === targetPath) {
-        this.removeMarker();
-
-        done();
-      }
-    }
-
-    var subEntries = entry.getSubEntries(),
-        entries = subEntries; ///
-
-    entries.reverse();
-    entries.push(entry);
-
-    markedDroppableElement.moveEntries(entries, sourcePath, targetPath, function() {
-      markedDroppableElement.removeMarker();
+    if (marked && (sourcePath === targetPath)) {
+      this.removeMarker();
 
       done();
-    });
+    } else {
+      var subEntries = entry.getSubEntries(),
+          entries = subEntries; ///
+
+      entries.reverse();
+      entries.push(entry);
+
+      markedDroppableElement.moveEntries(entries, sourcePath, targetPath, function() {
+        markedDroppableElement.removeMarker();
+
+        done();
+      });
+    }
   }
 
   escapeDragging(entry) {
@@ -275,7 +273,7 @@ class Explorer extends DroppableElement {
 Explorer.options = {
   NO_DRAGGING: 'NO_DRAGGING',
   NO_EXPLORER_DRAGS: 'NO_EXPLORER_DRAGS',
-  NO_DRAGS_TO_SUBDIRECTORIES: 'NO_DRAGS_TO_SUBDIRECTORIES'
+  NO_DRAGGING_INTO_SUBDIRECTORIES: 'NO_DRAGGING_INTO_SUBDIRECTORIES'
 };
 
 module.exports = Explorer;

@@ -21,7 +21,7 @@ class RubbishBin extends DroppableElement {
   }
 
   getDirectoryOverlappingEntry(entry) {
-    var directoryOverlappingEntry = null;
+    var directoryOverlappingEntry = null; ///
 
     return directoryOverlappingEntry;
   }
@@ -59,9 +59,13 @@ class RubbishBin extends DroppableElement {
       if (!toBeMarked) {
         var droppableElementToBeMarked = this.getDroppableElementToBeMarked(entry);
 
-        (droppableElementToBeMarked !== null) ?
-          droppableElementToBeMarked.addMarker(entry) :
-            explorer.addMarkerInPlace(entry);
+        if (droppableElementToBeMarked !== null) {
+          var directoryOverlappingEntry = droppableElementToBeMarked.getDirectoryOverlappingEntry(entry);
+
+          droppableElementToBeMarked.addMarker(entry, directoryOverlappingEntry);
+        } else {
+          explorer.addMarkerInPlace(entry);
+        }
 
         this.removeMarker();
       }
