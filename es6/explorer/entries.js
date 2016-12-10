@@ -22,11 +22,23 @@ class Entries extends Element {
     this.addEntry(entry);
   }
 
+  removeFile(fileName) {
+    var file = this.retrieveFile(fileName);
+
+    file.remove();
+  }
+
   addDirectory(directoryName, collapsed, dragEventHandler, activateFileEventHandler) {
     var directory = this.Directory.clone(directoryName, collapsed, dragEventHandler, activateFileEventHandler),
         entry = directory;  ///
 
     this.addEntry(entry);
+  }
+
+  removeDirectory(directoryName) {
+    var directory = this.retrieveDirectory(directoryName);
+
+    directory.remove();
   }
 
   hasDirectory(directoryName) {

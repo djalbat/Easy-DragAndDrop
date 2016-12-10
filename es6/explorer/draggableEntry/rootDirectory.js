@@ -35,6 +35,12 @@ class RootDirectory extends Directory {
     super.addFile(filePathWithoutRootDirectoryName);
   }
 
+  removeFile(filePath) {
+    var filePathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(filePath);
+
+    super.removeFile(filePathWithoutRootDirectoryName);
+  }
+
   addDirectory(directoryPath, collapsed) {
     var directoryPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(directoryPath);
 
@@ -42,7 +48,15 @@ class RootDirectory extends Directory {
       super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
     }
   }
-  
+
+  removeDirectory(directoryPath) {
+    var directoryPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(directoryPath);
+
+    if (directoryPathWithoutRootDirectoryName !== null) {
+      super.removeDirectory(directoryPathWithoutRootDirectoryName);
+    }
+  }
+
   addMarker(markerPath, entryType) {
     var markerPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(markerPath);
 
@@ -52,7 +66,7 @@ class RootDirectory extends Directory {
   pathWithoutRootDirectoryName(path) {
     var topmostDirectoryName = util.topmostDirectoryName(path),
         rootDirectoryName = this.getName(),
-        pathWithoutRootDirectoryName = topmostDirectoryName === rootDirectoryName ?
+        pathWithoutRootDirectoryName = (topmostDirectoryName === rootDirectoryName) ?
                                          util.pathWithoutTopmostDirectoryName(path) :
                                            null;  ///
 

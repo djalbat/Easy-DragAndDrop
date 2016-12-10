@@ -128,6 +128,18 @@ class Directory extends DraggableEntry {
     }
   }
 
+  removeFile(filePath) {
+    var topmostDirectory = this.removeTopmostDirectory(filePath);
+
+    if (topmostDirectory !== null) {
+      var filePathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
+
+      topmostDirectory.removeFile(filePathWithoutTopmostDirectoryName);
+    } else {
+      this.entries.removeFile(filePath);
+    }
+  }
+
   addDirectory(directoryPath, collapsed) {
     var topmostDirectory = this.addTopmostDirectory(directoryPath);
 
@@ -147,6 +159,23 @@ class Directory extends DraggableEntry {
         collapsed ? 
           directory.collapse() : 
             directory.expand();
+      }
+    }
+  }
+
+  removeDirectory(directoryPath) {
+    var topmostDirectory = this.removeTopmostDirectory(directoryPath);
+
+    if (topmostDirectory !== null) {
+      var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+
+      topmostDirectory.removeDirectory(directoryPathWithoutTopmostDirectoryName);
+    } else {
+      var directoryName = directoryPath,  ///
+          entriesDirectory = this.entries.hasDirectory(directoryName);
+
+      if (entriesDirectory) {
+        this.entries.removeDirectory(directoryName);
       }
     }
   }

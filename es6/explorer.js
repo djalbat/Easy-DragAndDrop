@@ -37,7 +37,9 @@ class Explorer extends DroppableElement {
   }
 
   addFile(filePath) { this.rootDirectory.addFile(filePath); }
+  removeFile(filePath) { this.rootDirectory.removeFile(filePath); }
   addDirectory(directoryPath, collapsed) { this.rootDirectory.addDirectory(directoryPath, collapsed); }
+  removeDirectory(directoryPath, collapsed) { this.rootDirectory.removeDirectory(directoryPath); }
   getRootDirectoryName() { return this.rootDirectory.getName(); }
   getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }
   
