@@ -30,47 +30,33 @@ class RootDirectory extends Directory {
   }
 
   addFile(filePath) {
-    var filePathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(filePath);
+    var filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
 
     super.addFile(filePathWithoutRootDirectoryName);
   }
 
-  removeFile(filePath) {
-    var filePathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(filePath);
-
-    super.removeFile(filePathWithoutRootDirectoryName);
-  }
-
   addDirectory(directoryPath, collapsed) {
-    var directoryPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(directoryPath);
+    var directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
-    if (directoryPathWithoutRootDirectoryName !== null) {
-      super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
-    }
+    super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
   }
 
-  removeDirectory(directoryPath) {
-    var directoryPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(directoryPath);
+  removeFile(filePath, removeEmptyParentDirectories) {
+    var filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
 
-    if (directoryPathWithoutRootDirectoryName !== null) {
-      super.removeDirectory(directoryPathWithoutRootDirectoryName);
-    }
+    super.removeFile(filePathWithoutRootDirectoryName, removeEmptyParentDirectories);
+  }
+
+  removeDirectory(directoryPath, removeEmptyParentDirectories) {
+    var directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+
+    super.removeDirectory(directoryPathWithoutRootDirectoryName, removeEmptyParentDirectories);
   }
 
   addMarker(markerPath, entryType) {
-    var markerPathWithoutRootDirectoryName = this.pathWithoutRootDirectoryName(markerPath);
+    var markerPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(markerPath);
 
     super.addMarker(markerPathWithoutRootDirectoryName, entryType);
-  }
-
-  pathWithoutRootDirectoryName(path) {
-    var topmostDirectoryName = util.topmostDirectoryName(path),
-        rootDirectoryName = this.getName(),
-        pathWithoutRootDirectoryName = (topmostDirectoryName === rootDirectoryName) ?
-                                         util.pathWithoutTopmostDirectoryName(path) :
-                                           null;  ///
-
-    return pathWithoutRootDirectoryName;
   }
 
   static clone(name, dragEventHandler, activateFileEventHandler) {

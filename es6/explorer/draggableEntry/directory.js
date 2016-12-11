@@ -117,31 +117,26 @@ class Directory extends DraggableEntry {
   collapse() { this.toggleButton.collapse(); }
 
   addFile(filePath) {
-    var topmostDirectory = this.addTopmostDirectory(filePath);
+    var addIfNecessary = true,
+        topmostDirectory = this.topmostDirectory(filePath, addIfNecessary);
 
     if (topmostDirectory !== null) {
       var filePathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
 
       topmostDirectory.addFile(filePathWithoutTopmostDirectoryName);
     } else {
-      this.entries.addFile(filePath, this.dragEventHandler, this.activateFileEventHandler);
-    }
-  }
+      var fileName = filePath,  ///
+          entriesFile = this.entries.hasFile(fileName);
 
-  removeFile(filePath) {
-    var topmostDirectory = this.removeTopmostDirectory(filePath);
-
-    if (topmostDirectory !== null) {
-      var filePathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
-
-      topmostDirectory.removeFile(filePathWithoutTopmostDirectoryName);
-    } else {
-      this.entries.removeFile(filePath);
+      if (!entriesFile) {
+        this.entries.addFile(fileName, this.dragEventHandler, this.activateFileEventHandler);
+      }
     }
   }
 
   addDirectory(directoryPath, collapsed) {
-    var topmostDirectory = this.addTopmostDirectory(directoryPath);
+    var addIfNecessary = true,
+        topmostDirectory = this.topmostDirectory(directoryPath, addIfNecessary);
 
     if (topmostDirectory !== null) {
       var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
@@ -153,29 +148,58 @@ class Directory extends DraggableEntry {
 
       if (!entriesDirectory) {
         this.entries.addDirectory(directoryName, collapsed, this.dragEventHandler, this.activateFileEventHandler);
-      } else {
-        var directory = this.entries.retrieveDirectory(directoryName);
-
-        collapsed ? 
-          directory.collapse() : 
-            directory.expand();
       }
     }
   }
 
-  removeDirectory(directoryPath) {
-    var topmostDirectory = this.removeTopmostDirectory(directoryPath);
+  removeFile(filePath, removeEmptyParentDirectories) {
+    var addIfNecessary = false,
+        topmostDirectory = this.topmostDirectory(filePath, addIfNecessary);
+
+    if (topmostDirectory !== null) {
+      var filePathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
+
+      topmostDirectory.removeFile(filePathWithoutTopmostDirectoryName, removeEmptyParentDirectories);
+    } else {
+      var fileName = filePath,  ///
+          entriesFile = this.entries.hasFile(fileName);
+
+      if (entriesFile) {
+        this.entries.removeFile(fileName);
+      }
+    }
+
+    if (removeEmptyParentDirectories) {
+      var empty = this.isEmpty();
+
+      if (empty) {
+        this.remove();
+      }
+    }
+  }
+
+  removeDirectory(directoryPath, removeEmptyParentDirectories) {
+    var addIfNecessary = false,
+        topmostDirectory = this.topmostDirectory(directoryPath, addIfNecessary);
 
     if (topmostDirectory !== null) {
       var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
-      topmostDirectory.removeDirectory(directoryPathWithoutTopmostDirectoryName);
+      topmostDirectory.removeDirectory(directoryPathWithoutTopmostDirectoryName, removeEmptyParentDirectories);
     } else {
       var directoryName = directoryPath,  ///
           entriesDirectory = this.entries.hasDirectory(directoryName);
 
       if (entriesDirectory) {
         this.entries.removeDirectory(directoryName);
+      }
+    }
+
+    if (removeEmptyParentDirectories) {
+      var empty = this.isEmpty();
+
+      if (empty) {
+        this.remove();
       }
     }
   }
@@ -233,25 +257,29 @@ class Directory extends DraggableEntry {
     return marked;
   }
 
+  isEmpty() { return this.entries.isEmpty(); }
+
   forEachFile(callback) { this.entries.forEachFile(callback); }
 
   forEachDirectory(callback) { this.entries.forEachDirectory(callback); }
 
   someDirectory(callback) { this.entries.someDirectory(callback); }
 
-  addTopmostDirectory(path) {
+  topmostDirectory(path, addIfNecessary) {
     var topmostDirectory,
         topmostDirectoryName = util.topmostDirectoryName(path);
 
     if (topmostDirectoryName === null) {
       topmostDirectory = null;
     } else {
-      var entriesDirectory = this.entries.hasDirectory(topmostDirectoryName);
+      if (addIfNecessary) {
+        var entriesDirectory = this.entries.hasDirectory(topmostDirectoryName);
 
-      if (!entriesDirectory) {
-        var collapsed = true;
+        if (!entriesDirectory) {
+          var collapsed = true;
 
-        this.entries.addDirectory(topmostDirectoryName, collapsed, this.dragEventHandler, this.activateFileEventHandler);
+          this.entries.addDirectory(topmostDirectoryName, collapsed, this.dragEventHandler, this.activateFileEventHandler);
+        }
       }
 
       topmostDirectory = this.entries.retrieveDirectory(topmostDirectoryName);

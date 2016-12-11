@@ -97,7 +97,7 @@ body.append(rubbishBin);
 
 Remember when cloning or creating from HTML that you actually then attach the explorer to an existing DOM element.
 
-### Adding files and directories
+### Adding and removing files and directories
 
 You can add files or empty directories:
 
@@ -110,11 +110,18 @@ secondExplorer.addFile('Second explorer/First directory/Second file.fls');
 secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 ```
 
-The `addDirectory()` method has a second, optional `collapsed` argument. The default is false;
+The `addDirectory()` method has a second, optional `collapsed` argument. The default is `false`. The explorer will add the necessary parent directories for you whenever you add a file. If you try to add a file or directory more than once, nothing happens.
 
-The explorer will add the directories for you whenever you add a file. If you try to add a directory or file more than once, it will be ignored.
+You can remove files and non-empty directories:
 
-There are no `addFiles()` or `addDirectories()` methods, create your own loops!
+```js
+secondExplorer.removeFile('Second explorer/First directory/Second file.fls', true);
+secondExplorer.removeFile('Second explorer/Second directory/Third file.fls', false);
+
+secondExplorer.removeDirectory('Second explorer/Second directory', false);
+```
+
+Both the `removeFile()` and `removeDirectory()` methods have a second, optional `removeEmptyParentDirectories` argument. The default is `false`. If you try to remove a file or directory more than once, nothing happens.
 
 ### Dragging between elements
 
@@ -145,7 +152,7 @@ function onActivate(sourcePath, callback) {
 }
 ```
 
-### Moving files and directories
+### Handling moving files and directories
 
 The `onMove()` handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable object with one key, namely the entry's source path. Its value is the entry's target path. If you want the entry to be moved, leave the object as-is. If you want the entry to be left in place, change the value to the source path. If you want it removed, change the value to `null`. Simply leaving the array of path maps alone with therefore move the entries as expected.
 
@@ -182,7 +189,7 @@ function onMove(pathMaps, done) {
 }
 ```
    
-### Removing files and directories
+### Handling removing files and directories
   
 The `onRemove()` handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable object with one key, namely the entries source path. If you want the entry to be removed, leave the object as-is. If you want the entry to be left in place, change the value to the target path. Simply leaving the array of path maps alone will therefore remove the entries as expected.
 

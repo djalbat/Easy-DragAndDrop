@@ -41,6 +41,14 @@ class Entries extends Element {
     directory.remove();
   }
 
+  hasFile(fileName) {
+    var file = this.retrieveFile(fileName);
+
+    file = (file !== null); ///
+
+    return file;
+  }
+
   hasDirectory(directoryName) {
     var directory = this.retrieveDirectory(directoryName);
     
@@ -72,12 +80,20 @@ class Entries extends Element {
 
     marker.remove();
   }
-
+  
   isMarked() {
     var marker = this.retrieveMarker(),
         marked = (marker!== null);
 
     return marked;
+  }
+
+  isEmpty() {
+    var entries = this.getEntries(),
+        entriesLength = entries.length,
+        empty = (entriesLength === 0);
+
+    return empty;
   }
 
   addEntry(entry) {
