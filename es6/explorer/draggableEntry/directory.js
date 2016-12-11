@@ -34,6 +34,10 @@ class Directory extends DraggableEntry {
     return true;
   }
 
+  isRootDirectory() {
+    return false;
+  }
+
   isBefore(entry) {
     var entryType = entry.getType();
 
@@ -170,10 +174,14 @@ class Directory extends DraggableEntry {
     }
 
     if (removeEmptyParentDirectories) {
-      var empty = this.isEmpty();
+      var rootDirectory = this.isRootDirectory();
 
-      if (empty) {
-        this.remove();
+      if (!rootDirectory) {
+        var empty = this.isEmpty();
+
+        if (empty) {
+          this.remove();
+        }
       }
     }
   }
@@ -196,10 +204,14 @@ class Directory extends DraggableEntry {
     }
 
     if (removeEmptyParentDirectories) {
-      var empty = this.isEmpty();
+      var rootDirectory = this.isRootDirectory();
 
-      if (empty) {
-        this.remove();
+      if (!rootDirectory) {
+        var empty = this.isEmpty();
+
+        if (empty) {
+          this.remove();
+        }
       }
     }
   }

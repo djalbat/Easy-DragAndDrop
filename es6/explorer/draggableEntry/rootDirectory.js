@@ -12,6 +12,10 @@ class RootDirectory extends Directory {
 
     super(selector, name, collapsed, dragEventHandler, activateFileEventHandler);
   }
+  
+  isRootDirectory() {
+    return true;
+  }
 
   getDirectoryOverlappingEntry(entry, noDragsToSubdirectories) {
     var directoryOverlappingEntry;

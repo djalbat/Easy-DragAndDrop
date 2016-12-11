@@ -61,6 +61,9 @@
         secondExplorer.addFile('Second explorer/First directory/Second file.fls');
         secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 
+        firstExplorer.addFile('First explorer/Zeroth file.fls');
+        firstExplorer.removeFile('First explorer/Zeroth file.fls', true);
+
         function onActivate(sourcePath, callback) {
           console.log('activate: ' + sourcePath)
 
