@@ -121,7 +121,7 @@ secondExplorer.removeFile('Second explorer/Second directory/Third file.fls', fal
 secondExplorer.removeDirectory('Second explorer/Second directory', false);
 ```
 
-Both the `removeFile()` and `removeDirectory()` methods have a second, optional `removeEmptyParentDirectories` argument. The default is `false`. If you try to remove a file or directory more than once, nothing happens.
+Both the `removeFile()` and `removeDirectory()` methods have a second, optional `removeEmptyParentDirectories` argument. The default is `false`. You cannot remove the topmost directory, and if you try to remove a file or directory more than once, nothing happens.
 
 ### Dragging between elements
 

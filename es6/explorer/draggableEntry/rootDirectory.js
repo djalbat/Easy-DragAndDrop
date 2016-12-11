@@ -50,7 +50,9 @@ class RootDirectory extends Directory {
   removeDirectory(directoryPath, removeEmptyParentDirectories) {
     var directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
-    super.removeDirectory(directoryPathWithoutRootDirectoryName, removeEmptyParentDirectories);
+    if (directoryPathWithoutRootDirectoryName !== null) {
+      super.removeDirectory(directoryPathWithoutRootDirectoryName, removeEmptyParentDirectories);
+    }
   }
 
   addMarker(markerPath, entryType) {
