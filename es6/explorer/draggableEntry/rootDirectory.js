@@ -36,19 +36,25 @@ class RootDirectory extends Directory {
   addFile(filePath) {
     var filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
 
-    super.addFile(filePathWithoutRootDirectoryName);
+    if (filePathWithoutRootDirectoryName !== null) {
+      super.addFile(filePathWithoutRootDirectoryName);
+    }
   }
 
   addDirectory(directoryPath, collapsed) {
     var directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
-    super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
+    if (directoryPathWithoutRootDirectoryName !== null) {
+      super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
+    }
   }
 
   removeFile(filePath, removeEmptyParentDirectories) {
     var filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
 
-    super.removeFile(filePathWithoutRootDirectoryName, removeEmptyParentDirectories);
+    if (filePathWithoutRootDirectoryName !== null) {
+      super.removeFile(filePathWithoutRootDirectoryName, removeEmptyParentDirectories);
+    }
   }
 
   removeDirectory(directoryPath, removeEmptyParentDirectories) {
