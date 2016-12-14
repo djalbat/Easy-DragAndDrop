@@ -61,6 +61,10 @@ class DraggableEntry extends Element {
     return collapsedBounds;
   }
 
+  isRootDirectory() {
+    return false;
+  }
+
   isOverlappingCollapsedBounds(collapsedBounds) {
     var bounds = this.getBounds(),
         overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds);
@@ -114,15 +118,19 @@ class DraggableEntry extends Element {
     if (this.timeout === null) {
       this.timeout = setTimeout(function() {
         this.timeout = null;
-        
-        var noDraggingSubEntries = this.explorer.hasOption(options.NO_DRAGGING_SUB_ENTRIES);
 
-        if (!noDraggingSubEntries) {
-          var startedDragging = this.explorer.startDragging(this);
+        var rootDirectory = this.isRootDirectory(),
+            noDraggingSubEntries = this.explorer.hasOption(options.NO_DRAGGING_SUB_ENTRIES),
+            noDraggingRootDirectory = this.explorer.hasOption(options.NO_DRAGGING_ROOT_DIRECTORY);
 
-          if (startedDragging) {
-            this.startDragging(mouseTop, mouseLeft);
-          }
+        if ((noDraggingSubEntries) || (rootDirectory && noDraggingRootDirectory)) {          
+          return;
+        }
+
+        var startedDragging = this.explorer.startDragging(this);
+
+        if (startedDragging) {
+          this.startDragging(mouseTop, mouseLeft);
         }
       }.bind(this), START_DRAGGING_DELAY);
     }

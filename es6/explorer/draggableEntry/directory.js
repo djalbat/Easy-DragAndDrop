@@ -32,10 +32,6 @@ class Directory extends DraggableEntry {
     return true;
   }
 
-  isRootDirectory() {
-    return false;
-  }
-
   isBefore(entry) {
     var entryType = entry.getType();
 
