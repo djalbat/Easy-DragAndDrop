@@ -4,6 +4,7 @@ var easyui = require('easyui'),
     Element = easyui.Element;
 
 var util = require('./util'),
+    options = require('./options'),
     DroppableElement = require('./droppableElement'),
     RootDirectory = require('./explorer/draggableEntry/rootDirectory');
 
@@ -42,14 +43,8 @@ class Explorer extends DroppableElement {
   removeFile(filePath, removeEmptyParentDirectories) { this.rootDirectory.removeFile(filePath, removeEmptyParentDirectories); }
   removeDirectory(directoryPath, removeEmptyParentDirectories) { this.rootDirectory.removeDirectory(directoryPath, removeEmptyParentDirectories); }
   getRootDirectoryName() { return this.rootDirectory.getName(); }
-  getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }
-  
-  getDirectoryOverlappingDraggableEntry(draggableEntry) {
-    var noDraggingIntoSubdirectories = this.hasOption(Explorer.options.NO_DRAGGING_INTO_SUBDIRECTORIES),
-        directoryOverlappingEntry = this.rootDirectory.getDirectoryOverlappingDraggableEntry(draggableEntry, noDraggingIntoSubdirectories);
-
-    return directoryOverlappingEntry;
-  }
+  getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }  
+  getDirectoryOverlappingDraggableEntry(draggableEntry) { return this.rootDirectory.getDirectoryOverlappingDraggableEntry(draggableEntry); }
 
   addMarkerInPlace(draggableEntry) {
     var draggableEntryPath = draggableEntry.getPath(),
@@ -102,7 +97,7 @@ class Explorer extends DroppableElement {
 
   startDragging(draggableEntry) {
     var startedDragging,
-        noDragging = this.hasOption(Explorer.options.NO_DRAGGING);
+        noDragging = this.hasOption(options.NO_DRAGGING);
 
     if (noDragging) {
       startedDragging = false;
@@ -144,7 +139,7 @@ class Explorer extends DroppableElement {
       draggableEntries.reverse();
       draggableEntries.push(draggableEntry);
 
-      markedDroppableElement.moveEntries(draggableEntries, sourcePath, targetPath, function() {
+      markedDroppableElement.moveDraggableEntries(draggableEntries, sourcePath, targetPath, function() {
         markedDroppableElement.removeMarker();
 
         done();
@@ -237,21 +232,21 @@ class Explorer extends DroppableElement {
     }
   }
 
-  draggableEntryPathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
-    var draggableEntryPathMaps = draggableEntries.map(function(draggableEntry) {
-      var draggableEntryPathMap = {},
+  pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
+    var pathMaps = draggableEntries.map(function(draggableEntry) {
+      var pathMap = {},
           draggableEntryPath = draggableEntry.getPath(),
           sourceDraggableEntryPath = draggableEntryPath,  ///
           targetDraggableEntryPath = (sourcePath === null) ?
                                        util.prependTargetPath(draggableEntryPath, targetPath) :
                                          util.replaceSourcePathWithTargetPath(draggableEntryPath, sourcePath, targetPath);
 
-      draggableEntryPathMap[sourceDraggableEntryPath] = targetDraggableEntryPath;
+      pathMap[sourceDraggableEntryPath] = targetDraggableEntryPath;
 
-      return draggableEntryPathMap;
+      return pathMap;
     });
 
-    return draggableEntryPathMaps;
+    return pathMaps;
   }
 
   static clone(selector, rootDirectoryName, moveHandler, activateHandler) {
@@ -262,11 +257,5 @@ class Explorer extends DroppableElement {
     return Element.fromHTML(Explorer, html, rootDirectoryName, moveHandler, activateHandler);
   }
 }
-
-Explorer.options = {
-  NO_DRAGGING: 'NO_DRAGGING',
-  NO_DRAGGING_SUB_ENTRIES: 'NO_DRAGGING_SUB_ENTRIES',
-  NO_DRAGGING_INTO_SUBDIRECTORIES: 'NO_DRAGGING_INTO_SUBDIRECTORIES'
-};
 
 module.exports = Explorer;

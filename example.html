@@ -34,7 +34,8 @@
 
         var Body = easyui.Body;
 
-        var Explorer = easyuidraganddrop.Explorer,
+        var options = easyuidraganddrop.options,
+            Explorer = easyuidraganddrop.Explorer,
             RubbishBin = easyuidraganddrop.RubbishBin;
 
         var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onActivate, onMove),
@@ -61,7 +62,7 @@
         secondExplorer.addFile('Second explorer/First directory/Second file.fls');
         secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 
-        secondExplorer.setOption(Explorer.options.NO_DRAGGING_SUB_ENTRIES);
+        secondExplorer.setOption(options.NO_DRAGGING_INTO_SUBDIRECTORIES);
 
         function onActivate(sourcePath, callback) {
           console.log('activate: ' + sourcePath)
@@ -74,56 +75,56 @@
         }
 
         function onMove(pathMaps, done) {
-          pathMaps.forEach(function(pathMap) {
-            var keys = Object.keys(pathMap),
-                firstKey = first(keys),
-                sourcePath = firstKey, ///
-                targetPath = pathMap[sourcePath],
-                movedPath = targetPath;
-
-            console.log('move: ' + sourcePath + ' -> ' + targetPath)
-
-            switch(sourcePath) {
-              case 'Second explorer/First directory/First file.fls':
-                console.log('...deleted.')
-
-                movedPath = null;
-                break;
-
-              case 'Second explorer/First directory/Second file.fls':
-              case 'Second explorer/First directory':
-                console.log('...left in place.')
-
-                movedPath = sourcePath;
-                break;
-            }
-
-            pathMap[sourcePath] = movedPath;
-          });
+//          pathMaps.forEach(function(pathMap) {
+//            var keys = Object.keys(pathMap),
+//                firstKey = first(keys),
+//                sourcePath = firstKey, ///
+//                targetPath = pathMap[sourcePath],
+//                movedPath = targetPath;
+//
+//            console.log('move: ' + sourcePath + ' -> ' + targetPath)
+//
+//            switch(sourcePath) {
+//              case 'Second explorer/First directory/First file.fls':
+//                console.log('...deleted.')
+//
+//                movedPath = null;
+//                break;
+//
+//              case 'Second explorer/First directory/Second file.fls':
+//              case 'Second explorer/First directory':
+//                console.log('...left in place.')
+//
+//                movedPath = sourcePath;
+//                break;
+//            }
+//
+//            pathMap[sourcePath] = movedPath;
+//          });
 
           done();
         }
 
         function onRemove(pathMaps, done) {
-          pathMaps.forEach(function(pathMap) {
-            var keys = Object.keys(pathMap),
-                firstKey = first(keys),
-                sourcePath = firstKey, ///
-                removedPath = null;
-
-            console.log('remove: ' + sourcePath)
-
-            switch(sourcePath) {
-              case 'Second explorer/First directory/Second file.fls':
-              case 'Second explorer/First directory':
-                console.log('...left in place.')
-
-                removedPath = sourcePath;
-                break;
-            }
-
-            pathMap[sourcePath] = removedPath;
-          });
+//          pathMaps.forEach(function(pathMap) {
+//            var keys = Object.keys(pathMap),
+//                firstKey = first(keys),
+//                sourcePath = firstKey, ///
+//                removedPath = null;
+//
+//            console.log('remove: ' + sourcePath)
+//
+//            switch(sourcePath) {
+//              case 'Second explorer/First directory/Second file.fls':
+//              case 'Second explorer/First directory':
+//                console.log('...left in place.')
+//
+//                removedPath = sourcePath;
+//                break;
+//            }
+//
+//            pathMap[sourcePath] = removedPath;
+//          });
 
           done();
         }

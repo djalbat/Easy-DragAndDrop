@@ -110,19 +110,19 @@ class RubbishBin extends DroppableElement {
     return open;
   }
 
-  draggableEntryPathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
-    var draggableEntryPathMaps = draggableEntries.map(function(draggableEntry) {
-      var draggableEntryPathMap = {},
+  pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
+    var pathMaps = draggableEntries.map(function(draggableEntry) {
+      var pathMap = {},
           draggableEntryPath = draggableEntry.getPath(),
-          sourceEntryPath = draggableEntryPath,  ///
-          targetEntryPath = null;
+          sourceDraggableEntryPath = draggableEntryPath,  ///
+          targetDraggableEntryPath = null;
 
-      draggableEntryPathMap[sourceEntryPath] = targetEntryPath;
+      pathMap[sourceDraggableEntryPath] = targetDraggableEntryPath;
 
-      return draggableEntryPathMap;
+      return pathMap;
     });
 
-    return draggableEntryPathMaps;
+    return pathMaps;
   }
 
   static clone(selector, removeHandler) {

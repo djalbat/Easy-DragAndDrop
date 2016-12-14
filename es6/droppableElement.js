@@ -128,40 +128,38 @@ class DroppableElement extends Element {
     return marker;
   }
 
-  moveEntries(entries, sourcePath, targetPath, done) {
-    var entryPathMaps = this.draggableEntryPathMapsFromDraggableEntries(entries, sourcePath, targetPath);
+  moveDraggableEntries(draggableEntries, sourcePath, targetPath, done) {
+    var pathMaps = this.pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath);
 
-    function moveEntriesDone() {
-      entries.forEach(function(entry) {
-        var entryPath = entry.getPath(),
-            sourcePath = entryPath,  ///
-            pathMap = find(entryPathMaps, function(entryPathMap) {
-              var sourceEntryPath = sourcePath,
-                  movedPath = entryPathMap[sourceEntryPath],
+    this.moveHandler(pathMaps, function() {
+      draggableEntries.forEach(function(draggableEntry) {
+        var draggableEntryPath = draggableEntry.getPath(),
+            sourcePath = draggableEntryPath,  ///
+            pathMap = find(pathMaps, function(pathMap) {
+              var sourceDraggableEntryPath = sourcePath,
+                  movedPath = pathMap[sourceDraggableEntryPath],
                   found = (movedPath !== undefined);
 
               return found;
             }),
             movedPath = pathMap[sourcePath];
 
-        this.moveEntry(entry, sourcePath, movedPath);
+        this.moveDraggableEntry(draggableEntry, sourcePath, movedPath);
       }.bind(this));
 
       done();
-    }
-      
-    this.moveHandler(entryPathMaps, moveEntriesDone.bind(this));
+    }.bind(this));
   }
 
-  moveEntry(entry, sourcePath, movedPath) {
-    var entryDirectory = entry.isDirectory();
+  moveDraggableEntry(draggableEntry, sourcePath, movedPath) {
+    var draggableEntryDirectory = draggableEntry.isDirectory();
 
-    if (entryDirectory) {
-      var directory = entry;  ///
+    if (draggableEntryDirectory) {
+      var directory = draggableEntry;  ///
 
       this.moveDirectory(directory, sourcePath, movedPath);
     } else {
-      var file = entry; ///
+      var file = draggableEntry; ///
 
       this.moveFile(file, sourcePath, movedPath);
     }

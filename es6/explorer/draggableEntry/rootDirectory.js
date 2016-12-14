@@ -4,6 +4,7 @@ var easyui = require('easyui'),
     Element = easyui.Element;
 
 var util = require('../../util'),
+    options = require('../../options'),
     Directory = require('./directory');
 
 class RootDirectory extends Directory {
@@ -17,8 +18,10 @@ class RootDirectory extends Directory {
     return true;
   }
 
-  getDirectoryOverlappingDraggableEntry(draggableEntry, noDraggingIntoSubdirectories) {
-    var directoryOverlappingEntry;
+  getDirectoryOverlappingDraggableEntry(draggableEntry) {
+    var directoryOverlappingEntry,
+        explorer = this.getExplorer(),
+        noDraggingIntoSubdirectories = explorer.hasOption(options.NO_DRAGGING_INTO_SUBDIRECTORIES);
     
     if (noDraggingIntoSubdirectories) {
       var overlappingEntry = this.isOverlappingDraggableEntry(draggableEntry);
