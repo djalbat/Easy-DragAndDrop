@@ -76,56 +76,56 @@
         }
 
         function onMove(pathMaps, done) {
-//          pathMaps.forEach(function(pathMap) {
-//            var keys = Object.keys(pathMap),
-//                firstKey = first(keys),
-//                sourcePath = firstKey, ///
-//                targetPath = pathMap[sourcePath],
-//                movedPath = targetPath;
-//
-//            console.log('move: ' + sourcePath + ' -> ' + targetPath)
-//
-//            switch(sourcePath) {
-//              case 'Second explorer/First directory/First file.fls':
-//                console.log('...deleted.')
-//
-//                movedPath = null;
-//                break;
-//
-//              case 'Second explorer/First directory/Second file.fls':
-//              case 'Second explorer/First directory':
-//                console.log('...left in place.')
-//
-//                movedPath = sourcePath;
-//                break;
-//            }
-//
-//            pathMap[sourcePath] = movedPath;
-//          });
+          pathMaps.forEach(function(pathMap) {
+            var keys = Object.keys(pathMap),
+                firstKey = first(keys),
+                sourcePath = firstKey, ///
+                targetPath = pathMap[sourcePath],
+                movedPath = targetPath;
+
+            console.log('move: ' + sourcePath + ' -> ' + targetPath)
+
+            switch(sourcePath) {
+              case 'Second explorer/First directory/First file.fls':
+                console.log('...deleted.')
+
+                movedPath = null;
+                break;
+
+              case 'Second explorer/First directory/Second file.fls':
+              case 'Second explorer/First directory':
+                console.log('...left in place.')
+
+                movedPath = sourcePath;
+                break;
+            }
+
+            pathMap[sourcePath] = movedPath;
+          });
 
           done();
         }
 
         function onRemove(pathMaps, done) {
-//          pathMaps.forEach(function(pathMap) {
-//            var keys = Object.keys(pathMap),
-//                firstKey = first(keys),
-//                sourcePath = firstKey, ///
-//                removedPath = null;
-//
-//            console.log('remove: ' + sourcePath)
-//
-//            switch(sourcePath) {
-//              case 'Second explorer/First directory/Second file.fls':
-//              case 'Second explorer/First directory':
-//                console.log('...left in place.')
-//
-//                removedPath = sourcePath;
-//                break;
-//            }
-//
-//            pathMap[sourcePath] = removedPath;
-//          });
+          pathMaps.forEach(function(pathMap) {
+            var keys = Object.keys(pathMap),
+                firstKey = first(keys),
+                sourcePath = firstKey, ///
+                removedPath = null;
+
+            console.log('remove: ' + sourcePath)
+
+            switch(sourcePath) {
+              case 'Second explorer/First directory/Second file.fls':
+              case 'Second explorer/First directory':
+                console.log('...left in place.')
+
+                removedPath = sourcePath;
+                break;
+            }
+
+            pathMap[sourcePath] = removedPath;
+          });
 
           done();
         }
