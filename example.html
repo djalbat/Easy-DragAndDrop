@@ -62,6 +62,7 @@
         secondExplorer.addFile('Second explorer/First directory/Second file.fls');
         secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 
+        secondExplorer.setOption(options.NO_DRAGGING_SUB_ENTRIES);
         secondExplorer.setOption(options.NO_DRAGGING_INTO_SUBDIRECTORIES);
 
         function onActivate(sourcePath, callback) {

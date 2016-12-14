@@ -4,7 +4,8 @@ var easyui = require('easyui'),
     Body = easyui.Body,
     Element = easyui.Element;
 
-var NameButton = require('./nameButton');
+var options = require('../options'),
+    NameButton = require('./nameButton');
 
 const ESCAPE_KEYCODE = 27,
       START_DRAGGING_DELAY = 175,
@@ -114,10 +115,14 @@ class DraggableEntry extends Element {
       this.timeout = setTimeout(function() {
         this.timeout = null;
         
-        var startedDragging = this.explorer.startDragging(this);
+        var noDraggingSubEntries = this.explorer.hasOption(options.NO_DRAGGING_SUB_ENTRIES);
 
-        if (startedDragging) {
-          this.startDragging(mouseTop, mouseLeft);
+        if (!noDraggingSubEntries) {
+          var startedDragging = this.explorer.startDragging(this);
+
+          if (startedDragging) {
+            this.startDragging(mouseTop, mouseLeft);
+          }
         }
       }.bind(this), START_DRAGGING_DELAY);
     }
