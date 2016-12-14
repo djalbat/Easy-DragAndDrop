@@ -93,19 +93,9 @@ class Explorer extends DroppableElement {
   }
 
   isToBeMarked(entry) {
-    var toBeMarked,
-        entryPath = entry.getPath(),
-        noExplorerDrags = this.hasOption(Explorer.options.NO_EXPLORER_DRAGS),
-        entryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(entryPath);
-    
-    if (noExplorerDrags && entryPathTopmostDirectoryName) {
-      toBeMarked = false;
-    } else {
-      var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
-      
-      toBeMarked = (directoryOverlappingEntry !== null);
-    }
-        
+    var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry),
+        toBeMarked = (directoryOverlappingEntry !== null);
+
     return toBeMarked;
   }
 
@@ -274,7 +264,6 @@ class Explorer extends DroppableElement {
 
 Explorer.options = {
   NO_DRAGGING: 'NO_DRAGGING',
-  NO_EXPLORER_DRAGS: 'NO_EXPLORER_DRAGS',
   NO_DRAGGING_INTO_SUBDIRECTORIES: 'NO_DRAGGING_INTO_SUBDIRECTORIES'
 };
 

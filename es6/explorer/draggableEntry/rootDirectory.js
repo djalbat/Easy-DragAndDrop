@@ -17,10 +17,10 @@ class RootDirectory extends Directory {
     return true;
   }
 
-  getDirectoryOverlappingEntry(entry, noDragsToSubdirectories) {
+  getDirectoryOverlappingEntry(entry, noDraggingIntoSubdirectories) {
     var directoryOverlappingEntry;
     
-    if (noDragsToSubdirectories) {
+    if (noDraggingIntoSubdirectories) {
       var overlappingEntry = this.isOverlappingEntry(entry);
 
       directoryOverlappingEntry = overlappingEntry ?
