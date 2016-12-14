@@ -15,8 +15,8 @@ class Entries extends Element {
     this.Directory = Directory;
   }
   
-  addFile(fileName, dragEventHandler, activateFileEventHandler) {
-    var file = File.clone(fileName, dragEventHandler, activateFileEventHandler),
+  addFile(fileName, explorer, activateFileEventHandler) {
+    var file = File.clone(fileName, explorer, activateFileEventHandler),
         entry = file; ///
 
     this.addEntry(entry);
@@ -28,8 +28,8 @@ class Entries extends Element {
     file.remove();
   }
 
-  addDirectory(directoryName, collapsed, dragEventHandler, activateFileEventHandler) {
-    var directory = this.Directory.clone(directoryName, collapsed, dragEventHandler, activateFileEventHandler),
+  addDirectory(directoryName, collapsed, explorer, activateFileEventHandler) {
+    var directory = this.Directory.clone(directoryName, collapsed, explorer, activateFileEventHandler),
         entry = directory;  ///
 
     this.addEntry(entry);
@@ -57,10 +57,10 @@ class Entries extends Element {
     return directory;
   }
 
-  addMarker(markerName, entryType) {
+  addMarker(markerName, draggableEntryType) {
     var marker;
 
-    switch (entryType) {
+    switch (draggableEntryType) {
       case Entry.types.FILE:
         marker = FileMarker.clone(markerName);
         break;
@@ -153,20 +153,20 @@ class Entries extends Element {
     return markedDirectory;
   }
 
-  getDirectoryOverlappingEntry(entry) {
-    var directoryOverlappingEntry = null;
+  getDirectoryOverlappingDraggableEntry(draggbleEntry) {
+    var directoryOverlappingDraggableEntry = null;
 
     this.someDirectory(function(directory) {
-      directoryOverlappingEntry = directory.getDirectoryOverlappingEntry(entry);
+      directoryOverlappingDraggableEntry = directory.getDirectoryOverlappingDraggableEntry(draggbleEntry);
 
-      if (directoryOverlappingEntry !== null) {
+      if (directoryOverlappingDraggableEntry !== null) {
         return true;
       } else {
         return false;
       }
     });
 
-    return directoryOverlappingEntry;
+    return directoryOverlappingDraggableEntry;
   }
 
   forEachFile(callback) { this.forEachEntryByType(callback, Entry.types.FILE) }

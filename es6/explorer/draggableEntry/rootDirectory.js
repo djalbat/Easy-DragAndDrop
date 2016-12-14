@@ -7,27 +7,27 @@ var util = require('../../util'),
     Directory = require('./directory');
 
 class RootDirectory extends Directory {
-  constructor(selector, name, dragEventHandler, activateFileEventHandler) {
+  constructor(selector, name, explorer, activateFileEventHandler) {
     var collapsed = false;  ///
 
-    super(selector, name, collapsed, dragEventHandler, activateFileEventHandler);
+    super(selector, name, collapsed, explorer, activateFileEventHandler);
   }
   
   isRootDirectory() {
     return true;
   }
 
-  getDirectoryOverlappingEntry(entry, noDraggingIntoSubdirectories) {
+  getDirectoryOverlappingDraggableEntry(draggableEntry, noDraggingIntoSubdirectories) {
     var directoryOverlappingEntry;
     
     if (noDraggingIntoSubdirectories) {
-      var overlappingEntry = this.isOverlappingEntry(entry);
+      var overlappingEntry = this.isOverlappingDraggableEntry(draggableEntry);
 
       directoryOverlappingEntry = overlappingEntry ?
                                     this :
                                       null;
     } else {
-      directoryOverlappingEntry = super.getDirectoryOverlappingEntry(entry);
+      directoryOverlappingEntry = super.getDirectoryOverlappingDraggableEntry(draggableEntry);
     }
     
     return directoryOverlappingEntry;    
@@ -65,14 +65,14 @@ class RootDirectory extends Directory {
     }
   }
 
-  addMarker(markerPath, entryType) {
+  addMarker(markerPath, draggableEntryType) {
     var markerPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(markerPath);
 
-    super.addMarker(markerPathWithoutRootDirectoryName, entryType);
+    super.addMarker(markerPathWithoutRootDirectoryName, draggableEntryType);
   }
 
-  static clone(name, dragEventHandler, activateFileEventHandler) {
-    var rootDirectory = Element.clone(RootDirectory, '#directory', name, dragEventHandler, activateFileEventHandler);
+  static clone(name, explorer, activateFileEventHandler) {
+    var rootDirectory = Element.clone(RootDirectory, '#directory', name, explorer, activateFileEventHandler);
 
     rootDirectory.removeAttribute('id');
 

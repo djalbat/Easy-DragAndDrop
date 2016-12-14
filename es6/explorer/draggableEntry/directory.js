@@ -10,13 +10,11 @@ var util = require('../../util'),
     DraggableEntry = require('../draggableEntry');
 
 class Directory extends DraggableEntry {
-  constructor(selector, name, collapsed, dragEventHandler, activateFileEventHandler) {
+  constructor(selector, name, collapsed, explorer, activateFileEventHandler) {
     var type = Entry.types.DIRECTORY;
 
-    super(selector, name, type, dragEventHandler);
-
-    this.dragEventHandler = dragEventHandler;
-
+    super(selector, name, explorer, type);
+    
     this.activateFileEventHandler = activateFileEventHandler;
 
     this.toggleButton = new ToggleButton(this, this.toggleButtonUpdateHandler.bind(this) );
@@ -93,25 +91,25 @@ class Directory extends DraggableEntry {
     return collapsedBounds;
   }
 
-  isOverlappingEntry(entry) {
-    var overlappingEntry;
+  isOverlappingDraggableEntry(draggableEntry) {
+    var overlappingDraggableEntry;
     
-    if (this === entry) {
-      overlappingEntry = false;
+    if (this === draggableEntry) {
+      overlappingDraggableEntry = false;
     } else {
       var collapsed = this.isCollapsed();
       
       if (collapsed) {
-        overlappingEntry = false;
+        overlappingDraggableEntry = false;
       } else {
-        var entryCollapsedBounds = entry.getCollapsedBounds(),
-            overlappingCollapsedBounds = super.isOverlappingCollapsedBounds(entryCollapsedBounds);
+        var draggableEntryCollapsedBounds = draggableEntry.getCollapsedBounds(),
+            overlappingDraggableEntryCollapsedBounds = super.isOverlappingCollapsedBounds(draggableEntryCollapsedBounds);
 
-        overlappingEntry = overlappingCollapsedBounds;
+        overlappingDraggableEntry = overlappingDraggableEntryCollapsedBounds;
       }
     }
 
-    return overlappingEntry;
+    return overlappingDraggableEntry;
   }
 
   isCollapsed() { return this.toggleButton.isCollapsed(); }
@@ -133,7 +131,9 @@ class Directory extends DraggableEntry {
           entriesFile = this.entries.hasFile(fileName);
 
       if (!entriesFile) {
-        this.entries.addFile(fileName, this.dragEventHandler, this.activateFileEventHandler);
+        var explorer = this.getExplorer();
+        
+        this.entries.addFile(fileName, explorer, this.activateFileEventHandler);
       }
     }
   }
@@ -151,7 +151,9 @@ class Directory extends DraggableEntry {
           entriesDirectory = this.entries.hasDirectory(directoryName);
 
       if (!entriesDirectory) {
-        this.entries.addDirectory(directoryName, collapsed, this.dragEventHandler, this.activateFileEventHandler);
+        var explorer = this.getExplorer();
+
+        this.entries.addDirectory(directoryName, collapsed, explorer, this.activateFileEventHandler);
       }
     }
   }
@@ -216,18 +218,18 @@ class Directory extends DraggableEntry {
     }
   }
   
-  addMarker(markerPath, entryType) {
+  addMarker(markerPath, draggableEntryType) {
     var topmostDirectoryName = util.topmostDirectoryName(markerPath);
 
     if (topmostDirectoryName === null) {
       var markerName = markerPath;  ///
 
-      this.entries.addMarker(markerName, entryType);
+      this.entries.addMarker(markerName, draggableEntryType);
     } else {
       var topmostDirectory = this.entries.retrieveDirectory(topmostDirectoryName),
           markerPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(markerPath);
 
-      topmostDirectory.addMarker(markerPathWithoutTopmostDirectoryName, entryType);
+      topmostDirectory.addMarker(markerPathWithoutTopmostDirectoryName, draggableEntryType);
     }
   }
 
@@ -288,9 +290,10 @@ class Directory extends DraggableEntry {
         var entriesDirectory = this.entries.hasDirectory(topmostDirectoryName);
 
         if (!entriesDirectory) {
-          var collapsed = true;
+          var collapsed = true,
+              explorer = this.getExplorer();
 
-          this.entries.addDirectory(topmostDirectoryName, collapsed, this.dragEventHandler, this.activateFileEventHandler);
+          this.entries.addDirectory(topmostDirectoryName, collapsed, explorer, this.activateFileEventHandler);
         }
       }
 
@@ -314,19 +317,19 @@ class Directory extends DraggableEntry {
     return markedDirectory;
   }
 
-  getDirectoryOverlappingEntry(entry) {
-    var directoryOverlappingEntry = null,
-        overlappingEntry = this.isOverlappingEntry(entry);
+  getDirectoryOverlappingDraggableEntry(draggableEntry) {
+    var directoryOverlappingDraggableEntry = null,
+        overlappingDraggableEntry = this.isOverlappingDraggableEntry(draggableEntry);
 
-    if (overlappingEntry) {
-      directoryOverlappingEntry = this.entries.getDirectoryOverlappingEntry(entry);
+    if (overlappingDraggableEntry) {
+      directoryOverlappingDraggableEntry = this.entries.getDirectoryOverlappingDraggableEntry(draggableEntry);
 
-      if (directoryOverlappingEntry === null) {
-        directoryOverlappingEntry = this;
+      if (directoryOverlappingDraggableEntry === null) {
+        directoryOverlappingDraggableEntry = this;
       }
     }
 
-    return directoryOverlappingEntry;
+    return directoryOverlappingDraggableEntry;
   }
   
   toggleButtonUpdateHandler(collapsed) {
@@ -339,8 +342,8 @@ class Directory extends DraggableEntry {
     this.toggleButton.toggle();
   }
 
-  static clone(name, collapsed, dragEventHandler, activateFileEventHandler) {
-    var directory = Element.clone(Directory, '#directory', name, collapsed, dragEventHandler, activateFileEventHandler);
+  static clone(name, collapsed, explorer, activateFileEventHandler) {
+    var directory = Element.clone(Directory, '#directory', name, collapsed, explorer, activateFileEventHandler);
 
     directory.removeAttribute('id');
 

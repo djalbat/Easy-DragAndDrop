@@ -20,13 +20,13 @@ class RubbishBin extends DroppableElement {
     return markedDirectory;
   }
 
-  getDirectoryOverlappingEntry(entry) {
-    var directoryOverlappingEntry = null; ///
+  getDirectoryOverlappingDraggableEntry(draggableEntry) {
+    var directoryOverlappingDraggableEntry = null; ///
 
-    return directoryOverlappingEntry;
+    return directoryOverlappingDraggableEntry;
   }
 
-  addMarker(entry, directoryOverlappingEntry) {
+  addMarker(draggableEntry, directoryOverlappingDraggableEntry) {
     this.open();
   }
 
@@ -41,30 +41,30 @@ class RubbishBin extends DroppableElement {
     return marked;
   }
 
-  isToBeMarked(entry) {
+  isToBeMarked(draggableEntry) {
     var bounds = this.getBounds(),
-        collapsedBounds = entry.getCollapsedBounds(),
-        overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds),
-        toBeMarked = overlappingCollapsedBounds; ///
+        draggableEntryCollapsedBounds = draggableEntry.getCollapsedBounds(),
+        overlappingDraggableEntryCollapsedBounds = bounds.areOverlapping(draggableEntryCollapsedBounds),
+        toBeMarked = overlappingDraggableEntryCollapsedBounds; ///
 
     return toBeMarked;
   }
   
-  dragging(entry, explorer) {
+  dragging(draggableEntry, explorer) {
     var marked = this.isMarked();
 
     if (marked) {
-      var toBeMarked = this.isToBeMarked(entry);
+      var toBeMarked = this.isToBeMarked(draggableEntry);
 
       if (!toBeMarked) {
-        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(entry);
+        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(draggableEntry);
 
         if (droppableElementToBeMarked !== null) {
-          var directoryOverlappingEntry = droppableElementToBeMarked.getDirectoryOverlappingEntry(entry);
+          var directoryOverlappingDraggableEntry = droppableElementToBeMarked.getDirectoryOverlappingDraggableEntry(draggableEntry);
 
-          droppableElementToBeMarked.addMarker(entry, directoryOverlappingEntry);
+          droppableElementToBeMarked.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
         } else {
-          explorer.addMarkerInPlace(entry);
+          explorer.addMarkerInPlace(draggableEntry);
         }
 
         this.removeMarker();
@@ -110,19 +110,19 @@ class RubbishBin extends DroppableElement {
     return open;
   }
 
-  entryPathMapsFromEntries(entries, sourcePath, targetPath) {
-    var entryPathMaps = entries.map(function(entry) {
-      var entryPathMap = {},
-          entryPath = entry.getPath(),
-          sourceEntryPath = entryPath,  ///
+  draggableEntryPathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
+    var draggableEntryPathMaps = draggableEntries.map(function(draggableEntry) {
+      var draggableEntryPathMap = {},
+          draggableEntryPath = draggableEntry.getPath(),
+          sourceEntryPath = draggableEntryPath,  ///
           targetEntryPath = null;
 
-      entryPathMap[sourceEntryPath] = targetEntryPath;
+      draggableEntryPathMap[sourceEntryPath] = targetEntryPath;
 
-      return entryPathMap;
+      return draggableEntryPathMap;
     });
 
-    return entryPathMaps;
+    return draggableEntryPathMaps;
   }
 
   static clone(selector, removeHandler) {

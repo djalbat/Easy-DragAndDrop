@@ -5,7 +5,6 @@ var easyui = require('easyui'),
 
 var util = require('./util'),
     Entry = require('./explorer/entry'),
-    DragEvent = require('./dragEvent'),
     FileMarker = require('./explorer/entry/fileMarker'),
     DirectoryMarker = require('./explorer/entry/directoryMarker');
 
@@ -31,45 +30,18 @@ class DroppableElement extends Element {
     }
   }
 
-  isOverlappingDraggableElement(draggableElementCollapsedBounds) {
+  isOverlappingDraggableEntry(draggableEntryCollapsedBounds) {
     var bounds = this.getBounds(),
-        boundsOverlappingDraggableElement = bounds.areOverlapping(draggableElementCollapsedBounds),
-        overlappingDraggableElement = boundsOverlappingDraggableElement;
+        boundsOverlappingDraggableEntry = bounds.areOverlapping(draggableEntryCollapsedBounds),
+        overlappingDraggableEntry = boundsOverlappingDraggableEntry;
 
-    return overlappingDraggableElement;
+    return overlappingDraggableEntry;
   }
 
-  dragEventHandler(dragEvent, done) {
-    var action = dragEvent.getAction(),
-        draggableElement = dragEvent.getDraggableElement(),
-        entry = draggableElement,  ///
-        startDragging = false;
-
-    switch (action) {
-      case DragEvent.actions.START_DRAGGING:
-        startDragging = this.startDragging(entry);
-        break;
-
-      case DragEvent.actions.STOP_DRAGGING:
-        this.stopDragging(entry, done);
-        break;
-
-      case DragEvent.actions.DRAGGING:
-        this.dragging(entry);
-        break;
-
-      case DragEvent.actions.ESCAPE_DRAGGING:
-        this.escapeDragging(entry);
-        break;
-    }
-    
-    return startDragging;
-  }
-
-  getDroppableElementToBeMarked(entry) {
+  getDroppableElementToBeMarked(draggableEntry) {
     var droppableElementToBeMarked = this.droppableElements.reduce(function(droppableElementToBeMarked, droppableElement) {
       if (droppableElementToBeMarked === null) {
-        if (droppableElement.isToBeMarked(entry)) { ///
+        if (droppableElement.isToBeMarked(draggableEntry)) { ///
           droppableElementToBeMarked = droppableElement;
         }
       }
@@ -157,7 +129,7 @@ class DroppableElement extends Element {
   }
 
   moveEntries(entries, sourcePath, targetPath, done) {
-    var entryPathMaps = this.entryPathMapsFromEntries(entries, sourcePath, targetPath);
+    var entryPathMaps = this.draggableEntryPathMapsFromDraggableEntries(entries, sourcePath, targetPath);
 
     function moveEntriesDone() {
       entries.forEach(function(entry) {

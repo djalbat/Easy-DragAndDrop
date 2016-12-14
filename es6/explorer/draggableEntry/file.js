@@ -8,10 +8,10 @@ var Entry = require('../entry'),
     ActivateFileEvent = require('../activateFileEvent');
 
 class File extends DraggableEntry {
-  constructor(selector, name, dragEventHandler, activateFileEventHandler) {
+  constructor(selector, name, explorer, activateFileEventHandler) {
     var type = Entry.types.FILE;
 
-    super(selector, name, type, dragEventHandler);
+    super(selector, name, explorer, type);
 
     this.activateFileEventHandler = activateFileEventHandler;
 
@@ -57,8 +57,8 @@ class File extends DraggableEntry {
     this.activateFileEventHandler(activateFileEvent);
   }
 
-  static clone(name, dragEventHandler, activateFileEventHandler) {
-    var file = Element.clone(File, '#file', name, dragEventHandler, activateFileEventHandler);
+  static clone(name, explorer, activateFileEventHandler) {
+    var file = Element.clone(File, '#file', name, explorer, activateFileEventHandler);
 
     file.removeAttribute('id');
 

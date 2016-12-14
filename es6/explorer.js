@@ -11,7 +11,8 @@ class Explorer extends DroppableElement {
   constructor(selector, rootDirectoryName, activateHandler, moveHandler) {
     super(selector, moveHandler);
 
-    var rootDirectory = RootDirectory.clone(rootDirectoryName, this.dragEventHandler.bind(this), this.activateFileEventHandler.bind(this));
+    var explorer = this,  ///
+        rootDirectory = RootDirectory.clone(rootDirectoryName, explorer, this.activateFileEventHandler.bind(this));
 
     this.activateHandler = activateHandler;
 
@@ -43,34 +44,34 @@ class Explorer extends DroppableElement {
   getRootDirectoryName() { return this.rootDirectory.getName(); }
   getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }
   
-  getDirectoryOverlappingEntry(entry) {
+  getDirectoryOverlappingDraggableEntry(draggableEntry) {
     var noDraggingIntoSubdirectories = this.hasOption(Explorer.options.NO_DRAGGING_INTO_SUBDIRECTORIES),
-        directoryOverlappingEntry = this.rootDirectory.getDirectoryOverlappingEntry(entry, noDraggingIntoSubdirectories);
+        directoryOverlappingEntry = this.rootDirectory.getDirectoryOverlappingDraggableEntry(draggableEntry, noDraggingIntoSubdirectories);
 
     return directoryOverlappingEntry;
   }
 
-  addMarkerInPlace(entry) {
-    var entryPath = entry.getPath(),
-        entryType = entry.getType(),
-        entryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(entryPath);
+  addMarkerInPlace(draggableEntry) {
+    var draggableEntryPath = draggableEntry.getPath(),
+        draggableEntryType = draggableEntry.getType(),
+        draggableEntryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(draggableEntryPath);
 
-    if (!entryPathTopmostDirectoryName) {
-      var markerPath = entryPath;
+    if (!draggableEntryPathTopmostDirectoryName) {
+      var markerPath = draggableEntryPath;
 
-      this.rootDirectory.addMarker(markerPath, entryType);
+      this.rootDirectory.addMarker(markerPath, draggableEntryType);
     } else {
-      super.addMarker(entry)
+      super.addMarker(draggableEntry)
     }
   }
 
-  addMarker(entry, directoryOverlappingEntry) {
-    var entryName = entry.getName(),
-        entryType = entry.getType(),
+  addMarker(draggableEntry, directoryOverlappingEntry) {
+    var draggableEntryName = draggableEntry.getName(),
+        draggableEntryType = draggableEntry.getType(),
         directoryOverlappingEntryPath = directoryOverlappingEntry.getPath(),
-        markerPath = directoryOverlappingEntryPath + '/' + entryName;
+        markerPath = directoryOverlappingEntryPath + '/' + draggableEntryName;
 
-    this.rootDirectory.addMarker(markerPath, entryType);
+    this.rootDirectory.addMarker(markerPath, draggableEntryType);
   }
 
   removeMarker() {
@@ -92,34 +93,34 @@ class Explorer extends DroppableElement {
     return marked;
   }
 
-  isToBeMarked(entry) {
-    var directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry),
+  isToBeMarked(draggableEntry) {
+    var directoryOverlappingEntry = this.getDirectoryOverlappingDraggableEntry(draggableEntry),
         toBeMarked = (directoryOverlappingEntry !== null);
 
     return toBeMarked;
   }
 
-  startDragging(entry) {
-    var startDragging,
-        noDraggingEntries = this.hasOption(Explorer.options.NO_DRAGGING);
+  startDragging(draggableEntry) {
+    var startedDragging,
+        noDragging = this.hasOption(Explorer.options.NO_DRAGGING);
 
-    if (noDraggingEntries) {
-      startDragging = false;
+    if (noDragging) {
+      startedDragging = false;
     } else {
       var marked = this.isMarked();
 
-      startDragging = !marked;
+      startedDragging = !marked;
 
-      if (startDragging) {
-        this.addMarkerInPlace(entry);
+      if (startedDragging) {
+        this.addMarkerInPlace(draggableEntry);
       }
     }
 
-    return startDragging;
+    return startedDragging;
   }
 
-  stopDragging(entry, done) {
-    var entryPath = entry.getPath(),
+  stopDragging(draggableEntry, done) {
+    var draggableEntryPath = draggableEntry.getPath(),
         marked = this.isMarked(),
         markedDroppableElement = marked ?
                                    this :
@@ -128,8 +129,8 @@ class Explorer extends DroppableElement {
         markedDirectoryPath = (markedDirectory !== null) ?
                                 markedDirectory.getPath() :
                                   null,
-        entryPathWithoutBottommostName = util.pathWithoutBottommostName(entryPath),
-        sourcePath = entryPathWithoutBottommostName,
+        draggableEntryPathWithoutBottommostName = util.pathWithoutBottommostName(draggableEntryPath),
+        sourcePath = draggableEntryPathWithoutBottommostName,
         targetPath = markedDirectoryPath;
 
     if (marked && (sourcePath === targetPath)) {
@@ -137,13 +138,13 @@ class Explorer extends DroppableElement {
 
       done();
     } else {
-      var subEntries = entry.getSubEntries(),
-          entries = subEntries; ///
+      var subDraggableEntries = draggableEntry.getSubEntries(),
+          draggableEntries = subDraggableEntries; ///
 
-      entries.reverse();
-      entries.push(entry);
+      draggableEntries.reverse();
+      draggableEntries.push(draggableEntry);
 
-      markedDroppableElement.moveEntries(entries, sourcePath, targetPath, function() {
+      markedDroppableElement.moveEntries(draggableEntries, sourcePath, targetPath, function() {
         markedDroppableElement.removeMarker();
 
         done();
@@ -151,36 +152,36 @@ class Explorer extends DroppableElement {
     }
   }
 
-  escapeDragging(entry) {
+  escapeDragging(draggableEntry) {
     this.removeMarkerGlobally();
   }
 
-  dragging(entry, explorer = this) {
+  dragging(draggbleEntry, explorer = this) {
     var marked = this.isMarked();
     
     if (marked) {
-      var toBeMarked = this.isToBeMarked(entry),
+      var draggableEntryToBeMarked = this.isToBeMarked(draggbleEntry),
           directoryOverlappingEntry;
       
-      if (toBeMarked) {
+      if (draggableEntryToBeMarked) {
         var markedDirectory = this.getMarkedDirectory();
 
-        directoryOverlappingEntry = this.getDirectoryOverlappingEntry(entry);
+        directoryOverlappingEntry = this.getDirectoryOverlappingDraggableEntry(draggbleEntry);
 
         if (markedDirectory !== directoryOverlappingEntry) {
           this.removeMarker();
 
-          this.addMarker(entry, directoryOverlappingEntry);
+          this.addMarker(draggbleEntry, directoryOverlappingEntry);
         }
       } else {
-        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(entry);
+        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(draggbleEntry);
 
         if (droppableElementToBeMarked !== null) {
-          directoryOverlappingEntry = droppableElementToBeMarked.getDirectoryOverlappingEntry(entry);
+          directoryOverlappingEntry = droppableElementToBeMarked.getDirectoryOverlappingDraggableEntry(draggbleEntry);
 
-          droppableElementToBeMarked.addMarker(entry, directoryOverlappingEntry);
+          droppableElementToBeMarked.addMarker(draggbleEntry, directoryOverlappingEntry);
         } else {
-          explorer.addMarkerInPlace(entry);
+          explorer.addMarkerInPlace(draggbleEntry);
         }
 
         this.removeMarker();
@@ -188,7 +189,7 @@ class Explorer extends DroppableElement {
     } else {
       var markedDroppableElement = this.getMarkedDroppableElement();
 
-      markedDroppableElement.dragging(entry, explorer);
+      markedDroppableElement.dragging(draggbleEntry, explorer);
     }
   }
   
@@ -236,21 +237,21 @@ class Explorer extends DroppableElement {
     }
   }
 
-  entryPathMapsFromEntries(entries, sourcePath, targetPath) {
-    var entryPathMaps = entries.map(function(entry) {
-      var entryPathMap = {},
-          entryPath = entry.getPath(),
-          sourceEntryPath = entryPath,  ///
-          targetEntryPath = (sourcePath === null) ?
-                              util.prependTargetPath(entryPath, targetPath) :
-                                util.replaceSourcePathWithTargetPath(entryPath, sourcePath, targetPath);
+  draggableEntryPathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
+    var draggableEntryPathMaps = draggableEntries.map(function(draggableEntry) {
+      var draggableEntryPathMap = {},
+          draggableEntryPath = draggableEntry.getPath(),
+          sourceDraggableEntryPath = draggableEntryPath,  ///
+          targetDraggableEntryPath = (sourcePath === null) ?
+                                       util.prependTargetPath(draggableEntryPath, targetPath) :
+                                         util.replaceSourcePathWithTargetPath(draggableEntryPath, sourcePath, targetPath);
 
-      entryPathMap[sourceEntryPath] = targetEntryPath;
+      draggableEntryPathMap[sourceDraggableEntryPath] = targetDraggableEntryPath;
 
-      return entryPathMap;
+      return draggableEntryPathMap;
     });
 
-    return entryPathMaps;
+    return draggableEntryPathMaps;
   }
 
   static clone(selector, rootDirectoryName, moveHandler, activateHandler) {
@@ -264,6 +265,7 @@ class Explorer extends DroppableElement {
 
 Explorer.options = {
   NO_DRAGGING: 'NO_DRAGGING',
+  NO_DRAGGING_SUB_ENTRIES: 'NO_DRAGGING_SUB_ENTRIES',
   NO_DRAGGING_INTO_SUBDIRECTORIES: 'NO_DRAGGING_INTO_SUBDIRECTORIES'
 };
 
