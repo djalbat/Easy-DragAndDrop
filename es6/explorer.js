@@ -60,11 +60,11 @@ class Explorer extends DroppableElement {
     }
   }
 
-  addMarker(draggableEntry, directoryOverlappingEntry) {
+  addMarker(draggableEntry, directoryOverlappingDraggableEntry) {
     var draggableEntryName = draggableEntry.getName(),
         draggableEntryType = draggableEntry.getType(),
-        directoryOverlappingEntryPath = directoryOverlappingEntry.getPath(),
-        markerPath = directoryOverlappingEntryPath + '/' + draggableEntryName;
+        directoryOverlappingDraggableEntryPath = directoryOverlappingDraggableEntry.getPath(),
+        markerPath = directoryOverlappingDraggableEntryPath + '/' + draggableEntryName;
 
     this.rootDirectory.addMarker(markerPath, draggableEntryType);
   }
@@ -89,8 +89,8 @@ class Explorer extends DroppableElement {
   }
 
   isToBeMarked(draggableEntry) {
-    var directoryOverlappingEntry = this.getDirectoryOverlappingDraggableEntry(draggableEntry),
-        toBeMarked = (directoryOverlappingEntry !== null);
+    var directoryOverlappingDraggableEntry = this.getDirectoryOverlappingDraggableEntry(draggableEntry),
+        toBeMarked = (directoryOverlappingDraggableEntry !== null);
 
     return toBeMarked;
   }
@@ -143,32 +143,35 @@ class Explorer extends DroppableElement {
     this.removeMarkerGlobally();
   }
 
-  dragging(draggbleEntry, explorer = this) {
+  dragging(draggableEntry, explorer = this) {
     var marked = this.isMarked();
     
     if (marked) {
-      var draggableEntryToBeMarked = this.isToBeMarked(draggbleEntry),
-          directoryOverlappingEntry;
+      var directoryOverlappingDraggableEntry,
+          noDraggingWithin = this.hasOption(options.NO_DRAGGING_WITHIN),
+          toBeMarked = noDraggingWithin ?
+                         false :
+                           this.isToBeMarked(draggableEntry);
       
-      if (draggableEntryToBeMarked) {
+      if (toBeMarked) {
         var markedDirectory = this.getMarkedDirectory();
 
-        directoryOverlappingEntry = this.getDirectoryOverlappingDraggableEntry(draggbleEntry);
+        directoryOverlappingDraggableEntry = this.getDirectoryOverlappingDraggableEntry(draggableEntry);
 
-        if (markedDirectory !== directoryOverlappingEntry) {
+        if (markedDirectory !== directoryOverlappingDraggableEntry) {
           this.removeMarker();
 
-          this.addMarker(draggbleEntry, directoryOverlappingEntry);
+          this.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
         }
       } else {
-        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(draggbleEntry);
+        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(draggableEntry);
 
         if (droppableElementToBeMarked !== null) {
-          directoryOverlappingEntry = droppableElementToBeMarked.getDirectoryOverlappingDraggableEntry(draggbleEntry);
+          directoryOverlappingDraggableEntry = droppableElementToBeMarked.getDirectoryOverlappingDraggableEntry(draggableEntry);
 
-          droppableElementToBeMarked.addMarker(draggbleEntry, directoryOverlappingEntry);
+          droppableElementToBeMarked.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
         } else {
-          explorer.addMarkerInPlace(draggbleEntry);
+          explorer.addMarkerInPlace(draggableEntry);
         }
 
         this.removeMarker();
@@ -176,7 +179,7 @@ class Explorer extends DroppableElement {
     } else {
       var markedDroppableElement = this.getMarkedDroppableElement();
 
-      markedDroppableElement.dragging(draggbleEntry, explorer);
+      markedDroppableElement.dragging(draggableEntry, explorer);
     }
   }
   

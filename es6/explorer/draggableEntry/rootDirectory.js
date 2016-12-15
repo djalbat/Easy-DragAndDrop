@@ -21,7 +21,7 @@ class RootDirectory extends Directory {
   getDirectoryOverlappingDraggableEntry(draggableEntry) {
     var directoryOverlappingEntry,
         explorer = this.getExplorer(),
-        noDraggingIntoSubdirectories = explorer.hasOption(options.NO_DRAGGING_INTO_SUBDIRECTORIES);
+        noDraggingIntoSubdirectories = explorer.hasOption(options.NO_DRAGGING_INTO_SUB_DIRECTORIES);
     
     if (noDraggingIntoSubdirectories) {
       var overlappingEntry = this.isOverlappingDraggableEntry(draggableEntry);
