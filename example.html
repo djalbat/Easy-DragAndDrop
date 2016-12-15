@@ -34,8 +34,7 @@
 
         var Body = easyui.Body;
 
-        var options = easyuidraganddrop.options,
-            Explorer = easyuidraganddrop.Explorer,
+        var Explorer = easyuidraganddrop.Explorer,
             RubbishBin = easyuidraganddrop.RubbishBin;
 
         var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onActivate, onMove),
@@ -61,9 +60,6 @@
         secondExplorer.addFile('Second explorer/First directory/First file.fls');
         secondExplorer.addFile('Second explorer/First directory/Second file.fls');
         secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
-
-        secondExplorer.setOption(options.NO_DRAGGING_INTO_ROOT_DIRECTORY);
-        secondExplorer.setOption(options.NO_DRAGGING_WITHIN);
 
         function onActivate(sourcePath, callback) {
           console.log('activate: ' + sourcePath)
