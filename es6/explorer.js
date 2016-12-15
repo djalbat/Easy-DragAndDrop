@@ -148,20 +148,22 @@ class Explorer extends DroppableElement {
     
     if (marked) {
       var directoryOverlappingDraggableEntry,
-          noDraggingWithin = this.hasOption(options.NO_DRAGGING_WITHIN),
-          toBeMarked = noDraggingWithin ?
-                         false :
-                           this.isToBeMarked(draggableEntry);
-      
+          toBeMarked = this.isToBeMarked(draggableEntry);
+
       if (toBeMarked) {
-        var markedDirectory = this.getMarkedDirectory();
+        var noDraggingWithin = (explorer === this) && this.hasOption(options.NO_DRAGGING_WITHIN), ///
+            draggingWithin = !noDraggingWithin;
 
-        directoryOverlappingDraggableEntry = this.getDirectoryOverlappingDraggableEntry(draggableEntry);
+        if (draggingWithin) {
+          var markedDirectory = this.getMarkedDirectory();
 
-        if (markedDirectory !== directoryOverlappingDraggableEntry) {
-          this.removeMarker();
+          directoryOverlappingDraggableEntry = this.getDirectoryOverlappingDraggableEntry(draggableEntry);
 
-          this.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
+          if (markedDirectory !== directoryOverlappingDraggableEntry) {
+            this.removeMarker();
+
+            this.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
+          }
         }
       } else {
         var droppableElementToBeMarked = this.getDroppableElementToBeMarked(draggableEntry);
