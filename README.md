@@ -159,9 +159,9 @@ The `onMove()` handler is invoked with an array of path maps and a `done` argume
 ```js
 function onMove(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
-    var keys = Object.keys(pathMap),
-        firstKey = first(keys),
-        sourcePath = firstKey, ///
+    var pathMapKeys = Object.keys(pathMap),
+        firstPathMapKey = first(pathMapKeys),
+        sourcePath = firstPathMapKey, ///
         targetPath = pathMap[sourcePath],
         movedPath = targetPath;
 
@@ -196,9 +196,9 @@ The `onRemove()` handler is invoked with an array of path maps and a `done` argu
 ```js
 function onRemove(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
-    var keys = Object.keys(pathMap),
-        firstKey = first(keys),
-        sourcePath = firstKey, ///
+    var pathMapKeys = Object.keys(pathMap),
+        firstPathMapKey = first(pathMapKeys),
+        sourcePath = firstPathMapKey, ///
         removedPath = null;
 
     console.log('remove file: ' + sourcePath)
