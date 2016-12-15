@@ -96,19 +96,11 @@ class Explorer extends DroppableElement {
   }
 
   startDragging(draggableEntry) {
-    var startedDragging,
-        noDragging = this.hasOption(options.NO_DRAGGING);
+    var marked = this.isMarked(),
+        startedDragging = !marked;
 
-    if (noDragging) {
-      startedDragging = false;
-    } else {
-      var marked = this.isMarked();
-
-      startedDragging = !marked;
-
-      if (startedDragging) {
-        this.addMarkerInPlace(draggableEntry);
-      }
+    if (startedDragging) {
+      this.addMarkerInPlace(draggableEntry);
     }
 
     return startedDragging;

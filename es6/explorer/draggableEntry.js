@@ -17,10 +17,10 @@ class DraggableEntry extends Element {
   constructor(selector, name, explorer, type) {
     super(selector);
 
-    this.explorer = explorer;
-
     this.nameButton = new NameButton(this, name);
 
+    this.explorer = explorer;
+    
     this.type = type;
 
     this.timeout = null;
@@ -29,12 +29,12 @@ class DraggableEntry extends Element {
 
     this.onMouseDown(this.mouseDownHandler.bind(this));
   }
-  
+
+  getName() { return this.nameButton.getName(); }
+
   getExplorer() {
     return this.explorer;
   }
-
-  getName() { return this.nameButton.getName(); }
 
   getType() {
     return this.type;
@@ -120,17 +120,22 @@ class DraggableEntry extends Element {
         this.timeout = null;
 
         var rootDirectory = this.isRootDirectory(),
+            noDragging = this.explorer.hasOption(options.NO_DRAGGING),
             noDraggingSubEntries = this.explorer.hasOption(options.NO_DRAGGING_SUB_ENTRIES),
             noDraggingRootDirectory = this.explorer.hasOption(options.NO_DRAGGING_ROOT_DIRECTORY);
 
-        if ((!rootDirectory && noDraggingSubEntries) || (rootDirectory && noDraggingRootDirectory)) {
+        if ((noDragging) || (!rootDirectory && noDraggingSubEntries) || (rootDirectory && noDraggingRootDirectory)) {
           return;
         }
 
-        var startedDragging = this.explorer.startDragging(this);
+        var mouseOver = this.isMouseOver(mouseTop, mouseLeft);
 
-        if (startedDragging) {
-          this.startDragging(mouseTop, mouseLeft);
+        if (mouseOver) {
+          var startedDragging = this.explorer.startDragging(this);
+
+          if (startedDragging) {
+            this.startDragging(mouseTop, mouseLeft);
+          }
         }
       }.bind(this), START_DRAGGING_DELAY);
     }
@@ -150,15 +155,14 @@ class DraggableEntry extends Element {
     return dragging;
   }
 
-  isWaitingToDrag() {
-    var waitingToDrag = (this.timeout !== null);
-
-    return waitingToDrag;
+  isMouseOver(mouseTop, mouseLeft) {
+    var collapsedBounds = this.getCollapsedBounds(),
+        collapsedBounds
   }
 
   mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
-    body.onMouseUp(this.mouseUpHandler.bind(this), NAMESPACE);
-    body.onMouseMove(this.mouseMoveHandler.bind(this), NAMESPACE);
+    body.onMouseUp(this.mouseUpHandler.bind(this), NAMESPACE);  ///
+    body.onMouseMove(this.mouseMoveHandler.bind(this), NAMESPACE);  ///
 
     if (mouseButton === Element.LEFT_MOUSE_BUTTON) {
       var dragging = this.isDragging();
@@ -170,8 +174,8 @@ class DraggableEntry extends Element {
   }
 
   mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
-    body.offMouseMove(NAMESPACE);
-    body.offMouseUp(NAMESPACE);
+    body.offMouseMove(NAMESPACE); ///
+    body.offMouseUp(NAMESPACE); ///
 
     var dragging = this.isDragging();
 

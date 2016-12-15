@@ -19,7 +19,7 @@
     "browserify": "^13.0.0",
     "chokidar-cli": "^1.2.0",
     "copyfiles": "^1.0.0",
-    "easyui": "^4.1.2"
+    "easyui": "file:../EasyUI"
   },
   "scripts": {
     "copy": "copyfiles -f ./node_modules/easyui/dist/easyui.js .",
