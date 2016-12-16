@@ -43,8 +43,6 @@ class DraggableEntry extends Element {
   getPath() {
     var path = this.explorer.getDraggableEntryPath(this);
     
-    console.log(path);
-
     return path;
   }
   

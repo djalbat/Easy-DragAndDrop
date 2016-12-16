@@ -5,6 +5,7 @@ var easyui = require('easyui'),
 
 var util = require('./util'),
     options = require('./options'),
+    DirectoryMarker = require('./explorer/entry/directoryMarker'),
     DroppableElement = require('./droppableElement'),
     RootDirectory = require('./explorer/draggableEntry/rootDirectory');
 
@@ -52,12 +53,14 @@ class Explorer extends DroppableElement {
         draggableEntryType = draggableEntry.getType(),
         draggableEntryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(draggableEntryPath);
 
-    if (!draggableEntryPathTopmostDirectoryName) {
+    if (draggableEntryPathTopmostDirectoryName) {
+      var topmostDirectoryMarkerPath = draggableEntryPath;
+
+      this.addTopmostDirectoryMarker(topmostDirectoryMarkerPath);
+    } else {
       var markerPath = draggableEntryPath;
 
       this.rootDirectory.addMarker(markerPath, draggableEntryType);
-    } else {
-      super.addMarker(draggableEntry)
     }
   }
 
@@ -70,21 +73,36 @@ class Explorer extends DroppableElement {
     this.rootDirectory.addMarker(markerPath, draggableEntryType);
   }
 
+  addTopmostDirectoryMarker(topmostDirectoryMarkerPath) {
+    var topmostDirectoryMarkerName = topmostDirectoryMarkerPath,  ///
+        topmostDirectoryMarker = DirectoryMarker.clone(topmostDirectoryMarkerName);
+
+    this.append(topmostDirectoryMarker);
+  }
+
   removeMarker() {
     var rootDirectoryMarked = this.rootDirectory.isMarked();
 
     if (rootDirectoryMarked) {
       this.rootDirectory.removeMarker();
     } else {
-      super.removeMarker();
+      var topmostDirectoryMarker = this.retrieveTopmostDirectoryMarker();
+
+      topmostDirectoryMarker.remove();
     }
   }
 
   isMarked() {
-    var rootDirectoryMarked = this.rootDirectory.isMarked(),
-        marked = rootDirectoryMarked ?
-                   true :
-                     super.isMarked();
+    var marked,
+        rootDirectoryMarked = this.rootDirectory.isMarked();
+
+    if (rootDirectoryMarked) {
+      marked = true;
+    } else {
+      var topmostDirectoryMarker = this.retrieveTopmostDirectoryMarker();
+
+      marked = (topmostDirectoryMarker !== null);
+    }
 
     return marked;
   }
@@ -94,6 +112,23 @@ class Explorer extends DroppableElement {
         toBeMarked = (directoryOverlappingDraggableEntry !== null);
 
     return toBeMarked;
+  }
+
+  retrieveTopmostDirectoryMarker() {
+    var topmostDirectoryMarker = null,
+        childListElements = this.childElements('li');
+
+    childListElements.some(function(childElement) {
+      if (childElement instanceof DirectoryMarker) {
+        topmostDirectoryMarker = childElement;  ///
+
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    return topmostDirectoryMarker;
   }
 
   startDragging(draggableEntry) {

@@ -238,11 +238,11 @@ class Directory extends DraggableEntry {
 
       removed = true;
     } else {
-      var someDirectoryMarkerRemoved = this.entries.someDirectory(function(directory) {
-        return directory.removeMarker();
+      removed = this.entries.someDirectory(function(directory) {
+        var removed = directory.removeMarker();
+        
+        return removed;
       });
-      
-      removed = someDirectoryMarkerRemoved;
     }
     
     return removed;
@@ -255,13 +255,13 @@ class Directory extends DraggableEntry {
     if (entriesMarked) {
       marked = entriesMarked;
     } else {
-      var someDirectoryMarked = this.entries.someDirectory(function(directory) {
+      var directoryMarked = this.entries.someDirectory(function(directory) {
         var directoryMarked = directory.isMarked();
         
         return directoryMarked;
       });
 
-      marked = someDirectoryMarked;
+      marked = directoryMarked;
     }
     
     return marked;
