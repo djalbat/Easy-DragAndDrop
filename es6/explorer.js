@@ -44,7 +44,8 @@ class Explorer extends DroppableElement {
   removeDirectory(directoryPath, removeEmptyParentDirectories) { this.rootDirectory.removeDirectory(directoryPath, removeEmptyParentDirectories); }
   getRootDirectoryName() { return this.rootDirectory.getName(); }
   getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }  
-  getDirectoryOverlappingDraggableEntry(draggableEntry) { return this.rootDirectory.getDirectoryOverlappingDraggableEntry(draggableEntry); }
+  getDirectoryOverlappingDraggableEntry(draggableEntry) { return this.rootDirectory.getDirectoryOverlappingDraggableEntry(draggableEntry); }  
+  getDraggableEntryPath(draggableEntry) { return this.rootDirectory.getDraggableEntryPath(draggableEntry); }
 
   addMarkerInPlace(draggableEntry) {
     var draggableEntryPath = draggableEntry.getPath(),
@@ -139,7 +140,7 @@ class Explorer extends DroppableElement {
     }
   }
 
-  escapeDragging(draggableEntry) {
+  escapeDragging() {
     this.removeMarkerGlobally();
   }
 

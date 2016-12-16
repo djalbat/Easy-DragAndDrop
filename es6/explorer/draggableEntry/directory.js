@@ -275,6 +275,21 @@ class Directory extends DraggableEntry {
 
   someDirectory(callback) { this.entries.someDirectory(callback); }
 
+  getDraggableEntryPath(draggableEntry) {
+    var name = this.getName(),
+        draggableEntryPath;
+    
+    if (draggableEntry === this) {
+      draggableEntryPath = name;  ///
+    } else {
+      draggableEntryPath = this.entries.getDraggableEntryPath(draggableEntry);
+
+      draggableEntryPath = name + '/' + draggableEntryPath;
+    }
+
+    return draggableEntryPath;
+  }
+
   topmostDirectory(path, addIfNecessary) {
     var topmostDirectory,
         topmostDirectoryName = util.topmostDirectoryName(path);

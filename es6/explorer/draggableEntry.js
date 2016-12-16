@@ -41,15 +41,9 @@ class DraggableEntry extends Element {
   }
 
   getPath() {
-    var parentElements = this.parentElements('ul.explorer li'), ///
-        name = this.getName(),
-        path = parentElements.reduce(function(path, parentElement) {
-          var parentElementName = parentElement.getName();
-
-          path = parentElementName + '/' + path;
-
-          return path;
-        }, name);
+    var path = this.explorer.getDraggableEntryPath(this);
+    
+    console.log(path);
 
     return path;
   }
@@ -206,7 +200,7 @@ class DraggableEntry extends Element {
       var dragging = this.isDragging();
 
       if (dragging) {
-        this.explorer.escapeDragging(this);
+        this.explorer.escapeDragging();
 
         this.stopDragging();
       }

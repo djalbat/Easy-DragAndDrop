@@ -152,12 +152,44 @@ class Entries extends Element {
 
     return markedDirectory;
   }
+  
+  getDraggableEntryPath(draggableEntry) {
+    var draggableEntryPath = null;
+    
+    this.someEntry(function(entry) {
+      if (entry === draggableEntry) {  ///
+        var entryName = entry.getName();
+        
+        draggableEntryPath = entryName;  ///
+        
+        return true;
+      } else {
+        return false;
+      }
+    });
+    
+    if (draggableEntryPath === null) {
+      this.someDirectory(function(directory) {
+        var directoryDraggableEntryPath = directory.getDraggableEntryPath(draggableEntry);
+        
+        if (directoryDraggableEntryPath !== null) {
+          draggableEntryPath = directoryDraggableEntryPath; ///
+          
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
+    
+    return draggableEntryPath;
+  }
 
-  getDirectoryOverlappingDraggableEntry(draggbleEntry) {
+  getDirectoryOverlappingDraggableEntry(draggableEntry) {
     var directoryOverlappingDraggableEntry = null;
 
     this.someDirectory(function(directory) {
-      directoryOverlappingDraggableEntry = directory.getDirectoryOverlappingDraggableEntry(draggbleEntry);
+      directoryOverlappingDraggableEntry = directory.getDirectoryOverlappingDraggableEntry(draggableEntry);
 
       if (directoryOverlappingDraggableEntry !== null) {
         return true;
@@ -172,6 +204,8 @@ class Entries extends Element {
   forEachFile(callback) { this.forEachEntryByType(callback, Entry.types.FILE) }
 
   forEachDirectory(callback) { this.forEachEntryByType(callback, Entry.types.DIRECTORY) }
+
+  someFile(callback) { return this.someEntryByType(callback, Entry.types.FILE) }
 
   someDirectory(callback) { return this.someEntryByType(callback, Entry.types.DIRECTORY) }
 
@@ -192,6 +226,14 @@ class Entries extends Element {
       if (entryType === type) {
         callback(entry);
       }
+    });
+  }
+
+  someEntry(callback, type) {
+    var entries = this.getEntries();
+
+    return entries.some(function(entry) {
+      return callback(entry);
     });
   }
 
