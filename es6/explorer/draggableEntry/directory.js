@@ -284,7 +284,9 @@ class Directory extends DraggableEntry {
     } else {
       draggableEntryPath = this.entries.getDraggableEntryPath(draggableEntry);
 
-      draggableEntryPath = name + '/' + draggableEntryPath;
+      if (draggableEntryPath !== null) {
+        draggableEntryPath = name + '/' + draggableEntryPath;
+      }
     }
 
     return draggableEntryPath;
