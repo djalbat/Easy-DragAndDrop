@@ -72,6 +72,24 @@ class Directory extends DraggableEntry {
     return subEntries;
   }
 
+  getFilePaths() {
+    var filePaths = [];
+
+    this.forEachFile(function(file) {
+      var filePath = file.getPath();
+
+      filePaths.push(filePath);
+    });
+
+    this.forEachDirectory(function(directory) {
+      var directoryFilePaths = directory.getFilePaths();
+      
+      filePaths = filePaths.concat(directoryFilePaths);
+    });
+
+    return filePaths;
+  }
+
   getCollapsedBounds() {
     var collapsed = this.isCollapsed();
 

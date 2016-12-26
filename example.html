@@ -61,6 +61,8 @@
         secondExplorer.addFile('Second explorer/First directory/Second file.fls');
         secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 
+        var secondExplorerFilePaths = secondExplorer.getFilePaths();
+
         function onActivate(sourcePath, callback) {
           console.log('activate: ' + sourcePath)
 
