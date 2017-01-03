@@ -222,30 +222,45 @@ class Explorer extends DroppableElement {
     }
   }
   
-  moveDirectory(directory, sourcePath, movedPath) {
-    if (movedPath === sourcePath) {
+  moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath, removeEmptyParentDirectories) {
+    var explorer = directory.getExplorer(),
+        directoryPath;
+    
+    if (movedDirectoryPath === sourceDirectoryPath) {
 
-    } else if (movedPath === null) {
-      directory.remove();
+    } else if (movedDirectoryPath === null) {
+      directoryPath = sourceDirectoryPath;  ///
+
+      explorer.removeDirectory(directoryPath, removeEmptyParentDirectories);
     } else {
-      directory.remove();
+      directoryPath = sourceDirectoryPath;  ///
 
-      var collapsed = directory.isCollapsed(),
-          directoryPath = movedPath;
+      explorer.removeDirectory(directoryPath, removeEmptyParentDirectories);
+
+      var collapsed = directory.isCollapsed();
+      
+      directoryPath = movedDirectoryPath; ///
 
       this.addDirectory(directoryPath, collapsed);
     }
   }
 
-  moveFile(file, sourcePath, movedPath) {
-    if (movedPath === sourcePath) {
+  moveFile(file, sourceFilePath, movedFilePath, removeEmptyParentDirectories) {
+    var explorer = file.getExplorer(),
+        filePath;
 
-    } else if (movedPath === null) {
-      file.remove();
+    if (movedFilePath === sourceFilePath) {
+
+    } else if (movedFilePath === null) {
+      filePath = sourceFilePath;  ///
+
+      explorer.removeFile(filePath, removeEmptyParentDirectories);
     } else {
-      file.remove();
+      filePath = sourceFilePath;  ///
 
-      var filePath = movedPath; ///
+      explorer.removeFile(filePath, removeEmptyParentDirectories);
+      
+      filePath = movedFilePath; ///
 
       this.addFile(filePath);
     }

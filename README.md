@@ -233,7 +233,7 @@ if (sourcePath === 'First explorer') {
 
 ## Changing the CSS
 
-Feel free to change the CSS with care. Check the `example.css` file in the `docs/` folder for some CSS that works well. Note that the triangles used are defined in the `ToggleButton` class in the `lib/` folder. You'll need to re-build the package if you want to change these.
+Feel free to change the CSS with care. Check the `example.css` file in the `docs/` folder for some CSS that works well. Note that the triangles used are defined in the `ToggleButton` class in the `es6/explorer/` folder. You'll need to re-build the package if you want to change these.
 
 ## Contact
 

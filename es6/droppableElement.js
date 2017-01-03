@@ -91,26 +91,31 @@ class DroppableElement extends Element {
 
               return found;
             }),
-            movedPath = pathMap[sourcePath];
+            movedPath = pathMap[sourcePath],
+            removeEmptyParentDirectories = pathMap.removeEmptyParentDirectories;  ///
 
-        this.moveDraggableEntry(draggableEntry, sourcePath, movedPath);
+        this.moveDraggableEntry(draggableEntry, sourcePath, movedPath, removeEmptyParentDirectories);
       }.bind(this));
 
       done();
     }.bind(this));
   }
 
-  moveDraggableEntry(draggableEntry, sourcePath, movedPath) {
+  moveDraggableEntry(draggableEntry, sourcePath, movedPath, removeEmptyParentDirectories = false) {
     var draggableEntryDirectory = draggableEntry.isDirectory();
 
     if (draggableEntryDirectory) {
-      var directory = draggableEntry;  ///
+      var directory = draggableEntry,  ///
+          sourceDirectoryPath = sourcePath, ///
+          movedDirectoryPath = movedPath;
 
-      this.moveDirectory(directory, sourcePath, movedPath);
+      this.moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath, removeEmptyParentDirectories);
     } else {
-      var file = draggableEntry; ///
+      var file = draggableEntry, ///
+          sourceFilePath = sourcePath,  ///
+          movedFilePath = movedPath;  ///
 
-      this.moveFile(file, sourcePath, movedPath);
+      this.moveFile(file, sourceFilePath, movedFilePath, removeEmptyParentDirectories);
     }
   }
 }
