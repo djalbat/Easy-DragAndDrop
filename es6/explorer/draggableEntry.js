@@ -69,7 +69,8 @@ class DraggableEntry extends Element {
   onDoubleClick(doubleClickHandler) { this.nameButton.onDoubleClick(doubleClickHandler); }
 
   startDragging(mouseTop, mouseLeft) {
-    var bounds = this.getBounds(),
+    var escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING),
+        bounds = this.getBounds(),
         top = bounds.getTop(),
         left = bounds.getLeft(),
         css = {
@@ -82,13 +83,19 @@ class DraggableEntry extends Element {
     this.topOffset = top - mouseTop;
     this.leftOffset = left - mouseLeft;
 
-    this.addClass('dragging');
+    if (escapeKeyStopsDragging) {
+      this.on('keydown', this.keyDownHandler.bind(this));
+    }
 
-    this.on('keydown', this.keyDownHandler.bind(this));
+    this.addClass('dragging');
   }
 
   stopDragging() {
-    this.off('keydown', this.keyDownHandler.bind(this));
+    var escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING);
+
+    if (escapeKeyStopsDragging) {
+      this.off('keydown', this.keyDownHandler.bind(this));
+    }
 
     this.removeClass('dragging');
   }

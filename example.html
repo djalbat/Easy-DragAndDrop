@@ -32,14 +32,14 @@
 
       (function() {
 
-        var Body = easyui.Body;
-
-        var Explorer = easyuidraganddrop.Explorer,
+        var Body = easyui.Body,
+            Explorer = easyuidraganddrop.Explorer,
             RubbishBin = easyuidraganddrop.RubbishBin;
 
         var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onActivate, onMove),
             secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onActivate, onMove),
-            rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemove);
+            rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemove),
+            body = new Body();
 
         firstExplorer.addDroppableElement(rubbishBin);
         firstExplorer.addDroppableElement(secondExplorer);
@@ -48,18 +48,16 @@
         rubbishBin.addDroppableElement(firstExplorer);
         rubbishBin.addDroppableElement(secondExplorer);
 
-        var body = new Body();
-
-        body.append(firstExplorer);
-        body.append(secondExplorer);
-        body.append(rubbishBin);
-
         secondExplorer.addDirectory('Second explorer/First directory');
         secondExplorer.addDirectory('Second explorer/Second directory');
 
         secondExplorer.addFile('Second explorer/First directory/First file.fls');
         secondExplorer.addFile('Second explorer/First directory/Second file.fls');
         secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
+
+        body.append(firstExplorer);
+        body.append(secondExplorer);
+        body.append(rubbishBin);
 
         function onActivate(sourcePath, callback) {
           console.log('activate: ' + sourcePath)
