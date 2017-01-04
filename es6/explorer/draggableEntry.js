@@ -9,7 +9,7 @@ var options = require('../options'),
 
 const ESCAPE_KEYCODE = 27,
       START_DRAGGING_DELAY = 175,
-      NAMESPACE = 'EasyUI-DragAndDrop/dragging';
+      NAMESPACE = 'EasyUI-DragAndDrop';
 
 var body = new Body();
 
