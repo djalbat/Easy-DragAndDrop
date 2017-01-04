@@ -52,19 +52,19 @@ class RootDirectory extends Directory {
     }
   }
 
-  removeFile(filePath, removeEmptyParentDirectories) {
+  removeFile(filePath) {
     var filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
 
     if (filePathWithoutRootDirectoryName !== null) {
-      super.removeFile(filePathWithoutRootDirectoryName, removeEmptyParentDirectories);
+      super.removeFile(filePathWithoutRootDirectoryName);
     }
   }
 
-  removeDirectory(directoryPath, removeEmptyParentDirectories) {
+  removeDirectory(directoryPath) {
     var directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
     if (directoryPathWithoutRootDirectoryName !== null) {
-      super.removeDirectory(directoryPathWithoutRootDirectoryName, removeEmptyParentDirectories);
+      super.removeDirectory(directoryPathWithoutRootDirectoryName);
     }
   }
 

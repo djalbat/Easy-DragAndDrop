@@ -172,24 +172,25 @@ class Directory extends DraggableEntry {
     }
   }
 
-  removeFile(filePath, removeEmptyParentDirectories) {
+  removeFile(filePath) {
     var addIfNecessary = false,
-        topmostDirectory = this.topmostDirectory(filePath, addIfNecessary);
+        topmostDirectory = this.topmostDirectory(filePath, addIfNecessary),
+        removeEmptyParentDirectories = undefined; ///
 
     if (topmostDirectory !== null) {
       var filePathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
 
-      topmostDirectory.removeFile(filePathWithoutTopmostDirectoryName, removeEmptyParentDirectories);
+      removeEmptyParentDirectories = topmostDirectory.removeFile(filePathWithoutTopmostDirectoryName);
     } else {
       var fileName = filePath,  ///
           entriesFile = this.entries.hasFile(fileName);
 
       if (entriesFile) {
-        this.entries.removeFile(fileName);
+        removeEmptyParentDirectories = this.entries.removeFile(fileName);
       }
     }
 
-    if (removeEmptyParentDirectories) {
+    if (removeEmptyParentDirectories === true) {
       var rootDirectory = this.isRootDirectory();
 
       if (!rootDirectory) {
@@ -200,26 +201,29 @@ class Directory extends DraggableEntry {
         }
       }
     }
+
+    return removeEmptyParentDirectories;
   }
 
-  removeDirectory(directoryPath, removeEmptyParentDirectories) {
+  removeDirectory(directoryPath) {
     var addIfNecessary = false,
-        topmostDirectory = this.topmostDirectory(directoryPath, addIfNecessary);
+        topmostDirectory = this.topmostDirectory(directoryPath, addIfNecessary),
+        removeEmptyParentDirectories = undefined; ///;
 
     if (topmostDirectory !== null) {
       var directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
-      topmostDirectory.removeDirectory(directoryPathWithoutTopmostDirectoryName, removeEmptyParentDirectories);
+      removeEmptyParentDirectories = topmostDirectory.removeDirectory(directoryPathWithoutTopmostDirectoryName);
     } else {
       var directoryName = directoryPath,  ///
           entriesDirectory = this.entries.hasDirectory(directoryName);
 
       if (entriesDirectory) {
-        this.entries.removeDirectory(directoryName);
+        removeEmptyParentDirectories = this.entries.removeDirectory(directoryName);
       }
     }
 
-    if (removeEmptyParentDirectories) {
+    if (removeEmptyParentDirectories === true) {
       var rootDirectory = this.isRootDirectory();
 
       if (!rootDirectory) {
@@ -230,6 +234,8 @@ class Directory extends DraggableEntry {
         }
       }
     }
+
+    return removeEmptyParentDirectories;
   }
   
   addMarker(markerPath, draggableEntryType) {

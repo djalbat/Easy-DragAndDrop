@@ -3,7 +3,8 @@
 var easyui = require('easyui'),
     Element = easyui.Element;
 
-var Entry = require('./entry'),
+var options = require('../options'),
+    Entry = require('./entry'),
     File = require('./draggableEntry/file'),
     FileMarker = require('./entry/fileMarker'),
     DirectoryMarker = require('./entry/directoryMarker');
@@ -22,12 +23,6 @@ class Entries extends Element {
     this.addEntry(entry);
   }
 
-  removeFile(fileName) {
-    var file = this.retrieveFile(fileName);
-
-    file.remove();
-  }
-
   addDirectory(directoryName, collapsed, explorer, activateFileEventHandler) {
     var directory = this.Directory.clone(directoryName, collapsed, explorer, activateFileEventHandler),
         entry = directory;  ///
@@ -35,10 +30,24 @@ class Entries extends Element {
     this.addEntry(entry);
   }
 
+  removeFile(fileName) {
+    var file = this.retrieveFile(fileName),
+        explorer = file.getExplorer(),
+        removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+
+    file.remove();
+    
+    return removeEmptyParentDirectories;
+  }
+
   removeDirectory(directoryName) {
-    var directory = this.retrieveDirectory(directoryName);
+    var directory = this.retrieveDirectory(directoryName),
+        explorer = directory.getExplorer(),
+        removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
 
     directory.remove();
+
+    return removeEmptyParentDirectories;
   }
 
   hasFile(fileName) {

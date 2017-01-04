@@ -112,11 +112,12 @@ class DraggableEntry extends Element {
         this.timeout = null;
 
         var rootDirectory = this.isRootDirectory(),
+            subEntry = !rootDirectory,  ///
             noDragging = this.explorer.hasOption(options.NO_DRAGGING),
             noDraggingSubEntries = this.explorer.hasOption(options.NO_DRAGGING_SUB_ENTRIES),
             noDraggingRootDirectory = this.explorer.hasOption(options.NO_DRAGGING_ROOT_DIRECTORY);
 
-        if ((noDragging) || (!rootDirectory && noDraggingSubEntries) || (rootDirectory && noDraggingRootDirectory)) {
+        if ((noDragging) || (subEntry && noDraggingSubEntries) || (rootDirectory && noDraggingRootDirectory)) {
           return;
         }
 

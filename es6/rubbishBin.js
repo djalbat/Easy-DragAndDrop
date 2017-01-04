@@ -72,21 +72,21 @@ class RubbishBin extends DroppableElement {
     }
   }
 
-  moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath, removeEmptyParentDirectories) {
+  moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath) {
     if (movedDirectoryPath === null) {
       var explorer = directory.getExplorer(),
           directoryPath = sourceDirectoryPath;  ///
 
-      explorer.removeDirectory(sourceDirectoryPath, removeEmptyParentDirectories);
+      explorer.removeDirectory(directoryPath);
     }
   }
 
-  moveFile(file, sourceFilePath, movedFilePath, removeEmptyParentDirectories) {
+  moveFile(file, sourceFilePath, movedFilePath) {
     if (movedFilePath === null) {
       var explorer = file.getExplorer(),
           filePath = sourceFilePath;  ///
 
-      explorer.removeFile(filePath, removeEmptyParentDirectories);
+      explorer.removeFile(filePath);
     }
   }
 

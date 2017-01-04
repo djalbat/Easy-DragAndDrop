@@ -82,26 +82,28 @@ class DroppableElement extends Element {
 
     this.moveHandler(pathMaps, function() {
       draggableEntries.forEach(function(draggableEntry) {
-        var draggableEntryPath = draggableEntry.getPath(),
-            sourcePath = draggableEntryPath,  ///
-            pathMap = find(pathMaps, function(pathMap) {
-              var sourceDraggableEntryPath = sourcePath,
-                  movedPath = pathMap[sourceDraggableEntryPath],
-                  found = (movedPath !== undefined);
+        var draggableEntryPath = draggableEntry.getPath();
 
-              return found;
-            }),
-            movedPath = pathMap[sourcePath],
-            removeEmptyParentDirectories = pathMap.removeEmptyParentDirectories;  ///
+        if (draggableEntryPath !== null) {
+          var sourcePath = draggableEntryPath,  ///
+              pathMap = find(pathMaps, function(pathMap) {
+                var sourceDraggableEntryPath = sourcePath,
+                    movedPath = pathMap[sourceDraggableEntryPath],
+                    found = (movedPath !== undefined);
 
-        this.moveDraggableEntry(draggableEntry, sourcePath, movedPath, removeEmptyParentDirectories);
+                return found;
+              }),
+              movedPath = pathMap[sourcePath];
+
+          this.moveDraggableEntry(draggableEntry, sourcePath, movedPath);
+        }
       }.bind(this));
 
       done();
     }.bind(this));
   }
 
-  moveDraggableEntry(draggableEntry, sourcePath, movedPath, removeEmptyParentDirectories = false) {
+  moveDraggableEntry(draggableEntry, sourcePath, movedPath) {
     var draggableEntryDirectory = draggableEntry.isDirectory();
 
     if (draggableEntryDirectory) {
@@ -109,13 +111,13 @@ class DroppableElement extends Element {
           sourceDirectoryPath = sourcePath, ///
           movedDirectoryPath = movedPath;
 
-      this.moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath, removeEmptyParentDirectories);
+      this.moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath);
     } else {
       var file = draggableEntry, ///
           sourceFilePath = sourcePath,  ///
           movedFilePath = movedPath;  ///
 
-      this.moveFile(file, sourceFilePath, movedFilePath, removeEmptyParentDirectories);
+      this.moveFile(file, sourceFilePath, movedFilePath);
     }
   }
 }
