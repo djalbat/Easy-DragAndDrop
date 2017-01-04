@@ -1,8 +1,8 @@
 'use strict';
 
 var easyui = require('easyui'),
-    Body = easyui.Body,
-    Element = easyui.Element;
+    Element = easyui.Element,
+    Body = easyui.Body;
 
 var options = require('../options'),
     NameButton = require('./nameButton');
