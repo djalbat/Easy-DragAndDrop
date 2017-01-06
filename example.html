@@ -33,6 +33,7 @@
       (function() {
 
         var Body = easyui.Body,
+            options = easyuidraganddrop.options,
             Explorer = easyuidraganddrop.Explorer,
             RubbishBin = easyuidraganddrop.RubbishBin;
 
@@ -58,6 +59,8 @@
         body.append(firstExplorer);
         body.append(secondExplorer);
         body.append(rubbishBin);
+
+        secondExplorer.setOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
 
         function onActivate(sourcePath, callback) {
           console.log('activate: ' + sourcePath)

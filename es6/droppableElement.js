@@ -3,7 +3,8 @@
 var easyui = require('easyui'),
     Element = easyui.Element;
 
-var util = require('./util');
+var util = require('./util'),
+    options = require('./options');
 
 class DroppableElement extends Element {
   constructor(selector, moveHandler) {
@@ -81,7 +82,23 @@ class DroppableElement extends Element {
     var pathMaps = this.pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath);
 
     this.moveHandler(pathMaps, function() {
+      var lastDraggableEntry = last(draggableEntries),
+          firstDraggableEntry = first(draggableEntries),
+          firstDraggableEntryExplorer = firstDraggableEntry.getExplorer(),
+          draggableEntriesExplorer = firstDraggableEntryExplorer, ///
+          removeEmptyParentDirectories = draggableEntriesExplorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+
+      if (removeEmptyParentDirectories) {
+        draggableEntriesExplorer.unsetOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+      }
+
       draggableEntries.forEach(function(draggableEntry) {
+        if (draggableEntry === lastDraggableEntry) {
+          if (removeEmptyParentDirectories) {
+            draggableEntriesExplorer.setOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+          }
+        }
+
         var draggableEntryPath = draggableEntry.getPath();
 
         if (draggableEntryPath !== null) {
@@ -155,3 +172,6 @@ function find(array, callback) {
   
   return element;  
 }
+
+function first(array) { return array[0]; }
+function last(array) { return array[array.length - 1]; }
