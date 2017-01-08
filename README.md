@@ -1,10 +1,17 @@
 # EasyUI-DragAndDrop
 
-Drag and drop elements including a file explorer and rubbish bin.
+Drag and drop elements including a file explorer and a rubbish bin.
 
 ## Related projects
 
 - [EasyUI](https://github.com/djalbat/EasyUI) A V-framework.
+- [EasyUI-Layout](https://github.com/djalbat/EasyUI-Layout) Layout elements that work with CSS flexbox.
+
+### Are these projects actually used anywhere?
+
+Actually they are, here:
+
+- [Occam Proof Assistant](http://djalbat.com/occam)
 
 ## Installation
 
