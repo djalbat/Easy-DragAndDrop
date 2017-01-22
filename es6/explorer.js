@@ -293,12 +293,12 @@ class Explorer extends DroppableElement {
     return pathMaps;
   }
 
-  static clone(selector, rootDirectoryName, moveHandler, openHandler) {
-    return Element.clone(Explorer, selector, rootDirectoryName, moveHandler, openHandler);
+  static clone(selector, rootDirectoryName, openHandler, moveHandler) {
+    return Element.clone(Explorer, selector, rootDirectoryName, openHandler, moveHandler);
   }
 
-  static fromHTML(html, rootDirectoryName, moveHandler, openHandler) {
-    return Element.fromHTML(Explorer, html, rootDirectoryName, moveHandler, openHandler);
+  static fromHTML(html, rootDirectoryName, openHandler, moveHandler) {
+    return Element.fromHTML(Explorer, html, rootDirectoryName, openHandler, moveHandler);
   }
 }
 
