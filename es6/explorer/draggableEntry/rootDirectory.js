@@ -8,10 +8,10 @@ var util = require('../../util'),
     Directory = require('./directory');
 
 class RootDirectory extends Directory {
-  constructor(selector, name, explorer, activateFileEventHandler) {
+  constructor(selector, name, explorer) {
     var collapsed = false;  ///
 
-    super(selector, name, collapsed, explorer, activateFileEventHandler);
+    super(selector, name, collapsed, explorer);
   }
   
   isRootDirectory() {
@@ -74,8 +74,8 @@ class RootDirectory extends Directory {
     super.addMarker(markerPathWithoutRootDirectoryName, draggableEntryType);
   }
 
-  static clone(name, explorer, activateFileEventHandler) {
-    var rootDirectory = Element.clone(RootDirectory, '#directory', name, explorer, activateFileEventHandler);
+  static clone(name, explorer) {
+    var rootDirectory = Element.clone(RootDirectory, '#directory', name, explorer);
 
     rootDirectory.removeAttribute('id');
 

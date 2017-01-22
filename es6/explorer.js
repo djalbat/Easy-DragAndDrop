@@ -10,13 +10,13 @@ var util = require('./util'),
     RootDirectory = require('./explorer/draggableEntry/rootDirectory');
 
 class Explorer extends DroppableElement {
-  constructor(selector, rootDirectoryName, activateHandler, moveHandler) {
+  constructor(selector, rootDirectoryName, openHandler, moveHandler) {
     super(selector, moveHandler);
 
     var explorer = this,  ///
-        rootDirectory = RootDirectory.clone(rootDirectoryName, explorer, this.activateFileEventHandler.bind(this));
+        rootDirectory = RootDirectory.clone(rootDirectoryName, explorer);
 
-    this.activateHandler = activateHandler;
+    this.openHandler = openHandler;
 
     this.rootDirectory = rootDirectory;
 
@@ -269,19 +269,11 @@ class Explorer extends DroppableElement {
     }
   }
 
-  activateFileEventHandler(activateFileEvent) {
-    var file = activateFileEvent.getFile(),
-        filePath = file.getPath(this.rootDirectory),
-        sourcePath = filePath,  ///
-        result = this.activateHandler(sourcePath, callback);
-
-    callback(result);
+  openFile(file) {
+    var filePath = file.getPath(this.rootDirectory),
+        sourcePath = filePath;
     
-    function callback(result) {
-      if (result === false) {
-        file.remove();
-      }
-    }
+    this.openHandler(sourcePath);
   }
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
@@ -301,12 +293,12 @@ class Explorer extends DroppableElement {
     return pathMaps;
   }
 
-  static clone(selector, rootDirectoryName, moveHandler, activateHandler) {
-    return Element.clone(Explorer, selector, rootDirectoryName, moveHandler, activateHandler);
+  static clone(selector, rootDirectoryName, moveHandler, openHandler) {
+    return Element.clone(Explorer, selector, rootDirectoryName, moveHandler, openHandler);
   }
 
-  static fromHTML(html, rootDirectoryName, moveHandler, activateHandler) {
-    return Element.fromHTML(Explorer, html, rootDirectoryName, moveHandler, activateHandler);
+  static fromHTML(html, rootDirectoryName, moveHandler, openHandler) {
+    return Element.fromHTML(Explorer, html, rootDirectoryName, moveHandler, openHandler);
   }
 }
 

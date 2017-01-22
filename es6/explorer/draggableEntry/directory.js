@@ -10,13 +10,11 @@ var util = require('../../util'),
     DraggableEntry = require('../draggableEntry');
 
 class Directory extends DraggableEntry {
-  constructor(selector, name, collapsed, explorer, activateFileEventHandler) {
+  constructor(selector, name, collapsed, explorer) {
     var type = Entry.types.DIRECTORY;
 
     super(selector, name, explorer, type);
     
-    this.activateFileEventHandler = activateFileEventHandler;
-
     this.toggleButton = new ToggleButton(this, this.toggleButtonUpdateHandler.bind(this) );
 
     this.entries = new Entries(this, Directory);
@@ -147,7 +145,7 @@ class Directory extends DraggableEntry {
       if (!entriesFile) {
         var explorer = this.getExplorer();
         
-        this.entries.addFile(fileName, explorer, this.activateFileEventHandler);
+        this.entries.addFile(fileName, explorer);
       }
     }
   }
@@ -167,7 +165,7 @@ class Directory extends DraggableEntry {
       if (!entriesDirectory) {
         var explorer = this.getExplorer();
 
-        this.entries.addDirectory(directoryName, collapsed, explorer, this.activateFileEventHandler);
+        this.entries.addDirectory(directoryName, collapsed, explorer);
       }
     }
   }
@@ -330,7 +328,7 @@ class Directory extends DraggableEntry {
           var collapsed = true,
               explorer = this.getExplorer();
 
-          this.entries.addDirectory(topmostDirectoryName, collapsed, explorer, this.activateFileEventHandler);
+          this.entries.addDirectory(topmostDirectoryName, collapsed, explorer);
         }
       }
 
@@ -379,8 +377,8 @@ class Directory extends DraggableEntry {
     this.toggleButton.toggle();
   }
 
-  static clone(name, collapsed, explorer, activateFileEventHandler) {
-    var directory = Element.clone(Directory, '#directory', name, collapsed, explorer, activateFileEventHandler);
+  static clone(name, collapsed, explorer) {
+    var directory = Element.clone(Directory, '#directory', name, collapsed, explorer);
 
     directory.removeAttribute('id');
 

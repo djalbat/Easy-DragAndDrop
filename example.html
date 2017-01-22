@@ -36,8 +36,8 @@
             Explorer = easyuidraganddrop.Explorer,
             RubbishBin = easyuidraganddrop.RubbishBin;
 
-        var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onActivate, onMove),
-            secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onActivate, onMove),
+        var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onOpen, onMove),
+            secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onOpen, onMove),
             rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemove),
             body = new Body();
 
@@ -59,14 +59,8 @@
         body.append(secondExplorer);
         body.append(rubbishBin);
 
-        function onActivate(sourcePath, callback) {
-          console.log('activate: ' + sourcePath)
-
-          switch(sourcePath) {
-            case 'Second explorer/Second directory/Third file.fls':
-              callback(false);
-              break;
-          }
+        function onOpen(sourcePath, callback) {
+          console.log('open: ' + sourcePath)
         }
 
         function onMove(pathMaps, done) {

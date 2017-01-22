@@ -4,16 +4,13 @@ var easyui = require('easyui'),
     Element = easyui.Element;
 
 var Entry = require('../entry'),
-    DraggableEntry = require('../draggableEntry'),
-    ActivateFileEvent = require('../activateFileEvent');
+    DraggableEntry = require('../draggableEntry');
 
 class File extends DraggableEntry {
-  constructor(selector, name, explorer, activateFileEventHandler) {
+  constructor(selector, name, explorer) {
     var type = Entry.types.FILE;
 
     super(selector, name, explorer, type);
-
-    this.activateFileEventHandler = activateFileEventHandler;
 
     this.onDoubleClick(this.doubleClickHandler.bind(this));
   }
@@ -51,14 +48,14 @@ class File extends DraggableEntry {
   }
   
   doubleClickHandler() {
-    var file = this,
-        activateFileEvent = new ActivateFileEvent(file);
-
-    this.activateFileEventHandler(activateFileEvent);
+    var explorer = this.getExplorer(),
+        file = this; ///
+    
+    explorer.openFile(file);
   }
 
-  static clone(name, explorer, activateFileEventHandler) {
-    var file = Element.clone(File, '#file', name, explorer, activateFileEventHandler);
+  static clone(name, explorer) {
+    var file = Element.clone(File, '#file', name, explorer);
 
     file.removeAttribute('id');
 

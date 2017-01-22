@@ -16,15 +16,15 @@ class Entries extends Element {
     this.Directory = Directory;
   }
   
-  addFile(fileName, explorer, activateFileEventHandler) {
-    var file = File.clone(fileName, explorer, activateFileEventHandler),
+  addFile(fileName, explorer) {
+    var file = File.clone(fileName, explorer),
         entry = file; ///
 
     this.addEntry(entry);
   }
 
-  addDirectory(directoryName, collapsed, explorer, activateFileEventHandler) {
-    var directory = this.Directory.clone(directoryName, collapsed, explorer, activateFileEventHandler),
+  addDirectory(directoryName, collapsed, explorer) {
+    var directory = this.Directory.clone(directoryName, collapsed, explorer),
         entry = directory;  ///
 
     this.addEntry(entry);

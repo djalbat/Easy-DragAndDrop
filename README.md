@@ -82,7 +82,7 @@ You must include the `easyui-draganddrop.html` and `easyui-draganddrop.css` file
 Creating instances can be done with constructors:
 
 ```js
-var explorer = new Explorer('#explorer', Explorer, onActivate, onMove),
+var explorer = new Explorer('#explorer', Explorer, onOpen, onMove),
     rubbishBin = new RubbishBin('#rubbishBin', onRemove);
 ```
 
@@ -91,8 +91,8 @@ var explorer = new Explorer('#explorer', Explorer, onActivate, onMove),
 You can also create instances using the `clone()` factory or instance methods. Remember to remove the `id` attribute if you've used the `clone()` factory method and the jQuery selector used it. Or you can use the `fromHTML()` methods, as in the examples: 
 
 ```js
-var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onActivate, onMove),
-    secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onActivate, onMove),
+var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onOpen, onMove),
+    secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onOpen, onMove),
     rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemove);
 
 var body = new Body();
@@ -143,19 +143,13 @@ secondExplorer.addDroppableElement(rubbishBin);
 
 Here the rubbish bin will listen for dragging events from both of the explorers. Each of the explorers will listen for dragging events of the other's.
 
-### Activating files
+### Opening files
 
-This is done by double clicking on them, in which case the `onActivate` handler is called with the file's source path. A callback is passed as a second argument. If this is invoked with `false` or if the handler explicitly returns `false`, the file will be removed.
+This is done by double clicking on them, in which case the `onOpen` handler is called with the file's source path.
 
 ```js
-function onActivate(sourcePath, callback) {
-  console.log('activate: ' + sourcePath)
-
-  switch(sourcePath) {
-    case 'Second explorer/Second directory/Third file.fls':
-      callback(false);
-      break;
-  }
+function onOpen(sourcePath, callback) {
+  console.log('open: ' + sourcePath)
 }
 ```
 
