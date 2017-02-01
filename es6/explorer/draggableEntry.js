@@ -2,7 +2,7 @@
 
 var easyui = require('easyui'),
     Element = easyui.Element,
-    Body = easyui.Body;
+    window = easyui.window;
 
 var options = require('../options'),
     NameButton = require('./nameButton');
@@ -10,8 +10,6 @@ var options = require('../options'),
 const ESCAPE_KEYCODE = 27,
       START_DRAGGING_DELAY = 175,
       NAMESPACE = 'EasyUI-DragAndDrop';
-
-var body = new Body();
 
 class DraggableEntry extends Element {
   constructor(selector, name, explorer, type) {
@@ -164,8 +162,8 @@ class DraggableEntry extends Element {
   }
 
   mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
-    body.onMouseUp(this.mouseUpHandler.bind(this), NAMESPACE);  ///
-    body.onMouseMove(this.mouseMoveHandler.bind(this), NAMESPACE);  ///
+    window.on('mouseup blur', this.mouseUpHandler.bind(this), NAMESPACE);  ///
+    window.onMouseMove(this.mouseMoveHandler.bind(this), NAMESPACE);
 
     if (mouseButton === Element.LEFT_MOUSE_BUTTON) {
       var dragging = this.isDragging();
@@ -177,8 +175,8 @@ class DraggableEntry extends Element {
   }
 
   mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
-    body.offMouseMove(NAMESPACE); ///
-    body.offMouseUp(NAMESPACE); ///
+    window.off('mouseup blur', NAMESPACE); ///
+    window.offMouseMove(NAMESPACE);
 
     var dragging = this.isDragging();
 
