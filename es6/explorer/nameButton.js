@@ -28,7 +28,7 @@ class NameButton extends Button {
   }
   
   onDoubleClick(handler) {
-    this.on('dbclick', handler);
+    this.on('dblclick', handler);
   }
 
   static fromParentElement(parentElement, name, doubleClickHandler) {

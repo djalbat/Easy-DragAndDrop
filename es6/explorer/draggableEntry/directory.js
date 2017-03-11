@@ -384,10 +384,6 @@ class Directory extends DraggableEntry {
     this.toggleButton.toggle();
   }
 
-  onDoubleClick(handler) {
-    this.on('dbclick', handler);
-  }
-
   static clone(name, collapsed, explorer) {
     let directory = new Directory('#directory', name, collapsed, explorer);
 

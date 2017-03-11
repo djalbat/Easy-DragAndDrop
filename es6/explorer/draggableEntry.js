@@ -63,7 +63,7 @@ class DraggableEntry extends Element {
 
   setName(name) { this.nameButton.setName(name); }
 
-  onDoubleClick(doubleClickHandler) { this.nameButton.onDoubleClick(doubleClickHandler); }
+  onDoubleClick(handler) { this.nameButton.onDoubleClick(handler); }
 
   startDragging(mouseTop, mouseLeft) {
     const escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING),
