@@ -75,9 +75,7 @@ Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have
 
 ## Creating instances
 
-See the `example.html` file in the `docs/` folder for an example. 
-
-You must include the `easyui-draganddrop.html` and `easyui-draganddrop.css` files in the `dist/` directory or their contents somehow in your application as well as the four PNG files. The HTML snippet in the `easyui-draganddrop.html` file includes an `img` element to preload the `marker.png` file. You may need to adjust the relative URL.
+You must include the `easyui-draganddrop.html` and `easyui-draganddrop.css` files in the `dist/` directory or their contents somehow in your application as well as the four PNG files. Or understand what they give and replace this with equivalent. The HTML snippet in the `easyui-draganddrop.html` file includes an `img` element to preload the `marker.png` file. You may need to adjust the relative URL.
 
 Creating instances can be done with constructors:
 
@@ -88,7 +86,7 @@ var explorer = new Explorer('#explorer', Explorer, onOpen, onMove),
 
 ## Cloning or creating instances from HTML
 
-You can also create instances using the `clone()` factory or instance methods. Remember to remove the `id` attribute if you've used the `clone()` factory method and the jQuery selector used it. Or you can use the `fromHTML()` methods, as in the examples: 
+You can also create instances using the `clone()` factory or instance methods. Remember to remove the `id` attribute if you have  used the `clone()` factory method and the selector had to make use of it. Or you can use the `fromHTML()` methods: 
 
 ```js
 var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onOpen, onMove),
@@ -117,9 +115,9 @@ secondExplorer.addFile('Second explorer/First directory/Second file.fls');
 secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
 ```
 
-The `addDirectory()` method has a second, optional `collapsed` argument. The default is `false`. The explorer will add the necessary parent directories for you whenever you add a file. If you try to add a file or directory more than once, nothing happens.
+The `addDirectory()` method has a second, optional `collapsed` argument. The default is `false`. The explorer will add the necessary parent directories for you whenever you add a file. If you try to add a file or directory more than once, nothing will happen.
 
-You can remove files and non-empty directories:
+You can also remove files and non-empty directories programmatically:
 
 ```js
 secondExplorer.removeFile('Second explorer/First directory/Second file.fls', true);
@@ -141,7 +139,7 @@ firstExplorer.addDroppableElement(rubbishBin);
 secondExplorer.addDroppableElement(rubbishBin);
 ```
 
-Here the rubbish bin will listen for dragging events from both of the explorers. Each of the explorers will listen for dragging events of the other's.
+Here the rubbish bin will listen for dragging events from both of the explorers. Each of the explorers will listen for dragging events of the other one.
 
 ## Opening files
 
@@ -234,7 +232,7 @@ if (sourcePath === 'First explorer') {
 
 ## Changing the CSS
 
-Feel free to change the CSS with care. Check the `example.css` file in the `docs/` folder for some CSS that works well. Note that the triangles used are defined in the `ToggleButton` class in the `es6/explorer/` folder. You'll need to re-build the package if you want to change these.
+Of course feel free to change the CSS with care. Note that the triangles used are defined in the `ToggleButton` class in the `es6/explorer/` folder. You will need to re-build the package if you want to change these.
 
 ## Contact
 
