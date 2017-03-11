@@ -1,30 +1,32 @@
 'use strict';
 
-var easyui = require('easyui'),
-    Element = easyui.Element;
+const easyui = require('easyui'),
+      Element = easyui.Element;
 
-var Entry = require('../entry');
+const Entry = require('../entry');
 
 class DirectoryMarker extends Entry {
   constructor(selector, name) {
-    var type = Entry.types.MARKER;
+    const type = Entry.types.MARKER;
 
     super(selector, name, type);
   }
 
   isBefore(entry) {
-    var name = this.getName(),
-        entryName = entry.getName(),
-        entryType = entry.getType(),
-        before = (entryType === Entry.types.FILE) ? 
-                   true : 
-                     (name.localeCompare(entryName) < 0);
+    const name = this.getName(),
+          entryName = entry.getName(),
+          entryType = entry.getType(),
+          before = (entryType === Entry.types.FILE) ? 
+                     true : 
+                       (name.localeCompare(entryName) < 0);
 
     return before;
   }
 
   static clone(name) {
-    var directoryMarker = Element.clone(DirectoryMarker, '#marker', name);
+    let directoryMarker = new DirectoryMarker('#marker', name);
+
+    directoryMarker = Element.clone(DirectoryMarker, directoryMarker, name);
 
     directoryMarker.removeAttribute('id');
 

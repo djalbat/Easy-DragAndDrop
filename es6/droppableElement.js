@@ -1,10 +1,10 @@
 'use strict';
 
-var easyui = require('easyui'),
-    Element = easyui.Element;
+const easyui = require('easyui'),
+      Element = easyui.Element;
 
-var util = require('./util'),
-    options = require('./options');
+const util = require('./util'),
+      options = require('./options');
 
 class DroppableElement extends Element {
   constructor(selector, moveHandler) {
@@ -20,8 +20,8 @@ class DroppableElement extends Element {
   }
 
   removeDroppableElement(droppableElement) {
-    var index = indexOf(this.droppableElements, droppableElement),
-        found = (index !== -1);
+    const index = indexOf(this.droppableElements, droppableElement),
+          found = (index !== -1);
 
     if (found) {
       this.droppableElements.splice(index, 1);
@@ -29,15 +29,15 @@ class DroppableElement extends Element {
   }
 
   isOverlappingDraggableEntry(draggableEntryCollapsedBounds) {
-    var bounds = this.getBounds(),
-        boundsOverlappingDraggableEntry = bounds.areOverlapping(draggableEntryCollapsedBounds),
-        overlappingDraggableEntry = boundsOverlappingDraggableEntry;
+    const bounds = this.getBounds(),
+          boundsOverlappingDraggableEntry = bounds.areOverlapping(draggableEntryCollapsedBounds),
+          overlappingDraggableEntry = boundsOverlappingDraggableEntry;
 
     return overlappingDraggableEntry;
   }
 
   getDroppableElementToBeMarked(draggableEntry) {
-    var droppableElementToBeMarked = this.droppableElements.reduce(function(droppableElementToBeMarked, droppableElement) {
+    const droppableElementToBeMarked = this.droppableElements.reduce(function(droppableElementToBeMarked, droppableElement) {
       if (droppableElementToBeMarked === null) {
         if (droppableElement.isToBeMarked(draggableEntry)) { ///
           droppableElementToBeMarked = droppableElement;
@@ -51,9 +51,9 @@ class DroppableElement extends Element {
   }
 
   getMarkedDroppableElement() {
-    var markedDroppableElement = this.droppableElements.reduce(function(markedDroppableElement, droppableElement) {
+    const markedDroppableElement = this.droppableElements.reduce(function(markedDroppableElement, droppableElement) {
       if (markedDroppableElement === null) {
-        var droppableElementMarked = droppableElement.isMarked();
+        const droppableElementMarked = droppableElement.isMarked();
         
         if (droppableElementMarked) {
           markedDroppableElement = droppableElement;
@@ -67,26 +67,26 @@ class DroppableElement extends Element {
   }
 
   removeMarkerGlobally() {
-    var marked = this.isMarked();
+    const marked = this.isMarked();
 
     if (marked) {
       this.removeMarker();
     } else {
-      var markedDroppableElement = this.getMarkedDroppableElement();
+      const markedDroppableElement = this.getMarkedDroppableElement();
 
       markedDroppableElement.removeMarker();
     }
   }
 
   moveDraggableEntries(draggableEntries, sourcePath, targetPath, done) {
-    var pathMaps = this.pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath);
+    const pathMaps = this.pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath);
 
     this.moveHandler(pathMaps, function() {
-      var lastDraggableEntry = last(draggableEntries),
-          firstDraggableEntry = first(draggableEntries),
-          firstDraggableEntryExplorer = firstDraggableEntry.getExplorer(),
-          draggableEntriesExplorer = firstDraggableEntryExplorer, ///
-          removeEmptyParentDirectories = draggableEntriesExplorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+      const lastDraggableEntry = last(draggableEntries),
+            firstDraggableEntry = first(draggableEntries),
+            firstDraggableEntryExplorer = firstDraggableEntry.getExplorer(),
+            draggableEntriesExplorer = firstDraggableEntryExplorer, ///
+            removeEmptyParentDirectories = draggableEntriesExplorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
 
       if (removeEmptyParentDirectories) {
         draggableEntriesExplorer.unsetOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
@@ -99,14 +99,14 @@ class DroppableElement extends Element {
           }
         }
 
-        var draggableEntryPath = draggableEntry.getPath();
+        const draggableEntryPath = draggableEntry.getPath();
 
         if (draggableEntryPath !== null) {
-          var sourcePath = draggableEntryPath,  ///
+          const sourcePath = draggableEntryPath,  ///
               pathMap = find(pathMaps, function(pathMap) {
-                var sourceDraggableEntryPath = sourcePath,
-                    movedPath = pathMap[sourceDraggableEntryPath],
-                    found = (movedPath !== undefined);
+                const sourceDraggableEntryPath = sourcePath,
+                      movedPath = pathMap[sourceDraggableEntryPath],
+                      found = (movedPath !== undefined);
 
                 return found;
               }),
@@ -121,18 +121,18 @@ class DroppableElement extends Element {
   }
 
   moveDraggableEntry(draggableEntry, sourcePath, movedPath) {
-    var draggableEntryDirectory = draggableEntry.isDirectory();
+    const draggableEntryDirectory = draggableEntry.isDirectory();
 
     if (draggableEntryDirectory) {
-      var directory = draggableEntry,  ///
-          sourceDirectoryPath = sourcePath, ///
-          movedDirectoryPath = movedPath;
+      const directory = draggableEntry,  ///
+            sourceDirectoryPath = sourcePath, ///
+            movedDirectoryPath = movedPath;
 
       this.moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath);
     } else {
-      var file = draggableEntry, ///
-          sourceFilePath = sourcePath,  ///
-          movedFilePath = movedPath;  ///
+      const file = draggableEntry, ///
+            sourceFilePath = sourcePath,  ///
+            movedFilePath = movedPath;  ///
 
       this.moveFile(file, sourceFilePath, movedFilePath);
     }
@@ -142,7 +142,7 @@ class DroppableElement extends Element {
 module.exports = DroppableElement;
 
 function indexOf(array, element) {
-  var index = -1;
+  let index = -1;
 
   array.some(function(currentElement, currentElementIndex) {
     if (currentElement === element) {
@@ -158,7 +158,7 @@ function indexOf(array, element) {
 }
 
 function find(array, callback) {
-  var element = null;
+  let element = null;
   
   array.some(function(currentElement) {
     if (callback(currentElement)) {

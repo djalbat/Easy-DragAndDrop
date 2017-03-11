@@ -1,15 +1,15 @@
 'use strict';
 
-var easyui = require('easyui'),
-    Element = easyui.Element;
+const easyui = require('easyui'),
+      Element = easyui.Element;
 
-var NameButton = require('./nameButton');
+const NameButton = require('./nameButton');
 
 class Entry extends Element {
   constructor(selector, name, type) {
     super(selector);
 
-    this.nameButton = new NameButton(this, name);
+    this.nameButton = NameButton.fromParentElement(this, name);
 
     this.type = type;
   }

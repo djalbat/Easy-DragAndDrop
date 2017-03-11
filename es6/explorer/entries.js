@@ -1,39 +1,39 @@
 'use strict';
 
-var easyui = require('easyui'),
-    Element = easyui.Element;
+const easyui = require('easyui'),
+      Element = easyui.Element;
 
-var options = require('../options'),
-    Entry = require('./entry'),
-    File = require('./draggableEntry/file'),
-    FileMarker = require('./entry/fileMarker'),
-    DirectoryMarker = require('./entry/directoryMarker');
+const options = require('../options'),
+      Entry = require('./entry'),
+      File = require('./draggableEntry/file'),
+      FileMarker = require('./entry/fileMarker'),
+      DirectoryMarker = require('./entry/directoryMarker');
 
 class Entries extends Element {
-  constructor(parentElement, Directory) {
-    super([parentElement, '>.entries']);
+  constructor(selector, Directory) {
+    super(selector);
 
     this.Directory = Directory;
   }
   
   addFile(fileName, explorer) {
-    var file = File.clone(fileName, explorer),
-        entry = file; ///
+    const file = File.clone(fileName, explorer),
+          entry = file; ///
 
     this.addEntry(entry);
   }
 
   addDirectory(directoryName, collapsed, explorer) {
-    var directory = this.Directory.clone(directoryName, collapsed, explorer),
-        entry = directory;  ///
+    const directory = this.Directory.clone(directoryName, collapsed, explorer),
+          entry = directory;  ///
 
     this.addEntry(entry);
   }
 
   removeFile(fileName) {
-    var file = this.retrieveFile(fileName),
-        explorer = file.getExplorer(),
-        removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+    const file = this.retrieveFile(fileName),
+          explorer = file.getExplorer(),
+          removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
 
     file.remove();
     
@@ -41,9 +41,9 @@ class Entries extends Element {
   }
 
   removeDirectory(directoryName) {
-    var directory = this.retrieveDirectory(directoryName),
-        explorer = directory.getExplorer(),
-        removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+    const directory = this.retrieveDirectory(directoryName),
+          explorer = directory.getExplorer(),
+          removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
 
     directory.remove();
 
@@ -51,7 +51,7 @@ class Entries extends Element {
   }
 
   hasFile(fileName) {
-    var file = this.retrieveFile(fileName);
+    let file = this.retrieveFile(fileName);
 
     file = (file !== null); ///
 
@@ -59,7 +59,7 @@ class Entries extends Element {
   }
 
   hasDirectory(directoryName) {
-    var directory = this.retrieveDirectory(directoryName);
+    let directory = this.retrieveDirectory(directoryName);
     
     directory = (directory !== null); ///
 
@@ -67,7 +67,7 @@ class Entries extends Element {
   }
 
   addMarker(markerName, draggableEntryType) {
-    var marker;
+    let marker;
 
     switch (draggableEntryType) {
       case Entry.types.FILE:
@@ -79,39 +79,40 @@ class Entries extends Element {
         break;
     }
 
-    var entry = marker; ///
+    const entry = marker; ///
 
     this.addEntry(entry);
   }
 
   removeMarker() {
-    var marker = this.retrieveMarker();
+    const marker = this.retrieveMarker();
 
     marker.remove();
   }
   
   isMarked() {
-    var marker = this.retrieveMarker(),
-        marked = (marker!== null);
+    const marker = this.retrieveMarker(),
+          marked = (marker!== null);
 
     return marked;
   }
 
   isEmpty() {
-    var entries = this.getEntries(),
-        entriesLength = entries.length,
-        empty = (entriesLength === 0);
+    const entries = this.getEntries(),
+          entriesLength = entries.length,
+          empty = (entriesLength === 0);
 
     return empty;
   }
 
   addEntry(entry) {
-    var nextEntry = entry,
-        previousEntry = undefined,
-        entries = this.getEntries();
+    const nextEntry = entry,
+          entries = this.getEntries();
+
+    let previousEntry = null;
 
     entries.some(function(entry) {
-      var nextEntryBefore = nextEntry.isBefore(entry);
+      const nextEntryBefore = nextEntry.isBefore(entry);
       
       if (nextEntryBefore) {
         previousEntry = entry;
@@ -122,10 +123,10 @@ class Entries extends Element {
       }
     });
 
-    if (previousEntry === undefined) {
+    if (previousEntry === null) {
       this.append(nextEntry);
     } else {
-      previousEntry.prependBefore(nextEntry);
+      nextEntry.insertBefore(previousEntry);
     }
   }
 
@@ -134,8 +135,9 @@ class Entries extends Element {
   retrieveDirectory(directoryName) { return this.retrieveEntryByType(directoryName, Entry.types.DIRECTORY) }
 
   retrieveMarker() {
-    var marker = null,
-        type = Entry.types.MARKER;
+    let marker = null;
+    
+    const type = Entry.types.MARKER;
 
     this.someEntryByType(function(entry) {
       marker = entry;  ///
@@ -147,7 +149,7 @@ class Entries extends Element {
   }
 
   getMarkedDirectory() {
-    var markedDirectory = null;
+    let markedDirectory = null;
 
     this.someDirectory(function(directory) {
       markedDirectory = directory.getMarkedDirectory();
@@ -163,11 +165,11 @@ class Entries extends Element {
   }
   
   getDraggableEntryPath(draggableEntry) {
-    var draggableEntryPath = null;
+    let draggableEntryPath = null;
     
     this.someEntry(function(entry) {
       if (entry === draggableEntry) {  ///
-        var entryName = entry.getName();
+        const entryName = entry.getName();
         
         draggableEntryPath = entryName;  ///
         
@@ -179,7 +181,7 @@ class Entries extends Element {
     
     if (draggableEntryPath === null) {
       this.someDirectory(function(directory) {
-        var directoryDraggableEntryPath = directory.getDraggableEntryPath(draggableEntry);
+        const directoryDraggableEntryPath = directory.getDraggableEntryPath(draggableEntry);
         
         if (directoryDraggableEntryPath !== null) {
           draggableEntryPath = directoryDraggableEntryPath; ///
@@ -195,7 +197,7 @@ class Entries extends Element {
   }
 
   getDirectoryOverlappingDraggableEntry(draggableEntry) {
-    var directoryOverlappingDraggableEntry = null;
+    let directoryOverlappingDraggableEntry = null;
 
     this.someDirectory(function(directory) {
       directoryOverlappingDraggableEntry = directory.getDirectoryOverlappingDraggableEntry(draggableEntry);
@@ -219,7 +221,7 @@ class Entries extends Element {
   someDirectory(callback) { return this.someEntryByType(callback, Entry.types.DIRECTORY) }
 
   forEachEntry(callback) {
-    var entries = this.getEntries();
+    const entries = this.getEntries();
 
     entries.forEach(function(entry) {
       callback(entry);
@@ -227,10 +229,10 @@ class Entries extends Element {
   }
 
   forEachEntryByType(callback, type) {
-    var entries = this.getEntries();
+    const entries = this.getEntries();
 
     entries.forEach(function(entry) {
-      var entryType = entry.getType();
+      const entryType = entry.getType();
 
       if (entryType === type) {
         callback(entry);
@@ -239,7 +241,7 @@ class Entries extends Element {
   }
 
   someEntry(callback, type) {
-    var entries = this.getEntries();
+    const entries = this.getEntries();
 
     return entries.some(function(entry) {
       return callback(entry);
@@ -247,10 +249,10 @@ class Entries extends Element {
   }
 
   someEntryByType(callback, type) {
-    var entries = this.getEntries();
+    const entries = this.getEntries();
 
     return entries.some(function(entry) {
-      var entryType = entry.getType();
+      const entryType = entry.getType();
 
       if (entryType === type) {
         return callback(entry);
@@ -261,10 +263,10 @@ class Entries extends Element {
   }
 
   retrieveEntryByType(name, type) {
-    var foundEntry = null;
+    let foundEntry = null;
 
     this.someEntryByType(function(entry) {
-      var entryName = entry.getName();
+      const entryName = entry.getName();
 
       if (entryName === name) {
         foundEntry = entry;
@@ -275,16 +277,23 @@ class Entries extends Element {
       }
     }, type);
 
-    var entry = foundEntry; ///
+    const entry = foundEntry; ///
 
     return entry;
   }
 
   getEntries() {
-    var childListElements = this.childElements('li'),
-        entries = childListElements;  ///
+    const childListElements = this.getChildElements('li'),
+         entries = childListElements;  ///
 
     return entries;
+  }
+
+  static fromParentElement(parentElement, Directory) {
+    const selector = '.entries',
+          domElement = parentElement.domElement.querySelector(selector);
+
+    return Element.fromDOMElement(Entries, domElement, Directory);
   }
 }
 

@@ -1,11 +1,12 @@
 'use strict';
 
-var easyui = require('easyui'),
-    Button = easyui.Button;
+const easyui = require('easyui'),
+      Button = easyui.Button,
+      InputElement = easyui.InputElement;
 
 class NameButton extends Button {
-  constructor(parentElement, name, doubleClickHandler) {
-    super([parentElement, '>button.name']);
+  constructor(selector, name, doubleClickHandler) {
+    super(selector);
 
     this.setName(name);
     
@@ -15,15 +16,26 @@ class NameButton extends Button {
   }
 
   getName() {
-    var name = this.html(); ///
+    const name = this.html(); ///
 
     return name;
   }
 
   setName(name) {
-    var html = name;  ///
+    const html = name;  ///
 
     this.html(html);
+  }
+  
+  onDoubleClick(handler) {
+    this.on('dbclick', handler);
+  }
+
+  static fromParentElement(parentElement, name, doubleClickHandler) {
+    const selector = 'button.name',
+          domElement = parentElement.domElement.querySelector(selector);
+    
+    return InputElement.fromDOMElement(NameButton, domElement, name, doubleClickHandler);
   }
 }
 

@@ -1,11 +1,12 @@
 'use strict';
 
-var easyui = require('easyui'),
-    Button = easyui.Button;
+const easyui = require('easyui'),
+      Button = easyui.Button,
+      InputElement = easyui.InputElement;
 
 class ToggleButton extends Button {
-  constructor(parentElement, updateHandler) {
-    super([parentElement, '>button.toggle']);
+  constructor(selector, updateHandler) {
+    super(selector);
 
     this.updateHandler = updateHandler;
 
@@ -39,13 +40,20 @@ class ToggleButton extends Button {
   }
 
   update() {
-    var html = this.collapsed ? 
-                 ToggleButton.BLACK_RIGHT_POINTING_TRIANGLE : 
-                   ToggleButton.BLACK_DOWN_POINTING_TRIANGLE;
+    const html = this.collapsed ? 
+                   ToggleButton.BLACK_RIGHT_POINTING_TRIANGLE : 
+                     ToggleButton.BLACK_DOWN_POINTING_TRIANGLE;
 
     this.html(html);
 
     this.updateHandler(this.collapsed);
+  }
+
+  static fromParentElement(parentElement, updateHandler) {
+    const selector = 'button.toggle',
+          domElement = parentElement.domElement.querySelector(selector);
+
+    return InputElement.fromDOMElement(ToggleButton, domElement, updateHandler);
   }
 }
 

@@ -1,13 +1,13 @@
 'use strict';
 
-var easyui = require('easyui'),
-    Element = easyui.Element;
+const easyui = require('easyui'),
+      Element = easyui.Element;
 
-var DroppableElement = require('./droppableElement');
+const DroppableElement = require('./droppableElement');
 
 class RubbishBin extends DroppableElement {
   constructor(selector, removeHandler) {
-    var droppableElementMoveHandler = removeHandler;  ///
+    const droppableElementMoveHandler = removeHandler;  ///
     
     super(selector, droppableElementMoveHandler);
 
@@ -15,13 +15,13 @@ class RubbishBin extends DroppableElement {
   }
 
   getMarkedDirectory() {
-    var markedDirectory = null;
+    const markedDirectory = null;
     
     return markedDirectory;
   }
 
   getDirectoryOverlappingDraggableEntry(draggableEntry) {
-    var directoryOverlappingDraggableEntry = null; ///
+    const directoryOverlappingDraggableEntry = null; ///
 
     return directoryOverlappingDraggableEntry;
   }
@@ -35,32 +35,32 @@ class RubbishBin extends DroppableElement {
   }
 
   isMarked() {
-    var open = this.isOpen(),
-        marked = open;  ///
+    const open = this.isOpen(),
+          marked = open;  ///
     
     return marked;
   }
 
   isToBeMarked(draggableEntry) {
-    var bounds = this.getBounds(),
-        draggableEntryCollapsedBounds = draggableEntry.getCollapsedBounds(),
-        overlappingDraggableEntryCollapsedBounds = bounds.areOverlapping(draggableEntryCollapsedBounds),
-        toBeMarked = overlappingDraggableEntryCollapsedBounds; ///
+    const bounds = this.getBounds(),
+          draggableEntryCollapsedBounds = draggableEntry.getCollapsedBounds(),
+          overlappingDraggableEntryCollapsedBounds = bounds.areOverlapping(draggableEntryCollapsedBounds),
+          toBeMarked = overlappingDraggableEntryCollapsedBounds; ///
 
     return toBeMarked;
   }
   
   dragging(draggableEntry, explorer) {
-    var marked = this.isMarked();
+    const marked = this.isMarked();
 
     if (marked) {
-      var toBeMarked = this.isToBeMarked(draggableEntry);
+      const toBeMarked = this.isToBeMarked(draggableEntry);
 
       if (!toBeMarked) {
-        var droppableElementToBeMarked = this.getDroppableElementToBeMarked(draggableEntry);
+        const droppableElementToBeMarked = this.getDroppableElementToBeMarked(draggableEntry);
 
         if (droppableElementToBeMarked !== null) {
-          var directoryOverlappingDraggableEntry = droppableElementToBeMarked.getDirectoryOverlappingDraggableEntry(draggableEntry);
+          const directoryOverlappingDraggableEntry = droppableElementToBeMarked.getDirectoryOverlappingDraggableEntry(draggableEntry);
 
           droppableElementToBeMarked.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
         } else {
@@ -74,8 +74,8 @@ class RubbishBin extends DroppableElement {
 
   moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath) {
     if (movedDirectoryPath === null) {
-      var explorer = directory.getExplorer(),
-          directoryPath = sourceDirectoryPath;  ///
+      const explorer = directory.getExplorer(),
+            directoryPath = sourceDirectoryPath;  ///
 
       explorer.removeDirectory(directoryPath);
     }
@@ -83,8 +83,8 @@ class RubbishBin extends DroppableElement {
 
   moveFile(file, sourceFilePath, movedFilePath) {
     if (movedFilePath === null) {
-      var explorer = file.getExplorer(),
-          filePath = sourceFilePath;  ///
+      const explorer = file.getExplorer(),
+            filePath = sourceFilePath;  ///
 
       explorer.removeFile(filePath);
     }
@@ -99,17 +99,17 @@ class RubbishBin extends DroppableElement {
   }
 
   isOpen() {
-    var open = this.hasClass('open');
+    const open = this.hasClass('open');
     
     return open;
   }
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
-    var pathMaps = draggableEntries.map(function(draggableEntry) {
-      var pathMap = {},
-          draggableEntryPath = draggableEntry.getPath(),
-          sourceDraggableEntryPath = draggableEntryPath,  ///
-          targetDraggableEntryPath = null;
+    const pathMaps = draggableEntries.map(function(draggableEntry) {
+      const pathMap = {},
+            draggableEntryPath = draggableEntry.getPath(),
+            sourceDraggableEntryPath = draggableEntryPath,  ///
+            targetDraggableEntryPath = null;
 
       pathMap[sourceDraggableEntryPath] = targetDraggableEntryPath;
 

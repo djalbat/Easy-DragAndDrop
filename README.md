@@ -7,9 +7,9 @@ The explorer element is populated with list of files and directories. It takes h
 ## Related projects
 
 - [EasyUI](https://github.com/djalbat/EasyUI) A V-framework.
+- [EasyUI-JSX](https://github.com/djalbat/EasyUI-JSX) JSX support for Easy-UI.
 - [EasyUI-Layout](https://github.com/djalbat/EasyUI-Layout) Layout elements that work with CSS flexbox.
 - [EasyUI-RichTextArea](https://github.com/djalbat/EasyUI-RichTextArea) A textarea component that handles and hands off events well.
-
 
 ### Are these projects actually used anywhere?
 
@@ -73,11 +73,7 @@ Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have
     npm run build-debug
     npm run watch-debug
 
-## Examples
-
-See the `examples.html` file in the project's root directory, or read on.
-
-### Creating instances
+## Creating instances
 
 See the `example.html` file in the `docs/` folder for an example. 
 
@@ -90,7 +86,7 @@ var explorer = new Explorer('#explorer', Explorer, onOpen, onMove),
     rubbishBin = new RubbishBin('#rubbishBin', onRemove);
 ```
 
-### Cloning or creating instances from HTML
+## Cloning or creating instances from HTML
 
 You can also create instances using the `clone()` factory or instance methods. Remember to remove the `id` attribute if you've used the `clone()` factory method and the jQuery selector used it. Or you can use the `fromHTML()` methods, as in the examples: 
 
@@ -108,7 +104,7 @@ body.append(rubbishBin);
 
 Remember when cloning or creating from HTML that you actually then attach the explorer to an existing DOM element.
 
-### Adding and removing files and directories
+## Adding and removing files and directories
 
 You can add files or empty directories:
 
@@ -134,7 +130,7 @@ secondExplorer.removeDirectory('Second explorer/Second directory', false);
 
 You cannot remove the topmost directory, and if you try to remove a file or directory more than once, nothing happens.
 
-### Dragging between elements
+## Dragging between elements
 
 Use the `addDroppableElement()` method to have one element listen for the dragging events of another.
 
@@ -147,7 +143,7 @@ secondExplorer.addDroppableElement(rubbishBin);
 
 Here the rubbish bin will listen for dragging events from both of the explorers. Each of the explorers will listen for dragging events of the other's.
 
-### Opening files
+## Opening files
 
 This is done by double clicking on them, in which case the `onOpen` handler is called with the file's source path.
 
@@ -157,7 +153,7 @@ function onOpen(sourcePath, callback) {
 }
 ```
 
-### Handling moving files and directories
+## Handling moving files and directories
 
 The `onMove()` handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object with one key, namely the entry's source path. The corresponding value is the entry's target path. If you want the entry to be moved, leave the object as-is. If you want the entry to be left in place, change the value to the source path. If you want the entry to be removed, change the value to `null`. Simply leaving the array of path maps alone with therefore move the entries as expected.
 
@@ -194,7 +190,7 @@ function onMove(pathMaps, done) {
 }
 ```
    
-### Handling removing files and directories
+## Handling removing files and directories
   
 The `onRemove()` handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object with one key, namely the entries source path. The corresponding value will be `null`. If you want the entry to be removed, leave the object as-is. If you want the entry to be left in place, change the value to the target path. Simply leaving the array of path maps alone will therefore remove the entries as expected.
 

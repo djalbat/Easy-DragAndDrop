@@ -2,18 +2,19 @@
 
 class util {
   static isPathTopmostDirectoryName(path) {
-    var topmostDirectoryName = util.topmostDirectoryName(path),
-        pathTopmostDirectoryName = (topmostDirectoryName=== null); ///
+    const topmostDirectoryName = util.topmostDirectoryName(path),
+          pathTopmostDirectoryName = (topmostDirectoryName === null); ///
 
     return pathTopmostDirectoryName;
   }
 
   static bottommostName(path) {
-    var bottommostName = null,
-        matches = path.match(/^.*\/([^\/]*$)/);
+    let bottommostName = null;
+    
+    const matches = path.match(/^.*\/([^\/]*$)/);
     
     if (matches !== null) {
-      var secondMatch = second(matches);
+      const secondMatch = second(matches);
       
       bottommostName = secondMatch;  ///
     }
@@ -22,11 +23,12 @@ class util {
   }
 
   static topmostDirectoryName(path) {
-    var topmostDirectoryName = null,
-        matches = path.match(/^([^\/]*)\//);
+    let topmostDirectoryName = null;
+    
+    const matches = path.match(/^([^\/]*)\//);
 
     if (matches !== null) {
-      var secondMatch = second(matches);
+      const secondMatch = second(matches);
 
       topmostDirectoryName = secondMatch;  ///
     }
@@ -35,11 +37,12 @@ class util {
   }
 
   static pathWithoutBottommostName(path) {
-    var pathWithoutBottommostName = null,
-        matches = path.match(/(^.*)\/[^\/]*$/);
+    let pathWithoutBottommostName = null;
+    
+    const matches = path.match(/(^.*)\/[^\/]*$/);
 
     if (matches !== null) {
-      var secondMatch = second(matches);
+      const secondMatch = second(matches);
 
       pathWithoutBottommostName = secondMatch; ///
     }
@@ -48,11 +51,12 @@ class util {
   }
 
   static pathWithoutTopmostDirectoryName(path) {
-    var pathWithoutTopmostDirectoryName = null,
-        matches = path.match(/^[^\/]*\/(.*$)/);
+    let pathWithoutTopmostDirectoryName = null;
+    
+    const matches = path.match(/^[^\/]*\/(.*$)/);
 
     if (matches !== null) {
-      var secondMatch = second(matches);
+      const secondMatch = second(matches);
 
       pathWithoutTopmostDirectoryName = secondMatch;
     }
@@ -67,9 +71,9 @@ class util {
   }
 
   static replaceSourcePathWithTargetPath(entryPath, sourcePath, targetPath) {
-    var regExp = new RegExp('^' + sourcePath + '(.*$)'),
-        matches = entryPath.match(regExp),
-        secondMatch = second(matches);
+    const regExp = new RegExp('^' + sourcePath + '(.*$)'),
+          matches = entryPath.match(regExp),
+          secondMatch = second(matches);
 
     entryPath = targetPath + secondMatch; ///
 

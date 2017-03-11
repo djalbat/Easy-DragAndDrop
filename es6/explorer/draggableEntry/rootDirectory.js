@@ -1,15 +1,15 @@
 'use strict';
 
-var easyui = require('easyui'),
-    Element = easyui.Element;
+const easyui = require('easyui'),
+      Element = easyui.Element;
 
-var util = require('../../util'),
-    options = require('../../options'),
-    Directory = require('./directory');
+const util = require('../../util'),
+      options = require('../../options'),
+      Directory = require('./directory');
 
 class RootDirectory extends Directory {
   constructor(selector, name, explorer) {
-    var collapsed = false;  ///
+    const collapsed = false;  ///
 
     super(selector, name, collapsed, explorer);
   }
@@ -19,12 +19,13 @@ class RootDirectory extends Directory {
   }
 
   getDirectoryOverlappingDraggableEntry(draggableEntry) {
-    var directoryOverlappingEntry,
-        explorer = this.getExplorer(),
-        noDraggingIntoSubdirectories = explorer.hasOption(options.NO_DRAGGING_INTO_SUB_DIRECTORIES);
+    let directoryOverlappingEntry;
+    
+    const explorer = this.getExplorer(),
+          noDraggingIntoSubdirectories = explorer.hasOption(options.NO_DRAGGING_INTO_SUB_DIRECTORIES);
     
     if (noDraggingIntoSubdirectories) {
-      var overlappingEntry = this.isOverlappingDraggableEntry(draggableEntry);
+      const overlappingEntry = this.isOverlappingDraggableEntry(draggableEntry);
 
       directoryOverlappingEntry = overlappingEntry ?
                                     this :
@@ -37,7 +38,7 @@ class RootDirectory extends Directory {
   }
 
   addFile(filePath) {
-    var filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
+    const filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
 
     if (filePathWithoutRootDirectoryName !== null) {
       super.addFile(filePathWithoutRootDirectoryName);
@@ -45,7 +46,7 @@ class RootDirectory extends Directory {
   }
 
   addDirectory(directoryPath, collapsed) {
-    var directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+    const directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
     if (directoryPathWithoutRootDirectoryName !== null) {
       super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
@@ -53,7 +54,7 @@ class RootDirectory extends Directory {
   }
 
   removeFile(filePath) {
-    var filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
+    const filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
 
     if (filePathWithoutRootDirectoryName !== null) {
       super.removeFile(filePathWithoutRootDirectoryName);
@@ -61,7 +62,7 @@ class RootDirectory extends Directory {
   }
 
   removeDirectory(directoryPath) {
-    var directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+    const directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
 
     if (directoryPathWithoutRootDirectoryName !== null) {
       super.removeDirectory(directoryPathWithoutRootDirectoryName);
@@ -69,13 +70,15 @@ class RootDirectory extends Directory {
   }
 
   addMarker(markerPath, draggableEntryType) {
-    var markerPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(markerPath);
+    const markerPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(markerPath);
 
     super.addMarker(markerPathWithoutRootDirectoryName, draggableEntryType);
   }
 
   static clone(name, explorer) {
-    var rootDirectory = Element.clone(RootDirectory, '#directory', name, explorer);
+    let rootDirectory = new RootDirectory('#directory', name, explorer);
+
+    rootDirectory = Element.clone(RootDirectory, rootDirectory, name, explorer);  ///
 
     rootDirectory.removeAttribute('id');
 

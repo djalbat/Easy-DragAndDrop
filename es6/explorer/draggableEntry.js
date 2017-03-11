@@ -1,21 +1,20 @@
 'use strict';
 
-var easyui = require('easyui'),
-    Element = easyui.Element,
-    window = easyui.window;
+const easyui = require('easyui'),
+      Element = easyui.Element,
+      window = easyui.window;
 
-var options = require('../options'),
-    NameButton = require('./nameButton');
+const options = require('../options'),
+      NameButton = require('./nameButton');
 
 const ESCAPE_KEYCODE = 27,
-      START_DRAGGING_DELAY = 175,
-      NAMESPACE = 'EasyUI-DragAndDrop';
+      START_DRAGGING_DELAY = 175;
 
 class DraggableEntry extends Element {
   constructor(selector, name, explorer, type) {
     super(selector);
 
-    this.nameButton = new NameButton(this, name);
+    this.nameButton = NameButton.fromParentElement(this, name);
 
     this.explorer = explorer;
     
@@ -39,14 +38,14 @@ class DraggableEntry extends Element {
   }
 
   getPath() {
-    var path = this.explorer.getDraggableEntryPath(this);
+    const path = this.explorer.getDraggableEntryPath(this);
     
     return path;
   }
   
   getCollapsedBounds() {
-    var bounds = this.getBounds(),
-        collapsedBounds = bounds;  ///
+    const bounds = this.getBounds(),
+          collapsedBounds = bounds;  ///
 
     return collapsedBounds;
   }
@@ -56,8 +55,8 @@ class DraggableEntry extends Element {
   }
 
   isOverlappingCollapsedBounds(collapsedBounds) {
-    var bounds = this.getBounds(),
-        overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds);
+    const bounds = this.getBounds(),
+          overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds);
 
     return overlappingCollapsedBounds;
   }
@@ -67,19 +66,24 @@ class DraggableEntry extends Element {
   onDoubleClick(doubleClickHandler) { this.nameButton.onDoubleClick(doubleClickHandler); }
 
   startDragging(mouseTop, mouseLeft) {
-    var escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING),
-        bounds = this.getBounds(),
-        top = bounds.getTop(),
-        left = bounds.getLeft(),
-        css = {
-          top: top,
-          left: left
-        };
+    const escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING),
+          bounds = this.getBounds();
 
-    this.css(css);
+    let top = bounds.getTop(),
+        left = bounds.getLeft();
 
     this.topOffset = top - mouseTop;
     this.leftOffset = left - mouseLeft;
+
+    top = `${top}px`;
+    left = `${left}px`;
+
+    const css = {
+            top: top,
+            left: left
+          };
+
+    this.css(css);
 
     if (escapeKeyStopsDragging) {
       this.on('keydown', this.keyDownHandler.bind(this));
@@ -89,7 +93,7 @@ class DraggableEntry extends Element {
   }
 
   stopDragging() {
-    var escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING);
+    const escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING);
 
     if (escapeKeyStopsDragging) {
       this.off('keydown', this.keyDownHandler.bind(this));
@@ -99,12 +103,16 @@ class DraggableEntry extends Element {
   }
 
   dragging(mouseTop, mouseLeft) {
-    var top = mouseTop + this.topOffset,
-        left = mouseLeft + this.leftOffset,
-        css = {
-          top: top,
-          left: left
-        };
+    let top = mouseTop + this.topOffset,
+        left = mouseLeft + this.leftOffset;
+
+    top = `${top}px`;
+    left = `${left}px`;
+
+    const css = {
+      top: top,
+      left: left
+    };
 
     this.css(css);
 
@@ -116,20 +124,20 @@ class DraggableEntry extends Element {
       this.timeout = setTimeout(function() {
         this.timeout = null;
 
-        var rootDirectory = this.isRootDirectory(),
-            subEntry = !rootDirectory,  ///
-            noDragging = this.explorer.hasOption(options.NO_DRAGGING),
-            noDraggingSubEntries = this.explorer.hasOption(options.NO_DRAGGING_SUB_ENTRIES),
-            noDraggingRootDirectory = this.explorer.hasOption(options.NO_DRAGGING_ROOT_DIRECTORY);
+        const rootDirectory = this.isRootDirectory(),
+              subEntry = !rootDirectory,  ///
+              noDragging = this.explorer.hasOption(options.NO_DRAGGING),
+              noDraggingSubEntries = this.explorer.hasOption(options.NO_DRAGGING_SUB_ENTRIES),
+              noDraggingRootDirectory = this.explorer.hasOption(options.NO_DRAGGING_ROOT_DIRECTORY);
 
         if ((noDragging) || (subEntry && noDraggingSubEntries) || (rootDirectory && noDraggingRootDirectory)) {
           return;
         }
 
-        var mouseOver = this.isMouseOver(mouseTop, mouseLeft);
+        const mouseOver = this.isMouseOver(mouseTop, mouseLeft);
 
         if (mouseOver) {
-          var startedDragging = this.explorer.startDragging(this);
+          const startedDragging = this.explorer.startDragging(this);
 
           if (startedDragging) {
             this.startDragging(mouseTop, mouseLeft);
@@ -148,25 +156,26 @@ class DraggableEntry extends Element {
   }
 
   isDragging() {
-    var dragging = this.hasClass('dragging');
+    const dragging = this.hasClass('dragging');
     
     return dragging;
   }
 
   isMouseOver(mouseTop, mouseLeft) {
-    var collapsedBounds = this.getCollapsedBounds(),
-        collapsedBoundsOverlappingMouse = collapsedBounds.isOverlappingMouse(mouseTop, mouseLeft),
-        mouseOver = collapsedBoundsOverlappingMouse;
+    const collapsedBounds = this.getCollapsedBounds(),
+          collapsedBoundsOverlappingMouse = collapsedBounds.isOverlappingMouse(mouseTop, mouseLeft),
+          mouseOver = collapsedBoundsOverlappingMouse;
 
     return mouseOver;
   }
 
   mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
-    window.on('mouseup blur', this.mouseUpHandler.bind(this), NAMESPACE);  ///
-    window.onMouseMove(this.mouseMoveHandler.bind(this), NAMESPACE);
+    window.on('mouseup blur', this.mouseUpHandler.bind(this));
+    
+    window.onMouseMove(this.mouseMoveHandler.bind(this));
 
     if (mouseButton === Element.LEFT_MOUSE_BUTTON) {
-      var dragging = this.isDragging();
+      const dragging = this.isDragging();
 
       if (!dragging) {
         this.startWaitingToDrag(mouseTop, mouseLeft);
@@ -175,10 +184,11 @@ class DraggableEntry extends Element {
   }
 
   mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
-    window.off('mouseup blur', NAMESPACE); ///
-    window.offMouseMove(NAMESPACE);
+    window.off('mouseup blur', this.mouseUpHandler.bind(this));
+    
+    window.offMouseMove(this.mouseMoveHandler.bind(this));
 
-    var dragging = this.isDragging();
+    const dragging = this.isDragging();
 
     if (dragging) {
       this.explorer.stopDragging(this, function() {
@@ -190,7 +200,7 @@ class DraggableEntry extends Element {
   }
 
   mouseMoveHandler(mouseTop, mouseLeft, mouseButton) {
-    var dragging = this.isDragging();
+    const dragging = this.isDragging();
 
     if (dragging) {
       this.dragging(mouseTop, mouseLeft);
@@ -198,10 +208,10 @@ class DraggableEntry extends Element {
   }
 
   keyDownHandler(event) {
-    var keyCode = event.keyCode || event.which;
+    const keyCode = event.keyCode || event.which;
 
     if (keyCode === ESCAPE_KEYCODE) {
-      var dragging = this.isDragging();
+      const dragging = this.isDragging();
 
       if (dragging) {
         this.explorer.escapeDragging();
