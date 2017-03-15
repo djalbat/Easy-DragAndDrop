@@ -4,7 +4,7 @@ Drag and drop elements including an explorer and a rubbish bin.
 
 The explorer element is populated with list of files and directories. It takes handlers for opening files and for moving and removing files an directories. Removing files and directories is done by dragging them into the rubbish bin. Or the explorer element can be altered programmatically.
 
-## Related projects
+### Related projects
 
 - [EasyUI](https://github.com/djalbat/EasyUI) A V-framework.
 - [EasyUI-JSX](https://github.com/djalbat/EasyUI-JSX) JSX support for Easy-UI elements.
