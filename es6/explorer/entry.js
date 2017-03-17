@@ -10,9 +10,13 @@ class Entry extends Element {
   constructor(selector, name, type) {
     super(selector);
 
-    this.nameButton = <NameButton name={name} className="name" />;
+    const nameButton = <NameButton className="name">{name}</NameButton>;
 
     this.type = type;
+
+    this.nameButton = nameButton;
+
+    this.append(nameButton);
   }
 
   getName() { return this.nameButton.getName(); }

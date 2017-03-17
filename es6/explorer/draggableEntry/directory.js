@@ -10,28 +10,28 @@ const util = require('../../util'),
       DraggableEntry = require('../draggableEntry');
 
 class Directory extends DraggableEntry {
-  constructor(selector, name, collapsed = false, explorer) {
+  constructor(selector, name, explorer, collapsed = false) {
     const type = Entry.types.DIRECTORY;
 
     super(selector, name, explorer, type);
     
     const updateHandler = this.toggleButtonUpdateHandler.bind(this),
           toggleButton = <ToggleButton updateHandler={updateHandler} className="toggle" />,
-          entries = <Entries Directory={Directory} />;
+          entries = <Entries Directory={Directory} className="entries" />;
     
     this.onDoubleClick(this.doubleClickHandler.bind(this));
 
+    this.toggleButton = toggleButton;
+
     this.entries = entries;
 
-    this.toggleButton = toggleButton;
-    
-    this.append(toggleButton);    
-    
     this.append(entries);
 
-    !collapsed ?
-      this.expand() :
-        this.collapse();
+    this.prepend(toggleButton);
+
+    collapsed ?
+      this.collapse() :
+        this.expand();
   }
 
   isDirectory() {
@@ -148,7 +148,7 @@ class Directory extends DraggableEntry {
       topmostDirectory.addFile(filePathWithoutTopmostDirectoryName);
     } else {
       const fileName = filePath,  ///
-          entriesFile = this.entries.hasFile(fileName);
+            entriesFile = this.entries.hasFile(fileName);
 
       if (!entriesFile) {
         const explorer = this.getExplorer();
@@ -168,12 +168,12 @@ class Directory extends DraggableEntry {
       topmostDirectory.addDirectory(directoryPathWithoutTopmostDirectoryName, collapsed);
     } else {
       const directoryName = directoryPath,  ///
-          entriesDirectory = this.entries.hasDirectory(directoryName);
+            entriesDirectory = this.entries.hasDirectory(directoryName);
 
       if (!entriesDirectory) {
         const explorer = this.getExplorer();
 
-        this.entries.addDirectory(directoryName, collapsed, explorer);
+        this.entries.addDirectory(directoryName, explorer, collapsed);
       }
     }
   }
@@ -340,9 +340,9 @@ class Directory extends DraggableEntry {
 
         if (!entriesDirectory) {
           const collapsed = true,
-              explorer = this.getExplorer();
+                explorer = this.getExplorer();
 
-          this.entries.addDirectory(topmostDirectoryName, collapsed, explorer);
+          this.entries.addDirectory(topmostDirectoryName, explorer, collapsed);
         }
       }
 
@@ -398,17 +398,17 @@ class Directory extends DraggableEntry {
       Class = Directory;
     }
     
-    const { name, collapsed, explorer } = properties;
+    const { name, explorer, collapsed } = properties;
     
-    return DraggableEntry.fromProperties(Class, properties, name, collapsed, explorer);
+    return DraggableEntry.fromProperties(Class, properties, name, explorer, collapsed);
   }
 }
 
 Object.assign(Directory, {
   ignoredAttributes: [
     'name',
-    'collapsed',
-    'explorer'
+    'explorer',
+    'collapsed'
   ]
 });
 

@@ -18,15 +18,16 @@ class Entries extends Element {
   }
   
   addFile(fileName, explorer) {
-    const file = <File explorer={explorer} className="file">{fileName}</File>,
+    const name = fileName,
+          file = <File name={name} explorer={explorer} className="file" />,
           entry = file; ///
 
     this.addEntry(entry);
   }
 
-  addDirectory(directoryName, collapsed, explorer) {
+  addDirectory(directoryName, explorer, collapsed) {
     const name = directoryName,
-          directory = <this.Directory name={name} collapsed={collapsed} explorer={explorer} className="directory">{directoryName}</this.Directory>,
+          directory = <this.Directory name={name} explorer={explorer} collapsed={collapsed} className="directory" />,
           entry = directory;  ///
 
     this.addEntry(entry);

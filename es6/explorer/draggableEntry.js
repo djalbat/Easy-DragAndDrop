@@ -15,7 +15,7 @@ class DraggableEntry extends Element {
   constructor(selector, name, explorer, type) {
     super(selector);
 
-    this.nameButton = <NameButton className="name">{name}</NameButton>;
+    const nameButton = <NameButton className="name">{name}</NameButton>;
 
     this.explorer = explorer;
     
@@ -24,6 +24,10 @@ class DraggableEntry extends Element {
     this.timeout = null;
     this.topOffset = null;
     this.leftOffset = null;
+    
+    this.nameButton = nameButton;
+    
+    this.append(nameButton);
 
     this.onMouseDown(this.mouseDownHandler.bind(this));
   }
