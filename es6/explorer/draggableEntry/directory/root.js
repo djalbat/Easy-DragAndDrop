@@ -1,19 +1,10 @@
 'use strict';
 
-const easyui = require('easyui'),
-      Element = easyui.Element;
-
-const util = require('../../util'),
-      options = require('../../options'),
-      Directory = require('./directory');
+const util = require('../../../util'),
+      options = require('../../../options'),
+      Directory = require('../directory');
 
 class RootDirectory extends Directory {
-  constructor(selector, name, explorer) {
-    const collapsed = false;  ///
-
-    super(selector, name, collapsed, explorer);
-  }
-  
   isRootDirectory() {
     return true;
   }
@@ -74,15 +65,9 @@ class RootDirectory extends Directory {
 
     super.addMarker(markerPathWithoutRootDirectoryName, draggableEntryType);
   }
-
-  static clone(name, explorer) {
-    let rootDirectory = new RootDirectory('#directory', name, explorer);
-
-    rootDirectory = Element.clone(RootDirectory, rootDirectory, name, explorer);  ///
-
-    rootDirectory.removeAttribute('id');
-
-    return rootDirectory;
+  
+  static fromProperties(properties) {
+    return Directory.fromProperties(RootDirectory, properties);
   }
 }
 

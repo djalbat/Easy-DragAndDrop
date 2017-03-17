@@ -1,8 +1,5 @@
 'use strict';
 
-const easyui = require('easyui'),
-      Element = easyui.Element;
-
 const Entry = require('../entry'),
       DraggableEntry = require('../draggableEntry');
 
@@ -54,16 +51,19 @@ class File extends DraggableEntry {
     
     explorer.openFile(file);
   }
-
-  static clone(name, explorer) {
-    let file = new File('#file', name, explorer);
-
-    file = Element.clone(File, file, name, explorer); ///
-
-    file.removeAttribute('id');
-
-    return file;
+  
+  static fromProperties(properties) {
+    const { name, explorer } = properties;
+    
+    return DraggableEntry.fromProperties(File, properties, name, explorer);
   }
 }
+
+Object.assign(File, {
+  ignoredAttributes: [
+    'name',
+    'explorer'
+  ]
+});
 
 module.exports = File;

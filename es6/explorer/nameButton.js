@@ -1,10 +1,9 @@
 'use strict';
 
 const easyui = require('easyui'),
-      Button = easyui.Button,
       InputElement = easyui.InputElement;
 
-class NameButton extends Button {
+class NameButton extends InputElement {
   constructor(selector, name, doubleClickHandler) {
     super(selector);
 
@@ -30,13 +29,21 @@ class NameButton extends Button {
   onDoubleClick(handler) {
     this.on('dblclick', handler);
   }
-
-  static fromParentElement(parentElement, name, doubleClickHandler) {
-    const selector = 'button.name',
-          domElement = parentElement.domElement.querySelector(selector);
+  
+  static fromProperties(properties) {
+    const { name, onDoubleClick } = properties,
+          doubleClickHandler = onDoubleClick; ///
     
-    return InputElement.fromDOMElement(NameButton, domElement, name, doubleClickHandler);
+    return InputElement.fromProperties(NameButton, properties, name, doubleClickHandler);
   }
 }
+
+Object.assign(NameButton, {
+  type: 'button',
+  ignoredAttributes: [
+    'name',
+    'onDoubleClick'
+  ]
+});
 
 module.exports = NameButton;

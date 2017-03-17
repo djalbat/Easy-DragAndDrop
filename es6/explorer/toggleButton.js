@@ -1,10 +1,9 @@
 'use strict';
 
 const easyui = require('easyui'),
-      Button = easyui.Button,
       InputElement = easyui.InputElement;
 
-class ToggleButton extends Button {
+class ToggleButton extends InputElement {
   constructor(selector, updateHandler) {
     super(selector);
 
@@ -49,15 +48,20 @@ class ToggleButton extends Button {
     this.updateHandler(this.collapsed);
   }
 
-  static fromParentElement(parentElement, updateHandler) {
-    const selector = 'button.toggle',
-          domElement = parentElement.domElement.querySelector(selector);
-
-    return InputElement.fromDOMElement(ToggleButton, domElement, updateHandler);
+  static fromProperties(properties) {
+    const { updateHandler } = properties;
+    
+    return InputElement.fromProperties(ToggleButton, properties, updateHandler);
   }
 }
 
-ToggleButton.BLACK_RIGHT_POINTING_TRIANGLE = '&#x025b6';
-ToggleButton.BLACK_DOWN_POINTING_TRIANGLE = '&#x025bc';
+Object.assign(ToggleButton, {
+  tagName: 'button',
+  ignoredAttributes: [
+    'updateHandler'
+  ],
+  BLACK_RIGHT_POINTING_TRIANGLE: '&#x025b6',
+  BLACK_DOWN_POINTING_TRIANGLE: '&#x025bc'
+});
 
 module.exports = ToggleButton;

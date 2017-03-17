@@ -1,13 +1,14 @@
 'use strict';
 
 const easyui = require('easyui'),
-      Element = easyui.Element;
+      Element = easyui.Element,
+      React = easyui.React;
 
 const options = require('../options'),
       Entry = require('./entry'),
       File = require('./draggableEntry/file'),
-      FileMarker = require('./entry/fileMarker'),
-      DirectoryMarker = require('./entry/directoryMarker');
+      FileMarker = require('./entry/marker/file'),
+      DirectoryMarker = require('./entry/marker/directory');
 
 class Entries extends Element {
   constructor(selector, Directory) {
@@ -17,14 +18,15 @@ class Entries extends Element {
   }
   
   addFile(fileName, explorer) {
-    const file = File.clone(fileName, explorer),
+    const file = <File fileName={fileName} explorer={explorer} className="file" />,
           entry = file; ///
 
     this.addEntry(entry);
   }
 
   addDirectory(directoryName, collapsed, explorer) {
-    const directory = this.Directory.clone(directoryName, collapsed, explorer),
+    const name = directoryName,
+          directory = <this.Directory name={name} collapsed={collapsed} explorer={explorer} className="directory" />,
           entry = directory;  ///
 
     this.addEntry(entry);
@@ -68,14 +70,16 @@ class Entries extends Element {
 
   addMarker(markerName, draggableEntryType) {
     let marker;
+    
+    const name = markerName;  ///
 
     switch (draggableEntryType) {
       case Entry.types.FILE:
-        marker = FileMarker.clone(markerName);
+        marker = <FileMarker name={name} className="marker" />;
         break;
 
       case Entry.types.DIRECTORY:
-        marker = DirectoryMarker.clone(markerName);
+        marker = <DirectoryMarker name={name} className="marker" />;
         break;
     }
 
@@ -284,17 +288,23 @@ class Entries extends Element {
 
   getEntries() {
     const childListElements = this.getChildElements('li'),
-         entries = childListElements;  ///
+          entries = childListElements;  ///
 
     return entries;
   }
 
-  static fromParentElement(parentElement, Directory) {
-    const selector = '.entries',
-          domElement = parentElement.domElement.querySelector(selector);
-
-    return Element.fromDOMElement(Entries, domElement, Directory);
+  static fromProperties(properties) {
+    const { Directory } = properties;
+    
+    return Element.fromProperties(Entries, properties, Directory);
   }
 }
+
+Object.assign(Entries, {
+  tagName: 'ul',
+  ignoredAttributes: [
+    'Directory'
+  ]
+});
 
 module.exports = Entries;

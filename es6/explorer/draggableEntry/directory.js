@@ -1,7 +1,7 @@
 'use strict';
 
 const easyui = require('easyui'),
-      Element = easyui.Element;
+      React = easyui.React;
 
 const util = require('../../util'),
       Entry = require('../entry'),
@@ -10,16 +10,24 @@ const util = require('../../util'),
       DraggableEntry = require('../draggableEntry');
 
 class Directory extends DraggableEntry {
-  constructor(selector, name, collapsed, explorer) {
+  constructor(selector, name, collapsed = false, explorer) {
     const type = Entry.types.DIRECTORY;
 
     super(selector, name, explorer, type);
     
-    this.toggleButton = ToggleButton.fromParentElement(this, this.toggleButtonUpdateHandler.bind(this) );
-
-    this.entries = Entries.fromParentElement(this, Directory);
-
+    const updateHandler = this.toggleButtonUpdateHandler.bind(this),
+          toggleButton = <ToggleButton updateHandler={updateHandler} className="toggle" />,
+          entries = <Entries Directory={Directory} />;
+    
     this.onDoubleClick(this.doubleClickHandler.bind(this));
+
+    this.entries = entries;
+
+    this.toggleButton = toggleButton;
+    
+    this.append(toggleButton);    
+    
+    this.append(entries);
 
     !collapsed ?
       this.expand() :
@@ -384,15 +392,24 @@ class Directory extends DraggableEntry {
     this.toggleButton.toggle();
   }
 
-  static clone(name, collapsed, explorer) {
-    let directory = new Directory('#directory', name, collapsed, explorer);
-
-    directory = Element.clone(Directory, directory, name, collapsed, explorer);  ///
-
-    directory.removeAttribute('id');
-
-    return directory;
+  static fromProperties(Class, properties) {
+    if (arguments.length === 1) {
+      properties = Class;
+      Class = Directory;
+    }
+    
+    const { name, collapsed, explorer } = properties;
+    
+    return DraggableEntry.fromProperties(Class, properties, name, collapsed, explorer);
   }
 }
+
+Object.assign(Directory, {
+  ignoredAttributes: [
+    'name',
+    'collapsed',
+    'explorer'
+  ]
+});
 
 module.exports = Directory;

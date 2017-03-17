@@ -1,7 +1,8 @@
 'use strict';
 
 const easyui = require('easyui'),
-      Element = easyui.Element;
+      Element = easyui.Element,
+      React = easyui.React;
 
 const NameButton = require('./nameButton');
 
@@ -9,7 +10,7 @@ class Entry extends Element {
   constructor(selector, name, type) {
     super(selector);
 
-    this.nameButton = NameButton.fromParentElement(this, name);
+    this.nameButton = <NameButton name={name} className="name" />;
 
     this.type = type;
   }
@@ -19,12 +20,24 @@ class Entry extends Element {
   getType() {
     return this.type;
   }
+  
+  fromProperties(Class, properties) {
+    const { name } = properties;
+    
+    return Element.fromProperties(Class, properties, name);
+  }
 }
 
-Entry.types = {
-  FILE: 'FILE',
-  MARKER: 'MARKER',
-  DIRECTORY: 'DIRECTORY'
-};
+Object.assign(Entry, {
+  tagName: 'li',
+  ignoredAttributes: [
+    'name'
+  ],
+  types: {
+    FILE: 'FILE',
+    MARKER: 'MARKER',
+    DIRECTORY: 'DIRECTORY'
+  }
+});
 
 module.exports = Entry;

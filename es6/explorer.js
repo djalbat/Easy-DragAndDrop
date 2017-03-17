@@ -1,26 +1,28 @@
 'use strict';
 
 const easyui = require('easyui'),
-      Element = easyui.Element;
+      Element = easyui.Element,
+      React = easyui.React;
 
 const util = require('./util'),
       options = require('./options'),
       DroppableElement = require('./droppableElement'),
-      DirectoryMarker = require('./explorer/entry/directoryMarker'),
-      RootDirectory = require('./explorer/draggableEntry/rootDirectory');
+      DirectoryMarker = require('./explorer/entry/marker/directory'),
+      RootDirectory = require('./explorer/draggableEntry/directory/root');
 
 class Explorer extends DroppableElement {
   constructor(selector, rootDirectoryName, openHandler, moveHandler) {
     super(selector, moveHandler);
 
-    const explorer = this,  ///
-          rootDirectory = RootDirectory.clone(rootDirectoryName, explorer);
+    const name = rootDirectoryName, ///
+          explorer = this,  ///
+          rootDirectory = <RootDirectory name={name} explorer={explorer} className="directory" />;
 
     this.openHandler = openHandler;
 
-    this.rootDirectory = rootDirectory;
-
     this.options = {};
+
+    this.rootDirectory = rootDirectory;
 
     this.append(rootDirectory);
   }
@@ -84,7 +86,8 @@ class Explorer extends DroppableElement {
 
   addTopmostDirectoryMarker(topmostDirectoryMarkerPath) {
     const topmostDirectoryMarkerName = topmostDirectoryMarkerPath,  ///
-          topmostDirectoryMarker = DirectoryMarker.clone(topmostDirectoryMarkerName);
+          name = topmostDirectoryMarkerName,  ///
+          topmostDirectoryMarker = <DirectoryMarker name={name} className="marker" />;
 
     this.append(topmostDirectoryMarker);
   }
@@ -312,6 +315,22 @@ class Explorer extends DroppableElement {
   static fromHTML(html, rootDirectoryName, openHandler, moveHandler) {
     return Element.fromHTML(Explorer, html, rootDirectoryName, openHandler, moveHandler);
   }
+  
+  static fromProperties(properties) {
+    const { rootDirectoryName, openHandler, onMove } = properties,
+          moveHandler = onMove; ///
+
+    return Element.fromProperties(Explorer, properties, rootDirectoryName, openHandler, moveHandler);
+  }
 }
+
+Object.assign(Explorer, {
+  tagName: 'div',
+  ignoredAttributes: [
+    'rootDirectoryName', 
+    'openHandler', 
+    'onMove'
+  ]
+});
 
 module.exports = Explorer;

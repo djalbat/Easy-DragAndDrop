@@ -2,7 +2,8 @@
 
 const easyui = require('easyui'),
       Element = easyui.Element,
-      window = easyui.window;
+      window = easyui.window,
+      React = easyui.React;
 
 const options = require('../options'),
       NameButton = require('./nameButton');
@@ -14,7 +15,7 @@ class DraggableEntry extends Element {
   constructor(selector, name, explorer, type) {
     super(selector);
 
-    this.nameButton = NameButton.fromParentElement(this, name);
+    this.nameButton = <NameButton name={name} className="name" />;
 
     this.explorer = explorer;
     
@@ -220,6 +221,14 @@ class DraggableEntry extends Element {
       }
     }
   }
+  
+  static fromProperties(Class, properties, ...remainingArguments) {
+    return Element.fromProperties(Class, properties, ...remainingArguments);
+  }
 }
+
+Object.assign(DraggableEntry, {
+  tagName: 'div'
+});
 
 module.exports = DraggableEntry;

@@ -28,7 +28,6 @@ ul.explorer li.collapsed.directory > ul.entries {
   display: none;
 }
 
-
 ul.explorer li > button {
   outline: none;
   border: none;
