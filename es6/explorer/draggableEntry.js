@@ -15,7 +15,7 @@ class DraggableEntry extends Element {
   constructor(selector, name, explorer, type) {
     super(selector);
 
-    this.nameButton = <NameButton name={name} className="name" />;
+    this.nameButton = <NameButton className="name">{name}</NameButton>;
 
     this.explorer = explorer;
     
@@ -228,7 +228,7 @@ class DraggableEntry extends Element {
 }
 
 Object.assign(DraggableEntry, {
-  tagName: 'div'
+  tagName: 'li'
 });
 
 module.exports = DraggableEntry;

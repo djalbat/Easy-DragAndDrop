@@ -4,26 +4,29 @@ const easyui = require('easyui'),
       InputElement = easyui.InputElement;
 
 class NameButton extends InputElement {
-  constructor(selector, name, doubleClickHandler) {
+  constructor(selector, doubleClickHandler) {
     super(selector);
 
-    this.setName(name);
-    
     if (doubleClickHandler) {
       this.onDoubleClick(doubleClickHandler);
     }
   }
 
   getName() {
-    const name = this.html(); ///
+    const childElements = this.getChildElements(),
+          firstChildElement = first(childElements),
+          text = firstChildElement.getText(),
+          name = text; ///
 
     return name;
   }
 
   setName(name) {
-    const html = name;  ///
+    const text = name, ///
+          childElements = this.getChildElements(),
+          firstChildElement = first(childElements);
 
-    this.html(html);
+    firstChildElement.setText(text);
   }
   
   onDoubleClick(handler) {
@@ -31,15 +34,15 @@ class NameButton extends InputElement {
   }
   
   static fromProperties(properties) {
-    const { name, onDoubleClick } = properties,
+    const { onDoubleClick } = properties,
           doubleClickHandler = onDoubleClick; ///
     
-    return InputElement.fromProperties(NameButton, properties, name, doubleClickHandler);
+    return InputElement.fromProperties(NameButton, properties, doubleClickHandler);
   }
 }
 
 Object.assign(NameButton, {
-  type: 'button',
+  tagName: 'button',
   ignoredAttributes: [
     'name',
     'onDoubleClick'
@@ -47,3 +50,5 @@ Object.assign(NameButton, {
 });
 
 module.exports = NameButton;
+
+function first(array) { return array[0]; }
