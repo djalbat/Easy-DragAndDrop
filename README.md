@@ -227,10 +227,6 @@ if (sourcePath === 'First explorer') {
 }
 ```
 
-## Changing the CSS
-
-Of course feel free to change the CSS with care. Note that the triangles used are defined in the `ToggleButton` class in the `es6/explorer/` folder. You will need to re-build the package if you want to change these.
-
 ## Contact
 
 * james.smith@djalbat.com

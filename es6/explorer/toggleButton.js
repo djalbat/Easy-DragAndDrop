@@ -13,39 +13,29 @@ class ToggleButton extends InputElement {
   }
 
   isCollapsed() {
-    return this.collapsed;
+    const collapsed = this.hasClass('collapsed');
+
+    return collapsed;
   }
 
   expand() {
-    this.collapsed = false;
-
-    this.update();
+    this.removeClass('collapsed');
   }
 
   collapse() {
-    this.collapsed = true;
-
-    this.update();
+    this.addClass('collapsed');
   }
 
   toggle() {
-    this.collapsed = !this.collapsed;
+    this.toggleClass('collapsed');
 
-    this.update();
+    const collapsed = this.isCollapsed();
+
+    this.updateHandler(collapsed);
   }
   
   clickHandler() {
     this.toggle();
-  }
-
-  update() {
-    const html = this.collapsed ? 
-                   ToggleButton.BLACK_RIGHT_POINTING_TRIANGLE : 
-                     ToggleButton.BLACK_DOWN_POINTING_TRIANGLE;
-
-    this.html(html);
-
-    this.updateHandler(this.collapsed);
   }
 
   static fromProperties(properties) {
@@ -59,9 +49,7 @@ Object.assign(ToggleButton, {
   tagName: 'button',
   ignoredAttributes: [
     'updateHandler'
-  ],
-  BLACK_RIGHT_POINTING_TRIANGLE: '&#x025b6',
-  BLACK_DOWN_POINTING_TRIANGLE: '&#x025bc'
+  ]
 });
 
 module.exports = ToggleButton;

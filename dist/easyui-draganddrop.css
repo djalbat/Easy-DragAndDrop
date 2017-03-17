@@ -34,9 +34,18 @@ ul.explorer li > button {
   height: 1.75rem;
   background-color: transparent;
 }
+
 ul.explorer li > button.toggle {
   width: 1.5rem;
 }
+ul.explorer li > button.toggle::before {
+  width: 1.5rem;
+  content: '\025bc';
+}
+ul.explorer li > button.toggle.collapsed::before {
+  content: '\025b6';
+}
+
 ul.explorer li > button.name {
   text-align: left;
   background-repeat: no-repeat;
