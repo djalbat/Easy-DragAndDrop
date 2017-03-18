@@ -11,7 +11,7 @@ const util = require('./util'),
       RootDirectory = require('./explorer/draggableEntry/directory/root');
 
 class Explorer extends DroppableElement {
-  constructor(selector, rootDirectoryName, openHandler, moveHandler) {
+  constructor(selector, rootDirectoryName, openHandler = function(sourcePath) {}, moveHandler = function(pathMaps, done) { done(); } ) {
     super(selector, moveHandler);
 
     const name = rootDirectoryName, ///

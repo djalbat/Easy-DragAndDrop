@@ -143,10 +143,12 @@ Here the rubbish bin will listen for dragging events from both of the explorers.
 This is done by double clicking on them, in which case the `onOpen` handler is called with the file's source path.
 
 ```js
-function onOpen(sourcePath, callback) {
+function onOpen(sourcePath) {
   console.log('open: ' + sourcePath)
 }
 ```
+
+It is fine, although a little pointless, not to define the open handler.
 
 ## Handling moving files and directories
 
@@ -184,6 +186,8 @@ function onMove(pathMaps, done) {
   done();
 }
 ```
+
+If no move handler is provided the array of path maps is left unchanged.
    
 ## Handling removing files and directories
   
@@ -226,6 +230,12 @@ if (sourcePath === 'First explorer') {
   firstExplorer.remove();
 }
 ```
+
+If no remove handler is provided the array of path maps is left unchanged.
+
+## CSS
+
+There is a fair amount of CSS. Some of it is functional, in the sense that it the elements will not function properly without it. It is best therefore to include the CSS, and the few attendant images that come with it, in your own project, to get yourself started. The positioning of the background images is left deliberately awry, you will need to adjust this aspect at least.
 
 ## Contact
 

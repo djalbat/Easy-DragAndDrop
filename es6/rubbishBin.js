@@ -6,7 +6,7 @@ const easyui = require('easyui'),
 const DroppableElement = require('./droppableElement');
 
 class RubbishBin extends DroppableElement {
-  constructor(selector, removeHandler) {
+  constructor(selector, removeHandler = function(pathMaps, done) { done(); } ) {
     const droppableElementMoveHandler = removeHandler;  ///
     
     super(selector, droppableElementMoveHandler);
