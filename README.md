@@ -140,11 +140,11 @@ Here the rubbish bin will listen for dragging events from both of the explorers.
 
 ## Opening files
 
-This is done by double clicking on them, in which case the `onOpen` handler is called with the file's source path.
+This is done by double clicking on them, in which case the `onOpen` handler is called with the file's path.
 
 ```js
-function onOpen(sourcePath) {
-  console.log('open: ' + sourcePath)
+function onOpen(filePath) {
+  console.log('open: ' + filePath)
 }
 ```
 

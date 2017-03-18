@@ -285,10 +285,9 @@ class Explorer extends DroppableElement {
   }
 
   openFile(file) {
-    const filePath = file.getPath(this.rootDirectory),
-          sourcePath = filePath;
+    const filePath = file.getPath(this.rootDirectory);
     
-    this.openHandler(sourcePath);
+    this.openHandler(filePath);
   }
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
@@ -317,7 +316,8 @@ class Explorer extends DroppableElement {
   }
   
   static fromProperties(properties) {
-    const { rootDirectoryName, openHandler, onMove } = properties,
+    const { rootDirectoryName, onOpen, onMove } = properties,
+          openHandler = onOpen, ///
           moveHandler = onMove; ///
 
     return Element.fromProperties(Explorer, properties, rootDirectoryName, openHandler, moveHandler);
@@ -328,7 +328,7 @@ Object.assign(Explorer, {
   tagName: 'ul',
   ignoredAttributes: [
     'rootDirectoryName', 
-    'openHandler', 
+    'onOpen',
     'onMove'
   ]
 });
