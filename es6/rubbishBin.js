@@ -3,13 +3,13 @@
 const easyui = require('easyui'),
       Element = easyui.Element;
 
-const DroppableElement = require('./droppableElement');
+const DropTarget = require('./dropTarget');
 
-class RubbishBin extends DroppableElement {
+class RubbishBin extends DropTarget {
   constructor(selector, removeHandler = function(pathMaps, done) { done(); } ) {
-    const droppableElementMoveHandler = removeHandler;  ///
+    const dropTargetMoveHandler = removeHandler;  ///
     
-    super(selector, droppableElementMoveHandler);
+    super(selector, dropTargetMoveHandler);
 
     this.close();
   }
@@ -57,12 +57,12 @@ class RubbishBin extends DroppableElement {
       const toBeMarked = this.isToBeMarked(draggableEntry);
 
       if (!toBeMarked) {
-        const droppableElementToBeMarked = this.getDroppableElementToBeMarked(draggableEntry);
+        const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
 
-        if (droppableElementToBeMarked !== null) {
-          const directoryOverlappingDraggableEntry = droppableElementToBeMarked.getDirectoryOverlappingDraggableEntry(draggableEntry);
+        if (dropTargetToBeMarked !== null) {
+          const directoryOverlappingDraggableEntry = dropTargetToBeMarked.getDirectoryOverlappingDraggableEntry(draggableEntry);
 
-          droppableElementToBeMarked.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
+          dropTargetToBeMarked.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
         } else {
           explorer.addMarkerInPlace(draggableEntry);
         }

@@ -41,12 +41,12 @@
             rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemove),
             body = new Body();
 
-        firstExplorer.addDroppableElement(rubbishBin);
-        firstExplorer.addDroppableElement(secondExplorer);
-        secondExplorer.addDroppableElement(firstExplorer);
-        secondExplorer.addDroppableElement(rubbishBin);
-        rubbishBin.addDroppableElement(firstExplorer);
-        rubbishBin.addDroppableElement(secondExplorer);
+        firstExplorer.addDropTarget(rubbishBin);
+        firstExplorer.addDropTarget(secondExplorer);
+        secondExplorer.addDropTarget(firstExplorer);
+        secondExplorer.addDropTarget(rubbishBin);
+        rubbishBin.addDropTarget(firstExplorer);
+        rubbishBin.addDropTarget(secondExplorer);
 
         secondExplorer.addDirectory('Second explorer/First directory');
         secondExplorer.addDirectory('Second explorer/Second directory');

@@ -6,11 +6,11 @@ const easyui = require('easyui'),
 
 const util = require('./util'),
       options = require('./options'),
-      DroppableElement = require('./droppableElement'),
+      DropTarget = require('./dropTarget'),
       DirectoryMarker = require('./explorer/entry/marker/directory'),
       RootDirectory = require('./explorer/draggableEntry/directory/root');
 
-class Explorer extends DroppableElement {
+class Explorer extends DropTarget {
   constructor(selector, rootDirectoryName, openHandler = function(sourcePath) {}, moveHandler = function(pathMaps, done) { done(); } ) {
     super(selector, moveHandler);
 
@@ -159,10 +159,10 @@ class Explorer extends DroppableElement {
   stopDragging(draggableEntry, done) {
     const draggableEntryPath = draggableEntry.getPath(),
           marked = this.isMarked(),
-          markedDroppableElement = marked ?
+          markedDropTarget = marked ?
                                      this :
-                                       this.getMarkedDroppableElement(),
-          markedDirectory = markedDroppableElement.getMarkedDirectory(),
+                                       this.getMarkedDropTarget(),
+          markedDirectory = markedDropTarget.getMarkedDirectory(),
           markedDirectoryPath = (markedDirectory !== null) ?
                                   markedDirectory.getPath() :
                                     null,
@@ -182,8 +182,8 @@ class Explorer extends DroppableElement {
       draggableEntries.reverse();
       draggableEntries.push(draggableEntry);
 
-      markedDroppableElement.moveDraggableEntries(draggableEntries, sourcePath, targetPath, function() {
-        markedDroppableElement.removeMarker();
+      markedDropTarget.moveDraggableEntries(draggableEntries, sourcePath, targetPath, function() {
+        markedDropTarget.removeMarker();
 
         done();
       });
@@ -219,12 +219,12 @@ class Explorer extends DroppableElement {
           }
         }
       } else {
-        const droppableElementToBeMarked = this.getDroppableElementToBeMarked(draggableEntry);
+        const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
 
-        if (droppableElementToBeMarked !== null) {
-          directoryOverlappingDraggableEntry = droppableElementToBeMarked.getDirectoryOverlappingDraggableEntry(draggableEntry);
+        if (dropTargetToBeMarked !== null) {
+          directoryOverlappingDraggableEntry = dropTargetToBeMarked.getDirectoryOverlappingDraggableEntry(draggableEntry);
 
-          droppableElementToBeMarked.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
+          dropTargetToBeMarked.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
         } else {
           explorer.addMarkerInPlace(draggableEntry);
         }
@@ -232,9 +232,9 @@ class Explorer extends DroppableElement {
         this.removeMarker();
       }
     } else {
-      const markedDroppableElement = this.getMarkedDroppableElement();
+      const markedDropTarget = this.getMarkedDropTarget();
 
-      markedDroppableElement.dragging(draggableEntry, explorer);
+      markedDropTarget.dragging(draggableEntry, explorer);
     }
   }
   

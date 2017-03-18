@@ -127,13 +127,13 @@ You cannot remove the topmost directory, and if you try to remove a file or dire
 
 ## Dragging between elements
 
-Use the `addDroppableElement()` method to have one element listen for the dragging events of another.
+Use the `addDropTarget()` method to have one element listen for the dragging events of another.
 
 ```js
-firstExplorer.addDroppableElement(secondExplorer);
-secondExplorer.addDroppableElement(firstExplorer);
-firstExplorer.addDroppableElement(rubbishBin);
-secondExplorer.addDroppableElement(rubbishBin);
+firstExplorer.addDropTarget(secondExplorer);
+secondExplorer.addDropTarget(firstExplorer);
+firstExplorer.addDropTarget(rubbishBin);
+secondExplorer.addDropTarget(rubbishBin);
 ```
 
 Here the rubbish bin will listen for dragging events from both of the explorers. Each of the explorers will listen for dragging events of the other one.
@@ -225,7 +225,7 @@ You can check to see if the source path is that of the explorer's root directory
 if (sourcePath === 'First explorer') {
   console.log('...removing entire explorer.')
 
-  secondExplorer.removeDroppableElement(firstExplorer);
+  secondExplorer.removeDropTarget(firstExplorer);
 
   firstExplorer.remove();
 }

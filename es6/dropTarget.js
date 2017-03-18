@@ -6,25 +6,25 @@ const easyui = require('easyui'),
 const util = require('./util'),
       options = require('./options');
 
-class DroppableElement extends Element {
+class DropTarget extends Element {
   constructor(selector, moveHandler) {
     super(selector);
     
     this.moveHandler = moveHandler;
 
-    this.droppableElements = [];
+    this.dropTargets = [];
   }
 
-  addDroppableElement(droppableElement) {
-    this.droppableElements.push(droppableElement);
+  addDropTarget(dropTarget) {
+    this.dropTargets.push(dropTarget);
   }
 
-  removeDroppableElement(droppableElement) {
-    const index = indexOf(this.droppableElements, droppableElement),
+  removeDropTarget(dropTarget) {
+    const index = indexOf(this.dropTargets, dropTarget),
           found = (index !== -1);
 
     if (found) {
-      this.droppableElements.splice(index, 1);
+      this.dropTargets.splice(index, 1);
     }
   }
 
@@ -36,34 +36,34 @@ class DroppableElement extends Element {
     return overlappingDraggableEntry;
   }
 
-  getDroppableElementToBeMarked(draggableEntry) {
-    const droppableElementToBeMarked = this.droppableElements.reduce(function(droppableElementToBeMarked, droppableElement) {
-      if (droppableElementToBeMarked === null) {
-        if (droppableElement.isToBeMarked(draggableEntry)) { ///
-          droppableElementToBeMarked = droppableElement;
+  getDropTargetToBeMarked(draggableEntry) {
+    const dropTargetToBeMarked = this.dropTargets.reduce(function(dropTargetToBeMarked, dropTarget) {
+      if (dropTargetToBeMarked === null) {
+        if (dropTarget.isToBeMarked(draggableEntry)) { ///
+          dropTargetToBeMarked = dropTarget;
         }
       }
 
-      return droppableElementToBeMarked;
+      return dropTargetToBeMarked;
     }, null);
 
-    return droppableElementToBeMarked;
+    return dropTargetToBeMarked;
   }
 
-  getMarkedDroppableElement() {
-    const markedDroppableElement = this.droppableElements.reduce(function(markedDroppableElement, droppableElement) {
-      if (markedDroppableElement === null) {
-        const droppableElementMarked = droppableElement.isMarked();
+  getMarkedDropTarget() {
+    const markedDropTarget = this.dropTargets.reduce(function(markedDropTarget, dropTarget) {
+      if (markedDropTarget === null) {
+        const dropTargetMarked = dropTarget.isMarked();
         
-        if (droppableElementMarked) {
-          markedDroppableElement = droppableElement;
+        if (dropTargetMarked) {
+          markedDropTarget = dropTarget;
         }
       }
 
-      return markedDroppableElement;
+      return markedDropTarget;
     }, null);
 
-    return markedDroppableElement;
+    return markedDropTarget;
   }
 
   removeMarkerGlobally() {
@@ -72,9 +72,9 @@ class DroppableElement extends Element {
     if (marked) {
       this.removeMarker();
     } else {
-      const markedDroppableElement = this.getMarkedDroppableElement();
+      const markedDropTarget = this.getMarkedDropTarget();
 
-      markedDroppableElement.removeMarker();
+      markedDropTarget.removeMarker();
     }
   }
 
@@ -139,7 +139,7 @@ class DroppableElement extends Element {
   }
 }
 
-module.exports = DroppableElement;
+module.exports = DropTarget;
 
 function indexOf(array, element) {
   let index = -1;

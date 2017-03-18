@@ -72,29 +72,20 @@ class DraggableEntry extends Element {
 
   startDragging(mouseTop, mouseLeft) {
     const escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING),
-          bounds = this.getBounds();
+          bounds = this.getBounds(),
+          boundsTop = bounds.getTop(),
+          boundsLeft = bounds.getLeft();
 
-    let top = bounds.getTop(),
-        left = bounds.getLeft();
-
-    this.topOffset = top - mouseTop;
-    this.leftOffset = left - mouseLeft;
-
-    top = `${top}px`;
-    left = `${left}px`;
-
-    const css = {
-            top: top,
-            left: left
-          };
-
-    this.css(css);
+    this.topOffset = boundsTop - mouseTop;
+    this.leftOffset = boundsLeft - mouseLeft;
 
     if (escapeKeyStopsDragging) {
       this.on('keydown', this.keyDownHandler.bind(this));
     }
 
     this.addClass('dragging');
+
+    this.drag(mouseTop, mouseLeft);
   }
 
   stopDragging() {
@@ -108,18 +99,7 @@ class DraggableEntry extends Element {
   }
 
   dragging(mouseTop, mouseLeft) {
-    let top = mouseTop + this.topOffset,
-        left = mouseLeft + this.leftOffset;
-
-    top = `${top}px`;
-    left = `${left}px`;
-
-    const css = {
-      top: top,
-      left: left
-    };
-
-    this.css(css);
+    this.drag(mouseTop, mouseLeft);
 
     this.explorer.dragging(this);
   }
@@ -224,6 +204,23 @@ class DraggableEntry extends Element {
         this.stopDragging();
       }
     }
+  }
+  
+  drag(mouseTop, mouseLeft) {
+    let top = mouseTop + this.topOffset - window.pageXOffset,
+        left = mouseLeft + this.leftOffset - window.pageYOffset;
+
+    top = `${top}px`;
+    left = `${left}px`;
+
+    const css = {
+      top: top,
+      left: left
+    };
+
+    this.css(css);
+
+    this.explorer.dragging(this);
   }
   
   static fromProperties(Class, properties, ...remainingArguments) {
