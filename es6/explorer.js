@@ -325,7 +325,7 @@ class Explorer extends DroppableElement {
 }
 
 Object.assign(Explorer, {
-  tagName: 'div',
+  tagName: 'li',
   ignoredAttributes: [
     'rootDirectoryName', 
     'openHandler', 
