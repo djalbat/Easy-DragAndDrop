@@ -1,7 +1,7 @@
 {
   "name": "easyui-draganddrop",
   "author": "James Smith",
-  "version": "5.0.25",
+  "version": "5.0.26",
   "license": "MIT",
   "homepage": "https://github.com/djalbat/EasyUI-DragAndDrop",
   "description": "Drag and drop elements including a file explorer and a rubbish bin.",
