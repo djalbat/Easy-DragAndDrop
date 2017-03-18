@@ -148,7 +148,7 @@ function onOpen(filePath) {
 }
 ```
 
-It is fine, although a little pointless, not to define the open handler.
+It is fine not to define the open handler.
 
 ## Handling moving files and directories
 
