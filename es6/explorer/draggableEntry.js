@@ -207,8 +207,11 @@ class DraggableEntry extends Element {
   }
   
   drag(mouseTop, mouseLeft) {
-    let top = mouseTop + this.topOffset - window.pageXOffset,
-        left = mouseLeft + this.leftOffset - window.pageYOffset;
+    const pageXOffset = window.getPageXOffset(),
+          pageYOffset = winow.getPageYOffset();
+    
+    let top = mouseTop + this.topOffset - pageXOffset,
+        left = mouseLeft + this.leftOffset - pageYOffset;
 
     top = `${top}px`;
     left = `${left}px`;
