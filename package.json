@@ -1,7 +1,7 @@
 {
   "name": "easyui-draganddrop",
   "author": "James Smith",
-  "version": "5.0.28",
+  "version": "5.0.29",
   "license": "MIT",
   "homepage": "https://github.com/djalbat/EasyUI-DragAndDrop",
   "description": "Drag and drop elements including a file explorer and a rubbish bin.",
@@ -18,7 +18,7 @@
     "babel-preset-react": "^6.5.0",
     "browserify": "^13.0.0",
     "chokidar-cli": "^1.2.0",
-    "easyui": "^7.2.7"
+    "easyui": "^7.2.10"
   },
   "scripts": {
     "clean": "rm -rf ./lib",
