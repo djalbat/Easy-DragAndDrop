@@ -1,7 +1,7 @@
 {
   "name": "easyui-draganddrop",
   "author": "James Smith",
-  "version": "5.0.29",
+  "version": "5.0.30",
   "license": "MIT",
   "homepage": "https://github.com/djalbat/EasyUI-DragAndDrop",
   "description": "Drag and drop elements including a file explorer and a rubbish bin.",
@@ -27,8 +27,8 @@
     "babel-debug": "babel ./es6 --presets=es2015,react --plugins transform-react-jsx --source-maps inline --out-dir=./lib",
     "browserify": "browserify ./index.js --standalone easyuidraganddrop > ./dist/easyui-draganddrop.js",
     "browserify-debug": "browserify ./index.js --standalone easyuidraganddrop --debug > ./dist/easyui-draganddrop.js",
-    "build": "npm run copy && npm run clean && npm run babel && npm run browserify",
-    "build-debug": "npm run copy && npm run clean && npm run babel-debug && npm run browserify-debug",
+    "build": "npm run clean && npm run babel && npm run browserify",
+    "build-debug": "npm run clean && npm run babel-debug && npm run browserify-debug",
     "watch": "npm run build && chokidar './index.js' './es6/**/*.js' -c 'npm run build'",
     "watch-debug": "npm run build-debug && chokidar './index.js' './es6/**/*.js' -c 'npm run build-debug'"
   }
