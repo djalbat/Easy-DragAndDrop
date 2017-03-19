@@ -4,6 +4,14 @@ Drag and drop elements including an explorer and a rubbish bin.
 
 The explorer element is populated with list of files and directories. It takes handlers for opening files and for moving and removing files an directories. Removing files and directories is done by dragging them into the rubbish bin. Or the explorer element can be altered programmatically.
 
+### JSX support
+
+There is now support for [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) and its use is *highly recommended*. The contents of this readme file will stay as a reference, however a much better place to start from now on is the EasyUI-JSX online documentation. The section dealing directly with this project is here:
+
+* [EasyUI-JSX Online documentation - EasyUI-DragAndDrop](http://djalbat.com/easyui-jsx/#easyUIDragAndDrop)
+
+From there you can easily navigate to get an overview of EasyUI-JSX.
+
 ### Related projects
 
 - [EasyUI](https://github.com/djalbat/EasyUI) A V-framework.
@@ -235,7 +243,7 @@ If no remove handler is provided the array of path maps is left unchanged.
 
 ## CSS
 
-There is a fair amount of CSS. Some of it is functional, in the sense that it the elements will not function properly without it. It is best therefore to include the CSS, and the few attendant images that come with it, in your own project, to get yourself started. The positioning of the background images is left deliberately awry, you will need to adjust this aspect at least.
+There is a fair amount of CSS. Some of it is functional, in the sense that it the elements will not work properly without it. It is best therefore to include the CSS, and the few attendant images that come with it, in your own project, to get yourself started. The positioning of the background images is left deliberately awry, you will need to adjust this aspect at least.
 
 ## Contact
 
