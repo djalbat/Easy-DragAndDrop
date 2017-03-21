@@ -1,7 +1,7 @@
 'use strict';
 
-const easyui = require('easyui'),
-      Element = easyui.Element;
+const easy = require('easy'),
+      Element = easy.Element;
 
 const DropTarget = require('./dropTarget');
 

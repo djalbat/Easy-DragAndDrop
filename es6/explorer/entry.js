@@ -1,8 +1,8 @@
 'use strict';
 
-const easyui = require('easyui'),
-      Element = easyui.Element,
-      React = easyui.React;
+const easy = require('easy'),
+      Element = easy.Element,
+      React = easy.React;
 
 const NameButton = require('./nameButton');
 

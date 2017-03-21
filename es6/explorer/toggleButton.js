@@ -1,7 +1,7 @@
 'use strict';
 
-const easyui = require('easyui'),
-      InputElement = easyui.InputElement;
+const easy = require('easy'),
+      InputElement = easy.InputElement;
 
 class ToggleButton extends InputElement {
   constructor(selector, updateHandler) {

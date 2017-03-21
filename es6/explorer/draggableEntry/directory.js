@@ -1,7 +1,7 @@
 'use strict';
 
-const easyui = require('easyui'),
-      React = easyui.React;
+const easy = require('easy'),
+      React = easy.React;
 
 const util = require('../../util'),
       Entry = require('../entry'),
