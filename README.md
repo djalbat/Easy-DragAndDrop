@@ -1,4 +1,4 @@
-# EasyUI-DragAndDrop
+# Easy-DragAndDrop
 
 Drag and drop elements including an explorer and a rubbish bin.
 
@@ -6,17 +6,17 @@ The explorer element is populated with list of files and directories. It takes h
 
 ### JSX support
 
-There is now support for [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) and its use is *highly recommended*. The contents of this readme file will stay as a reference, however a much better place to start from now on is the EasyUI-JSX online documentation. The section dealing directly with this project is here:
+There is now support for [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) and its use is *highly recommended*. The contents of this readme file will stay as a reference, however a much better place to start from now on is the Easy-JSX online documentation. The section dealing directly with this project is here:
 
-* [EasyUI-JSX Online documentation - EasyUI-DragAndDrop](http://djalbat.com/easyui-jsx/#easyUIDragAndDrop)
+* [Easy-JSX Online documentation - Easy-DragAndDrop](http://djalbat.com/easy-jsx/#easyUIDragAndDrop)
 
-From there you can easily navigate to get an overview of EasyUI-JSX.
+From there you can easily navigate to get an overview of Easy-JSX.
 
 ### Related projects
 
-- [EasyUI](https://github.com/djalbat/EasyUI) A V-framework.
-- [EasyUI-Layout](https://github.com/djalbat/EasyUI-Layout) Layout elements that work with CSS flexbox.
-- [EasyUI-RichTextarea](https://github.com/djalbat/EasyUI-RichTextarea) A textarea element that handles and hands off events well.
+- [Easy](https://github.com/djalbat/Easy) A V-framework.
+- [Easy-Layout](https://github.com/djalbat/Easy-Layout) Layout elements that work with CSS flexbox.
+- [Easy-RichTextarea](https://github.com/djalbat/Easy-RichTextarea) A textarea element that handles and hands off events well.
 
 ### Are these projects actually used anywhere?
 
@@ -26,13 +26,13 @@ Actually they are, here:
 
 ## Installation
 
-You can install EasyUI-DragAndDrop with [npm](https://www.npmjs.com/):
+You can install Easy-DragAndDrop with [npm](https://www.npmjs.com/):
 
-    npm install easyui-draganddrop
+    npm install easy-draganddrop
 
 You can also clone the repository with [Git](https://git-scm.com/)...
 
-    git clone https://github.com/djalbat/EasyUI-DragAndDrop.git
+    git clone https://github.com/djalbat/Easy-DragAndDrop.git
 
 ...and then install the necessary modules with npm from within the project's root directory:
 
@@ -43,22 +43,22 @@ You can also clone the repository with [Git](https://git-scm.com/)...
 If you're building with [Node.js](http://nodejs.org) the usage is as follows:
 
 ```js
-var easyuidraganddrop = require('easyui-draganddrop'),
-    Explorer = easyuidraganddrop.Explorer,
-    RubbishBin = easyuidraganddrop.RubbishBin;
+var easydraganddrop = require('easy-draganddrop'),
+    Explorer = easydraganddrop.Explorer,
+    RubbishBin = easydraganddrop.RubbishBin;
 ```
 
-To use EasyUI-DragAndDrop in the browser, take the `easyui-draganddrop.js` file from the project's `dist/` folder and put it somewhere such as a `public/scripts/lib` directory. Referencing this distribution file from a `script` element...
+To use Easy-DragAndDrop in the browser, take the `easy-draganddrop.js` file from the project's `dist/` folder and put it somewhere such as a `public/scripts/lib` directory. Referencing this distribution file from a `script` element...
 
 ```html
-<script src="scripts/lib/easyui-draganddrop.js"> </script>
+<script src="scripts/lib/easy-draganddrop.js"> </script>
 ```
 
-...will give you a global `easyuidraganddrop` variable which can be used directly:
+...will give you a global `easydraganddrop` variable which can be used directly:
 
 ```js
-var Explorer = easyuidraganddrop.Explorer,
-    RubbishBin = easyuidraganddrop.RubbishBin;
+var Explorer = easydraganddrop.Explorer,
+    RubbishBin = easydraganddrop.RubbishBin;
 ```
 
 Note the lack of a hyphen.
@@ -66,9 +66,9 @@ Note the lack of a hyphen.
 Alternatively, if you're using an AMD style `require` the usage is similar to the Node.js case, only make sure that the path to the distribution file is correct. The following script should work, assuming it lives in the the `public/scripts/` directory:
 
 ```js
-var easyuidraganddrop = require('lib/easyui-draganddrop'),
-    Explorer = easyuidraganddrop.Explorer,
-    RubbishBin = easyuidraganddrop.RubbishBin;
+var easydraganddrop = require('lib/easy-draganddrop'),
+    Explorer = easydraganddrop.Explorer,
+    RubbishBin = easydraganddrop.RubbishBin;
 ```
 
 ## Compiling from source
@@ -80,7 +80,7 @@ Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have
 
 ## Creating instances
 
-You must include the `easyui-draganddrop.html` and `easyui-draganddrop.css` files in the `dist/` directory or their contents somehow in your application as well as the four PNG files. Or understand what they give and replace this with equivalent. The HTML snippet in the `easyui-draganddrop.html` file includes an `img` element to preload the `marker.png` file. You may need to adjust the relative URL.
+You must include the `easy-draganddrop.html` and `easy-draganddrop.css` files in the `dist/` directory or their contents somehow in your application as well as the four PNG files. Or understand what they give and replace this with equivalent. The HTML snippet in the `easy-draganddrop.html` file includes an `img` element to preload the `marker.png` file. You may need to adjust the relative URL.
 
 Creating instances can be done with constructors:
 
