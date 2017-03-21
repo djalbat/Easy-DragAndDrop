@@ -1,6 +1,6 @@
 'use strict';
 
-var options = {
+const options = {
   NO_DRAGGING: 'NO_DRAGGING',
   NO_DRAGGING_WITHIN: 'NO_DRAGGING_WITHIN',
   NO_DRAGGING_SUB_ENTRIES: 'NO_DRAGGING_SUB_ENTRIES',
