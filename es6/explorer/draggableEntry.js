@@ -15,7 +15,7 @@ class DraggableEntry extends Element {
   constructor(selector, name, explorer, type) {
     super(selector);
 
-    const nameButton = <NameButton className="name">{name}</NameButton>;
+    const nameButton = <NameButton>{name}</NameButton>;
 
     this.explorer = explorer;
     

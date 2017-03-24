@@ -10,7 +10,7 @@ class Entry extends Element {
   constructor(selector, name, type) {
     super(selector);
 
-    const nameButton = <NameButton className="name">{name}</NameButton>;
+    const nameButton = <NameButton>{name}</NameButton>;
 
     this.type = type;
 
@@ -34,7 +34,7 @@ class Entry extends Element {
 
 Object.assign(Entry, {
   tagName: 'li',
-  ignoredAttributes: [
+  ignoredProperties: [
     'name'
   ],
   types: {

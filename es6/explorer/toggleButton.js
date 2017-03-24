@@ -47,7 +47,10 @@ class ToggleButton extends InputElement {
 
 Object.assign(ToggleButton, {
   tagName: 'button',
-  ignoredAttributes: [
+  defaultProperties: {
+    className: 'toggle'
+  },
+  ignoredProperties: [
     'updateHandler'
   ]
 });

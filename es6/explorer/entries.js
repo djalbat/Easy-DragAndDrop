@@ -19,7 +19,7 @@ class Entries extends Element {
   
   addFile(fileName, explorer) {
     const name = fileName,
-          file = <File name={name} explorer={explorer} className="file" />,
+          file = <File name={name} explorer={explorer} />,
           entry = file; ///
 
     this.addEntry(entry);
@@ -27,7 +27,7 @@ class Entries extends Element {
 
   addDirectory(directoryName, explorer, collapsed) {
     const name = directoryName,
-          directory = <this.Directory name={name} explorer={explorer} collapsed={collapsed} className="directory" />,
+          directory = <this.Directory name={name} explorer={explorer} collapsed={collapsed} />,
           entry = directory;  ///
 
     this.addEntry(entry);
@@ -76,11 +76,11 @@ class Entries extends Element {
 
     switch (draggableEntryType) {
       case Entry.types.FILE:
-        marker = <FileMarker name={name} className="marker" />;
+        marker = <FileMarker name={name} />;
         break;
 
       case Entry.types.DIRECTORY:
-        marker = <DirectoryMarker name={name} className="marker" />;
+        marker = <DirectoryMarker name={name} />;
         break;
     }
 
@@ -303,7 +303,10 @@ class Entries extends Element {
 
 Object.assign(Entries, {
   tagName: 'ul',
-  ignoredAttributes: [
+  defaultProperties: {
+    className: 'entries'
+  },
+  ignoredProperties: [
     'Directory'
   ]
 });

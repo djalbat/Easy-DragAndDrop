@@ -16,7 +16,7 @@ class Explorer extends DropTarget {
 
     const name = rootDirectoryName, ///
           explorer = this,  ///
-          rootDirectory = <RootDirectory name={name} explorer={explorer} className="directory" />;
+          rootDirectory = <RootDirectory name={name} explorer={explorer} />;
 
     this.openHandler = openHandler;
 
@@ -87,7 +87,7 @@ class Explorer extends DropTarget {
   addTopmostDirectoryMarker(topmostDirectoryMarkerPath) {
     const topmostDirectoryMarkerName = topmostDirectoryMarkerPath,  ///
           name = topmostDirectoryMarkerName,  ///
-          topmostDirectoryMarker = <DirectoryMarker name={name} className="marker" />;
+          topmostDirectoryMarker = <DirectoryMarker name={name} />;
 
     this.append(topmostDirectoryMarker);
   }
@@ -326,7 +326,10 @@ class Explorer extends DropTarget {
 
 Object.assign(Explorer, {
   tagName: 'ul',
-  ignoredAttributes: [
+  defaultProperties: {
+    className: 'explorer'
+  },
+  ignoredProperties: [
     'rootDirectoryName', 
     'onOpen',
     'onMove'

@@ -60,7 +60,10 @@ class File extends DraggableEntry {
 }
 
 Object.assign(File, {
-  ignoredAttributes: [
+  defaultProperties: {
+    className: 'file'
+  },
+  ignoredProperties: [
     'name',
     'explorer'
   ]

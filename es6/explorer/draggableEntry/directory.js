@@ -16,8 +16,8 @@ class Directory extends DraggableEntry {
     super(selector, name, explorer, type);
     
     const updateHandler = this.toggleButtonUpdateHandler.bind(this),
-          toggleButton = <ToggleButton updateHandler={updateHandler} className="toggle" />,
-          entries = <Entries Directory={Directory} className="entries" />;
+          toggleButton = <ToggleButton updateHandler={updateHandler} />,
+          entries = <Entries Directory={Directory} />;
     
     this.onDoubleClick(this.doubleClickHandler.bind(this));
 
@@ -405,7 +405,10 @@ class Directory extends DraggableEntry {
 }
 
 Object.assign(Directory, {
-  ignoredAttributes: [
+  defaultProperties: {
+    className: 'directory'
+  },
+  ignoredProperties: [
     'name',
     'explorer',
     'collapsed'

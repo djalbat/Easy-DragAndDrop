@@ -43,7 +43,10 @@ class NameButton extends InputElement {
 
 Object.assign(NameButton, {
   tagName: 'button',
-  ignoredAttributes: [
+  defaultProperties: {
+    className: 'name'
+  },
+  ignoredProperties: [
     'name',
     'onDoubleClick'
   ]

@@ -14,4 +14,10 @@ class Marker extends Entry {
   }
 }
 
+Object.assign(Marker, {
+  defaultProperties: {
+    className: 'marker'
+  }
+});
+
 module.exports = Marker;
