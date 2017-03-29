@@ -119,14 +119,6 @@ class RubbishBin extends DropTarget {
     return pathMaps;
   }
 
-  static clone(selector, removeHandler) {
-    return Element.clone(RubbishBin, selector, removeHandler);
-  }
-
-  static fromHTML(html, removeHandler) {
-    return Element.fromHTML(RubbishBin, html, removeHandler);
-  }
-
   static fromProperties(properties) {
     const { onRemove } = properties,
           removeHandler = onRemove; ///

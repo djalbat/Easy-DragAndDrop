@@ -6,32 +6,26 @@ const easy = require('easy'),
 const util = require('../../util'),
       Entry = require('../entry'),
       Entries = require('../entries'),
-      ToggleButton = require('../toggleButton'),
       DraggableEntry = require('../draggableEntry');
 
+const { Button } = easy;
+
 class Directory extends DraggableEntry {
-  constructor(selector, name, explorer, collapsed = false) {
+  constructor(selector, name, explorer) {
     const type = Entry.types.DIRECTORY;
 
     super(selector, name, explorer, type);
     
-    const updateHandler = this.toggleButtonUpdateHandler.bind(this),
-          toggleButton = <ToggleButton updateHandler={updateHandler} />,
+    const toggleButton = <Button className="toggle" onClick={this.toggleButtonClickHandler.bind(this)} />,
           entries = <Entries Directory={Directory} />;
     
     this.onDoubleClick(this.doubleClickHandler.bind(this));
-
-    this.toggleButton = toggleButton;
 
     this.entries = entries;
 
     this.append(entries);
 
     this.prepend(toggleButton);
-
-    collapsed ?
-      this.collapse() :
-        this.expand();
   }
 
   isDirectory() {
@@ -131,12 +125,6 @@ class Directory extends DraggableEntry {
 
     return overlappingDraggableEntry;
   }
-
-  isCollapsed() { return this.toggleButton.isCollapsed(); }
-
-  expand() { this.toggleButton.expand(); }
-
-  collapse() { this.toggleButton.collapse(); }
 
   addFile(filePath) {
     const addIfNecessary = true,
@@ -382,25 +370,41 @@ class Directory extends DraggableEntry {
     return directoryOverlappingDraggableEntry;
   }
   
-  toggleButtonUpdateHandler(collapsed) {
-    collapsed ? 
-      this.addClass('collapsed') : 
-        this.removeClass('collapsed');
+  toggleButtonClickHandler() {
+    this.toggle();
   }
 
   doubleClickHandler() {
-    this.toggleButton.toggle();
+    this.toggle();
   }
 
+  isCollapsed() {
+    const collapsed = this.hasClass('collapsed');
+
+    return collapsed;
+  }
+
+  collapse() {
+    this.addClass('collapsed');
+  }
+
+  expand() {
+    this.removeClass('collapsed');
+  }
+
+  toggle() {
+    this.toggleClass('collapsed');
+  }
+  
   static fromProperties(Class, properties) {
     if (arguments.length === 1) {
       properties = Class;
       Class = Directory;
     }
     
-    const { name, explorer, collapsed } = properties;
+    const { name, explorer } = properties;
     
-    return DraggableEntry.fromProperties(Class, properties, name, explorer, collapsed);
+    return DraggableEntry.fromProperties(Class, properties, name, explorer);
   }
 }
 
@@ -410,8 +414,7 @@ Object.assign(Directory, {
   },
   ignoredProperties: [
     'name',
-    'explorer',
-    'collapsed'
+    'explorer'
   ]
 });
 

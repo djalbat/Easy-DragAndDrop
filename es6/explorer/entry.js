@@ -25,7 +25,7 @@ class Entry extends Element {
     return this.type;
   }
   
-  fromProperties(Class, properties) {
+  static fromProperties(Class, properties) {
     const { name } = properties;
     
     return Element.fromProperties(Class, properties, name);

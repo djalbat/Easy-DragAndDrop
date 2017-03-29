@@ -7,7 +7,7 @@ const util = require('./util'),
       options = require('./options');
 
 class DropTarget extends Element {
-  constructor(selector, moveHandler) {
+  constructor(selector, moveHandler = function(pathMaps, done) { done(); }) {
     super(selector);
     
     this.moveHandler = moveHandler;

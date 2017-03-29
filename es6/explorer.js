@@ -11,20 +11,12 @@ const util = require('./util'),
       RootDirectory = require('./explorer/draggableEntry/directory/root');
 
 class Explorer extends DropTarget {
-  constructor(selector, rootDirectoryName, openHandler = function(sourcePath) {}, moveHandler = function(pathMaps, done) { done(); } ) {
+  constructor(selector, moveHandler, openHandler = function(sourcePath) {}, options = {}) {
     super(selector, moveHandler);
-
-    const name = rootDirectoryName, ///
-          explorer = this,  ///
-          rootDirectory = <RootDirectory name={name} explorer={explorer} />;
 
     this.openHandler = openHandler;
 
-    this.options = {};
-
-    this.rootDirectory = rootDirectory;
-
-    this.append(rootDirectory);
+    this.options = options;
   }
 
   setOption(option) {
@@ -41,73 +33,10 @@ class Explorer extends DropTarget {
     return option;
   }
 
-  getFilePaths() { return this.rootDirectory.getFilePaths(); }
-  
-  getRootDirectoryName() { return this.rootDirectory.getName(); }
-  
-  getMarkedDirectory() { return this.rootDirectory.getMarkedDirectory(); }
-  
-  getDirectoryOverlappingDraggableEntry(draggableEntry) { return this.rootDirectory.getDirectoryOverlappingDraggableEntry(draggableEntry); }
-  
-  getDraggableEntryPath(draggableEntry) { return this.rootDirectory.getDraggableEntryPath(draggableEntry); }
-
-  addFile(filePath) { this.rootDirectory.addFile(filePath); }
-  
-  addDirectory(directoryPath, collapsed) { this.rootDirectory.addDirectory(directoryPath, collapsed); }
-
-  removeFile(filePath) { this.rootDirectory.removeFile(filePath); }
-  
-  removeDirectory(directoryPath) { this.rootDirectory.removeDirectory(directoryPath); }
-
-  addMarkerInPlace(draggableEntry) {
-    const draggableEntryPath = draggableEntry.getPath(),
-          draggableEntryType = draggableEntry.getType(),
-          draggableEntryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(draggableEntryPath);
-
-    if (draggableEntryPathTopmostDirectoryName) {
-      const topmostDirectoryMarkerPath = draggableEntryPath;
-
-      this.addTopmostDirectoryMarker(topmostDirectoryMarkerPath);
-    } else {
-      const markerPath = draggableEntryPath;
-
-      this.rootDirectory.addMarker(markerPath, draggableEntryType);
-    }
-  }
-
-  addMarker(draggableEntry, directoryOverlappingDraggableEntry) {
-    const draggableEntryName = draggableEntry.getName(),
-          draggableEntryType = draggableEntry.getType(),
-          directoryOverlappingDraggableEntryPath = directoryOverlappingDraggableEntry.getPath(),
-          markerPath = directoryOverlappingDraggableEntryPath + '/' + draggableEntryName;
-
-    this.rootDirectory.addMarker(markerPath, draggableEntryType);
-  }
-
-  addTopmostDirectoryMarker(topmostDirectoryMarkerPath) {
-    const topmostDirectoryMarkerName = topmostDirectoryMarkerPath,  ///
-          name = topmostDirectoryMarkerName,  ///
-          topmostDirectoryMarker = <DirectoryMarker name={name} />;
-
-    this.append(topmostDirectoryMarker);
-  }
-
-  removeMarker() {
-    const rootDirectoryMarked = this.rootDirectory.isMarked();
-
-    if (rootDirectoryMarked) {
-      this.rootDirectory.removeMarker();
-    } else {
-      const topmostDirectoryMarker = this.retrieveTopmostDirectoryMarker();
-
-      topmostDirectoryMarker.remove();
-    }
-  }
-
   isMarked() {
     let marked;
-    
-    const rootDirectoryMarked = this.rootDirectory.isMarked();
+
+    const rootDirectoryMarked = this.isRootDirectoryMarked();
 
     if (rootDirectoryMarked) {
       marked = true;
@@ -122,9 +51,42 @@ class Explorer extends DropTarget {
 
   isToBeMarked(draggableEntry) {
     const directoryOverlappingDraggableEntry = this.getDirectoryOverlappingDraggableEntry(draggableEntry),
-          toBeMarked = (directoryOverlappingDraggableEntry !== null);
+        toBeMarked = (directoryOverlappingDraggableEntry !== null);
 
     return toBeMarked;
+  }
+
+  addMarker(draggableEntry, directoryOverlappingDraggableEntry) {
+    const draggableEntryName = draggableEntry.getName(),
+        draggableEntryType = draggableEntry.getType(),
+        directoryOverlappingDraggableEntryPath = directoryOverlappingDraggableEntry.getPath(),
+        markerPath = directoryOverlappingDraggableEntryPath + '/' + draggableEntryName;
+
+    this.addRootDirectoryMarker(markerPath, draggableEntryType);
+  }
+
+  addMarkerInPlace(draggableEntry) {
+    const draggableEntryPath = draggableEntry.getPath(),
+          draggableEntryType = draggableEntry.getType(),
+          draggableEntryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(draggableEntryPath);
+
+    if (draggableEntryPathTopmostDirectoryName) {
+      const topmostDirectoryMarkerPath = draggableEntryPath;
+
+      this.addTopmostDirectoryMarker(topmostDirectoryMarkerPath);
+    } else {
+      const markerPath = draggableEntryPath;
+
+      this.addRootDirectoryMarker(markerPath, draggableEntryType);
+    }
+  }
+
+  addTopmostDirectoryMarker(topmostDirectoryMarkerPath) {
+    const topmostDirectoryMarkerName = topmostDirectoryMarkerPath,  ///
+          name = topmostDirectoryMarkerName,  ///
+          topmostDirectoryMarker = <DirectoryMarker name={name} />;
+
+    this.append(topmostDirectoryMarker);
   }
 
   retrieveTopmostDirectoryMarker() {
@@ -143,6 +105,18 @@ class Explorer extends DropTarget {
     });
 
     return topmostDirectoryMarker;
+  }
+
+  removeMarker() {
+    const rootDirectoryMarked = this.isRootDirectoryMarked();
+
+    if (rootDirectoryMarked) {
+      this.removeRootDirectoryMarker();
+    } else {
+      const topmostDirectoryMarker = this.retrieveTopmostDirectoryMarker();
+
+      topmostDirectoryMarker.remove();
+    }
   }
 
   startDragging(draggableEntry) {
@@ -190,10 +164,6 @@ class Explorer extends DropTarget {
     }
   }
 
-  escapeDragging() {
-    this.removeMarkerGlobally();
-  }
-
   dragging(draggableEntry, explorer = this) {
     const marked = this.isMarked();
     
@@ -237,7 +207,33 @@ class Explorer extends DropTarget {
       markedDropTarget.dragging(draggableEntry, explorer);
     }
   }
-  
+
+  escapeDragging() {
+    this.removeMarkerGlobally();
+  }
+
+  moveFile(file, sourceFilePath, movedFilePath) {
+    const explorer = file.getExplorer();
+
+    let filePath;
+
+    if (movedFilePath === sourceFilePath) {
+
+    } else if (movedFilePath === null) {
+      filePath = sourceFilePath;  ///
+
+      explorer.removeFile(filePath);
+    } else {
+      filePath = sourceFilePath;  ///
+
+      explorer.removeFile(filePath);
+
+      filePath = movedFilePath; ///
+
+      this.addFile(filePath);
+    }
+  }
+
   moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath) {
     const explorer = directory.getExplorer();
     
@@ -262,42 +258,21 @@ class Explorer extends DropTarget {
     }
   }
 
-  moveFile(file, sourceFilePath, movedFilePath) {
-    const explorer = file.getExplorer();
-    
-    let filePath;
-
-    if (movedFilePath === sourceFilePath) {
-
-    } else if (movedFilePath === null) {
-      filePath = sourceFilePath;  ///
-
-      explorer.removeFile(filePath);
-    } else {
-      filePath = sourceFilePath;  ///
-
-      explorer.removeFile(filePath);
-      
-      filePath = movedFilePath; ///
-
-      this.addFile(filePath);
-    }
-  }
-
   openFile(file) {
-    const filePath = file.getPath(this.rootDirectory);
-    
+    const rootDirectory = this.getRootDirectory(),
+          filePath = file.getPath(rootDirectory);
+
     this.openHandler(filePath);
   }
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
     const pathMaps = draggableEntries.map(function(draggableEntry) {
       const pathMap = {},
-            draggableEntryPath = draggableEntry.getPath(),
-            sourceDraggableEntryPath = draggableEntryPath,  ///
-            targetDraggableEntryPath = (sourcePath === null) ?
-                                         util.prependTargetPath(draggableEntryPath, targetPath) :
-                                           util.replaceSourcePathWithTargetPath(draggableEntryPath, sourcePath, targetPath);
+          draggableEntryPath = draggableEntry.getPath(),
+          sourceDraggableEntryPath = draggableEntryPath,  ///
+          targetDraggableEntryPath = (sourcePath === null) ?
+              util.prependTargetPath(draggableEntryPath, targetPath) :
+              util.replaceSourcePathWithTargetPath(draggableEntryPath, sourcePath, targetPath);
 
       pathMap[sourceDraggableEntryPath] = targetDraggableEntryPath;
 
@@ -307,20 +282,41 @@ class Explorer extends DropTarget {
     return pathMaps;
   }
 
-  static clone(selector, rootDirectoryName, openHandler, moveHandler) {
-    return Element.clone(Explorer, selector, rootDirectoryName, openHandler, moveHandler);
+  childElements(properties) {
+    const { rootDirectoryName } = properties,
+          name = rootDirectoryName, ///
+          explorer = this,  ///
+          rootDirectory = <RootDirectory name={name} explorer={explorer} />;
+
+    return rootDirectory;
   }
 
-  static fromHTML(html, rootDirectoryName, openHandler, moveHandler) {
-    return Element.fromHTML(Explorer, html, rootDirectoryName, openHandler, moveHandler);
+  applyProperties() {
+    super.applyProperties(...arguments);
+
+    this.assignContext([
+      'addFile',
+      'addDirectory',
+      'removeFile',
+      'removeDirectory',
+      'getDirectoryOverlappingDraggableEntry',
+      'getDraggableEntryPath',
+      'getMarkedDirectory',
+      'getFilePaths',
+      'addRootDirectoryMarker',
+      'removeRootDirectoryMarker',
+      'isRootDirectoryMarked',
+      'getRootDirectoryName',
+      'getRootDirectory'
+    ]);
   }
-  
+
   static fromProperties(properties) {
-    const { rootDirectoryName, onOpen, onMove } = properties,
-          openHandler = onOpen, ///
-          moveHandler = onMove; ///
+    const { onMove, onOpen, options } = properties,
+          moveHandler = onMove, ///
+          openHandler = onOpen; ///
 
-    return Element.fromProperties(Explorer, properties, rootDirectoryName, openHandler, moveHandler);
+    return Element.fromProperties(Explorer, properties, moveHandler, openHandler, options);
   }
 }
 
@@ -332,7 +328,8 @@ Object.assign(Explorer, {
   ignoredProperties: [
     'rootDirectoryName', 
     'onOpen',
-    'onMove'
+    'onMove',
+    'options'
   ]
 });
 

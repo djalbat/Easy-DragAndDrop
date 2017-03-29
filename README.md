@@ -6,7 +6,7 @@ The explorer element is populated with list of files and directories. It takes h
 
 ### JSX support
 
-There is now support for JSX in the form of [Juxtapose](https://github.com/djalbat/Juxtapose). JSX brings with it [several benefits](http://djalbat.com/juxtapose#jsxIsGreat). So although this and the other Easy projects will continue to work standalone, their use with Juxtapose is *highly recommended*. The contents of this readme file will stay as a reference, however a much better place to start from now on is the Juxtapose online documentation. The section dealing directly with this project is here:
+There is now support for JSX in the form of [Juxtapose](https://github.com/djalbat/Juxtapose). JSX brings with it [several benefits](http://djalbat.com/juxtapose#jsxIsGreat). At the moment the other Easy projects continue to work standalone, although their use with Juxtapose is *highly recommended*. In the case of this project, however, support for calling the constructors directly or via the static `clone()` or `fromHTML()` factory methods has been dropped from version 6 onwards. This also means that usage is only via Node, so there is no support for scripts running standalone in the browser anymore. The only place to start from now on, therefore, at least for this project, is the Juxtapose online documentation. The section dealing directly with this project is here:
 
 * [Juxtapose online documentation - Easy-DragAndDrop](http://djalbat.com/juxtapose/#easyDragAndDrop)
 
@@ -40,35 +40,11 @@ You can also clone the repository with [Git](https://git-scm.com/)...
 
 ## Usage
 
-If you're building with [Node.js](http://nodejs.org) the usage is as follows:
+Building with [Node.js](http://nodejs.org) the usage is as follows:
 
 ```js
-var easydraganddrop = require('easy-draganddrop'),
-    Explorer = easydraganddrop.Explorer,
-    RubbishBin = easydraganddrop.RubbishBin;
-```
-
-To use Easy-DragAndDrop in the browser, take the `easy-draganddrop.js` file from the project's `dist/` folder and put it somewhere such as a `public/scripts/lib` directory. Referencing this distribution file from a `script` element...
-
-```html
-<script src="scripts/lib/easy-draganddrop.js"> </script>
-```
-
-...will give you a global `easydraganddrop` variable which can be used directly:
-
-```js
-var Explorer = easydraganddrop.Explorer,
-    RubbishBin = easydraganddrop.RubbishBin;
-```
-
-Note the lack of a hyphen.
-
-Alternatively, if you're using an AMD style `require` the usage is similar to the Node.js case, only make sure that the path to the distribution file is correct. The following script should work, assuming it lives in the the `public/scripts/` directory:
-
-```js
-var easydraganddrop = require('lib/easy-draganddrop'),
-    Explorer = easydraganddrop.Explorer,
-    RubbishBin = easydraganddrop.RubbishBin;
+const easydraganddrop = require('easy-draganddrop'),
+      { Explorer, RubbishBin } = easydraganddrop;
 ```
 
 ## Compiling from source
@@ -78,34 +54,20 @@ Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have
     npm run build-debug
     npm run watch-debug
 
-## Creating instances
+## Creating instances with JSX
 
-You must include the `easy-draganddrop.html` and `easy-draganddrop.css` files in the `dist/` directory or their contents somehow in your application as well as the four PNG files. Or understand what they give and replace this with equivalent. The HTML snippet in the `easy-draganddrop.html` file includes an `img` element to preload the `marker.png` file. You may need to adjust the relative URL.
-
-Creating instances can be done with constructors:
+Creating instances can only be done with JSX:
 
 ```js
-var explorer = new Explorer('#explorer', Explorer, onOpen, onMove),
-    rubbishBin = new RubbishBin('#rubbishBin', onRemove);
+const rootDirectoryName = 'First explorer',
+      moveHandler = ...
+      openHandler = ...
+      removeHandler = ...
+      explorer = <Explorer rootDirectoryName={rootDirectoryName} onMove={moveHandler} onOpen={openHandler} />,
+      rubbishBin = <RubbishBin onRemove={removeHandler} />;
 ```
 
-## Cloning or creating instances from HTML
-
-You can also create instances using the `clone()` factory or instance methods. Remember to remove the `id` attribute if you have  used the `clone()` factory method and the selector had to make use of it. Or you can use the `fromHTML()` methods: 
-
-```js
-var firstExplorer = Explorer.fromHTML('<ul class="first explorer"> </ul>', 'First explorer', onOpen, onMove),
-    secondExplorer = Explorer.fromHTML('<ul class="second explorer"> </ul>', 'Second explorer', onOpen, onMove),
-    rubbishBin = RubbishBin.fromHTML('<div class="rubbishBin"> </div>', onRemove);
-
-var body = new Body();
-
-body.append(firstExplorer);
-body.append(secondExplorer);
-body.append(rubbishBin);
-```
-
-Remember when cloning or creating from HTML that you actually then attach the explorer to an existing DOM element.
+You should also include the `easy-draganddrop.css` file, found in the `dist/` directory, together with the PNG files therein, at least to get yourself started.
 
 ## Adding and removing files and directories
 
@@ -114,7 +76,6 @@ You can add files or empty directories:
 ```js
 secondExplorer.addDirectory('Second explorer/First directory');
 secondExplorer.addDirectory('Second explorer/Second directory');
-
 secondExplorer.addFile('Second explorer/First directory/First file.fls');
 secondExplorer.addFile('Second explorer/First directory/Second file.fls');
 secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
@@ -127,7 +88,6 @@ You can also remove files and non-empty directories programmatically:
 ```js
 secondExplorer.removeFile('Second explorer/First directory/Second file.fls', true);
 secondExplorer.removeFile('Second explorer/Second directory/Third file.fls', false);
-
 secondExplorer.removeDirectory('Second explorer/Second directory', false);
 ```
 
@@ -148,10 +108,10 @@ Here the rubbish bin will listen for dragging events from both of the explorers.
 
 ## Opening files
 
-This is done by double clicking on them, in which case the `onOpen` handler is called with the file's path.
+This is done by double clicking on them, in which case the requisite handler is called with the file's path.
 
 ```js
-function onOpen(filePath) {
+function openHandler(filePath) {
   console.log('open: ' + filePath)
 }
 ```
@@ -160,16 +120,16 @@ It is fine not to define the open handler.
 
 ## Handling moving files and directories
 
-The `onMove()` handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object with one key, namely the entry's source path. The corresponding value is the entry's target path. If you want the entry to be moved, leave the object as-is. If you want the entry to be left in place, change the value to the source path. If you want the entry to be removed, change the value to `null`. Simply leaving the array of path maps alone with therefore move the entries as expected.
+The requisite handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object with one key, namely the entry's source path. The corresponding value is the entry's target path. If you want the entry to be moved, leave the object as-is. If you want the entry to be left in place, change the value to the source path. If you want the entry to be removed, change the value to `null`. Simply leaving the array of path maps alone with therefore move the entries as expected.
 
 ```js
-function onMove(pathMaps, done) {
+function moveHandler(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
-    var pathMapKeys = Object.keys(pathMap),
-        firstPathMapKey = first(pathMapKeys),
-        sourcePath = firstPathMapKey, ///
-        targetPath = pathMap[sourcePath],
-        movedPath = targetPath;
+    const pathMapKeys = Object.keys(pathMap),
+          firstPathMapKey = first(pathMapKeys),
+          sourcePath = firstPathMapKey, ///
+          targetPath = pathMap[sourcePath],
+          movedPath = targetPath;
 
     console.log('move file: ' + sourcePath + ' -> ' + targetPath)
 
@@ -199,15 +159,15 @@ If no move handler is provided the array of path maps is left unchanged.
    
 ## Handling removing files and directories
   
-The `onRemove()` handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object with one key, namely the entries source path. The corresponding value will be `null`. If you want the entry to be removed, leave the object as-is. If you want the entry to be left in place, change the value to the target path. Simply leaving the array of path maps alone will therefore remove the entries as expected.
+The requisite handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object with one key, namely the entries source path. The corresponding value will be `null`. If you want the entry to be removed, leave the object as-is. If you want the entry to be left in place, change the value to the target path. Simply leaving the array of path maps alone will therefore remove the entries as expected.
 
 ```js
-function onRemove(pathMaps, done) {
+function removeHandler(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
-    var pathMapKeys = Object.keys(pathMap),
-        firstPathMapKey = first(pathMapKeys),
-        sourcePath = firstPathMapKey, ///
-        removedPath = null;
+    const pathMapKeys = Object.keys(pathMap),
+          firstPathMapKey = first(pathMapKeys),
+          sourcePath = firstPathMapKey, ///
+          removedPath = null;
 
     console.log('remove file: ' + sourcePath)
 
@@ -243,7 +203,7 @@ If no remove handler is provided the array of path maps is left unchanged.
 
 ## CSS
 
-There is a fair amount of CSS. Some of it is functional, in the sense that it the elements will not work properly without it. It is best therefore to include the CSS, and the few attendant images that come with it, in your own project, to get yourself started. The positioning of the background images is left deliberately awry, you will need to adjust this aspect at least.
+There is a fair amount of CSS. Some of it is functional, in the sense that it the elements will not work properly without it. It is best therefore to include the CSS and the few attendant images that come with it in your own project, to get yourself started. The positioning of the background images is left deliberately awry, you will need to adjust this aspect at least.
 
 ## Contact
 

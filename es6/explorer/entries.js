@@ -27,7 +27,8 @@ class Entries extends Element {
 
   addDirectory(directoryName, explorer, collapsed) {
     const name = directoryName,
-          directory = <this.Directory name={name} explorer={explorer} collapsed={collapsed} />,
+          className = `directory ${collapsed ? 'collapsed' : ''}`,  ///
+          directory = <this.Directory name={name} explorer={explorer} className={className} />,
           entry = directory;  ///
 
     this.addEntry(entry);

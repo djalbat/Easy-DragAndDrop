@@ -43,7 +43,7 @@ ul.explorer li > button.toggle::before {
   width: 1.5rem;
   content: '\025bc';
 }
-ul.explorer li > button.toggle.collapsed::before {
+ul.explorer li.collapsed > button.toggle::before {
   content: '\025b6';
 }
 
@@ -57,11 +57,13 @@ ul.explorer li.file > button.name {
   background-image: url("file.png");
   background-position: 1.5rem 0;
 }
+
 ul.explorer li.marker > button.name {
   color: rgba(0, 0, 0, 0);
   background-image: url("marker.png");
   background-position: 1.5rem 0;
 }
+
 ul.explorer li.directory > button.name {
   padding-left: 1.5rem;
   background-image: url("directory.png");
@@ -73,6 +75,7 @@ ul.explorer li.directory > button.name {
   width: 25px;
   height: 26px;
 }
+
 .open.rubbishBin {
   background-image: url("openRubbishBin.png");
 }
