@@ -51,7 +51,7 @@ class Explorer extends DropTarget {
 
   isToBeMarked(draggableEntry) {
     const directoryOverlappingDraggableEntry = this.getDirectoryOverlappingDraggableEntry(draggableEntry),
-        toBeMarked = (directoryOverlappingDraggableEntry !== null);
+          toBeMarked = (directoryOverlappingDraggableEntry !== null);
 
     return toBeMarked;
   }
@@ -271,8 +271,8 @@ class Explorer extends DropTarget {
           draggableEntryPath = draggableEntry.getPath(),
           sourceDraggableEntryPath = draggableEntryPath,  ///
           targetDraggableEntryPath = (sourcePath === null) ?
-              util.prependTargetPath(draggableEntryPath, targetPath) :
-              util.replaceSourcePathWithTargetPath(draggableEntryPath, sourcePath, targetPath);
+                                       util.prependTargetPath(draggableEntryPath, targetPath) :
+                                         util.replaceSourcePathWithTargetPath(draggableEntryPath, sourcePath, targetPath);
 
       pathMap[sourceDraggableEntryPath] = targetDraggableEntryPath;
 
@@ -294,7 +294,7 @@ class Explorer extends DropTarget {
   applyProperties() {
     super.applyProperties(...arguments);
 
-    this.assignContext();
+    this.assignContextToPrototype();
   }
 
   static fromProperties(properties) {
