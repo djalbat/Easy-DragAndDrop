@@ -67,11 +67,7 @@ class RootDirectory extends Directory {
   }
 
   parentContext() {
-    function getRootDirectory() {
-      return this;
-    }
-    
-    const parentContext = {
+    return {
       addFile: this.addFile.bind(this),
       addDirectory: this.addDirectory.bind(this),
       removeFile: this.removeFile.bind(this),
@@ -84,10 +80,8 @@ class RootDirectory extends Directory {
       removeRootDirectoryMarker: this.removeMarker.bind(this), ///
       isRootDirectoryMarked: this.isMarked.bind(this),  ///
       getRootDirectoryName: this.getName.bind(this),  ///
-      getRootDirectory: getRootDirectory
+      getRootDirectory: function () { return this; }
     };
-
-    return parentContext;
   }
 
   static fromProperties(properties) {
