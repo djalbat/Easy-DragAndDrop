@@ -294,21 +294,7 @@ class Explorer extends DropTarget {
   applyProperties() {
     super.applyProperties(...arguments);
 
-    this.assignContext([
-      'addFile',
-      'addDirectory',
-      'removeFile',
-      'removeDirectory',
-      'getDirectoryOverlappingDraggableEntry',
-      'getDraggableEntryPath',
-      'getMarkedDirectory',
-      'getFilePaths',
-      'addRootDirectoryMarker',
-      'removeRootDirectoryMarker',
-      'isRootDirectoryMarked',
-      'getRootDirectoryName',
-      'getRootDirectory'
-    ]);
+    this.assignContext();
   }
 
   static fromProperties(properties) {
