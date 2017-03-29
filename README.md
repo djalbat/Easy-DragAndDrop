@@ -59,6 +59,8 @@ Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have
 Creating instances can only be done with JSX:
 
 ```js
+require('easyui-jsx');
+
 const rootDirectoryName = 'First explorer',
       moveHandler = ...
       openHandler = ...
@@ -66,6 +68,8 @@ const rootDirectoryName = 'First explorer',
       explorer = <Explorer rootDirectoryName={rootDirectoryName} onMove={moveHandler} onOpen={openHandler} />,
       rubbishBin = <RubbishBin onRemove={removeHandler} />;
 ```
+
+Note that you need to include the Juxtapose npm package and that this is called `easyui-jsx` and not `juxtapose`, at least for now. 
 
 You should also include the `easy-draganddrop.css` file, found in the `dist/` directory, together with the PNG files therein, at least to get yourself started.
 
