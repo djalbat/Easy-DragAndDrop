@@ -58,9 +58,9 @@ class Explorer extends DropTarget {
 
   addMarker(draggableEntry, directoryOverlappingDraggableEntry) {
     const draggableEntryName = draggableEntry.getName(),
-        draggableEntryType = draggableEntry.getType(),
-        directoryOverlappingDraggableEntryPath = directoryOverlappingDraggableEntry.getPath(),
-        markerPath = directoryOverlappingDraggableEntryPath + '/' + draggableEntryName;
+          draggableEntryType = draggableEntry.getType(),
+          directoryOverlappingDraggableEntryPath = directoryOverlappingDraggableEntry.getPath(),
+          markerPath = directoryOverlappingDraggableEntryPath + '/' + draggableEntryName;
 
     this.addRootDirectoryMarker(markerPath, draggableEntryType);
   }
@@ -268,11 +268,11 @@ class Explorer extends DropTarget {
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
     const pathMaps = draggableEntries.map(function(draggableEntry) {
       const pathMap = {},
-          draggableEntryPath = draggableEntry.getPath(),
-          sourceDraggableEntryPath = draggableEntryPath,  ///
-          targetDraggableEntryPath = (sourcePath === null) ?
-                                       util.prependTargetPath(draggableEntryPath, targetPath) :
-                                         util.replaceSourcePathWithTargetPath(draggableEntryPath, sourcePath, targetPath);
+            draggableEntryPath = draggableEntry.getPath(),
+            sourceDraggableEntryPath = draggableEntryPath,  ///
+            targetDraggableEntryPath = (sourcePath === null) ?
+                                         util.prependTargetPath(draggableEntryPath, targetPath) :
+                                           util.replaceSourcePathWithTargetPath(draggableEntryPath, sourcePath, targetPath);
 
       pathMap[sourceDraggableEntryPath] = targetDraggableEntryPath;
 
@@ -294,7 +294,7 @@ class Explorer extends DropTarget {
   applyProperties() {
     super.applyProperties(...arguments);
 
-    this.assignContextToPrototype();
+    this.assignContext();
   }
 
   static fromProperties(properties) {
