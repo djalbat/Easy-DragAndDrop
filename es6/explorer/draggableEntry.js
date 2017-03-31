@@ -26,10 +26,14 @@ class DraggableEntry extends Element {
     this.leftOffset = null;
     
     this.nameButton = nameButton;
-    
-    this.append(nameButton);
 
-    this.onMouseDown(this.mouseDownHandler.bind(this));
+    this.boundMouseUpHandler = this.mouseUpHandler.bind(this);
+    this.boundMouseDownHandler = this.mouseDownHandler.bind(this);
+    this.boundMouseMoveHandler = this.mouseMoveHandler.bind(this);
+
+    this.onMouseDown(this.boundMouseDownHandler);
+
+    this.append(nameButton);
   }
 
   getName() { return this.nameButton.getName(); }
@@ -92,7 +96,7 @@ class DraggableEntry extends Element {
     const escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING);
 
     if (escapeKeyStopsDragging) {
-      this.off('keydown', this.keyDownHandler.bind(this));
+      this.off('keydown');
     }
 
     this.removeClass('dragging');
@@ -155,9 +159,9 @@ class DraggableEntry extends Element {
   }
 
   mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
-    window.on('mouseup blur', this.mouseUpHandler.bind(this));
+    window.on('mouseup blur', this.boundMouseUpHandler);
     
-    window.onMouseMove(this.mouseMoveHandler.bind(this));
+    window.onMouseMove(this.boundMouseMoveHandler);
 
     if (mouseButton === Element.LEFT_MOUSE_BUTTON) {
       const dragging = this.isDragging();
@@ -169,9 +173,9 @@ class DraggableEntry extends Element {
   }
 
   mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
-    window.off('mouseup blur', this.mouseUpHandler.bind(this));
+    window.off('mouseup blur', this.boundMouseUpHandler);
     
-    window.offMouseMove(this.mouseMoveHandler.bind(this));
+    window.offMouseMove(this.boundMouseMoveHandler);
 
     const dragging = this.isDragging();
 
@@ -208,9 +212,13 @@ class DraggableEntry extends Element {
   
   drag(mouseTop, mouseLeft) {
     const windowScrollTop = window.getScrollTop(),
-          windowScrollLeft = window.getScrollLeft(),
-          top = `${mouseTop + this.topOffset - windowScrollTop}px`,
-          left = `${mouseLeft + this.leftOffset - windowScrollLeft}px`;
+          windowScrollLeft = window.getScrollLeft();
+
+    let top = mouseTop + this.topOffset - windowScrollTop,
+        left = mouseLeft + this.leftOffset - windowScrollLeft;
+
+    top = `${top}px`; ///
+    left = `${left}px`; ///
 
     const css = {
       top: top,
