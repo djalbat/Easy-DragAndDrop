@@ -6,7 +6,7 @@ The explorer element is populated with list of files and directories. It takes h
 
 ### JSX support
 
-There is now support for JSX in the form of [Juxtapose](https://github.com/djalbat/Juxtapose). JSX brings with it [several benefits](http://djalbat.com/juxtapose#jsxIsGreat). At the moment the other Easy projects continue to work standalone, although their use with Juxtapose is *highly recommended*. In the case of this project, however, support for calling the constructors directly or via the static `clone()` or `fromHTML()` factory methods has been dropped from version 6 onwards. This also means that usage is only via Node, so there is no support for scripts running standalone in the browser anymore. The only place to start from now on, therefore, at least for this project, is the Juxtapose online documentation. The section dealing directly with this project is here:
+There is now support for JSX in the form of [Juxtapose](https://github.com/djalbat/Juxtapose). JSX brings with it [several benefits](http://djalbat.com/juxtapose#jsxIsGreat). So although you will always be able to call constructors directly if you wish, creating Easy elements by way of JSX is *highly recommended*. The contents of this readme file will stay as a reference, however a much better place to start from now on is the online documentation for Juxtapose. The section dealing directly with this project is here:
 
 * [Juxtapose online documentation - Easy-DragAndDrop](http://djalbat.com/juxtapose/#easyDragAndDrop)
 
@@ -22,7 +22,7 @@ From there you can easily navigate to get an overview of Juxtapose.
 
 Actually they are, here:
 
-- [Occam Proof Assistant](http://djalbat.com/occam)
+- [Occam](http://djalbat.com/occam)
 
 ## Installation
 
@@ -38,40 +38,37 @@ You can also clone the repository with [Git](https://git-scm.com/)...
 
     npm install
 
-## Usage
-
-Building with [Node.js](http://nodejs.org) the usage is as follows:
+## Creating instances with JSX
 
 ```js
 const easydraganddrop = require('easy-draganddrop'),
       { Explorer, RubbishBin } = easydraganddrop;
-```
-
-## Compiling from source
-
-Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have a look at the `package.json` file. The pertinent commands are:
-
-    npm run build-debug
-    npm run watch-debug
-
-## Creating instances with JSX
-
-Creating instances can only be done with JSX:
-
-```js
-require('easyui-jsx');
 
 const rootDirectoryName = 'First explorer',
-      moveHandler = ...
-      openHandler = ...
-      removeHandler = ...
-      explorer = <Explorer rootDirectoryName={rootDirectoryName} onMove={moveHandler} onOpen={openHandler} />,
-      rubbishBin = <RubbishBin onRemove={removeHandler} />;
+      explorer =
+
+        <Explorer rootDirectoryName={rootDirectoryName}
+                  onMove={moveHandler}
+                  onOpen={openHandler}
+        />,
+
+      rubbishBin =
+
+        <RubbishBin onRemove={removeHandler} />
+      ;
+
+function moveHandler(pathMaps, done) {
+  ...
+}
+
+function removeHandler(pathMaps, done) {
+  ...
+}
+
+function openHandler(filePath) {
+ ...
+}
 ```
-
-Note that you need to include the Juxtapose npm package and that this is called `easyui-jsx` and not `juxtapose`, at least for now. 
-
-You should also include the `easy-draganddrop.css` file, found in the `dist/` directory, together with the PNG files therein, at least to get yourself started.
 
 ## Adding and removing files and directories
 
@@ -207,7 +204,14 @@ If no remove handler is provided the array of path maps is left unchanged.
 
 ## CSS
 
-There is a fair amount of CSS. Some of it is functional, in the sense that it the elements will not work properly without it. It is best therefore to include the CSS and the few attendant images that come with it in your own project, to get yourself started. The positioning of the background images is left deliberately awry, you will need to adjust this aspect at least.
+There is a fair amount of CSS. Some of it is functional, in the sense that it the elements will not work properly without it. You should also include the `easy-draganddrop.css` file, found in the `dist/` directory, together with the PNG files therein, at least to get yourself started. The positioning of the background images is left deliberately awry, you will need to adjust this aspect at least.
+
+## Compiling from source
+
+Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have a look at the `package.json` file. The pertinent commands are:
+
+    npm run build-debug
+    npm run watch-debug
 
 ## Contact
 
