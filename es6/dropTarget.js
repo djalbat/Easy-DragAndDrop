@@ -1,10 +1,11 @@
 'use strict';
 
-const easy = require('easy'),
-      Element = easy.Element;
+const easy = require('easy');
 
 const util = require('./util'),
       options = require('./options');
+
+const { Element } = easy;
 
 class DropTarget extends Element {
   constructor(selector, moveHandler = function(pathMaps, done) { done(); }) {

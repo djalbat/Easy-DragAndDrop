@@ -1,9 +1,10 @@
 'use strict';
 
-const easy = require('easy'),
-      Element = easy.Element;
+const easy = require('easy');
 
 const DropTarget = require('./dropTarget');
+
+const { Element } = easy;
 
 class RubbishBin extends DropTarget {
   constructor(selector, removeHandler = function(pathMaps, done) { done(); } ) {

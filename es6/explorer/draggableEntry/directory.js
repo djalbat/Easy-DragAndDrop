@@ -1,14 +1,13 @@
 'use strict';
 
-const easy = require('easy'),
-      React = easy.React;
+const easy = require('easy');
 
 const util = require('../../util'),
       Entry = require('../entry'),
       Entries = require('../entries'),
       DraggableEntry = require('../draggableEntry');
 
-const { Button } = easy;
+const { Button, React } = easy;
 
 class Directory extends DraggableEntry {
   constructor(selector, name, explorer) {

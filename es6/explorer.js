@@ -1,14 +1,14 @@
 'use strict';
 
-const easy = require('easy'),
-      Element = easy.Element,
-      React = easy.React;
+const easy = require('easy');
 
 const util = require('./util'),
       options = require('./options'),
       DropTarget = require('./dropTarget'),
       DirectoryMarker = require('./explorer/entry/marker/directory'),
       RootDirectory = require('./explorer/draggableEntry/directory/root');
+
+const { Element, React } = easy;
 
 class Explorer extends DropTarget {
   constructor(selector, moveHandler, openHandler = function(sourcePath) {}, options = {}) {

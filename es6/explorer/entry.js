@@ -1,10 +1,10 @@
 'use strict';
 
-const easy = require('easy'),
-      Element = easy.Element,
-      React = easy.React;
+const easy = require('easy');
 
 const NameButton = require('./nameButton');
+
+const { Element, React } = easy;
 
 class Entry extends Element {
   constructor(selector, name, type) {

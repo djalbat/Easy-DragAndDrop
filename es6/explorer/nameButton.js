@@ -1,7 +1,8 @@
 'use strict';
 
-const easy = require('easy'),
-      InputElement = easy.InputElement;
+const easy = require('easy');
+
+const { InputElement } = easy;
 
 class NameButton extends InputElement {
   constructor(selector, doubleClickHandler) {

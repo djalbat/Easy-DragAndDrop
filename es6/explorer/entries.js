@@ -1,14 +1,14 @@
 'use strict';
 
-const easy = require('easy'),
-      Element = easy.Element,
-      React = easy.React;
+const easy = require('easy');
 
 const options = require('../options'),
       Entry = require('./entry'),
       File = require('./draggableEntry/file'),
       FileMarker = require('./entry/marker/file'),
       DirectoryMarker = require('./entry/marker/directory');
+
+const { Element, React } = easy;
 
 class Entries extends Element {
   constructor(selector, Directory) {

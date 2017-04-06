@@ -1,15 +1,14 @@
 'use strict';
 
-const easy = require('easy'),
-      Element = easy.Element,
-      window = easy.window,
-      React = easy.React;
+const easy = require('easy');
 
 const options = require('../options'),
       NameButton = require('./nameButton');
 
 const ESCAPE_KEYCODE = 27,
       START_DRAGGING_DELAY = 175;
+
+const { window, Element, React } = easy;
 
 class DraggableEntry extends Element {
   constructor(selector, name, explorer, type) {
