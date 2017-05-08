@@ -55,6 +55,8 @@ class Explorer extends DropTarget {
 
     return toBeMarked;
   }
+  
+  getFilePaths() { return this.rootDirectory.getFilePaths(); }
 
   addMarker(draggableEntry, directoryOverlappingDraggableEntry) {
     const draggableEntryName = draggableEntry.getName(),
