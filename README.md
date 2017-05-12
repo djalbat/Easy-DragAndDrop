@@ -128,9 +128,9 @@ function moveHandler(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
     const pathMapKeys = Object.keys(pathMap),
           firstPathMapKey = first(pathMapKeys),
-          sourcePath = firstPathMapKey, ///
-          targetPath = pathMap[sourcePath],
-          movedPath = targetPath;
+          sourcePath = firstPathMapKey; ///
+          
+    let targetPath = pathMap[sourcePath];
 
     console.log('move file: ' + sourcePath + ' -> ' + targetPath)
 
@@ -138,18 +138,18 @@ function moveHandler(pathMaps, done) {
       case 'Second explorer/First directory/First file.fls':
         console.log('...deleted.')
 
-        movedPath = null;
+        targetPath = null;
         break;
 
       case 'Second explorer/First directory/Second file.fls':
       case 'Second explorer/First directory':
         console.log('...left in place.')
 
-        movedPath = sourcePath;
+        targetPath = sourcePath;
         break;
     }
 
-    pathMap[sourcePath] = movedPath;
+    pathMap[sourcePath] = targetPath;
   });
 
   done();
@@ -167,8 +167,9 @@ function removeHandler(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
     const pathMapKeys = Object.keys(pathMap),
           firstPathMapKey = first(pathMapKeys),
-          sourcePath = firstPathMapKey, ///
-          removedPath = null;
+          sourcePath = firstPathMapKey; ///
+          
+    let targetPath = pathMap[sourcePath];
 
     console.log('remove file: ' + sourcePath)
 
@@ -177,11 +178,11 @@ function removeHandler(pathMaps, done) {
       case 'Second explorer/First directory':
         console.log('...left in place.')
 
-        removedPath = sourcePath;
+        targetPath = sourcePath;
         break;
     }
 
-    pathMap[sourcePath] = removedPath;
+    pathMap[sourcePath] = targetPath;
   });
 
   done();
