@@ -71,7 +71,7 @@ class util {
   }
 
   static replaceSourcePathWithTargetPath(entryPath, sourcePath, targetPath) {
-    sourcePath = sourcePath.replace(/\(/g, '(').replace(/\)/g, ')');  ///
+    sourcePath = sourcePath.replace(/\(/g, '\\(').replace(/\)/g, '\\)');  ///
 
     const regExp = new RegExp('^' + sourcePath + '(.*$)'),
           matches = entryPath.match(regExp),
