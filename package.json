@@ -1,7 +1,7 @@
 {
   "name": "easy-draganddrop",
   "author": "James Smith",
-  "version": "6.1.1",
+  "version": "6.1.2",
   "license": "MIT",
   "homepage": "https://github.com/djalbat/Easy-DragAndDrop",
   "description": "Drag and drop elements including a file explorer and a rubbish bin.",
