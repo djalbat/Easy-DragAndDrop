@@ -403,11 +403,13 @@ class Directory extends DraggableEntry {
 
     const { name, explorer, collapsed } = properties;
 
-    properties['collapsed'] = collapsed ? ///
-                               'collapsed' :
-                                  '';
+    const directory = DraggableEntry.fromProperties(Class, properties, name, explorer);
 
-    return DraggableEntry.fromProperties(Class, properties, name, explorer);
+    collapsed ? ///
+      directory.collapse() :
+        directory.expand();
+
+    return directory;
   }
 }
 
@@ -417,7 +419,8 @@ Object.assign(Directory, {
   },
   ignoredProperties: [
     'name',
-    'explorer'
+    'explorer',
+    'collapsed'
   ]
 });
 
