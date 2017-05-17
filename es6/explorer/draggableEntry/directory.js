@@ -10,7 +10,7 @@ const util = require('../../util'),
 const { Button, React } = easy;
 
 class Directory extends DraggableEntry {
-  constructor(selector, name, explorer, collapsed = true) {
+  constructor(selector, name, explorer) {
     const type = Entry.types.DIRECTORY;
 
     super(selector, name, explorer, type);
@@ -25,10 +25,6 @@ class Directory extends DraggableEntry {
     this.append(entries);
 
     this.prepend(toggleButton);
-
-    collapsed ?
-      this.collapse() :
-        this.expand();
   }
 
   isDirectory() {
@@ -404,10 +400,14 @@ class Directory extends DraggableEntry {
       properties = Class;
       Class = Directory;
     }
-    
+
     const { name, explorer, collapsed } = properties;
-    
-    return DraggableEntry.fromProperties(Class, properties, name, explorer, collapsed);
+
+    properties['collapsed'] = collapsed ? ///
+                               'collapsed' :
+                                  '';
+
+    return DraggableEntry.fromProperties(Class, properties, name, explorer);
   }
 }
 
@@ -417,8 +417,7 @@ Object.assign(Directory, {
   },
   ignoredProperties: [
     'name',
-    'explorer',
-    'collapsed'
+    'explorer'
   ]
 });
 

@@ -43,7 +43,7 @@ ul.explorer li > button.toggle::before {
   width: 1.5rem;
   content: '\025bc';
 }
-ul.explorer li.collapsed > button.toggle::before {
+ul.explorer li.collapsed.directory > button.toggle::before {
   content: '\025b6';
 }
 
