@@ -285,10 +285,11 @@ class Explorer extends DropTarget {
   }
 
   childElements(properties) {
-    const { rootDirectoryName } = properties,
+    const { rootDirectoryName, rootDirectoryCollapsed } = properties,
           name = rootDirectoryName, ///
+          collapsed = rootDirectoryCollapsed, ///
           explorer = this,  ///
-          rootDirectory = <RootDirectory name={name} explorer={explorer} />;
+          rootDirectory = <RootDirectory name={name} explorer={explorer} collapsed={collapsed} />;
 
     return rootDirectory;
   }
@@ -314,7 +315,8 @@ Object.assign(Explorer, {
     className: 'explorer'
   },
   ignoredProperties: [
-    'rootDirectoryName', 
+    'rootDirectoryName',
+    'rootDirectoryCollapsed',
     'onOpen',
     'onMove',
     'options'

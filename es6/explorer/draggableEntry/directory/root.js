@@ -5,6 +5,10 @@ const util = require('../../../util'),
       Directory = require('../directory');
 
 class RootDirectory extends Directory {
+  get() {
+    return this;  ///
+  }
+  
   isRootDirectory() {
     return true;
   }
@@ -69,18 +73,18 @@ class RootDirectory extends Directory {
   parentContext() {
     return {
       addFile: this.addFile.bind(this),
-      addDirectory: this.addDirectory.bind(this),
       removeFile: this.removeFile.bind(this),
+      addDirectory: this.addDirectory.bind(this),
       removeDirectory: this.removeDirectory.bind(this),
-      getDirectoryOverlappingDraggableEntry: this.getDirectoryOverlappingDraggableEntry.bind(this),
-      getDraggableEntryPath: this.getDraggableEntryPath.bind(this),
       getMarkedDirectory: this.getMarkedDirectory.bind(this),
-      getFilePaths: this.getFilePaths.bind(this),
+      getDraggableEntryPath: this.getDraggableEntryPath.bind(this),
+      getDirectoryOverlappingDraggableEntry: this.getDirectoryOverlappingDraggableEntry.bind(this),
       addRootDirectoryMarker: this.addMarker.bind(this), ///
       removeRootDirectoryMarker: this.removeMarker.bind(this), ///
       isRootDirectoryMarked: this.isMarked.bind(this),  ///
       getRootDirectoryName: this.getName.bind(this),  ///
-      getRootDirectory: function () { return this; }
+      getRootDirectory: this.get.bind(this),  ///
+      getFilePaths: this.getFilePaths.bind(this)
     };
   }
 
