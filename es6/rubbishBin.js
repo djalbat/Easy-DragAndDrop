@@ -7,10 +7,10 @@ const DropTarget = require('./dropTarget');
 const { Element } = easy;
 
 class RubbishBin extends DropTarget {
-  constructor(selector, removeHandler = function(pathMaps, done) { done(); } ) {
-    const dropTargetMoveHandler = removeHandler;  ///
+  constructor(selector, removeHandler) {
+    const moveHandler = removeHandler;  ///
     
-    super(selector, dropTargetMoveHandler);
+    super(selector, moveHandler);
 
     this.close();
   }
@@ -73,8 +73,8 @@ class RubbishBin extends DropTarget {
     }
   }
 
-  moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath) {
-    if (movedDirectoryPath === null) {
+  moveDirectory(directory, sourceDirectoryPath, targetDirectoryPath) {
+    if (targetDirectoryPath === null) {
       const explorer = directory.getExplorer(),
             directoryPath = sourceDirectoryPath;  ///
 
@@ -82,8 +82,8 @@ class RubbishBin extends DropTarget {
     }
   }
 
-  moveFile(file, sourceFilePath, movedFilePath) {
-    if (movedFilePath === null) {
+  moveFile(file, sourceFilePath, targetFilePath) {
+    if (targetFilePath === null) {
       const explorer = file.getExplorer(),
             filePath = sourceFilePath;  ///
 
@@ -107,12 +107,16 @@ class RubbishBin extends DropTarget {
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
     const pathMaps = draggableEntries.map(function(draggableEntry) {
-      const pathMap = {},
-            draggableEntryPath = draggableEntry.getPath(),
-            sourceDraggableEntryPath = draggableEntryPath,  ///
-            targetDraggableEntryPath = null;
-
-      pathMap[sourceDraggableEntryPath] = targetDraggableEntryPath;
+      const draggableEntryPath = draggableEntry.getPath(),
+            draggableEntryDirectory = draggableEntry.isDirectory(),
+            sourcePath = draggableEntryPath,  ///
+            targetPath = null,  ///
+            directory = draggableEntryDirectory,  ///
+            pathMap = {
+              sourcePath: sourcePath,
+              targetPath: targetPath,
+              directory: directory
+            };
 
       return pathMap;
     });

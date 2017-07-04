@@ -2,8 +2,9 @@
 
 const easy = require('easy');
 
-const util = require('./util'),
-      options = require('./options'),
+const options = require('./options'),
+      pathUtil = require('./util/path'),
+      arrayUtil = require('./util/array'),
       DropTarget = require('./dropTarget'),
       DirectoryMarker = require('./explorer/entry/marker/directory'),
       RootDirectory = require('./explorer/draggableEntry/directory/root');
@@ -70,7 +71,7 @@ class Explorer extends DropTarget {
   addMarkerInPlace(draggableEntry) {
     const draggableEntryPath = draggableEntry.getPath(),
           draggableEntryType = draggableEntry.getType(),
-          draggableEntryPathTopmostDirectoryName = util.isPathTopmostDirectoryName(draggableEntryPath);
+          draggableEntryPathTopmostDirectoryName = pathUtil.isPathTopmostDirectoryName(draggableEntryPath);
 
     if (draggableEntryPathTopmostDirectoryName) {
       const topmostDirectoryMarkerPath = draggableEntryPath;
@@ -142,7 +143,7 @@ class Explorer extends DropTarget {
           markedDirectoryPath = (markedDirectory !== null) ?
                                   markedDirectory.getPath() :
                                     null,
-          draggableEntryPathWithoutBottommostName = util.pathWithoutBottommostName(draggableEntryPath),
+          draggableEntryPathWithoutBottommostName = pathUtil.pathWithoutBottommostName(draggableEntryPath),
           sourcePath = draggableEntryPathWithoutBottommostName,
           targetPath = markedDirectoryPath,
           unmoved = (sourcePath === targetPath);
@@ -214,14 +215,14 @@ class Explorer extends DropTarget {
     this.removeMarkerGlobally();
   }
 
-  moveFile(file, sourceFilePath, movedFilePath) {
+  moveFile(file, sourceFilePath, targetFilePath) {
     const explorer = file.getExplorer();
 
     let filePath;
 
-    if (movedFilePath === sourceFilePath) {
+    if (targetFilePath === sourceFilePath) {
 
-    } else if (movedFilePath === null) {
+    } else if (targetFilePath === null) {
       filePath = sourceFilePath;  ///
 
       explorer.removeFile(filePath);
@@ -230,20 +231,20 @@ class Explorer extends DropTarget {
 
       explorer.removeFile(filePath);
 
-      filePath = movedFilePath; ///
+      filePath = targetFilePath; ///
 
       this.addFile(filePath);
     }
   }
 
-  moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath) {
+  moveDirectory(directory, sourceDirectoryPath, targetDirectoryPath) {
     const explorer = directory.getExplorer();
     
     let directoryPath;
     
-    if (movedDirectoryPath === sourceDirectoryPath) {
+    if (targetDirectoryPath === sourceDirectoryPath) {
 
-    } else if (movedDirectoryPath === null) {
+    } else if (targetDirectoryPath === null) {
       directoryPath = sourceDirectoryPath;  ///
 
       explorer.removeDirectory(directoryPath);
@@ -254,7 +255,7 @@ class Explorer extends DropTarget {
 
       const collapsed = directory.isCollapsed();
       
-      directoryPath = movedDirectoryPath; ///
+      directoryPath = targetDirectoryPath; ///
 
       this.addDirectory(directoryPath, collapsed);
     }
@@ -269,14 +270,18 @@ class Explorer extends DropTarget {
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
     const pathMaps = draggableEntries.map(function(draggableEntry) {
-      const pathMap = {},
-            draggableEntryPath = draggableEntry.getPath(),
-            sourceDraggableEntryPath = draggableEntryPath,  ///
-            targetDraggableEntryPath = (sourcePath === null) ?
-                                         util.prependTargetPath(draggableEntryPath, targetPath) :
-                                           util.replaceSourcePathWithTargetPath(draggableEntryPath, sourcePath, targetPath);
-
-      pathMap[sourceDraggableEntryPath] = targetDraggableEntryPath;
+      const draggableEntryPath = draggableEntry.getPath(),
+            draggableEntryDirectory = draggableEntry.isDirectory(),
+            sourcePath = draggableEntryPath,  ///
+            targetPath = (sourcePath === null) ?
+                           prependTargetPathToDraggableEntryPath(draggableEntryPath, targetPath) :
+                             replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath),
+            directory = draggableEntryDirectory,
+            pathMap = {
+              sourcePath: sourcePath,
+              targetPath: targetPath,
+              directory: directory
+            };
 
       return pathMap;
     });
@@ -324,3 +329,21 @@ Object.assign(Explorer, {
 });
 
 module.exports = Explorer;
+
+function prependTargetPathToDraggableEntryPath(draggableEntryPath,  targetPath) {
+  draggableEntryPath = targetPath + '/' + draggableEntryPath;
+
+  return draggableEntryPath;
+}
+
+function replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath) {
+  sourcePath = sourcePath.replace(/\(/g, '\\(').replace(/\)/g, '\\)');  ///
+
+  const regExp = new RegExp('^' + sourcePath + '(.*$)'),
+        matches = draggableEntryPath.match(regExp),
+        secondMatch = arrayUtil.second(matches);
+
+  draggableEntryPath = targetPath + secondMatch; ///
+
+  return draggableEntryPath;
+}

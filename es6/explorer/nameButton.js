@@ -2,6 +2,8 @@
 
 const easy = require('easy');
 
+const arrayUtil = require('../util/array');
+
 const { InputElement } = easy;
 
 class NameButton extends InputElement {
@@ -15,7 +17,7 @@ class NameButton extends InputElement {
 
   getName() {
     const childElements = this.getChildElements(),
-          firstChildElement = first(childElements),
+          firstChildElement = arrayUtil.first(childElements),
           text = firstChildElement.getText(),
           name = text; ///
 
@@ -25,7 +27,7 @@ class NameButton extends InputElement {
   setName(name) {
     const text = name, ///
           childElements = this.getChildElements(),
-          firstChildElement = first(childElements);
+          firstChildElement = arrayUtil.first(childElements);
 
     firstChildElement.setText(text);
   }
@@ -54,5 +56,3 @@ Object.assign(NameButton, {
 });
 
 module.exports = NameButton;
-
-function first(array) { return array[0]; }

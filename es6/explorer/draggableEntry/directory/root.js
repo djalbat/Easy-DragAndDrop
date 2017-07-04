@@ -1,7 +1,7 @@
 'use strict';
 
-const util = require('../../../util'),
-      options = require('../../../options'),
+const options = require('../../../options'),
+      pathUtil = require('../../../util/path'),
       Directory = require('../directory');
 
 class RootDirectory extends Directory {
@@ -14,7 +14,7 @@ class RootDirectory extends Directory {
   }
 
   addFile(filePath) {
-    const filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
+    const filePathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryName(filePath);
 
     if (filePathWithoutRootDirectoryName !== null) {
       super.addFile(filePathWithoutRootDirectoryName);
@@ -22,7 +22,7 @@ class RootDirectory extends Directory {
   }
 
   addDirectory(directoryPath, collapsed) {
-    const directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+    const directoryPathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryName(directoryPath);
 
     if (directoryPathWithoutRootDirectoryName !== null) {
       super.addDirectory(directoryPathWithoutRootDirectoryName, collapsed);
@@ -30,7 +30,7 @@ class RootDirectory extends Directory {
   }
 
   removeFile(filePath) {
-    const filePathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
+    const filePathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryName(filePath);
 
     if (filePathWithoutRootDirectoryName !== null) {
       super.removeFile(filePathWithoutRootDirectoryName);
@@ -38,7 +38,7 @@ class RootDirectory extends Directory {
   }
 
   removeDirectory(directoryPath) {
-    const directoryPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+    const directoryPathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryName(directoryPath);
 
     if (directoryPathWithoutRootDirectoryName !== null) {
       super.removeDirectory(directoryPathWithoutRootDirectoryName);
@@ -65,7 +65,7 @@ class RootDirectory extends Directory {
   }
 
   addMarker(markerPath, draggableEntryType) {
-    const markerPathWithoutRootDirectoryName = util.pathWithoutTopmostDirectoryName(markerPath);
+    const markerPathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryName(markerPath);
 
     super.addMarker(markerPathWithoutRootDirectoryName, draggableEntryType);
   }

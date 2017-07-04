@@ -121,17 +121,14 @@ It is fine not to define the open handler.
 
 ## Handling moving files and directories
 
-The requisite handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object with one key, namely the entry's source path. The corresponding value is the entry's target path. If you want the entry to be moved, leave the object as-is. If you want the entry to be left in place, change the value to the source path. If you want the entry to be removed, change the value to `null`. Simply leaving the array of path maps alone with therefore move the entries as expected.
+The requisite handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object with `sourcePath`, `targetPath` and `directory` keys. The `directory` key is set to `true` if the entry is a directory. If you want the entry to be moved, leave the object as-is. If you want the entry to be left in place, change the target path to the source path. If you want the entry to be removed, change the target path to `null`. Simply leaving the array of path maps alone with therefore move the entries as expected. 
 
 ```js
 function moveHandler(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
-    const pathMapKeys = Object.keys(pathMap),
-          firstPathMapKey = first(pathMapKeys),
-          sourcePath = firstPathMapKey; ///
+    const sourcePath = pathMap['sourcePath'],
+          targetPath = pathMap['targetPath'];
           
-    let targetPath = pathMap[sourcePath];
-
     console.log('move file: ' + sourcePath + ' -> ' + targetPath)
 
     switch(sourcePath) {
@@ -149,7 +146,7 @@ function moveHandler(pathMaps, done) {
         break;
     }
 
-    pathMap[sourcePath] = targetPath;
+    pathMap['targetPath'] = targetPath;
   });
 
   done();
@@ -160,16 +157,13 @@ If no move handler is provided the array of path maps is left unchanged.
    
 ## Handling removing files and directories
   
-The requisite handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object with one key, namely the entries source path. The corresponding value will be `null`. If you want the entry to be removed, leave the object as-is. If you want the entry to be left in place, change the value to the target path. Simply leaving the array of path maps alone will therefore remove the entries as expected.
+The requisite handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object again with `sourcePath`, `targetPath` and `directory` keys. The target path will be set to `null` and again the `directory` key is set to `true` if the entry is a directory. If you want the entry to be removed, leave the object as-is. If you want the entry to be left in place, change the the target path to the source path. Simply leaving the array of path maps alone will therefore remove the entries as expected.
 
 ```js
 function removeHandler(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
-    const pathMapKeys = Object.keys(pathMap),
-          firstPathMapKey = first(pathMapKeys),
-          sourcePath = firstPathMapKey; ///
-          
-    let targetPath = pathMap[sourcePath];
+    const sourcePath = pathMap['sourcePath'],
+          targetPath = pathMap['targetPath'];
 
     console.log('remove file: ' + sourcePath)
 
@@ -182,22 +176,10 @@ function removeHandler(pathMaps, done) {
         break;
     }
 
-    pathMap[sourcePath] = targetPath;
+    pathMap['targetPath'] = targetPath;
   });
 
   done();
-}
-```
-
-You can check to see if the source path is that of the explorer's root directory in which case you can remove the whole explorer if you wish.
-
-```js
-if (sourcePath === 'First explorer') {
-  console.log('...removing entire explorer.')
-
-  secondExplorer.removeDropTarget(firstExplorer);
-
-  firstExplorer.remove();
 }
 ```
 

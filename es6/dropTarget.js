@@ -2,8 +2,8 @@
 
 const easy = require('easy');
 
-const util = require('./util'),
-      options = require('./options');
+const options = require('./options'),
+      arrayUtil = require('./util/array');
 
 const { Element } = easy;
 
@@ -83,8 +83,8 @@ class DropTarget extends Element {
     const pathMaps = this.pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath);
 
     this.moveHandler(pathMaps, function() {
-      const lastDraggableEntry = last(draggableEntries),
-            firstDraggableEntry = first(draggableEntries),
+      const lastDraggableEntry = arrayUtil.last(draggableEntries),
+            firstDraggableEntry = arrayUtil.first(draggableEntries),
             firstDraggableEntryExplorer = firstDraggableEntry.getExplorer(),
             draggableEntriesExplorer = firstDraggableEntryExplorer, ///
             removeEmptyParentDirectories = draggableEntriesExplorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
@@ -103,17 +103,15 @@ class DropTarget extends Element {
         const draggableEntryPath = draggableEntry.getPath();
 
         if (draggableEntryPath !== null) {
-          const sourcePath = draggableEntryPath,  ///
-              pathMap = find(pathMaps, function(pathMap) {
-                const sourceDraggableEntryPath = sourcePath,
-                      movedPath = pathMap[sourceDraggableEntryPath],
-                      found = (movedPath !== undefined);
+          const pathMap = find(pathMaps, function(pathMap) {
+                  const sourcePath = pathMap['sourcePath'],
+                        found = (sourcePath === draggableEntryPath);
+  
+                  return found;
+                }),
+                targetPath = pathMap['targetPath'];
 
-                return found;
-              }),
-              movedPath = pathMap[sourcePath];
-
-          this.moveDraggableEntry(draggableEntry, sourcePath, movedPath);
+          this.moveDraggableEntry(draggableEntry, sourcePath, targetPath);
         }
       }.bind(this));
 
@@ -121,21 +119,21 @@ class DropTarget extends Element {
     }.bind(this));
   }
 
-  moveDraggableEntry(draggableEntry, sourcePath, movedPath) {
+  moveDraggableEntry(draggableEntry, sourcePath, targetPath) {
     const draggableEntryDirectory = draggableEntry.isDirectory();
 
     if (draggableEntryDirectory) {
       const directory = draggableEntry,  ///
             sourceDirectoryPath = sourcePath, ///
-            movedDirectoryPath = movedPath;
+            targetDirectoryPath = targetPath;
 
-      this.moveDirectory(directory, sourceDirectoryPath, movedDirectoryPath);
+      this.moveDirectory(directory, sourceDirectoryPath, targetDirectoryPath);
     } else {
       const file = draggableEntry, ///
             sourceFilePath = sourcePath,  ///
-            movedFilePath = movedPath;  ///
+            targetFilePath = targetPath;  ///
 
-      this.moveFile(file, sourceFilePath, movedFilePath);
+      this.moveFile(file, sourceFilePath, targetFilePath);
     }
   }
 }
@@ -150,8 +148,6 @@ function indexOf(array, element) {
       index = currentElementIndex;
 
       return true;
-    } else {
-      return false;
     }
   });
 
@@ -166,13 +162,8 @@ function find(array, callback) {
       element = currentElement;
       
       return true;
-    } else {
-      return false;
     }
   });
   
   return element;  
 }
-
-function first(array) { return array[0]; }
-function last(array) { return array[array.length - 1]; }

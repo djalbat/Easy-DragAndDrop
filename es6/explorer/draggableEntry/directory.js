@@ -2,9 +2,9 @@
 
 const easy = require('easy');
 
-const util = require('../../util'),
-      Entry = require('../entry'),
+const Entry = require('../entry'),
       Entries = require('../entries'),
+      pathUtil = require('../../util/path'),
       DraggableEntry = require('../draggableEntry');
 
 const { Button, React } = easy;
@@ -130,7 +130,7 @@ class Directory extends DraggableEntry {
           topmostDirectory = this.topmostDirectory(filePath, addIfNecessary);
 
     if (topmostDirectory !== null) {
-      const filePathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
+      const filePathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryName(filePath);
 
       topmostDirectory.addFile(filePathWithoutTopmostDirectoryName);
     } else {
@@ -150,7 +150,7 @@ class Directory extends DraggableEntry {
           topmostDirectory = this.topmostDirectory(directoryPath, addIfNecessary);
 
     if (topmostDirectory !== null) {
-      const directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+      const directoryPathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryName(directoryPath);
 
       topmostDirectory.addDirectory(directoryPathWithoutTopmostDirectoryName, collapsed);
     } else {
@@ -172,7 +172,7 @@ class Directory extends DraggableEntry {
           topmostDirectory = this.topmostDirectory(filePath, addIfNecessary);
 
     if (topmostDirectory !== null) {
-      const filePathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(filePath);
+      const filePathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryName(filePath);
 
       removeEmptyParentDirectories = topmostDirectory.removeFile(filePathWithoutTopmostDirectoryName);
     } else {
@@ -206,7 +206,7 @@ class Directory extends DraggableEntry {
           topmostDirectory = this.topmostDirectory(directoryPath, addIfNecessary);
 
     if (topmostDirectory !== null) {
-      const directoryPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(directoryPath);
+      const directoryPathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryName(directoryPath);
 
       removeEmptyParentDirectories = topmostDirectory.removeDirectory(directoryPathWithoutTopmostDirectoryName);
     } else {
@@ -234,7 +234,7 @@ class Directory extends DraggableEntry {
   }
   
   addMarker(markerPath, draggableEntryType) {
-    const topmostDirectoryName = util.topmostDirectoryName(markerPath);
+    const topmostDirectoryName = pathUtil.topmostDirectoryName(markerPath);
 
     if (topmostDirectoryName === null) {
       const markerName = markerPath;  ///
@@ -242,7 +242,7 @@ class Directory extends DraggableEntry {
       this.entries.addMarker(markerName, draggableEntryType);
     } else {
       const topmostDirectory = this.entries.retrieveDirectory(topmostDirectoryName),
-          markerPathWithoutTopmostDirectoryName = util.pathWithoutTopmostDirectoryName(markerPath);
+          markerPathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryName(markerPath);
 
       topmostDirectory.addMarker(markerPathWithoutTopmostDirectoryName, draggableEntryType);
     }
@@ -317,7 +317,7 @@ class Directory extends DraggableEntry {
   topmostDirectory(path, addIfNecessary) {
     let topmostDirectory;
 
-    const topmostDirectoryName = util.topmostDirectoryName(path);
+    const topmostDirectoryName = pathUtil.topmostDirectoryName(path);
 
     if (topmostDirectoryName === null) {
       topmostDirectory = null;

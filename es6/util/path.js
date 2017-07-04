@@ -1,8 +1,10 @@
 'use strict';
 
-class util {
+const arrayUtil = require('../util/array');
+
+class pathUtil {
   static isPathTopmostDirectoryName(path) {
-    const topmostDirectoryName = util.topmostDirectoryName(path),
+    const topmostDirectoryName = pathUtil.topmostDirectoryName(path),
           pathTopmostDirectoryName = (topmostDirectoryName === null); ///
 
     return pathTopmostDirectoryName;
@@ -14,7 +16,7 @@ class util {
     const matches = path.match(/^.*\/([^\/]*$)/);
     
     if (matches !== null) {
-      const secondMatch = second(matches);
+      const secondMatch = arrayUtil.second(matches);
       
       bottommostName = secondMatch;  ///
     }
@@ -28,7 +30,7 @@ class util {
     const matches = path.match(/^([^\/]*)\//);
 
     if (matches !== null) {
-      const secondMatch = second(matches);
+      const secondMatch = arrayUtil.second(matches);
 
       topmostDirectoryName = secondMatch;  ///
     }
@@ -42,7 +44,7 @@ class util {
     const matches = path.match(/(^.*)\/[^\/]*$/);
 
     if (matches !== null) {
-      const secondMatch = second(matches);
+      const secondMatch = arrayUtil.second(matches);
 
       pathWithoutBottommostName = secondMatch; ///
     }
@@ -56,33 +58,13 @@ class util {
     const matches = path.match(/^[^\/]*\/(.*$)/);
 
     if (matches !== null) {
-      const secondMatch = second(matches);
+      const secondMatch = arrayUtil.second(matches);
 
       pathWithoutTopmostDirectoryName = secondMatch;
     }
 
     return pathWithoutTopmostDirectoryName;
   }
-  
-  static prependTargetPath(entryPath,  targetPath) {
-    entryPath = targetPath + '/' + entryPath;
-    
-    return entryPath;
-  }
-
-  static replaceSourcePathWithTargetPath(entryPath, sourcePath, targetPath) {
-    sourcePath = sourcePath.replace(/\(/g, '\\(').replace(/\)/g, '\\)');  ///
-
-    const regExp = new RegExp('^' + sourcePath + '(.*$)'),
-          matches = entryPath.match(regExp),
-          secondMatch = second(matches);
-
-    entryPath = targetPath + secondMatch; ///
-
-    return entryPath;
-  }
 }
 
-module.exports = util;
-
-function second(array) { return array[1]; }
+module.exports = pathUtil;
