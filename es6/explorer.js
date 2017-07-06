@@ -272,12 +272,15 @@ class Explorer extends DropTarget {
     const pathMaps = draggableEntries.map(function(draggableEntry) {
       const draggableEntryPath = draggableEntry.getPath(),
             draggableEntryDirectory = draggableEntry.isDirectory(),
-            sourcePath = draggableEntryPath,  ///
+            directory = draggableEntryDirectory;  ///
+
             targetPath = (sourcePath === null) ?
-                           prependTargetPathToDraggableEntryPath(draggableEntryPath, targetPath) :
-                             replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath),
-            directory = draggableEntryDirectory,
-            pathMap = {
+                           prependTargetPathToDraggableEntryPath(draggableEntryPath, targetPath) :  ///
+                             replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath); ///
+      
+            sourcePath = draggableEntryPath;  ///
+      
+      const pathMap = {
               sourcePath: sourcePath,
               targetPath: targetPath,
               directory: directory
