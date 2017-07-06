@@ -109,6 +109,7 @@ class DropTarget extends Element {
   
                   return found;
                 }),
+                sourcePath = pathMap['sourcePath'],
                 targetPath = pathMap['targetPath'];
 
           this.moveDraggableEntry(draggableEntry, sourcePath, targetPath);
