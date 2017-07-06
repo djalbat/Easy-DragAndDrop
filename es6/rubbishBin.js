@@ -107,17 +107,8 @@ class RubbishBin extends DropTarget {
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
     const pathMaps = draggableEntries.map(function(draggableEntry) {
-      const draggableEntryPath = draggableEntry.getPath(),
-            draggableEntryDirectory = draggableEntry.isDirectory(),
-            directory = draggableEntryDirectory,  ///
-            sourcePath = draggableEntryPath,  ///
-            targetPath = null,  ///
-            pathMap = {
-              sourcePath: sourcePath,
-              targetPath: targetPath,
-              directory: directory
-            };
-
+      const pathMap = pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath);
+      
       return pathMap;
     });
 
@@ -143,3 +134,21 @@ Object.assign(RubbishBin, {
 });
 
 module.exports = RubbishBin;
+
+function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
+  const draggableEntryPath = draggableEntry.getPath(),
+        draggableEntryDirectory = draggableEntry.isDirectory(),
+        directory = draggableEntryDirectory;  ///
+
+  targetPath = null;  ///
+
+  sourcePath = draggableEntryPath;  ///
+
+  const pathMap = {
+    sourcePath: sourcePath,
+    targetPath: targetPath,
+    directory: directory
+  };
+
+  return pathMap;
+}

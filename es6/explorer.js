@@ -270,21 +270,7 @@ class Explorer extends DropTarget {
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
     const pathMaps = draggableEntries.map(function(draggableEntry) {
-      const draggableEntryPath = draggableEntry.getPath(),
-            draggableEntryDirectory = draggableEntry.isDirectory(),
-            directory = draggableEntryDirectory;  ///
-
-            targetPath = (sourcePath === null) ?
-                           prependTargetPathToDraggableEntryPath(draggableEntryPath, targetPath) :  ///
-                             replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath); ///
-      
-            sourcePath = draggableEntryPath;  ///
-      
-      const pathMap = {
-              sourcePath: sourcePath,
-              targetPath: targetPath,
-              directory: directory
-            };
+      const pathMap = pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath);
 
       return pathMap;
     });
@@ -332,6 +318,26 @@ Object.assign(Explorer, {
 });
 
 module.exports = Explorer;
+
+function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
+  const draggableEntryPath = draggableEntry.getPath(),
+        draggableEntryDirectory = draggableEntry.isDirectory(),
+        directory = draggableEntryDirectory;  ///
+
+  targetPath = (sourcePath === null) ?
+                  prependTargetPathToDraggableEntryPath(draggableEntryPath, targetPath) :  ///
+                    replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath); ///
+
+  sourcePath = draggableEntryPath;  ///
+
+  const pathMap = {
+    sourcePath: sourcePath,
+    targetPath: targetPath,
+    directory: directory
+  };
+
+  return pathMap;
+}
 
 function prependTargetPathToDraggableEntryPath(draggableEntryPath,  targetPath) {
   draggableEntryPath = targetPath + '/' + draggableEntryPath;
