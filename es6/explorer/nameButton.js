@@ -38,9 +38,10 @@ class NameButton extends InputElement {
   
   static fromProperties(properties) {
     const { onDoubleClick } = properties,
-          doubleClickHandler = onDoubleClick; ///
+          doubleClickHandler = onDoubleClick, ///
+          nameButton = InputElement.fromProperties(NameButton, properties, doubleClickHandler);
     
-    return InputElement.fromProperties(NameButton, properties, doubleClickHandler);
+    return nameButton;
   }
 }
 

@@ -13,19 +13,19 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     return true;
   }
 
-  addFilePath(filePath) {
+  addFilePath(filePath, recognised, hidden) {
     const filePathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutRootDirectoryName !== null) {
-      super.addFilePath(filePathWithoutRootDirectoryName);
+      super.addFilePath(filePathWithoutRootDirectoryName, recognised, hidden);
     }
   }
 
-  addDirectoryPath(directoryPath, collapsed) {
+  addDirectoryPath(directoryPath, collapsed, hidden) {
     const directoryPathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
     if (directoryPathWithoutRootDirectoryName !== null) {
-      super.addDirectoryPath(directoryPathWithoutRootDirectoryName, collapsed);
+      super.addDirectoryPath(directoryPathWithoutRootDirectoryName, collapsed, hidden);
     }
   }
 
@@ -88,9 +88,7 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     });
   }
 
-  static fromProperties(properties) {
-    return DirectoryNameDraggableEntry.fromProperties(RootDirectoryNameDraggableEntry, properties);
-  }
+  static fromProperties(properties) { return DirectoryNameDraggableEntry.fromProperties(RootDirectoryNameDraggableEntry, properties); }
 }
 
 module.exports = RootDirectoryNameDraggableEntry;

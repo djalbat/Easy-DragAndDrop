@@ -9,9 +9,7 @@ class MarkerEntry extends Entry {
     super(selector, name, type);
   }
 
-  static fromProperties(Class, properties) {
-    return Entry.fromProperties(Class, properties);
-  }
+  static fromProperties(Class, properties) { return Entry.fromProperties(Class, properties); }
 }
 
 Object.assign(MarkerEntry, {

@@ -117,9 +117,10 @@ class RubbishBin extends DropTarget {
 
   static fromProperties(properties) {
     const { onRemove } = properties,
-          removeHandler = onRemove; ///
-
-    return Element.fromProperties(RubbishBin, properties, removeHandler);
+          removeHandler = onRemove, ///
+          rubbishBin = Element.fromProperties(RubbishBin, properties, removeHandler);
+    
+    return rubbishBin;
   }
 }
 

@@ -57,8 +57,12 @@ class Explorer extends DropTarget {
     return toBeMarked;
   }
   
-  retrieveFilePaths() { return this.rootDirectoryNameDraggableEntry.retrieveFilePaths(); }
-
+  getFilePaths() {
+    const filePaths = this.retrieveFilePaths();
+    
+    return filePaths;
+  }
+  
   addMarkerEntry(draggableEntry, directoryNameDraggableEntryOverlappingDraggableEntry) {
     const draggableEntryName = draggableEntry.getName(),
           draggableEntryType = draggableEntry.getType(),
@@ -231,7 +235,10 @@ class Explorer extends DropTarget {
 
       filePath = targetFilePath; ///
 
-      this.addFilePath(filePath);
+      const recognised = fileNameDraggableEntry.isRecognised(),
+            hidden = fileNameDraggableEntry.isHidden();
+
+      this.addFilePath(filePath, recognised, hidden);
     }
   }
 
@@ -251,11 +258,12 @@ class Explorer extends DropTarget {
 
       explorer.removeDirectoryPath(directoryPath);
 
-      const collapsed = directoryNameDraggableEntry.isCollapsed();
-      
       directoryPath = targetDirectoryPath; ///
 
-      this.addDirectoryPath(directoryPath, collapsed);
+      const collapsed = directoryNameDraggableEntry.isCollapsed(),
+            hidden = directoryNameDraggableEntry.isHidden();
+      
+      this.addDirectoryPath(directoryPath, collapsed, hidden);
     }
   }
 
@@ -296,9 +304,10 @@ class Explorer extends DropTarget {
   static fromProperties(properties) {
     const { onMove, onOpen, options } = properties,
           moveHandler = onMove, ///
-          openHandler = onOpen; ///
-
-    return Element.fromProperties(Explorer, properties, moveHandler, openHandler, options);
+          openHandler = onOpen, ///
+          explorer = Element.fromProperties(Explorer, properties, moveHandler, openHandler, options);
+    
+    return explorer;
   }
 }
 

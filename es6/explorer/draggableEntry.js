@@ -59,6 +59,26 @@ class DraggableEntry extends Element {
     return collapsedBounds;
   }
 
+  isDragging() {
+    const dragging = this.hasClass('dragging');
+
+    return dragging;
+  }
+
+  isHidden() {
+    const hidden = this.hasClass('hidden');
+
+    return hidden;
+  }
+  
+  show() {
+    this.removeClass('hidden');
+  }
+  
+  hide() {
+    this.addClass('hidden');
+  }
+
   isRootDirectoryNameDraggableEntry() {
     return false;
   }
@@ -144,12 +164,6 @@ class DraggableEntry extends Element {
     }
   }
 
-  isDragging() {
-    const dragging = this.hasClass('dragging');
-    
-    return dragging;
-  }
-
   isMouseOver(mouseTop, mouseLeft) {
     const collapsedBounds = this.getCollapsedBounds(),
           collapsedBoundsOverlappingMouse = collapsedBounds.isOverlappingMouse(mouseTop, mouseLeft),
@@ -230,9 +244,7 @@ class DraggableEntry extends Element {
     this.explorer.dragging(this);
   }
   
-  static fromProperties(Class, properties, ...remainingArguments) {
-    return Element.fromProperties(Class, properties, ...remainingArguments);
-  }
+  static fromProperties(Class, properties, ...remainingArguments) { return Element.fromProperties(Class, properties, ...remainingArguments); }
 }
 
 Object.assign(DraggableEntry, {

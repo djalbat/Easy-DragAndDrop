@@ -48,47 +48,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
         return before;
     }
   }
-  
-  retrieveSubEntries() {
-    let subEntries = [];
-
-    this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
-      const subEntry = fileNameDraggableEntry; ///
-
-      subEntries.push(subEntry);
-    });
-
-    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
-      const subEntry = directoryNameDraggableEntry, ///
-            directoryNameDraggableEntrySubEntries = directoryNameDraggableEntry.retrieveSubEntries();
-
-      subEntries.push(subEntry);
-      
-      subEntries = subEntries.concat(directoryNameDraggableEntrySubEntries);
-    });
-
-    return subEntries;
-  }
-
-  retrieveFilePaths() {
-    let filePaths = [];
-
-    this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
-      const fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(),
-            filePath = fileNameDraggableEntryPath;  ///
-
-      filePaths.push(filePath);
-    });
-
-    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
-      const directoryNameDraggableEntryFilePaths = directoryNameDraggableEntry.retrieveFilePaths(),
-            directoryFilePaths = directoryNameDraggableEntryFilePaths();
-
-      filePaths = filePaths.concat(directoryFilePaths);
-    });
-
-    return filePaths;
-  }
 
   getCollapsedBounds() {
     const collapsed = this.isCollapsed();
@@ -104,6 +63,34 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
 
     return collapsedBounds;
   }
+
+  isCollapsed() {
+    const collapsed = this.hasClass('collapsed');
+
+    return collapsed;
+  }
+
+  isMarked() {
+    let marked;
+
+    const entriesMarked = this.entries.isMarked();
+
+    if (entriesMarked) {
+      marked = entriesMarked;
+    } else {
+      const directoryNameDraggableEntryMarked = this.entries.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+        const directoryNameDraggableEntryMarked = directoryNameDraggableEntry.isMarked();
+
+        return directoryNameDraggableEntryMarked;
+      });
+
+      marked = directoryNameDraggableEntryMarked; ///
+    }
+
+    return marked;
+  }
+
+  isEmpty() { return this.entries.isEmpty(); }
 
   isOverlappingDraggableEntry(draggableEntry) {
     let overlappingDraggableEntry;
@@ -126,14 +113,14 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return overlappingDraggableEntry;
   }
 
-  addFilePath(filePath) {
+  addFilePath(filePath, recognised, hidden) {
     const addIfNecessary = true,
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(filePath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
       const filePathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
-      topmostDirectoryNameDraggableEntry.addFilePath(filePathWithoutTopmostDirectoryName);
+      topmostDirectoryNameDraggableEntry.addFilePath(filePathWithoutTopmostDirectoryName, recognised, hidden);
     } else {
       const fileName = filePath,  ///
             entriesFile = this.entries.isFileNameDraggableEntryPresent(fileName);
@@ -141,19 +128,19 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       if (!entriesFile) {
         const explorer = this.getExplorer();
         
-        this.entries.addFileNameDraggableEntry(fileName, explorer);
+        this.entries.addFileNameDraggableEntry(fileName, explorer, recognised, hidden);
       }
     }
   }
 
-  addDirectoryPath(directoryPath, collapsed) {
+  addDirectoryPath(directoryPath, collapsed, hidden) {
     const addIfNecessary = true,
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(directoryPath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
       const directoryPathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
-      topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
+      topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed, hidden);
     } else {
       const directoryName = directoryPath,  ///
             entriesDirectoryNameDraggableEntryPresent = this.entries.isDirectoryNameDraggableEntryPresent(directoryName);
@@ -161,7 +148,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       if (!entriesDirectoryNameDraggableEntryPresent) {
         const explorer = this.getExplorer();
 
-        this.entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed);
+        this.entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, hidden);
       }
     }
   }
@@ -269,33 +256,52 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return removed;
   }
 
-  isMarked() {
-    let marked;
-
-    const entriesMarked = this.entries.isMarked();
-    
-    if (entriesMarked) {
-      marked = entriesMarked;
-    } else {
-      const directoryNameDraggableEntryMarked = this.entries.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
-        const directoryNameDraggableEntryMarked = directoryNameDraggableEntry.isMarked();
-        
-        return directoryNameDraggableEntryMarked;
-      });
-
-      marked = directoryNameDraggableEntryMarked; ///
-    }
-    
-    return marked;
-  }
-
-  isEmpty() { return this.entries.isEmpty(); }
-
   forEachFileNameDraggableEntry(callback) { this.entries.forEachFileNameDraggableEntry(callback); }
 
   forEachDirectoryNameDraggableEntry(callback) { this.entries.forEachDirectoryNameDraggableEntry(callback); }
 
   someDirectoryNameDraggableEntry(callback) { this.entries.someDirectoryNameDraggableEntry(callback); }
+
+  retrieveFilePaths() {
+    let filePaths = [];
+
+    this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
+      const fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(),
+          filePath = fileNameDraggableEntryPath;  ///
+
+      filePaths.push(filePath);
+    });
+
+    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      const directoryNameDraggableEntryFilePaths = directoryNameDraggableEntry.retrieveFilePaths(),
+          directoryFilePaths = directoryNameDraggableEntryFilePaths();
+
+      filePaths = filePaths.concat(directoryFilePaths);
+    });
+
+    return filePaths;
+  }
+
+  retrieveSubEntries() {
+    let subEntries = [];
+
+    this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
+      const subEntry = fileNameDraggableEntry; ///
+
+      subEntries.push(subEntry);
+    });
+
+    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      const subEntry = directoryNameDraggableEntry, ///
+           directoryNameDraggableEntrySubEntries = directoryNameDraggableEntry.retrieveSubEntries();
+
+      subEntries.push(subEntry);
+
+      subEntries = subEntries.concat(directoryNameDraggableEntrySubEntries);
+    });
+
+    return subEntries;
+  }
 
   retrieveDraggableEntryPath(draggableEntry) {
     let draggableEntryPath;
@@ -327,10 +333,11 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
         const entriesDirectoryNameDraggableEntryPresent = this.entries.isDirectoryNameDraggableEntryPresent(topmostDirectoryName);
 
         if (!entriesDirectoryNameDraggableEntryPresent) {
-          const collapsed = true,
+          const collapsed = true, ///
+                hidden = false, ///
                 explorer = this.getExplorer();
 
-          this.entries.addDirectoryNameDraggableEntry(topmostDirectoryName, explorer, collapsed);
+          this.entries.addDirectoryNameDraggableEntry(topmostDirectoryName, explorer, collapsed, hidden);
         }
       }
 
@@ -380,12 +387,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     this.toggle();
   }
 
-  isCollapsed() {
-    const collapsed = this.hasClass('collapsed');
-
-    return collapsed;
-  }
-
   collapse() {
     this.addClass('collapsed');
   }
@@ -404,12 +405,16 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       Class = DirectoryNameDraggableEntry;
     }
 
-    const { name, explorer, collapsed } = properties,
+    const { name, explorer, collapsed, hidden } = properties,
           directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, name, explorer);
 
     collapsed ? ///
       directoryNameDraggableEntry.collapse() :
         directoryNameDraggableEntry.expand();
+
+    hidden ?
+      directoryNameDraggableEntry.hide() :
+        directoryNameDraggableEntry.show();
 
     return directoryNameDraggableEntry;
   }

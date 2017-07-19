@@ -9,7 +9,7 @@ class FileNameDraggableEntry extends DraggableEntry {
     const type = Entry.types.FILE_NAME;
 
     super(selector, name, explorer, type);
-
+    
     this.onDoubleClick(this.doubleClickHandler.bind(this));
   }
 
@@ -39,12 +39,26 @@ class FileNameDraggableEntry extends DraggableEntry {
     return before;
   }
 
+  isRecognised() {
+    const recognised = this.hasClass('recognised');
+
+    return recognised;
+  }
+
   retrieveSubEntries() {
     const subEntries = [];  ///
     
     return subEntries;
   }
-  
+
+  recognise() {
+    this.addClass('recognised');
+  }
+
+  overlook() {
+    this.removeClass('recognised');
+  }
+
   doubleClickHandler() {
     const explorer = this.getExplorer(),
           file = this; ///
@@ -53,9 +67,18 @@ class FileNameDraggableEntry extends DraggableEntry {
   }
   
   static fromProperties(properties) {
-    const { name, explorer } = properties;
-    
-    return DraggableEntry.fromProperties(FileNameDraggableEntry, properties, name, explorer);
+    const { name, explorer, recognised, hidden } = properties,
+          fileNameDraggableEntry = DraggableEntry.fromProperties(FileNameDraggableEntry, properties, name, explorer);
+
+    recognised ? ///
+      fileNameDraggableEntry.recognise() :
+        fileNameDraggableEntry.overlook();
+
+    hidden ?
+      fileNameDraggableEntry.hide() :
+        fileNameDraggableEntry.show();
+
+    return fileNameDraggableEntry;
   }
 }
 

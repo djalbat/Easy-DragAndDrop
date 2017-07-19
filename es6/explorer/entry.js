@@ -26,9 +26,10 @@ class Entry extends Element {
   }
   
   static fromProperties(Class, properties) {
-    const { name } = properties;
+    const { name } = properties,
+          entry = Element.fromProperties(Class, properties, name);
     
-    return Element.fromProperties(Class, properties, name);
+    return entry;
   }
 }
 

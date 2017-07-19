@@ -15,9 +15,7 @@ class DirectoryNameMarkerEntry extends MarkerEntry {
     return before;
   }
   
-  static fromProperties(properties) {
-    return MarkerEntry.fromProperties(DirectoryNameMarkerEntry, properties);
-  }
+  static fromProperties(properties) { return MarkerEntry.fromProperties(DirectoryNameMarkerEntry, properties); }
 }
 
 module.exports = DirectoryNameMarkerEntry;

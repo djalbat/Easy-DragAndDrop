@@ -17,17 +17,17 @@ class Entries extends Element {
     this.DirectoryNameDraggableEntry = DirectoryNameDraggableEntry;
   }
   
-  addFileNameDraggableEntry(fileName, explorer) {
+  addFileNameDraggableEntry(fileName, explorer, recognised, hidden) {
     const name = fileName,
-          fileNameDraggableEntry = <FileNameDraggableEntry name={name} explorer={explorer} />,
+          fileNameDraggableEntry = <FileNameDraggableEntry name={name} explorer={explorer} recognised={recognised} hidden={hidden} />,
           entry = fileNameDraggableEntry; ///
 
     this.addEntry(entry);
   }
 
-  addDirectoryNameDraggableEntry(directoryName, explorer, collapsed) {
+  addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, hidden) {
     const name = directoryName,
-          directoryNameDraggableEntry = <this.DirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />,
+          directoryNameDraggableEntry = <this.DirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} hidden={hidden} />,
           entry = directoryNameDraggableEntry;  ///
     
     this.addEntry(entry);
@@ -281,9 +281,10 @@ class Entries extends Element {
   }
 
   static fromProperties(properties) {
-    const { DirectoryNameDraggableEntry } = properties;
+    const { DirectoryNameDraggableEntry } = properties,
+          entries = Element.fromProperties(Entries, properties, DirectoryNameDraggableEntry);
     
-    return Element.fromProperties(Entries, properties, DirectoryNameDraggableEntry);
+    return entries;
   }
 }
 
