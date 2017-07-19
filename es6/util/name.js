@@ -16,6 +16,20 @@ class nameUtil {
 
     return extension;
   }
+
+  static nameWithoutExtensionFromName(name) {
+    let nameWithoutExtension = null;
+
+    const matches = name.match(/^(.+)\.[^.]+$/);
+
+    if (matches !== null) {
+      const secondMatch = arrayUtil.second(matches);
+
+      nameWithoutExtension = secondMatch;  ///
+    }
+
+    return nameWithoutExtension;
+  }
 }
 
 module.exports = nameUtil;

@@ -72,29 +72,38 @@ Object.assign(File, {
 module.exports = File;
 
 function nameIsBeforeEntryName(name, entryName) {
-  let before;
+  let before = (name.localeCompare(entryName) < 0);
   
   const nameExtension = nameUtil.extensionFromName(name),
         entryNameExtension = nameUtil.extensionFromName(entryName),
+        nameWithoutExtension = nameUtil.nameWithoutExtensionFromName(name),
+        entryNameWithoutExtension = nameUTil.nameWithoutExtensionFromName(entryName),
         nameExtensionPresent = (nameExtension !== null),
         entryNameExtensionPresent = (entryNameExtension !== null),
-        extensionsBothPresent = (nameExtensionPresent && entryNameExtensionPresent);
+        nameWithoutExtensionMissing = (nameWithoutExtension === null),
+        entryNameWithoutExtensionMissing = (entryNameWithoutExtension === null),
+        extensionsBothPresent = (nameExtensionPresent && entryNameExtensionPresent),
+        namesWithoutExtensionsBothMissing = (nameWithoutExtensionMissing && entryNameWithoutExtensionMissing);
 
-  if (extensionsBothPresent) {
-    const extensionsEqual = (nameExtension === entryNameExtension);
-
-    if (extensionsEqual) {
-      before = (name.localeCompare(entryName) < 0);
-    } else {
-      before = (nameExtension.localeCompare(entryNameExtension) < 0);
-    }
-  } else if (nameExtensionPresent) {
-    before = false;
-  } else if (entryNameExtensionPresent) {
+  if (namesWithoutExtensionsBothMissing) {
+    ///
+  } else if (nameWithoutExtensionMissing) {
     before = true;
+  } else if (entryNameWithoutExtensionMissing) {
+    before = false;
   } else {
-    before = (name.localeCompare(entryName) < 0);
-  }
+    if (extensionsBothPresent) {
+      const extensionsDiffer = (nameExtension !== entryNameExtension);
 
+      if (extensionsDiffer) {
+        before = (nameExtension.localeCompare(entryNameExtension) < 0);
+      }
+    } else if (nameExtensionPresent) {
+      before = false;
+    } else if (entryNameExtensionPresent) {
+      before = true;
+    }
+  }
+  
   return before;
 }
