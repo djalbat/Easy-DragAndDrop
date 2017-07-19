@@ -75,24 +75,26 @@ function openHandler(filePath) {
 You can add files or empty directories:
 
 ```js
-secondExplorer.addDirectory('Second explorer/First directory');
-secondExplorer.addDirectory('Second explorer/Second directory');
-secondExplorer.addFile('Second explorer/First directory/First file.fls');
-secondExplorer.addFile('Second explorer/First directory/Second file.fls');
-secondExplorer.addFile('Second explorer/Second directory/Third file.fls');
+secondExplorer.addDirectoryPath('Second explorer/First directory');
+secondExplorer.addDirectoryPath('Second explorer/Second directory');
+secondExplorer.addFilePath('Second explorer/First directory/First file.fls');
+secondExplorer.addFilePath('Second explorer/First directory/Second file.fls');
+secondExplorer.addFilePath('Second explorer/Second directory/Third file.fls');
 ```
 
-The `addDirectory()` method has a second, optional `collapsed` argument. The default is `false`. The explorer will add the necessary parent directories for you whenever you add a file. If you try to add a file or directory more than once, nothing will happen.
+The `addDirectoryPath()` method has a second, optional `collapsed` argument. The default is `false`. The explorer will add the necessary parent directories for you whenever you add a file. If you try to add a file or directory more than once, nothing will happen.
 
 You can also remove files and non-empty directories programmatically:
 
 ```js
-secondExplorer.removeFile('Second explorer/First directory/Second file.fls', true);
-secondExplorer.removeFile('Second explorer/Second directory/Third file.fls', false);
-secondExplorer.removeDirectory('Second explorer/Second directory', false);
+secondExplorer.removeFilePath('Second explorer/First directory/Second file.fls', true);
+secondExplorer.removeFilePath('Second explorer/Second directory/Third file.fls', false);
+secondExplorer.removeDirectoryPath('Second explorer/Second directory', false);
 ```
 
 You cannot remove the topmost directory, and if you try to remove a file or directory more than once, nothing happens.
+
+Note that the methods are `addFilePath()`, `removeDirectoryPath()` and so on. This is because the explorer is simply a visual widget for maninpulating paths, there are no actual files and directories directly involved.
 
 ## Dragging between elements
 
