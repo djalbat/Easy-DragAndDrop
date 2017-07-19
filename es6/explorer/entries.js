@@ -123,8 +123,6 @@ class Entries extends Element {
         previousEntry = entry;
 
         return true;
-      } else {
-        return false;
       }
     });
 
@@ -161,8 +159,6 @@ class Entries extends Element {
 
       if (markedDirectory !== null) {
         return true;
-      } else {
-        return false;
       }
     });
 
@@ -179,8 +175,6 @@ class Entries extends Element {
         draggableEntryPath = entryName;  ///
         
         return true;
-      } else {
-        return false;
       }
     });
     
@@ -192,8 +186,6 @@ class Entries extends Element {
           draggableEntryPath = directoryDraggableEntryPath; ///
           
           return true;
-        } else {
-          return false;
         }
       });
     }
@@ -209,8 +201,6 @@ class Entries extends Element {
 
       if (directoryOverlappingDraggableEntry !== null) {
         return true;
-      } else {
-        return false;
       }
     });
 
@@ -260,9 +250,9 @@ class Entries extends Element {
       const entryType = entry.getType();
 
       if (entryType === type) {
-        return callback(entry);
-      } else {
-        return false;
+        const result = callback(entry);
+        
+        return result;
       }
     });
   }
@@ -277,8 +267,6 @@ class Entries extends Element {
         foundEntry = entry;
 
         return true;
-      } else {
-        return false;
       }
     }, type);
 

@@ -102,8 +102,6 @@ class Explorer extends DropTarget {
         topmostDirectoryMarker = childElement;  ///
 
         return true;
-      } else {
-        return false;
       }
     });
 
