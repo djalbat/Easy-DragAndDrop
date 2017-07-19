@@ -4,99 +4,97 @@ const easy = require('easy');
 
 const options = require('../options'),
       Entry = require('./entry'),
-      File = require('./draggableEntry/file'),
-      FileMarker = require('./entry/marker/file'),
-      DirectoryMarker = require('./entry/marker/directory');
+      FileNameMarkerEntry = require('./entry/marker/fileName'),
+      DirectoryNameMarkerEntry = require('./entry/marker/directoryName'),
+      FileNameDraggableEntry = require('./draggableEntry/fileName');
 
 const { Element, React } = easy;
 
 class Entries extends Element {
-  constructor(selector, Directory) {
+  constructor(selector, DirectoryNameDraggableEntry) {
     super(selector);
 
-    this.Directory = Directory;
+    this.DirectoryNameDraggableEntry = DirectoryNameDraggableEntry;
   }
   
-  addFile(fileName, explorer) {
+  addFileNameDraggableEntry(fileName, explorer) {
     const name = fileName,
-          file = <File name={name} explorer={explorer} />,
-          entry = file; ///
+          fileNameDraggableEntry = <FileNameDraggableEntry name={name} explorer={explorer} />,
+          entry = fileNameDraggableEntry; ///
 
     this.addEntry(entry);
   }
 
-  addDirectory(directoryName, explorer, collapsed) {
+  addDirectoryNameDraggableEntry(directoryName, explorer, collapsed) {
     const name = directoryName,
-          directory = <this.Directory name={name} explorer={explorer} collapsed={collapsed} />,
-          entry = directory;  ///
+          directoryNameDraggableEntry = <this.DirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />,
+          entry = directoryNameDraggableEntry;  ///
     
     this.addEntry(entry);
   }
 
-  removeFile(fileName) {
-    const file = this.retrieveFile(fileName),
-          explorer = file.getExplorer(),
+  removeFileNameDraggableEntry(fileName) {
+    const fileNameDraggableEntry = this.retrieveFileNameDraggableEntry(fileName),
+          explorer = fileNameDraggableEntry.getExplorer(),
           removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
 
-    file.remove();
+    fileNameDraggableEntry.remove();
     
     return removeEmptyParentDirectories;
   }
 
-  removeDirectory(directoryName) {
-    const directory = this.retrieveDirectory(directoryName),
-          explorer = directory.getExplorer(),
+  removeDirectoryNameDraggableEntry(directoryName) {
+    const directoryNameDraggableEntry = this.retrieveDirectoryNameDraggableEntry(directoryName),
+          explorer = directoryNameDraggableEntry.getExplorer(),
           removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
 
-    directory.remove();
+    directoryNameDraggableEntry.remove();
 
     return removeEmptyParentDirectories;
   }
 
-  hasFile(fileName) {
-    let file = this.retrieveFile(fileName);
+  isFileNameDraggableEntryPresent(fileName) {
+    const fileNameDraggableEntry = this.retrieveFileNameDraggableEntry(fileName),
+          fileNameDraggableEntryPresent = (fileNameDraggableEntry !== null); ///
 
-    file = (file !== null); ///
-
-    return file;
+    return fileNameDraggableEntryPresent;
   }
 
-  hasDirectory(directoryName) {
-    let directory = this.retrieveDirectory(directoryName);
-    
-    directory = (directory !== null); ///
+  isDirectoryNameDraggableEntryPresent(directoryName) {
+    const directoryNameDraggableEntry = this.retrieveDirectoryNameDraggableEntry(directoryName),    
+          directoryNameDraggableEntryPresent = (directoryNameDraggableEntry !== null); ///
 
-    return directory;
+    return directoryNameDraggableEntryPresent;
   }
 
-  addMarker(markerName, draggableEntryType) {
-    let marker;
+  addMarkerEntry(markerName, draggableEntryType) {
+    let markerEntry;
     
     const name = markerName;  ///
 
     switch (draggableEntryType) {
-      case Entry.types.FILE:
-        marker = <FileMarker name={name} />;
+      case Entry.types.FILE_NAME:
+        markerEntry = <FileNameMarkerEntry name={name} />;
         break;
 
-      case Entry.types.DIRECTORY:
-        marker = <DirectoryMarker name={name} />;
+      case Entry.types.DIRECTORY_NAME:
+        markerEntry = <DirectoryNameMarkerEntry name={name} />;
         break;
     }
 
-    const entry = marker; ///
+    const entry = markerEntry; ///
 
     this.addEntry(entry);
   }
 
-  removeMarker() {
-    const marker = this.retrieveMarker();
+  removeMarkerEntry() {
+    const markerEntry = this.retrieveMarkerEntry();
 
-    marker.remove();
+    markerEntry.remove();
   }
   
   isMarked() {
-    const marker = this.retrieveMarker(),
+    const marker = this.retrieveMarkerEntry(),
           marked = (marker!== null);
 
     return marked;
@@ -133,11 +131,11 @@ class Entries extends Element {
     }
   }
 
-  retrieveFile(fileName) { return this.retrieveEntryByType(fileName, Entry.types.FILE) }
+  retrieveFileNameDraggableEntry(fileName) { return this.retrieveEntryByType(fileName, Entry.types.FILE_NAME) }
 
-  retrieveDirectory(directoryName) { return this.retrieveEntryByType(directoryName, Entry.types.DIRECTORY) }
+  retrieveDirectoryNameDraggableEntry(directoryName) { return this.retrieveEntryByType(directoryName, Entry.types.DIRECTORY_NAME) }
 
-  retrieveMarker() {
+  retrieveMarkerEntry() {
     let marker = null;
     
     const type = Entry.types.MARKER;
@@ -151,21 +149,21 @@ class Entries extends Element {
     return marker;
   }
 
-  getMarkedDirectory() {
-    let markedDirectory = null;
+  retrieveMarkedDirectoryNameDraggableEntry() {
+    let markedDirectoryNameDraggableEntry = null;
 
-    this.someDirectory(function(directory) {
-      markedDirectory = directory.getMarkedDirectory();
+    this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      markedDirectoryNameDraggableEntry = directoryNameDraggableEntry.retrieveMarkedDirectoryNameDraggableEntry();
 
-      if (markedDirectory !== null) {
+      if (markedDirectoryNameDraggableEntry !== null) {
         return true;
       }
     });
 
-    return markedDirectory;
+    return markedDirectoryNameDraggableEntry;
   }
   
-  getDraggableEntryPath(draggableEntry) {
+  retrieveDraggableEntryPath(draggableEntry) {
     let draggableEntryPath = null;
     
     this.someEntry(function(entry) {
@@ -179,8 +177,8 @@ class Entries extends Element {
     });
     
     if (draggableEntryPath === null) {
-      this.someDirectory(function(directory) {
-        const directoryDraggableEntryPath = directory.getDraggableEntryPath(draggableEntry);
+      this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+        const directoryDraggableEntryPath = directoryNameDraggableEntry.retrieveDraggableEntryPath(draggableEntry);
         
         if (directoryDraggableEntryPath !== null) {
           draggableEntryPath = directoryDraggableEntryPath; ///
@@ -193,27 +191,27 @@ class Entries extends Element {
     return draggableEntryPath;
   }
 
-  getDirectoryOverlappingDraggableEntry(draggableEntry) {
-    let directoryOverlappingDraggableEntry = null;
+  retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
+    let directoryNameDraggableEntryOverlappingDraggableEntry = null;
 
-    this.someDirectory(function(directory) {
-      directoryOverlappingDraggableEntry = directory.getDirectoryOverlappingDraggableEntry(draggableEntry);
+    this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      directoryNameDraggableEntryOverlappingDraggableEntry = directoryNameDraggableEntry.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
 
-      if (directoryOverlappingDraggableEntry !== null) {
+      if (directoryNameDraggableEntryOverlappingDraggableEntry !== null) {
         return true;
       }
     });
 
-    return directoryOverlappingDraggableEntry;
+    return directoryNameDraggableEntryOverlappingDraggableEntry;
   }
 
-  forEachFile(callback) { this.forEachEntryByType(callback, Entry.types.FILE) }
+  forEachFileNameDraggableEntry(callback) { this.forEachEntryByType(callback, Entry.types.FILE_NAME) }
 
-  forEachDirectory(callback) { this.forEachEntryByType(callback, Entry.types.DIRECTORY) }
+  forEachDirectoryNameDraggableEntry(callback) { this.forEachEntryByType(callback, Entry.types.DIRECTORY_NAME) }
 
-  someFile(callback) { return this.someEntryByType(callback, Entry.types.FILE) }
+  someFileNameDraggableEntry(callback) { return this.someEntryByType(callback, Entry.types.FILE_NAME) }
 
-  someDirectory(callback) { return this.someEntryByType(callback, Entry.types.DIRECTORY) }
+  someDirectoryNameDraggableEntry(callback) { return this.someEntryByType(callback, Entry.types.DIRECTORY_NAME) }
 
   forEachEntry(callback) {
     const entries = this.getEntries();
@@ -283,9 +281,9 @@ class Entries extends Element {
   }
 
   static fromProperties(properties) {
-    const { Directory } = properties;
+    const { DirectoryNameDraggableEntry } = properties;
     
-    return Element.fromProperties(Entries, properties, Directory);
+    return Element.fromProperties(Entries, properties, DirectoryNameDraggableEntry);
   }
 }
 
@@ -295,7 +293,7 @@ Object.assign(Entries, {
     className: 'entries'
   },
   ignoredProperties: [
-    'Directory'
+    'DirectoryNameDraggableEntry'
   ]
 });
 

@@ -38,9 +38,9 @@ Object.assign(Entry, {
     'name'
   ],
   types: {
-    FILE: 'FILE',
     MARKER: 'MARKER',
-    DIRECTORY: 'DIRECTORY'
+    FILE_NAME: 'FILE_NAME',
+    DIRECTORY_NAME: 'DIRECTORY_NAME'
   }
 });
 

@@ -21,7 +21,7 @@ class DropTarget extends Element {
   }
 
   removeDropTarget(dropTarget) {
-    const index = indexOf(this.dropTargets, dropTarget),
+    const index = arrayUtil.indexOf(this.dropTargets, dropTarget),
           found = (index !== -1);
 
     if (found) {
@@ -67,15 +67,15 @@ class DropTarget extends Element {
     return markedDropTarget;
   }
 
-  removeMarkerGlobally() {
+  removeMarkerEntryGlobally() {
     const marked = this.isMarked();
 
     if (marked) {
-      this.removeMarker();
+      this.removeMarkerEntry();
     } else {
       const markedDropTarget = this.getMarkedDropTarget();
 
-      markedDropTarget.removeMarker();
+      markedDropTarget.removeMarkerEntry();
     }
   }
 
@@ -87,15 +87,15 @@ class DropTarget extends Element {
             firstDraggableEntry = arrayUtil.first(draggableEntries),
             firstDraggableEntryExplorer = firstDraggableEntry.getExplorer(),
             draggableEntriesExplorer = firstDraggableEntryExplorer, ///
-            removeEmptyParentDirectories = draggableEntriesExplorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+            removeEmptyParentDirectoryNameDraggableEntries = draggableEntriesExplorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES); ///
 
-      if (removeEmptyParentDirectories) {
+      if (removeEmptyParentDirectoryNameDraggableEntries) {
         draggableEntriesExplorer.unsetOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
       }
 
       draggableEntries.forEach(function(draggableEntry) {
         if (draggableEntry === lastDraggableEntry) {
-          if (removeEmptyParentDirectories) {
+          if (removeEmptyParentDirectoryNameDraggableEntries) {
             draggableEntriesExplorer.setOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
           }
         }
@@ -103,7 +103,7 @@ class DropTarget extends Element {
         const draggableEntryPath = draggableEntry.getPath();
 
         if (draggableEntryPath !== null) {
-          const pathMap = find(pathMaps, function(pathMap) {
+          const pathMap = arrayUtil.find(pathMaps, function(pathMap) {
                   const sourcePath = pathMap['sourcePath'],
                         found = (sourcePath === draggableEntryPath);
   
@@ -121,50 +121,22 @@ class DropTarget extends Element {
   }
 
   moveDraggableEntry(draggableEntry, sourcePath, targetPath) {
-    const draggableEntryDirectory = draggableEntry.isDirectory();
+    const draggableEntryDirectoryNameDraggableEntry = draggableEntry.isDirectoryNameDraggableEntry();
 
-    if (draggableEntryDirectory) {
-      const directory = draggableEntry,  ///
+    if (draggableEntryDirectoryNameDraggableEntry) {
+      const directoryDraggableEntry = draggableEntry,  ///
             sourceDirectoryPath = sourcePath, ///
-            targetDirectoryPath = targetPath;
+            targetDirectoryPath = targetPath; ///
 
-      this.moveDirectory(directory, sourceDirectoryPath, targetDirectoryPath);
+      this.moveDirectoryNameDraggableEntry(directoryDraggableEntry, sourceDirectoryPath, targetDirectoryPath);
     } else {
-      const file = draggableEntry, ///
+      const fileNameDraggableEntry = draggableEntry, ///
             sourceFilePath = sourcePath,  ///
             targetFilePath = targetPath;  ///
 
-      this.moveFile(file, sourceFilePath, targetFilePath);
+      this.moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath);
     }
   }
 }
 
 module.exports = DropTarget;
-
-function indexOf(array, element) {
-  let index = -1;
-
-  array.some(function(currentElement, currentElementIndex) {
-    if (currentElement === element) {
-      index = currentElementIndex;
-
-      return true;
-    }
-  });
-
-  return index;
-}
-
-function find(array, callback) {
-  let element = null;
-  
-  array.some(function(currentElement) {
-    if (callback(currentElement)) {
-      element = currentElement;
-      
-      return true;
-    }
-  });
-  
-  return element;  
-}

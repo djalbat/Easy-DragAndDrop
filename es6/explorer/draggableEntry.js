@@ -46,7 +46,8 @@ class DraggableEntry extends Element {
   }
 
   getPath() {
-    const path = this.explorer.getDraggableEntryPath(this);
+    const draggableEntry = this,  ///
+          path = this.explorer.retrieveDraggableEntryPath(draggableEntry);
     
     return path;
   }
@@ -58,7 +59,7 @@ class DraggableEntry extends Element {
     return collapsedBounds;
   }
 
-  isRootDirectory() {
+  isRootDirectoryNameDraggableEntry() {
     return false;
   }
 
@@ -83,7 +84,7 @@ class DraggableEntry extends Element {
     this.leftOffset = boundsLeft - mouseLeft;
 
     if (escapeKeyStopsDragging) {
-      this.on('keydown', this.keyDownHandler.bind(this));
+      this.onKeyDown(this.keyDownHandler.bind(this));
     }
 
     this.addClass('dragging');
@@ -112,13 +113,13 @@ class DraggableEntry extends Element {
       this.timeout = setTimeout(function() {
         this.timeout = null;
 
-        const rootDirectory = this.isRootDirectory(),
-              subEntry = !rootDirectory,  ///
+        const rootDirectoryNameDraggableEntry = this.isRootDirectoryNameDraggableEntry(),
+              subEntry = !rootDirectoryNameDraggableEntry,  ///
               noDragging = this.explorer.hasOption(options.NO_DRAGGING),
               noDraggingSubEntries = this.explorer.hasOption(options.NO_DRAGGING_SUB_ENTRIES),
-              noDraggingRootDirectory = this.explorer.hasOption(options.NO_DRAGGING_ROOT_DIRECTORY);
+              noDraggingRootDirectoryNameDraggableEntry = this.explorer.hasOption(options.NO_DRAGGING_ROOT_DIRECTORY);  ///
 
-        if ((noDragging) || (subEntry && noDraggingSubEntries) || (rootDirectory && noDraggingRootDirectory)) {
+        if ((noDragging) || (subEntry && noDraggingSubEntries) || (rootDirectoryNameDraggableEntry && noDraggingRootDirectoryNameDraggableEntry)) {
           return;
         }
 
@@ -195,10 +196,10 @@ class DraggableEntry extends Element {
     }
   }
 
-  keyDownHandler(event) {
-    const keyCode = event.keyCode || event.which;
+  keyDownHandler(keyCode) {
+    const escapeKey = (keyCode === ESCAPE_KEYCODE);
 
-    if (keyCode === ESCAPE_KEYCODE) {
+    if (escapeKey) {
       const dragging = this.isDragging();
 
       if (dragging) {

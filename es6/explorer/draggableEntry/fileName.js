@@ -4,16 +4,16 @@ const Entry = require('../entry'),
       nameUtil = require('../../util/name'),
       DraggableEntry = require('../draggableEntry');
 
-class File extends DraggableEntry {
+class FileNameDraggableEntry extends DraggableEntry {
   constructor(selector, name, explorer) {
-    const type = Entry.types.FILE;
+    const type = Entry.types.FILE_NAME;
 
     super(selector, name, explorer, type);
 
     this.onDoubleClick(this.doubleClickHandler.bind(this));
   }
 
-  isDirectory() {
+  isDirectoryNameDraggableEntry() {
     return false;
   }
 
@@ -23,15 +23,15 @@ class File extends DraggableEntry {
     const entryType = entry.getType();
 
     switch (entryType) {
-      case Entry.types.FILE:
       case Entry.types.MARKER:
+      case Entry.types.FILE_NAME:
         const name = this.getName(),
               entryName = entry.getName();
           
         before = nameIsBeforeEntryName(name, entryName);
         break;
 
-      case Entry.types.DIRECTORY:
+      case Entry.types.DIRECTORY_NAME:
         before = false;          
         break;
     }
@@ -39,7 +39,7 @@ class File extends DraggableEntry {
     return before;
   }
 
-  getSubEntries() {
+  retrieveSubEntries() {
     const subEntries = [];  ///
     
     return subEntries;
@@ -49,19 +49,19 @@ class File extends DraggableEntry {
     const explorer = this.getExplorer(),
           file = this; ///
     
-    explorer.openFile(file);
+    explorer.openFileNameDraggableEntry(file);
   }
   
   static fromProperties(properties) {
     const { name, explorer } = properties;
     
-    return DraggableEntry.fromProperties(File, properties, name, explorer);
+    return DraggableEntry.fromProperties(FileNameDraggableEntry, properties, name, explorer);
   }
 }
 
-Object.assign(File, {
+Object.assign(FileNameDraggableEntry, {
   defaultProperties: {
-    className: 'file'
+    className: 'fileName'
   },
   ignoredProperties: [
     'name',
@@ -69,7 +69,7 @@ Object.assign(File, {
   ]
 });
 
-module.exports = File;
+module.exports = FileNameDraggableEntry;
 
 function nameIsBeforeEntryName(name, entryName) {
   let before = (name.localeCompare(entryName) < 0);

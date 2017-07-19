@@ -25,7 +25,7 @@ ul.explorer ul.entries {
   padding-left: 1.5rem;
 }
 
-ul.explorer li.collapsed.directory > ul.entries {
+ul.explorer li.collapsed.directoryName > ul.entries {
   display: none;
 }
 
@@ -43,7 +43,7 @@ ul.explorer li > button.toggle::before {
   width: 1.5rem;
   content: '\025bc';
 }
-ul.explorer li.collapsed.directory > button.toggle::before {
+ul.explorer li.collapsed.directoryName > button.toggle::before {
   content: '\025b6';
 }
 
@@ -52,7 +52,7 @@ ul.explorer li > button.name {
   background-repeat: no-repeat;
 }
 
-ul.explorer li.file > button.name {
+ul.explorer li.fileName > button.name {
   padding-left: 3rem;
   background-image: url("file.png");
   background-position: 1.5rem 0;
@@ -64,7 +64,7 @@ ul.explorer li.marker > button.name {
   background-position: 1.5rem 0;
 }
 
-ul.explorer li.directory > button.name {
+ul.explorer li.directoryName > button.name {
   padding-left: 1.5rem;
   background-image: url("directory.png");
   background-position: 0 0;

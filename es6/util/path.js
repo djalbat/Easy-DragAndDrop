@@ -4,13 +4,13 @@ const arrayUtil = require('../util/array');
 
 class pathUtil {
   static isPathTopmostDirectoryName(path) {
-    const topmostDirectoryName = pathUtil.topmostDirectoryName(path),
+    const topmostDirectoryName = pathUtil.topmostDirectoryNameFromPath(path),
           pathTopmostDirectoryName = (topmostDirectoryName === null); ///
 
     return pathTopmostDirectoryName;
   }
 
-  static bottommostName(path) {
+  static bottommostNameFromPath(path) {
     let bottommostName = null;
     
     const matches = path.match(/^.*\/([^\/]*$)/);
@@ -24,7 +24,7 @@ class pathUtil {
     return bottommostName;
   }
 
-  static topmostDirectoryName(path) {
+  static topmostDirectoryNameFromPath(path) {
     let topmostDirectoryName = null;
     
     const matches = path.match(/^([^\/]*)\//);
@@ -38,7 +38,7 @@ class pathUtil {
     return topmostDirectoryName;
   }
 
-  static pathWithoutBottommostName(path) {
+  static pathWithoutBottommostNameFromPath(path) {
     let pathWithoutBottommostName = null;
     
     const matches = path.match(/(^.*)\/[^\/]*$/);
@@ -52,7 +52,7 @@ class pathUtil {
     return pathWithoutBottommostName;
   }
 
-  static pathWithoutTopmostDirectoryName(path) {
+  static pathWithoutTopmostDirectoryNameFromPath(path) {
     let pathWithoutTopmostDirectoryName = null;
     
     const matches = path.match(/^[^\/]*\/(.*$)/);

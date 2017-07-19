@@ -2,7 +2,7 @@
 
 const Entry = require('../entry');
 
-class Marker extends Entry {
+class MarkerEntry extends Entry {
   constructor(selector, name) {
     const type = Entry.types.MARKER;
 
@@ -14,10 +14,10 @@ class Marker extends Entry {
   }
 }
 
-Object.assign(Marker, {
+Object.assign(MarkerEntry, {
   defaultProperties: {
     className: 'marker'
   }
 });
 
-module.exports = Marker;
+module.exports = MarkerEntry;

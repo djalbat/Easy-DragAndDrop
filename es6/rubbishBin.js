@@ -15,30 +15,16 @@ class RubbishBin extends DropTarget {
     this.close();
   }
 
-  getMarkedDirectory() {
-    const markedDirectory = null;
-    
-    return markedDirectory;
-  }
+  isOpen() {
+    const open = this.hasClass('open');
 
-  getDirectoryOverlappingDraggableEntry(draggableEntry) {
-    const directoryOverlappingDraggableEntry = null; ///
-
-    return directoryOverlappingDraggableEntry;
-  }
-
-  addMarker(draggableEntry, directoryOverlappingDraggableEntry) {
-    this.open();
-  }
-
-  removeMarker() {
-    this.close();
+    return open;
   }
 
   isMarked() {
     const open = this.isOpen(),
           marked = open;  ///
-    
+
     return marked;
   }
 
@@ -50,7 +36,27 @@ class RubbishBin extends DropTarget {
 
     return toBeMarked;
   }
-  
+
+  retrieveMarkedDirectoryNameDraggableEntry() {
+    const markedDirectoryNameDraggableEntry = null;
+    
+    return markedDirectoryNameDraggableEntry;
+  }
+
+  retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
+    const directoryNameDraggableEntryOverlappingDraggableEntry = null; ///
+
+    return directoryNameDraggableEntryOverlappingDraggableEntry;
+  }
+
+  addMarkerEntry(draggableEntry, directoryNameDraggableEntryOverlappingDraggableEntry) {
+    this.open();
+  }
+
+  removeMarkerEntry() {
+    this.close();
+  }
+
   dragging(draggableEntry, explorer) {
     const marked = this.isMarked();
 
@@ -61,33 +67,33 @@ class RubbishBin extends DropTarget {
         const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
 
         if (dropTargetToBeMarked !== null) {
-          const directoryOverlappingDraggableEntry = dropTargetToBeMarked.getDirectoryOverlappingDraggableEntry(draggableEntry);
+          const directoryNameDraggableEntryOverlappingDraggableEntry = dropTargetToBeMarked.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
 
-          dropTargetToBeMarked.addMarker(draggableEntry, directoryOverlappingDraggableEntry);
+          dropTargetToBeMarked.addMarkerEntry(draggableEntry, directoryNameDraggableEntryOverlappingDraggableEntry);
         } else {
-          explorer.addMarkerInPlace(draggableEntry);
+          explorer.addMarkerEntryInPlace(draggableEntry);
         }
 
-        this.removeMarker();
+        this.removeMarkerEntry();
       }
     }
   }
 
-  moveDirectory(directory, sourceDirectoryPath, targetDirectoryPath) {
+  moveDirectoryNameDraggableEntry(directoryNameDraggableEntry, sourceDirectoryPath, targetDirectoryPath) {
     if (targetDirectoryPath === null) {
-      const explorer = directory.getExplorer(),
+      const explorer = directoryNameDraggableEntry.getExplorer(),
             directoryPath = sourceDirectoryPath;  ///
 
-      explorer.removeDirectory(directoryPath);
+      explorer.removeDirectoryPath(directoryPath);
     }
   }
 
-  moveFile(file, sourceFilePath, targetFilePath) {
+  moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath) {
     if (targetFilePath === null) {
-      const explorer = file.getExplorer(),
+      const explorer = fileNameDraggableEntry.getExplorer(),
             filePath = sourceFilePath;  ///
 
-      explorer.removeFile(filePath);
+      explorer.removeFilePath(filePath);
     }
   }
 
@@ -97,12 +103,6 @@ class RubbishBin extends DropTarget {
 
   close() {
     this.removeClass('open');
-  }
-
-  isOpen() {
-    const open = this.hasClass('open');
-    
-    return open;
   }
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
@@ -137,8 +137,8 @@ module.exports = RubbishBin;
 
 function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
   const draggableEntryPath = draggableEntry.getPath(),
-        draggableEntryDirectory = draggableEntry.isDirectory(),
-        directory = draggableEntryDirectory;  ///
+        draggableEntryDirectoryNameDraggableEntry = draggableEntry.isDirectoryNameDraggableEntry(),
+        directory = draggableEntryDirectoryNameDraggableEntry;  ///
 
   targetPath = null;  ///
 
