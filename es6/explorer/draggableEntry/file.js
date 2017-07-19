@@ -77,7 +77,7 @@ function nameIsBeforeEntryName(name, entryName) {
   const nameExtension = nameUtil.extensionFromName(name),
         entryNameExtension = nameUtil.extensionFromName(entryName),
         nameWithoutExtension = nameUtil.nameWithoutExtensionFromName(name),
-        entryNameWithoutExtension = nameUTil.nameWithoutExtensionFromName(entryName),
+        entryNameWithoutExtension = nameUtil.nameWithoutExtensionFromName(entryName),
         nameExtensionPresent = (nameExtension !== null),
         entryNameExtensionPresent = (entryNameExtension !== null),
         nameWithoutExtensionMissing = (nameWithoutExtension === null),
@@ -104,6 +104,6 @@ function nameIsBeforeEntryName(name, entryName) {
       before = true;
     }
   }
-  
+
   return before;
 }
