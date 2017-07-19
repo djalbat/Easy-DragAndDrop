@@ -67,16 +67,12 @@ class FileNameDraggableEntry extends DraggableEntry {
   }
   
   static fromProperties(properties) {
-    const { name, explorer, recognised, hidden } = properties,
+    const { name, explorer, recognised } = properties,
           fileNameDraggableEntry = DraggableEntry.fromProperties(FileNameDraggableEntry, properties, name, explorer);
 
-    recognised ? ///
+    recognised ?
       fileNameDraggableEntry.recognise() :
         fileNameDraggableEntry.overlook();
-
-    hidden ?
-      fileNameDraggableEntry.hide() :
-        fileNameDraggableEntry.show();
 
     return fileNameDraggableEntry;
   }
@@ -88,7 +84,8 @@ Object.assign(FileNameDraggableEntry, {
   },
   ignoredProperties: [
     'name',
-    'explorer'
+    'explorer',
+    'recognised'
   ]
 });
 

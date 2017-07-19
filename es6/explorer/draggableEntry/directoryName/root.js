@@ -13,7 +13,7 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     return true;
   }
 
-  addFilePath(filePath, recognised, hidden) {
+  addFilePath(filePath, recognised = true, hidden = false) {
     const filePathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutRootDirectoryName !== null) {
@@ -21,7 +21,7 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     }
   }
 
-  addDirectoryPath(directoryPath, collapsed, hidden) {
+  addDirectoryPath(directoryPath, collapsed = false, hidden = false) {
     const directoryPathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
     if (directoryPathWithoutRootDirectoryName !== null) {

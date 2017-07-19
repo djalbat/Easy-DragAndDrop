@@ -244,11 +244,23 @@ class DraggableEntry extends Element {
     this.explorer.dragging(this);
   }
   
-  static fromProperties(Class, properties, ...remainingArguments) { return Element.fromProperties(Class, properties, ...remainingArguments); }
+  static fromProperties(Class, properties, ...remainingArguments) {
+    const { hidden } = properties,
+          draggableEntry = Element.fromProperties(Class, properties, ...remainingArguments);
+
+    hidden ?
+      draggableEntry.hide() :
+        draggableEntry.show();
+
+    return draggableEntry;
+  }
 }
 
 Object.assign(DraggableEntry, {
-  tagName: 'li'
+  tagName: 'li',
+  ignoredProperties: [
+    'hidden'
+  ]
 });
 
 module.exports = DraggableEntry;
