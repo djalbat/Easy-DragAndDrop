@@ -41,7 +41,6 @@ class Directory extends DraggableEntry {
         return true;
 
       case Entry.types.DIRECTORY:
-
         const name = this.getName(),
               entryName = entry.getName(),
               before = name.localeCompare(entryName) < 0;

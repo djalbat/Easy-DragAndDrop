@@ -1,6 +1,7 @@
 'use strict';
 
 const Entry = require('../entry'),
+      nameUtil = require('../../util/name'),
       DraggableEntry = require('../draggableEntry');
 
 class File extends DraggableEntry {
@@ -24,11 +25,10 @@ class File extends DraggableEntry {
     switch (entryType) {
       case Entry.types.FILE:
       case Entry.types.MARKER:
-
         const name = this.getName(),
               entryName = entry.getName();
           
-        before = name.localeCompare(entryName) < 0;      
+        before = nameIsBeforeEntryName(name, entryName);
         break;
 
       case Entry.types.DIRECTORY:
@@ -70,3 +70,31 @@ Object.assign(File, {
 });
 
 module.exports = File;
+
+function nameIsBeforeEntryName(name, entryName) {
+  let before;
+  
+  const nameExtension = nameUtil.extensionFromName(name),
+        entryNameExtension = nameUtil.extensionFromName(entryName),
+        nameExtensionPresent = (nameExtension !== null),
+        entryNameExtensionPresent = (entryNameExtension !== null),
+        extensionsBothPresent = (nameExtensionPresent && entryNameExtensionPresent);
+
+  if (extensionsBothPresent) {
+    const extensionsEqual = (nameExtension === entryNameExtension);
+
+    if (extensionsEqual) {
+      before = (name.localeCompare(entryName) < 0);
+    } else {
+      before = (nameExtension.localeCompare(entryNameExtension) < 0);
+    }
+  } else if (nameExtensionPresent) {
+    before = false;
+  } else if (entryNameExtensionPresent) {
+    before = true;
+  } else {
+    before = (name.localeCompare(entryName) < 0);
+  }
+
+  return before;
+}
