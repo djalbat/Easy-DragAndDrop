@@ -405,8 +405,12 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       Class = DirectoryNameDraggableEntry;
     }
 
-    const { name, explorer, collapsed } = properties,
+    const { name, explorer, collapsed, hidden } = properties,
           directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, name, explorer);
+
+    hidden ?
+      directoryNameDraggableEntry.hide() :
+        directoryNameDraggableEntry.show();
 
     collapsed ?
       directoryNameDraggableEntry.collapse() :
@@ -423,7 +427,8 @@ Object.assign(DirectoryNameDraggableEntry, {
   ignoredProperties: [
     'name',
     'explorer',
-    'collapsed'
+    'collapsed',
+    'hidden'
   ]
 });
 
