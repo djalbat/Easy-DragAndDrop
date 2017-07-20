@@ -59,6 +59,7 @@ ul.explorer li.fileName > button.name {
 }
 
 ul.explorer li.marker > button.name {
+  width: 3rem;
   color: rgba(0, 0, 0, 0);
   background-image: url("marker.png");
   background-position: 1.5rem 0;
