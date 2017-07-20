@@ -71,6 +71,12 @@ class DraggableEntry extends Element {
     return hidden;
   }
   
+  setHidden(hidden) {
+    hidden ?
+      this.addClass('hidden') :
+        this.removeClass('hidden');
+  }
+  
   show() {
     this.removeClass('hidden');
   }

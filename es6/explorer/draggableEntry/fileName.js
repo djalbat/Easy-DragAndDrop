@@ -50,6 +50,12 @@ class FileNameDraggableEntry extends DraggableEntry {
     
     return subEntries;
   }
+  
+  setRecognised(recognised) {
+    recognised ?
+      this.recognise() :
+        this.overlook();
+  }
 
   recognise() {
     this.addClass('recognised');
@@ -75,13 +81,9 @@ class FileNameDraggableEntry extends DraggableEntry {
     const { name, explorer, recognised, hidden } = properties,
           fileNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, name, explorer);
 
-    hidden ?
-      fileNameDraggableEntry.hide() :
-        fileNameDraggableEntry.show();
+    fileNameDraggableEntry.setHidden(hidden);
 
-    recognised ?
-      fileNameDraggableEntry.recognise() :
-        fileNameDraggableEntry.overlook();
+    fileNameDraggableEntry.setRecognised(recognised);
 
     return fileNameDraggableEntry;
   }

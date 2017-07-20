@@ -143,9 +143,14 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed, hidden);
     } else {
       const directoryName = directoryPath,  ///
-            entriesDirectoryNameDraggableEntryPresent = this.entries.isDirectoryNameDraggableEntryPresent(directoryName);
+            entriesDirectoryNameDraggableEntry = this.entries.retrieveDirectoryNameDraggableEntry(directoryName),
+            entriesDirectoryNameDraggableEntryPresent = (entriesDirectoryNameDraggableEntry !== null);
 
-      if (!entriesDirectoryNameDraggableEntryPresent) {
+      if (entriesDirectoryNameDraggableEntryPresent) {
+        entriesDirectoryNameDraggableEntry.setCollapsed(collapsed);
+
+        entriesDirectoryNameDraggableEntry.setHidden(hidden);
+      } else {
         const explorer = this.getExplorer();
 
         this.entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, hidden);
@@ -387,6 +392,12 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     this.toggle();
   }
 
+  setCollapsed(collapsed) {
+    collapsed ?
+      this.collapse() :
+        this.expand();
+  }
+
   collapse() {
     this.addClass('collapsed');
   }
@@ -408,13 +419,9 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     const { name, explorer, collapsed, hidden } = properties,
           directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, name, explorer);
 
-    hidden ?
-      directoryNameDraggableEntry.hide() :
-        directoryNameDraggableEntry.show();
+    directoryNameDraggableEntry.setHidden(hidden);
 
-    collapsed ?
-      directoryNameDraggableEntry.collapse() :
-        directoryNameDraggableEntry.expand();
+    directoryNameDraggableEntry.setCollapsed(collapsed);
 
     return directoryNameDraggableEntry;
   }
