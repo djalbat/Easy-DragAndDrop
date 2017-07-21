@@ -32,21 +32,27 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   }
 
   isBefore(entry) {
+    let before;
+    
     const entryType = entry.getType();
 
     switch (entryType) {
       case Entry.types.MARKER:
       case Entry.types.FILE_NAME:
-
-        return true;
+        before = true;
+          
+        break;
 
       case Entry.types.DIRECTORY_NAME:
         const name = this.getName(),
-              entryName = entry.getName(),
-              before = name.localeCompare(entryName) < 0;
+              entryName = entry.getName();
 
-        return before;
+        before = (name.localeCompare(entryName) < 0);
+
+        break;
     }
+    
+    return before;
   }
 
   getCollapsedBounds() {
@@ -193,9 +199,9 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   }
 
   removeDirectoryPath(directoryPath) {
-    let removeEmptyParentDirectoryNameDraggableEntries = null; ///
+    let removeEmptyParentDirectoryNameDraggableEntries = false;
 
-    const addIfNecessary = false,
+    const addIfNecessary = false, ///
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(directoryPath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
@@ -204,7 +210,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       removeEmptyParentDirectoryNameDraggableEntries = topmostDirectoryNameDraggableEntry.removeDirectoryPath(directoryPathWithoutTopmostDirectoryName);
     } else {
       const directoryName = directoryPath,  ///
-          entriesDirectoryNameDraggableEntryPresent = this.entries.isDirectoryNameDraggableEntryPresent(directoryName);
+            entriesDirectoryNameDraggableEntryPresent = this.entries.isDirectoryNameDraggableEntryPresent(directoryName);
 
       if (entriesDirectoryNameDraggableEntryPresent) {
         removeEmptyParentDirectoryNameDraggableEntries = this.entries.removeDirectoryNameDraggableEntry(directoryName);

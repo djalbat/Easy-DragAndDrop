@@ -44,11 +44,18 @@ class Entries extends Element {
   }
 
   removeDirectoryNameDraggableEntry(directoryName) {
+    let removeEmptyParentDirectories = false;
+    
     const directoryNameDraggableEntry = this.retrieveDirectoryNameDraggableEntry(directoryName),
-          explorer = directoryNameDraggableEntry.getExplorer(),
-          removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+          directoryNameDraggableEntryEmpty = directoryNameDraggableEntry.isEmpty();
+    
+    if (directoryNameDraggableEntryEmpty) {
+      const explorer = directoryNameDraggableEntry.getExplorer();
+      
+      removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
 
-    directoryNameDraggableEntry.remove();
+      directoryNameDraggableEntry.remove();
+    }
 
     return removeEmptyParentDirectories;
   }

@@ -1,16 +1,27 @@
 'use strict';
 
-const Entry = require('../../entry'),
+const nameUtil = require('../../../util/name'),
+      Entry = require('../../entry'),
       MarkerEntry = require('../../entry/marker');
 
 class FileNameMarkerEntry extends MarkerEntry {
   isBefore(draggableEntry) {
-    const name = this.getName(),
-          draggableEntryName = draggableEntry.getName(),
-          draggableEntryType = draggableEntry.getType(),
-          before = (draggableEntryType === Entry.types.DIRECTORY_NAME) ? 
-                     false : 
-                       (name.localeCompare(draggableEntryName) < 0);
+    let before;
+
+    const draggableEntryType = draggableEntry.getType();
+
+    switch (draggableEntryType) {
+      case Entry.types.FILE_NAME:
+        const name = this.getName(),
+            draggableEntryName = draggableEntry.getName();
+
+        before = nameUtil.nameIsBeforeEntryName(name, draggableEntryName);
+        break;
+
+      case Entry.types.DIRECTORY_NAME:
+        before = false;
+        break;
+    }
 
     return before;
   }

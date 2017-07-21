@@ -5,12 +5,24 @@ const Entry = require('../../entry'),
 
 class DirectoryNameMarkerEntry extends MarkerEntry {
   isBefore(draggableEntry) {
-    const name = this.getName(),
-          draggableEntryName = draggableEntry.getName(),
-          draggableEntryType = draggableEntry.getType(),
-          before = (draggableEntryType === Entry.types.FILE_NAME) ?
-                     true :
-                       (name.localeCompare(draggableEntryName) < 0);
+    let before;
+
+    const draggableEntryType = draggableEntry.getType();
+
+    switch (draggableEntryType) {
+      case Entry.types.FILE_NAME:
+        before = true;
+
+        break;
+
+      case Entry.types.DIRECTORY_NAME:
+        const name = this.getName(),
+              draggableEntryName = draggableEntry.getName();
+
+        before = (name.localeCompare(draggableEntryName) < 0);
+
+        break;
+    }
 
     return before;
   }
