@@ -280,7 +280,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
 
     this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
       const directoryNameDraggableEntryFilePaths = directoryNameDraggableEntry.retrieveFilePaths(),
-          directoryFilePaths = directoryNameDraggableEntryFilePaths();
+            directoryFilePaths = directoryNameDraggableEntryFilePaths;
 
       filePaths = filePaths.concat(directoryFilePaths);
     });
