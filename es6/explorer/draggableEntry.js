@@ -65,7 +65,7 @@ class DraggableEntry extends Element {
 
   isOverlappingCollapsedBounds(collapsedBounds) {
     const bounds = this.getBounds(),
-         overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds);
+          overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds);
 
     return overlappingCollapsedBounds;
   }
@@ -179,7 +179,7 @@ class DraggableEntry extends Element {
 
   mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
     const mouseUpHandler = this.getMouseUpHandler(),
-          mouseMoveHandler = this.getMouseMoveHandler;
+          mouseMoveHandler = this.getMouseMoveHandler();
         
     window.on('mouseup blur', mouseUpHandler);
     
@@ -196,7 +196,7 @@ class DraggableEntry extends Element {
 
   mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
     const mouseUpHandler = this.getMouseUpHandler(),
-          mouseMoveHandler = this.getMouseMoveHandler;
+          mouseMoveHandler = this.getMouseMoveHandler();
 
     window.off('mouseup blur', mouseUpHandler);
     
