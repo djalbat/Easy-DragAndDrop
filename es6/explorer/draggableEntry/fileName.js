@@ -71,6 +71,8 @@ class FileNameDraggableEntry extends DraggableEntry {
   }
   
   initialise(recognised, hidden)  {
+    super.initialise();
+    
     this.setHidden(hidden);
 
     this.setRecognised(recognised);
