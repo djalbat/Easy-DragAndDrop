@@ -178,8 +178,8 @@ class DraggableEntry extends Element {
   }
 
   mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
-    const mouseUpHandler = this.mouseUpHandler.bind(this),
-          mouseMoveHandler = this.mouseMoveHandler.bind(this);
+    const mouseUpHandler = this.getMouseUpHandler(),
+          mouseMoveHandler = this.getMouseMoveHandler;
         
     window.on('mouseup blur', mouseUpHandler);
     
@@ -195,9 +195,12 @@ class DraggableEntry extends Element {
   }
 
   mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
-    window.off('mouseup blur');
+    const mouseUpHandler = this.getMouseUpHandler(),
+          mouseMoveHandler = this.getMouseMoveHandler;
+
+    window.off('mouseup blur', mouseUpHandler);
     
-    window.offMouseMove();
+    window.offMouseMove(mouseMoveHandler);
 
     const dragging = this.isDragging();
 
@@ -268,6 +271,10 @@ class DraggableEntry extends Element {
 
   getLeftOffset() { return this.fromState('leftOffset'); }
 
+  getMouseUpHandler() { return this.fromState('mouseUpHandler'); }
+
+  getMouseMoveHandler() { return this.fromState('mouseMoveHandler'); }
+
   setTimeout(timeout) {
     this.updateState({
       timeout: timeout
@@ -289,12 +296,16 @@ class DraggableEntry extends Element {
   setInitialState() {
     const timeout = null,
           topOffset = null,
-          leftOffset = null;
+          leftOffset = null,
+          mouseUpHandler = this.mouseUpHandler.bind(this),
+          mouseMoveHandler = this.mouseMoveHandler.bind(this);
     
     this.setState({
       timeout: timeout,
       topOffset: topOffset,
-      leftOffset: leftOffset
+      leftOffset: leftOffset,
+      mouseUpHandler: mouseUpHandler,
+      mouseMoveHandler: mouseMoveHandler
     });
   }
 
