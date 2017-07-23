@@ -11,8 +11,6 @@ class RubbishBin extends DropTarget {
     const moveHandler = removeHandler;  ///
     
     super(selector, moveHandler);
-
-    this.close();
   }
 
   isOpen() {
@@ -37,16 +35,12 @@ class RubbishBin extends DropTarget {
     return toBeMarked;
   }
 
-  retrieveMarkedDirectoryNameDraggableEntry() {
-    const markedDirectoryNameDraggableEntry = null;
-    
-    return markedDirectoryNameDraggableEntry;
+  open() {
+    this.addClass('open');
   }
 
-  retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
-    const directoryNameDraggableEntryOverlappingDraggableEntry = null; ///
-
-    return directoryNameDraggableEntryOverlappingDraggableEntry;
+  close() {
+    this.removeClass('open');
   }
 
   addMarkerEntry(draggableEntry, directoryNameDraggableEntryOverlappingDraggableEntry) {
@@ -97,14 +91,6 @@ class RubbishBin extends DropTarget {
     }
   }
 
-  open() {
-    this.addClass('open');
-  }
-
-  close() {
-    this.removeClass('open');
-  }
-
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
     const pathMaps = draggableEntries.map(function(draggableEntry) {
       const pathMap = pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath);
@@ -115,10 +101,28 @@ class RubbishBin extends DropTarget {
     return pathMaps;
   }
 
+  retrieveMarkedDirectoryNameDraggableEntry() {
+    const markedDirectoryNameDraggableEntry = null;
+
+    return markedDirectoryNameDraggableEntry;
+  }
+
+  retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
+    const directoryNameDraggableEntryOverlappingDraggableEntry = null; ///
+
+    return directoryNameDraggableEntryOverlappingDraggableEntry;
+  }
+
+  initialise() {
+    this.close();
+  }
+
   static fromProperties(properties) {
     const { onRemove } = properties,
           removeHandler = onRemove, ///
           rubbishBin = Element.fromProperties(RubbishBin, properties, removeHandler);
+
+    rubbishBin.initialise();
     
     return rubbishBin;
   }

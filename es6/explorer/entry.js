@@ -10,13 +10,9 @@ class Entry extends Element {
   constructor(selector, name, type) {
     super(selector);
 
-    const nameButton = <NameButton>{name}</NameButton>;
+    this.nameButton = <NameButton>{name}</NameButton>;
 
     this.type = type;
-
-    this.nameButton = nameButton;
-
-    this.append(nameButton);
   }
 
   getName() { return this.nameButton.getName(); }
@@ -24,10 +20,16 @@ class Entry extends Element {
   getType() {
     return this.type;
   }
+
+  initialise() {
+    this.append(this.nameButton);
+  }
   
   static fromProperties(Class, properties) {
     const { name } = properties,
           entry = Element.fromProperties(Class, properties, name);
+
+    entry.initialise();
     
     return entry;
   }

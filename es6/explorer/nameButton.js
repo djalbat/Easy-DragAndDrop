@@ -7,14 +7,6 @@ const arrayUtil = require('../util/array');
 const { InputElement } = easy;
 
 class NameButton extends InputElement {
-  constructor(selector, doubleClickHandler) {
-    super(selector);
-
-    if (doubleClickHandler) {
-      this.onDoubleClick(doubleClickHandler);
-    }
-  }
-
   getName() {
     const childElements = this.getChildElements(),
           firstChildElement = arrayUtil.first(childElements),
@@ -36,10 +28,16 @@ class NameButton extends InputElement {
     this.on('dblclick', handler);
   }
   
+  initialise(doubleClickHandler) {
+    this.onDoubleClick(doubleClickHandler);
+  }
+  
   static fromProperties(properties) {
     const { onDoubleClick } = properties,
           doubleClickHandler = onDoubleClick, ///
-          nameButton = InputElement.fromProperties(NameButton, properties, doubleClickHandler);
+          nameButton = InputElement.fromProperties(NameButton, properties);
+    
+    nameButton.initialise(doubleClickHandler);
     
     return nameButton;
   }

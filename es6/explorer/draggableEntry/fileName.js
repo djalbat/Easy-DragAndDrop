@@ -9,8 +9,6 @@ class FileNameDraggableEntry extends DraggableEntry {
     const type = Entry.types.FILE_NAME;
 
     super(selector, name, explorer, type);
-    
-    this.onDoubleClick(this.doubleClickHandler.bind(this));
   }
 
   isDirectoryNameDraggableEntry() {
@@ -71,6 +69,16 @@ class FileNameDraggableEntry extends DraggableEntry {
     
     explorer.openFileNameDraggableEntry(file);
   }
+  
+  initialise(recognised, hidden)  {
+    this.setHidden(hidden);
+
+    this.setRecognised(recognised);
+    
+    const doubleClickHandler = this.doubleClickHandler.bind(this);
+
+    this.onDoubleClick(doubleClickHandler);
+  }
 
   static fromProperties(Class, properties) {
     if (arguments.length === 1) {
@@ -81,9 +89,7 @@ class FileNameDraggableEntry extends DraggableEntry {
     const { name, explorer, recognised, hidden } = properties,
           fileNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, name, explorer);
 
-    fileNameDraggableEntry.setHidden(hidden);
-
-    fileNameDraggableEntry.setRecognised(recognised);
+    fileNameDraggableEntry.initialise(recognised, hidden);
 
     return fileNameDraggableEntry;
   }
