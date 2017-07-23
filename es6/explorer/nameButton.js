@@ -28,19 +28,7 @@ class NameButton extends InputElement {
     this.on('dblclick', handler);
   }
   
-  initialise(doubleClickHandler) {
-    this.onDoubleClick(doubleClickHandler);
-  }
-  
-  static fromProperties(properties) {
-    const { onDoubleClick } = properties,
-          doubleClickHandler = onDoubleClick, ///
-          nameButton = InputElement.fromProperties(NameButton, properties);
-    
-    nameButton.initialise(doubleClickHandler);
-    
-    return nameButton;
-  }
+  static fromProperties(properties) { return InputElement.fromProperties(NameButton, properties); }
 }
 
 Object.assign(NameButton, {
@@ -49,8 +37,7 @@ Object.assign(NameButton, {
     className: 'name'
   },
   ignoredProperties: [
-    'name',
-    'onDoubleClick'
+    'name'
   ]
 });
 
