@@ -14,17 +14,12 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     const type = Entry.types.DIRECTORY_NAME;
 
     super(selector, name, explorer, type);
+
+    const toggleButtonClickHandler = this.toggleButtonClickHandler.bind(this);
     
-    const entries = <Entries DirectoryNameDraggableEntry={DirectoryNameDraggableEntry} />,
-          toggleButton = <Button className="toggle" onClick={this.toggleButtonClickHandler.bind(this)} />;
+    this.entries = <Entries DirectoryNameDraggableEntry={DirectoryNameDraggableEntry} />;
     
-    this.onDoubleClick(this.doubleClickHandler.bind(this));
-
-    this.entries = entries;
-
-    this.append(entries);
-
-    this.prepend(toggleButton);
+    this.toggleButton = <Button className="toggle" onClick={toggleButtonClickHandler} />;
   }
 
   isDirectoryNameDraggableEntry() {
@@ -416,6 +411,20 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     this.toggleClass('collapsed');
   }
   
+  initialise(collapsed, hidden) {
+    super.initialise();
+    
+    this.onDoubleClick(this.doubleClickHandler.bind(this));
+
+    this.append(this.entries);
+
+    this.prepend(this.toggleButton);
+
+    this.setHidden(hidden);
+
+    this.setCollapsed(collapsed);
+  }
+  
   static fromProperties(Class, properties) {
     if (arguments.length === 1) {
       properties = Class;
@@ -425,9 +434,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     const { name, explorer, collapsed, hidden } = properties,
           directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, name, explorer);
 
-    directoryNameDraggableEntry.setHidden(hidden);
-
-    directoryNameDraggableEntry.setCollapsed(collapsed);
+    directoryNameDraggableEntry.initialise(collapsed, hidden);
 
     return directoryNameDraggableEntry;
   }

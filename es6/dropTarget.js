@@ -12,21 +12,8 @@ class DropTarget extends Element {
     super(selector);
     
     this.moveHandler = moveHandler;
-
-    this.dropTargets = [];
-  }
-
-  addDropTarget(dropTarget) {
-    this.dropTargets.push(dropTarget);
-  }
-
-  removeDropTarget(dropTarget) {
-    const index = arrayUtil.indexOf(this.dropTargets, dropTarget),
-          found = (index !== -1);
-
-    if (found) {
-      this.dropTargets.splice(index, 1);
-    }
+    
+    this.setInitialState();
   }
 
   isOverlappingDraggableEntry(draggableEntryCollapsedBounds) {
@@ -38,31 +25,33 @@ class DropTarget extends Element {
   }
 
   getDropTargetToBeMarked(draggableEntry) {
-    const dropTargetToBeMarked = this.dropTargets.reduce(function(dropTargetToBeMarked, dropTarget) {
-      if (dropTargetToBeMarked === null) {
-        if (dropTarget.isToBeMarked(draggableEntry)) { ///
-          dropTargetToBeMarked = dropTarget;
-        }
-      }
-
-      return dropTargetToBeMarked;
-    }, null);
+    const dropTargets = this.getDropTargets(),
+          dropTargetToBeMarked = dropTargets.reduce(function(dropTargetToBeMarked, dropTarget) {
+            if (dropTargetToBeMarked === null) {
+              if (dropTarget.isToBeMarked(draggableEntry)) { ///
+                dropTargetToBeMarked = dropTarget;
+              }
+            }
+      
+            return dropTargetToBeMarked;
+          }, null);
 
     return dropTargetToBeMarked;
   }
 
   getMarkedDropTarget() {
-    const markedDropTarget = this.dropTargets.reduce(function(markedDropTarget, dropTarget) {
-      if (markedDropTarget === null) {
-        const dropTargetMarked = dropTarget.isMarked();
-        
-        if (dropTargetMarked) {
-          markedDropTarget = dropTarget;
-        }
-      }
-
-      return markedDropTarget;
-    }, null);
+    const dropTargets = this.getDropTargets(),
+          markedDropTarget = dropTargets.reduce(function(markedDropTarget, dropTarget) {
+            if (markedDropTarget === null) {
+              const dropTargetMarked = dropTarget.isMarked();
+              
+              if (dropTargetMarked) {
+                markedDropTarget = dropTarget;
+              }
+            }
+      
+            return markedDropTarget;
+          }, null);
 
     return markedDropTarget;
   }
@@ -137,6 +126,33 @@ class DropTarget extends Element {
       this.moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath);
     }
   }
+  
+  addDropTarget(dropTarget) {
+    const dropTargets = this.getDropTargets();
+    
+    dropTargets.push(dropTarget);
+  }
+
+  removeDropTarget(dropTarget) {
+    const dropTargets = this.getDropTargets();
+
+    const index = arrayUtil.indexOf(dropTargets, dropTarget),
+          found = (index !== -1);
+
+    if (found) {
+      dropTargets.splice(index, 1);
+    }
+  }
+
+  getDropTargets() { return this.fromState('dropTargets'); }
+  
+  setInitialState() {
+    const dropTargets = [];
+    
+    this.setState({
+      dropTargets: dropTargets
+    });
+  }  
 }
 
 module.exports = DropTarget;

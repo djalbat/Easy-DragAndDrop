@@ -14,25 +14,13 @@ class DraggableEntry extends Element {
   constructor(selector, name, explorer, type) {
     super(selector);
 
-    const nameButton = <NameButton>{name}</NameButton>;
+    this.nameButton = <NameButton>{name}</NameButton>;
 
     this.explorer = explorer;
     
     this.type = type;
-
-    this.timeout = null;
-    this.topOffset = null;
-    this.leftOffset = null;
     
-    this.nameButton = nameButton;
-
-    this.boundMouseUpHandler = this.mouseUpHandler.bind(this);
-    this.boundMouseDownHandler = this.mouseDownHandler.bind(this);
-    this.boundMouseMoveHandler = this.mouseMoveHandler.bind(this);
-
-    this.onMouseDown(this.boundMouseDownHandler);
-
-    this.append(nameButton);
+    this.setInitialState();
   }
 
   getName() { return this.nameButton.getName(); }
@@ -43,20 +31,6 @@ class DraggableEntry extends Element {
 
   getType() {
     return this.type;
-  }
-
-  getPath() {
-    const draggableEntry = this,  ///
-          path = this.explorer.retrieveDraggableEntryPath(draggableEntry);
-    
-    return path;
-  }
-  
-  getCollapsedBounds() {
-    const bounds = this.getBounds(),
-          collapsedBounds = bounds;  ///
-
-    return collapsedBounds;
   }
 
   isDragging() {
@@ -70,7 +44,34 @@ class DraggableEntry extends Element {
 
     return hidden;
   }
+
+  getPath() {
+    const draggableEntry = this,  ///
+          path = this.explorer.retrieveDraggableEntryPath(draggableEntry);
+
+    return path;
+  }
+
+  getCollapsedBounds() {
+    const bounds = this.getBounds(),
+          collapsedBounds = bounds;  ///
+
+    return collapsedBounds;
+  }
   
+  isRootDirectoryNameDraggableEntry() {
+    return false;
+  }
+
+  isOverlappingCollapsedBounds(collapsedBounds) {
+    const bounds = this.getBounds(),
+         overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds);
+
+    return overlappingCollapsedBounds;
+  }
+
+  setName(name) { this.nameButton.setName(name); }
+
   setHidden(hidden) {
     hidden ?
       this.addClass('hidden') :
@@ -85,32 +86,24 @@ class DraggableEntry extends Element {
     this.addClass('hidden');
   }
 
-  isRootDirectoryNameDraggableEntry() {
-    return false;
-  }
-
-  isOverlappingCollapsedBounds(collapsedBounds) {
-    const bounds = this.getBounds(),
-          overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds);
-
-    return overlappingCollapsedBounds;
-  }
-
-  setName(name) { this.nameButton.setName(name); }
-
   onDoubleClick(handler) { this.nameButton.onDoubleClick(handler); }
 
   startDragging(mouseTop, mouseLeft) {
     const escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING),
           bounds = this.getBounds(),
           boundsTop = bounds.getTop(),
-          boundsLeft = bounds.getLeft();
+          boundsLeft = bounds.getLeft(),
+          topOffset = boundsTop - mouseTop,
+          leftOffset = boundsLeft - mouseLeft;
 
-    this.topOffset = boundsTop - mouseTop;
-    this.leftOffset = boundsLeft - mouseLeft;
+    this.setTopOffset(topOffset);
+
+    this.setLeftOffset(leftOffset);
 
     if (escapeKeyStopsDragging) {
-      this.onKeyDown(this.keyDownHandler.bind(this));
+      const keyDownHandler = this.keyDownHandler.bind(this);
+      
+      this.onKeyDown(keyDownHandler);
     }
 
     this.addClass('dragging');
@@ -122,7 +115,7 @@ class DraggableEntry extends Element {
     const escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING);
 
     if (escapeKeyStopsDragging) {
-      this.off('keydown');
+      this.offKeyDown();
     }
 
     this.removeClass('dragging');
@@ -135,9 +128,11 @@ class DraggableEntry extends Element {
   }
 
   startWaitingToDrag(mouseTop, mouseLeft, mouseButton) {
-    if (this.timeout === null) {
-      this.timeout = setTimeout(function() {
-        this.timeout = null;
+    let timeout = this.getTimeout();
+    
+    if (timeout === null) {
+      timeout = setTimeout(function() {
+        this.resetTimeout();
 
         const rootDirectoryNameDraggableEntry = this.isRootDirectoryNameDraggableEntry(),
               subEntry = !rootDirectoryNameDraggableEntry,  ///
@@ -159,14 +154,18 @@ class DraggableEntry extends Element {
           }
         }
       }.bind(this), START_DRAGGING_DELAY);
+      
+      this.setTimeout(timeout);
     }
   }
 
   stopWaitingToDrag() {
-    if (this.timeout !== null) {
-      clearTimeout(this.timeout);
+    const timeout = this.getTimeout();
+    
+    if (timeout !== null) {
+      clearTimeout(timeout);
 
-      this.timeout = null;
+      this.resetTimeout();
     }
   }
 
@@ -179,9 +178,12 @@ class DraggableEntry extends Element {
   }
 
   mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
-    window.on('mouseup blur', this.boundMouseUpHandler);
+    const mouseUpHandler = this.mouseUpHandler.bind(this),
+          mouseMoveHandler = this.mouseMoveHandler.bind(this);
+        
+    window.on('mouseup blur', mouseUpHandler);
     
-    window.onMouseMove(this.boundMouseMoveHandler);
+    window.onMouseMove(mouseMoveHandler);
 
     if (mouseButton === Element.LEFT_MOUSE_BUTTON) {
       const dragging = this.isDragging();
@@ -193,14 +195,16 @@ class DraggableEntry extends Element {
   }
 
   mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
-    window.off('mouseup blur', this.boundMouseUpHandler);
+    window.off('mouseup blur');
     
-    window.offMouseMove(this.boundMouseMoveHandler);
+    window.offMouseMove();
 
     const dragging = this.isDragging();
 
     if (dragging) {
-      this.explorer.stopDragging(this, function() {
+      const draggableEntry = this;  ///
+      
+      this.explorer.stopDragging(draggableEntry, function() {
         this.stopDragging();
       }.bind(this));
     } else {
@@ -232,10 +236,12 @@ class DraggableEntry extends Element {
   
   drag(mouseTop, mouseLeft) {
     const windowScrollTop = window.getScrollTop(),
-          windowScrollLeft = window.getScrollLeft();
+          windowScrollLeft = window.getScrollLeft(),
+          topOffset = this.getTopOffset(),
+          leftOffset = this.getLeftOffset();
 
-    let top = mouseTop + this.topOffset - windowScrollTop,
-        left = mouseLeft + this.leftOffset - windowScrollLeft;
+    let top = mouseTop + topOffset - windowScrollTop,
+        left = mouseLeft + leftOffset - windowScrollLeft;
 
     top = `${top}px`; ///
     left = `${left}px`; ///
@@ -250,6 +256,56 @@ class DraggableEntry extends Element {
     this.explorer.dragging(this);
   }
   
+  resetTimeout() {
+    const timeout = null;
+    
+    this.setTimeout(timeout);
+  }
+  
+  getTimeout() { return this.fromState('timeout'); }
+
+  getTopOffset() { return this.fromState('topOffset'); }
+
+  getLeftOffset() { return this.fromState('leftOffset'); }
+
+  setTimeout(timeout) {
+    this.updateState({
+      timeout: timeout
+    });
+  }
+
+  setTopOffset(topOffset) {
+    this.updateState({
+      topOffset: topOffset
+    });
+  }
+
+  setLeftOffset(leftOffset) {
+    this.updateState({
+      leftOffset: leftOffset
+    });
+  }
+
+  setInitialState() {
+    const timeout = null,
+          topOffset = null,
+          leftOffset = null;
+    
+    this.setState({
+      timeout: timeout,
+      topOffset: topOffset,
+      leftOffset: leftOffset
+    });
+  }
+
+  initialise() {
+    this.append(this.nameButton);
+
+    const mouseDownHandler = this.mouseDownHandler.bind(this);
+
+    this.onMouseDown(mouseDownHandler);
+  }
+
   static fromProperties(Class, properties, ...remainingArguments) { return Element.fromProperties(Class, properties, ...remainingArguments); }
 }
 
