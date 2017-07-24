@@ -178,12 +178,11 @@ class DraggableEntry extends Element {
   }
 
   mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
-    const mouseUpHandler = this.getMouseUpHandler(),
-          mouseMoveHandler = this.getMouseMoveHandler();
-        
-    window.on('mouseup blur', mouseUpHandler);
-    
-    window.onMouseMove(mouseMoveHandler);
+    window.on('blur', this.mouseUpHandler, this); ///
+
+    window.onMouseUp(this.mouseUpHandler, this);
+
+    window.onMouseMove(this.mouseMoveHandler, this);
 
     if (mouseButton === Element.LEFT_MOUSE_BUTTON) {
       const dragging = this.isDragging();
@@ -195,12 +194,11 @@ class DraggableEntry extends Element {
   }
 
   mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
-    const mouseUpHandler = this.getMouseUpHandler(),
-          mouseMoveHandler = this.getMouseMoveHandler();
+    window.off('blur', this.mouseUpHandler, this);  ///
 
-    window.off('mouseup blur', mouseUpHandler);
-    
-    window.offMouseMove(mouseMoveHandler);
+    window.offMouseUp(this.mouseUpHandler, this);
+
+    window.offMouseMove(this.mouseMoveHandler, this);
 
     const dragging = this.isDragging();
 
@@ -271,10 +269,6 @@ class DraggableEntry extends Element {
 
   getLeftOffset() { return this.fromState('leftOffset'); }
 
-  getMouseUpHandler() { return this.fromState('mouseUpHandler'); }
-
-  getMouseMoveHandler() { return this.fromState('mouseMoveHandler'); }
-
   setTimeout(timeout) {
     this.updateState({
       timeout: timeout
@@ -296,16 +290,12 @@ class DraggableEntry extends Element {
   setInitialState() {
     const timeout = null,
           topOffset = null,
-          leftOffset = null,
-          mouseUpHandler = this.mouseUpHandler.bind(this),
-          mouseMoveHandler = this.mouseMoveHandler.bind(this);
+          leftOffset = null;
     
     this.setState({
       timeout: timeout,
       topOffset: topOffset,
-      leftOffset: leftOffset,
-      mouseUpHandler: mouseUpHandler,
-      mouseMoveHandler: mouseMoveHandler
+      leftOffset: leftOffset
     });
   }
 
