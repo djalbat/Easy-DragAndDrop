@@ -295,9 +295,7 @@ class Explorer extends DropTarget {
     return rootDirectory;
   }
 
-  applyProperties() {
-    super.applyProperties(...arguments);
-
+  initialise() {
     this.assignContext();
   }
 
@@ -306,6 +304,8 @@ class Explorer extends DropTarget {
           moveHandler = onMove, ///
           openHandler = onOpen, ///
           explorer = Element.fromProperties(Explorer, properties, moveHandler, openHandler, options);
+
+    explorer.initialise();
     
     return explorer;
   }
