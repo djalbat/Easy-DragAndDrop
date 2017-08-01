@@ -144,7 +144,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
     } else {
       const directoryName = directoryPath,  ///
-            entriesDirectoryNameDraggableEntry = this.entries.retrieveDirectoryNameDraggableEntry(directoryName),
+            entriesDirectoryNameDraggableEntry = this.entries.findDirectoryNameDraggableEntry(directoryName),
             entriesDirectoryNameDraggableEntryPresent = (entriesDirectoryNameDraggableEntry !== null);
 
       if (entriesDirectoryNameDraggableEntryPresent) {
@@ -233,7 +233,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
 
       this.entries.addMarkerEntry(markerName, draggableEntryType);
     } else {
-      const topmostDirectoryNameDraggableEntry = this.entries.retrieveDirectoryNameDraggableEntry(topmostDirectoryName),
+      const topmostDirectoryNameDraggableEntry = this.entries.findDirectoryNameDraggableEntry(topmostDirectoryName),
             markerPathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(markerPath);
 
       topmostDirectoryNameDraggableEntry.addMarkerEntry(markerPathWithoutTopmostDirectoryName, draggableEntryType);
@@ -271,7 +271,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
 
     this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
       const fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(),
-          filePath = fileNameDraggableEntryPath;  ///
+            filePath = fileNameDraggableEntryPath;  ///
 
       filePaths.push(filePath);
     });
@@ -344,7 +344,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
         }
       }
 
-      const directoryNameDraggableEntry = this.entries.retrieveDirectoryNameDraggableEntry(topmostDirectoryName);
+      const directoryNameDraggableEntry = this.entries.findDirectoryNameDraggableEntry(topmostDirectoryName);
 
       topmostDirectoryNameDraggableEntry = directoryNameDraggableEntry; ///
     }

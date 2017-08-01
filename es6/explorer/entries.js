@@ -34,7 +34,7 @@ class Entries extends Element {
   }
 
   removeFileNameDraggableEntry(fileName) {
-    const fileNameDraggableEntry = this.retrieveFileNameDraggableEntry(fileName),
+    const fileNameDraggableEntry = this.findFileNameDraggableEntry(fileName),
           explorer = fileNameDraggableEntry.getExplorer(),
           removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
 
@@ -46,7 +46,7 @@ class Entries extends Element {
   removeDirectoryNameDraggableEntry(directoryName) {
     let removeEmptyParentDirectories = false;
     
-    const directoryNameDraggableEntry = this.retrieveDirectoryNameDraggableEntry(directoryName),
+    const directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName),
           directoryNameDraggableEntryEmpty = directoryNameDraggableEntry.isEmpty();
     
     if (directoryNameDraggableEntryEmpty) {
@@ -61,14 +61,14 @@ class Entries extends Element {
   }
 
   isFileNameDraggableEntryPresent(fileName) {
-    const fileNameDraggableEntry = this.retrieveFileNameDraggableEntry(fileName),
+    const fileNameDraggableEntry = this.findFileNameDraggableEntry(fileName),
           fileNameDraggableEntryPresent = (fileNameDraggableEntry !== null); ///
 
     return fileNameDraggableEntryPresent;
   }
 
   isDirectoryNameDraggableEntryPresent(directoryName) {
-    const directoryNameDraggableEntry = this.retrieveDirectoryNameDraggableEntry(directoryName),    
+    const directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName),    
           directoryNameDraggableEntryPresent = (directoryNameDraggableEntry !== null); ///
 
     return directoryNameDraggableEntryPresent;
@@ -95,14 +95,14 @@ class Entries extends Element {
   }
 
   removeMarkerEntry() {
-    const markerEntry = this.retrieveMarkerEntry();
+    const markerEntry = this.findMarkerEntry();
 
     markerEntry.remove();
   }
   
   isMarked() {
-    const marker = this.retrieveMarkerEntry(),
-          marked = (marker!== null);
+    const markerEntry = this.findMarkerEntry(),
+          marked = (markerEntry!== null);
 
     return marked;
   }
@@ -117,19 +117,12 @@ class Entries extends Element {
 
   addEntry(entry) {
     const nextEntry = entry,
-          entries = this.getEntries();
-
-    let previousEntry = null;
-
-    entries.some(function(entry) {
-      const nextEntryBefore = nextEntry.isBefore(entry);
-      
-      if (nextEntryBefore) {
-        previousEntry = entry;
-
-        return true;
-      }
-    });
+          previousEntry = this.findEntry(function(entry) {
+            const entryBeforeNextEntry = entry.isBefore(nextEntry),
+                  found = entryBeforeNextEntry; ///
+            
+            return found;
+          });
 
     if (previousEntry === null) {
       this.append(nextEntry);
@@ -138,23 +131,20 @@ class Entries extends Element {
     }
   }
 
-  retrieveFileNameDraggableEntry(fileName) { return this.retrieveEntryByType(fileName, Entry.types.FILE_NAME) }
+  findMarkerEntry() {
+    const type = Entry.types.MARKER,
+          markerEntry = this.findEntryByType(function(entry) {
+            const found = true; ///
+  
+            return found;
+          }, type);
 
-  retrieveDirectoryNameDraggableEntry(directoryName) { return this.retrieveEntryByType(directoryName, Entry.types.DIRECTORY_NAME) }
-
-  retrieveMarkerEntry() {
-    let marker = null;
-    
-    const type = Entry.types.MARKER;
-
-    this.someEntryByType(function(entry) {
-      marker = entry;  ///
-
-      return true;
-    }, type);
-
-    return marker;
+    return markerEntry;
   }
+
+  findFileNameDraggableEntry(fileName) { return this.findEntryByNameAndType(fileName, Entry.types.FILE_NAME) }
+
+  findDirectoryNameDraggableEntry(directoryName) { return this.findEntryByNameAndType(directoryName, Entry.types.DIRECTORY_NAME) }
 
   retrieveMarkedDirectoryNameDraggableEntry() {
     let markedDirectoryNameDraggableEntry = null;
@@ -220,14 +210,6 @@ class Entries extends Element {
 
   someDirectoryNameDraggableEntry(callback) { return this.someEntryByType(callback, Entry.types.DIRECTORY_NAME) }
 
-  forEachEntry(callback) {
-    const entries = this.getEntries();
-
-    entries.forEach(function(entry) {
-      callback(entry);
-    });
-  }
-
   forEachEntryByType(callback, type) {
     const entries = this.getEntries();
 
@@ -240,11 +222,11 @@ class Entries extends Element {
     });
   }
 
-  someEntry(callback, type) {
+  forEachEntry(callback) {
     const entries = this.getEntries();
 
-    return entries.some(function(entry) {
-      return callback(entry);
+    entries.forEach(function(entry) {
+      callback(entry);
     });
   }
 
@@ -262,20 +244,43 @@ class Entries extends Element {
     });
   }
 
-  retrieveEntryByType(name, type) {
-    let foundEntry = null;
+  someEntry(callback, type) {
+    const entries = this.getEntries();
 
-    this.someEntryByType(function(entry) {
-      const entryName = entry.getName();
+    return entries.some(function(entry) {
+      return callback(entry);
+    });
+  }
 
-      if (entryName === name) {
-        foundEntry = entry;
-
-        return true;
-      }
+  findEntryByNameAndType(name, type) {
+    const entry = this.findEntryByType(function(entry) {
+      const entryName = entry.getName(),
+            found = (entryName === name);
+      
+      return found;
     }, type);
+    
+    return entry;
+  }
 
-    const entry = foundEntry; ///
+  findEntryByType(callback, type) {
+    const entries = this.getEntries(),
+          entry = entries.find(function(entry) {
+            const entryType = entry.getType();
+            
+            if (entryType === type) {
+              const found = callback(entry);
+              
+              return found;
+            }
+          }) || null;
+    
+    return entry;
+  }
+
+  findEntry(callback) {
+    const entries = this.getEntries(),
+          entry = entries.find(callback) || null;
 
     return entry;
   }

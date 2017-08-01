@@ -92,7 +92,7 @@ class DropTarget extends Element {
         const draggableEntryPath = draggableEntry.getPath();
 
         if (draggableEntryPath !== null) {
-          const pathMap = arrayUtil.find(pathMaps, function(pathMap) {
+          const pathMap = pathMaps.find(function(pathMap) {
                   const sourcePath = pathMap['sourcePath'],
                         found = (sourcePath === draggableEntryPath);
   
@@ -136,11 +136,14 @@ class DropTarget extends Element {
   removeDropTarget(dropTarget) {
     const dropTargets = this.getDropTargets();
 
-    const index = arrayUtil.indexOf(dropTargets, dropTarget),
+    const index = dropTargets.indexOf(dropTarget),
           found = (index !== -1);
 
     if (found) {
-      dropTargets.splice(index, 1);
+      const start = index,  ///
+            deleteCount = 1;
+      
+      dropTargets.splice(start, deleteCount);
     }
   }
 

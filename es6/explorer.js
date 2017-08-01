@@ -6,7 +6,7 @@ const options = require('./options'),
       pathUtil = require('./util/path'),
       arrayUtil = require('./util/array'),
       DropTarget = require('./dropTarget'),
-      DirectoryNameMarker = require('./explorer/entry/marker/directoryName'),
+      DirectoryNameMarkerEntry = require('./explorer/entry/marker/directoryName'),
       RootDirectoryNameDraggableEntry = require('./explorer/draggableEntry/directoryName/root');
 
 const { Element, React } = easy;
@@ -42,7 +42,7 @@ class Explorer extends DropTarget {
     if (rootDirectoryNameDraggableEntryMarked) {
       marked = true;
     } else {
-      const topmostDirectoryNameMarkerEntry = this.retrieveTopmostDirectoryNameMarkerEntry();
+      const topmostDirectoryNameMarkerEntry = this.findTopmostDirectoryNameMarkerEntry();
 
       marked = (topmostDirectoryNameMarkerEntry !== null);
     }
@@ -91,24 +91,20 @@ class Explorer extends DropTarget {
   addTopmostDirectoryMarker(topmostDirectoryMarkerPath) {
     const topmostDirectoryMarkerName = topmostDirectoryMarkerPath,  ///
           name = topmostDirectoryMarkerName,  ///
-          topmostDirectoryNameMarkerEntry = <DirectoryNameMarker name={name} />;
+          topmostDirectoryNameMarkerEntry = <DirectoryNameMarkerEntry name={name} />;
 
     this.append(topmostDirectoryNameMarkerEntry);
   }
 
-  retrieveTopmostDirectoryNameMarkerEntry() {
-    let topmostDirectoryNameMarkerEntry = null;
+  findTopmostDirectoryNameMarkerEntry() {
+    const childListElements = this.getChildElements('li'),
+          topmostDirectoryNameMarkerEntry = childListElements.find(function(childListElement) {
+            const found = (childListElement instanceof DirectoryNameMarkerEntry);
+                
+            return found;
+          }) || null; /// 
+
     
-    const childListElements = this.getChildElements('li');
-
-    childListElements.some(function(childElement) {
-      if (childElement instanceof DirectoryNameMarker) {
-        topmostDirectoryNameMarkerEntry = childElement;  ///
-
-        return true;
-      }
-    });
-
     return topmostDirectoryNameMarkerEntry;
   }
 
@@ -118,7 +114,7 @@ class Explorer extends DropTarget {
     if (rootDirectoryNameDraggableEntryMarked) {
       this.removeRootDirectoryNameDraggableEntryMarkerEntry();
     } else {
-      const topmostDirectoryNameMarkerEntry = this.retrieveTopmostDirectoryNameMarkerEntry();
+      const topmostDirectoryNameMarkerEntry = this.findTopmostDirectoryNameMarkerEntry();
 
       topmostDirectoryNameMarkerEntry.remove();
     }
