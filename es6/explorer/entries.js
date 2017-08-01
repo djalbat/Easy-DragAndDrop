@@ -118,16 +118,16 @@ class Entries extends Element {
   addEntry(entry) {
     const nextEntry = entry,
           previousEntry = this.findEntry(function(entry) {
-            const entryBeforeNextEntry = entry.isBefore(nextEntry),
-                  found = entryBeforeNextEntry; ///
+            const nextEntryBeforeEntry = nextEntry.isBefore(entry),
+                  found = nextEntryBeforeEntry; ///
             
             return found;
           });
 
     if (previousEntry === null) {
-      this.prepend(nextEntry);
+      this.append(nextEntry);
     } else {
-      nextEntry.insertAfter(previousEntry);
+      nextEntry.insertBefore(previousEntry);
     }
   }
 
