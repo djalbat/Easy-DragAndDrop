@@ -39,12 +39,6 @@ class DraggableEntry extends Element {
     return dragging;
   }
 
-  isHidden() {
-    const hidden = this.hasClass('hidden');
-
-    return hidden;
-  }
-
   getPath() {
     const draggableEntry = this,  ///
           path = this.explorer.retrieveDraggableEntryPath(draggableEntry);
@@ -71,20 +65,6 @@ class DraggableEntry extends Element {
   }
 
   setName(name) { this.nameButton.setName(name); }
-
-  setHidden(hidden) {
-    hidden ?
-      this.addClass('hidden') :
-        this.removeClass('hidden');
-  }
-  
-  show() {
-    this.removeClass('hidden');
-  }
-  
-  hide() {
-    this.addClass('hidden');
-  }
 
   onDoubleClick(handler) { this.nameButton.onDoubleClick(handler); }
 

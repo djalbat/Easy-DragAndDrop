@@ -13,19 +13,19 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     return true;
   }
 
-  addFilePath(filePath, recognised = true, hidden = false) {
+  addFilePath(filePath, recognised = true) {
     const filePathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutRootDirectoryName !== null) {
-      super.addFilePath(filePathWithoutRootDirectoryName, recognised, hidden);
+      super.addFilePath(filePathWithoutRootDirectoryName, recognised);
     }
   }
 
-  addDirectoryPath(directoryPath, collapsed = false, hidden = false) {
+  addDirectoryPath(directoryPath, collapsed = false) {
     const directoryPathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
     if (directoryPathWithoutRootDirectoryName !== null) {
-      super.addDirectoryPath(directoryPathWithoutRootDirectoryName, collapsed, hidden);
+      super.addDirectoryPath(directoryPathWithoutRootDirectoryName, collapsed);
     }
   }
 

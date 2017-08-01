@@ -70,11 +70,9 @@ class FileNameDraggableEntry extends DraggableEntry {
     explorer.openFileNameDraggableEntry(file);
   }
   
-  initialise(recognised, hidden)  {
+  initialise(recognised)  {
     super.initialise();
     
-    this.setHidden(hidden);
-
     this.setRecognised(recognised);
     
     const doubleClickHandler = this.doubleClickHandler.bind(this);
@@ -88,10 +86,10 @@ class FileNameDraggableEntry extends DraggableEntry {
       Class = FileNameDraggableEntry;
     }
 
-    const { name, explorer, recognised, hidden } = properties,
+    const { name, explorer, recognised } = properties,
           fileNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, name, explorer);
 
-    fileNameDraggableEntry.initialise(recognised, hidden);
+    fileNameDraggableEntry.initialise(recognised);
 
     return fileNameDraggableEntry;
   }
@@ -104,8 +102,7 @@ Object.assign(FileNameDraggableEntry, {
   ignoredProperties: [
     'name',
     'explorer',
-    'recognised',
-    'hidden'
+    'recognised'
   ]
 });
 

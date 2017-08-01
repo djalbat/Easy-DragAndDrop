@@ -235,10 +235,9 @@ class Explorer extends DropTarget {
 
       filePath = targetFilePath; ///
 
-      const recognised = fileNameDraggableEntry.isRecognised(),
-            hidden = fileNameDraggableEntry.isHidden();
+      const recognised = fileNameDraggableEntry.isRecognised();
 
-      this.addFilePath(filePath, recognised, hidden);
+      this.addFilePath(filePath, recognised);
     }
   }
 
@@ -260,10 +259,9 @@ class Explorer extends DropTarget {
 
       directoryPath = targetDirectoryPath; ///
 
-      const collapsed = directoryNameDraggableEntry.isCollapsed(),
-            hidden = directoryNameDraggableEntry.isHidden();
+      const collapsed = directoryNameDraggableEntry.isCollapsed();
       
-      this.addDirectoryPath(directoryPath, collapsed, hidden);
+      this.addDirectoryPath(directoryPath, collapsed);
     }
   }
 

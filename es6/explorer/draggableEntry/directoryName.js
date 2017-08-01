@@ -114,14 +114,14 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return overlappingDraggableEntry;
   }
 
-  addFilePath(filePath, recognised, hidden) {
+  addFilePath(filePath, recognised) {
     const addIfNecessary = true,
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(filePath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
       const filePathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
-      topmostDirectoryNameDraggableEntry.addFilePath(filePathWithoutTopmostDirectoryName, recognised, hidden);
+      topmostDirectoryNameDraggableEntry.addFilePath(filePathWithoutTopmostDirectoryName, recognised);
     } else {
       const fileName = filePath,  ///
             entriesFile = this.entries.isFileNameDraggableEntryPresent(fileName);
@@ -129,19 +129,19 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       if (!entriesFile) {
         const explorer = this.getExplorer();
         
-        this.entries.addFileNameDraggableEntry(fileName, explorer, recognised, hidden);
+        this.entries.addFileNameDraggableEntry(fileName, explorer, recognised);
       }
     }
   }
 
-  addDirectoryPath(directoryPath, collapsed, hidden) {
+  addDirectoryPath(directoryPath, collapsed) {
     const addIfNecessary = true,
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(directoryPath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
       const directoryPathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
-      topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed, hidden);
+      topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
     } else {
       const directoryName = directoryPath,  ///
             entriesDirectoryNameDraggableEntry = this.entries.retrieveDirectoryNameDraggableEntry(directoryName),
@@ -149,12 +149,10 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
 
       if (entriesDirectoryNameDraggableEntryPresent) {
         entriesDirectoryNameDraggableEntry.setCollapsed(collapsed);
-
-        entriesDirectoryNameDraggableEntry.setHidden(hidden);
       } else {
         const explorer = this.getExplorer();
 
-        this.entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, hidden);
+        this.entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed);
       }
     }
   }
@@ -340,10 +338,9 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
 
         if (!entriesDirectoryNameDraggableEntryPresent) {
           const collapsed = true, ///
-                hidden = false, ///
                 explorer = this.getExplorer();
 
-          this.entries.addDirectoryNameDraggableEntry(topmostDirectoryName, explorer, collapsed, hidden);
+          this.entries.addDirectoryNameDraggableEntry(topmostDirectoryName, explorer, collapsed);
         }
       }
 
@@ -411,7 +408,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     this.toggleClass('collapsed');
   }
   
-  initialise(collapsed, hidden) {
+  initialise(collapsed) {
     super.initialise();
     
     this.onDoubleClick(this.doubleClickHandler.bind(this));
@@ -419,8 +416,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     this.append(this.entries);
 
     this.prepend(this.toggleButton);
-
-    this.setHidden(hidden);
 
     this.setCollapsed(collapsed);
   }
@@ -431,10 +426,10 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       Class = DirectoryNameDraggableEntry;
     }
 
-    const { name, explorer, collapsed, hidden } = properties,
+    const { name, explorer, collapsed } = properties,
           directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, name, explorer);
 
-    directoryNameDraggableEntry.initialise(collapsed, hidden);
+    directoryNameDraggableEntry.initialise(collapsed);
 
     return directoryNameDraggableEntry;
   }
@@ -447,8 +442,7 @@ Object.assign(DirectoryNameDraggableEntry, {
   ignoredProperties: [
     'name',
     'explorer',
-    'collapsed',
-    'hidden'
+    'collapsed'
   ]
 });
 

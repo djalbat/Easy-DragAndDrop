@@ -17,17 +17,17 @@ class Entries extends Element {
     this.DirectoryNameDraggableEntry = DirectoryNameDraggableEntry;
   }
   
-  addFileNameDraggableEntry(fileName, explorer, recognised, hidden) {
+  addFileNameDraggableEntry(fileName, explorer, recognised) {
     const name = fileName,
-          fileNameDraggableEntry = <FileNameDraggableEntry name={name} explorer={explorer} recognised={recognised} hidden={hidden} />,
+          fileNameDraggableEntry = <FileNameDraggableEntry name={name} explorer={explorer} recognised={recognised} />,
           entry = fileNameDraggableEntry; ///
 
     this.addEntry(entry);
   }
 
-  addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, hidden) {
+  addDirectoryNameDraggableEntry(directoryName, explorer, collapsed) {
     const name = directoryName,
-          directoryNameDraggableEntry = <this.DirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} hidden={hidden} />,
+          directoryNameDraggableEntry = <this.DirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />,
           entry = directoryNameDraggableEntry;  ///
     
     this.addEntry(entry);
