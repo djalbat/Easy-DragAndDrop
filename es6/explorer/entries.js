@@ -125,9 +125,9 @@ class Entries extends Element {
           });
 
     if (previousEntry === null) {
-      this.append(nextEntry);
+      this.prepend(nextEntry);
     } else {
-      nextEntry.insertBefore(previousEntry);
+      nextEntry.insertAfter(previousEntry);
     }
   }
 
