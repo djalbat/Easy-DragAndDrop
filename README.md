@@ -14,7 +14,7 @@ From there you can easily navigate to get an overview of Juxtapose.
 
 ### Related projects
 
-- [Easy](https://github.com/djalbat/Easy) Abstracts away from the DOM.
+- [Easy](https://github.com/djalbat/Easy) Elements that abstract away from the DOM.
 - [Easy-Layout](https://github.com/djalbat/Easy-Layout) Layout elements that work with CSS flexbox.
 - [Easy-RichTextarea](https://github.com/djalbat/Easy-RichTextarea) A textarea element that handles and hands off events well.
 
