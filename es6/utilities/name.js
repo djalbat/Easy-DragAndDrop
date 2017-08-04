@@ -1,15 +1,17 @@
 'use strict';
 
-const arrayUtil = require('../util/array');
+const necessary = require('necessary');
 
-class nameUtil {
+const { array } = necessary;
+
+class nameUtilities {
   static extensionFromName(name) {
     let extension = null;
     
     const matches = name.match(/^.*\.([^.]+)$/);
 
     if (matches !== null) {
-      const secondMatch = arrayUtil.second(matches);
+      const secondMatch = array.second(matches);
 
       extension = secondMatch;  ///
     }
@@ -23,7 +25,7 @@ class nameUtil {
     const matches = name.match(/^(.+)\.[^.]+$/);
 
     if (matches !== null) {
-      const secondMatch = arrayUtil.second(matches);
+      const secondMatch = array.second(matches);
 
       nameWithoutExtension = secondMatch;  ///
     }
@@ -34,10 +36,10 @@ class nameUtil {
   static nameIsBeforeEntryName(name, entryName) {
     let before = (name.localeCompare(entryName) < 0);
 
-    const nameExtension = nameUtil.extensionFromName(name),
-        entryNameExtension = nameUtil.extensionFromName(entryName),
-        nameWithoutExtension = nameUtil.nameWithoutExtensionFromName(name),
-        entryNameWithoutExtension = nameUtil.nameWithoutExtensionFromName(entryName),
+    const nameExtension = nameUtilities.extensionFromName(name),
+        entryNameExtension = nameUtilities.extensionFromName(entryName),
+        nameWithoutExtension = nameUtilities.nameWithoutExtensionFromName(name),
+        entryNameWithoutExtension = nameUtilities.nameWithoutExtensionFromName(entryName),
         nameExtensionPresent = (nameExtension !== null),
         entryNameExtensionPresent = (entryNameExtension !== null),
         nameWithoutExtensionMissing = (nameWithoutExtension === null),
@@ -69,4 +71,4 @@ class nameUtil {
   }
 }
 
-module.exports = nameUtil;
+module.exports = nameUtilities;

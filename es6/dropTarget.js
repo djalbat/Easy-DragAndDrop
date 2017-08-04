@@ -1,11 +1,12 @@
 'use strict';
 
-const easy = require('easy');
+const easy = require('easy'),
+      necessary = require('necessary');
 
-const options = require('./options'),
-      arrayUtil = require('./util/array');
+const options = require('./options');
 
-const { Element } = easy;
+const { Element } = easy,
+      { array } = necessary;
 
 class DropTarget extends Element {
   constructor(selector, moveHandler = function(pathMaps, done) { done(); }) {
@@ -72,8 +73,8 @@ class DropTarget extends Element {
     const pathMaps = this.pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath);
 
     this.moveHandler(pathMaps, function() {
-      const lastDraggableEntry = arrayUtil.last(draggableEntries),
-            firstDraggableEntry = arrayUtil.first(draggableEntries),
+      const lastDraggableEntry = array.last(draggableEntries),
+            firstDraggableEntry = array.first(draggableEntries),
             firstDraggableEntryExplorer = firstDraggableEntry.getExplorer(),
             draggableEntriesExplorer = firstDraggableEntryExplorer, ///
             removeEmptyParentDirectoryNameDraggableEntries = draggableEntriesExplorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES); ///

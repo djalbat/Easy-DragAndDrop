@@ -1,8 +1,11 @@
 'use strict';
 
+const necessary = require('necessary');
+
 const options = require('../../../options'),
-      pathUtil = require('../../../util/path'),
       DirectoryNameDraggableEntry = require('../../draggableEntry/directoryName');
+
+const { path } = necessary;
 
 class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   retrieve() {
@@ -14,7 +17,7 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   addFilePath(filePath, recognised = true) {
-    const filePathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(filePath);
+    const filePathWithoutRootDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutRootDirectoryName !== null) {
       super.addFilePath(filePathWithoutRootDirectoryName, recognised);
@@ -22,7 +25,7 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   addDirectoryPath(directoryPath, collapsed = false) {
-    const directoryPathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+    const directoryPathWithoutRootDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
     if (directoryPathWithoutRootDirectoryName !== null) {
       super.addDirectoryPath(directoryPathWithoutRootDirectoryName, collapsed);
@@ -30,7 +33,7 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   removeFilePath(filePath) {
-    const filePathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(filePath);
+    const filePathWithoutRootDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutRootDirectoryName !== null) {
       super.removeFilePath(filePathWithoutRootDirectoryName);
@@ -38,7 +41,7 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   removeDirectoryPath(directoryPath) {
-    const directoryPathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+    const directoryPathWithoutRootDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
     if (directoryPathWithoutRootDirectoryName !== null) {
       super.removeDirectoryPath(directoryPathWithoutRootDirectoryName);
@@ -65,7 +68,7 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   addMarkerEntry(markerPath, draggableEntryType) {
-    const markerPathWithoutRootDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(markerPath);
+    const markerPathWithoutRootDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(markerPath);
 
     super.addMarkerEntry(markerPathWithoutRootDirectoryName, draggableEntryType);
   }

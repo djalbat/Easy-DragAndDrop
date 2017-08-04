@@ -1,15 +1,15 @@
 'use strict';
 
-const easy = require('easy');
+const easy = require('easy'),
+      necessary = require('necessary');
 
 const options = require('./options'),
-      pathUtil = require('./util/path'),
-      arrayUtil = require('./util/array'),
       DropTarget = require('./dropTarget'),
       DirectoryNameMarkerEntry = require('./explorer/entry/marker/directoryName'),
       RootDirectoryNameDraggableEntry = require('./explorer/draggableEntry/directoryName/root');
 
-const { Element, React } = easy;
+const { Element, React } = easy,
+      { path, array } = necessary;
 
 class Explorer extends DropTarget {
   constructor(selector, moveHandler, openHandler = function(sourcePath) {}, options = {}) {
@@ -75,7 +75,7 @@ class Explorer extends DropTarget {
   addMarkerEntryInPlace(draggableEntry) {
     const draggableEntryPath = draggableEntry.getPath(),
           draggableEntryType = draggableEntry.getType(),
-          draggableEntryPathTopmostDirectoryName = pathUtil.isPathTopmostDirectoryName(draggableEntryPath);
+          draggableEntryPathTopmostDirectoryName = path.isPathTopmostDirectoryName(draggableEntryPath);
 
     if (draggableEntryPathTopmostDirectoryName) {
       const topmostDirectoryMarkerPath = draggableEntryPath;
@@ -141,7 +141,7 @@ class Explorer extends DropTarget {
           markedDirectoryNameDraggableEntryPath = (markedDirectoryNameDraggableEntry !== null) ?
                                                     markedDirectoryNameDraggableEntry.getPath() :
                                                       null,
-          draggableEntryPathWithoutBottommostName = pathUtil.pathWithoutBottommostNameFromPath(draggableEntryPath),
+          draggableEntryPathWithoutBottommostName = path.pathWithoutBottommostNameFromPath(draggableEntryPath),
           sourcePath = draggableEntryPathWithoutBottommostName,
           targetPath = markedDirectoryNameDraggableEntryPath,
           unmoved = (sourcePath === targetPath);
@@ -352,7 +352,7 @@ function replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath,
 
   const regExp = new RegExp('^' + sourcePath + '(.*$)'),
         matches = draggableEntryPath.match(regExp),
-        secondMatch = arrayUtil.second(matches);
+        secondMatch = array.second(matches);
 
   draggableEntryPath = targetPath + secondMatch; ///
 

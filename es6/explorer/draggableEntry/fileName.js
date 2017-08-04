@@ -1,8 +1,8 @@
 'use strict';
 
-const nameUtil = require('../../util/name'),
-      Entry = require('../entry'),
-      DraggableEntry = require('../draggableEntry');
+const Entry = require('../entry'),
+      DraggableEntry = require('../draggableEntry'),
+      nameUtilities = require('../../utilities/name');
 
 class FileNameDraggableEntry extends DraggableEntry {
   constructor(selector, name, explorer) {
@@ -26,7 +26,7 @@ class FileNameDraggableEntry extends DraggableEntry {
         const name = this.getName(),
               entryName = entry.getName();
           
-        before = nameUtil.nameIsBeforeEntryName(name, entryName);
+        before = nameUtilities.nameIsBeforeEntryName(name, entryName);
         break;
 
       case Entry.types.DIRECTORY_NAME:

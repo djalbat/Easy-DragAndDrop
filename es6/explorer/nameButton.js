@@ -1,15 +1,15 @@
 'use strict';
 
-const easy = require('easy');
+const easy = require('easy'),
+      necessary = require('necessary');
 
-const arrayUtil = require('../util/array');
-
-const { InputElement } = easy;
+const { array } = necessary,
+      { InputElement } = easy;
 
 class NameButton extends InputElement {
   getName() {
     const childElements = this.getChildElements(),
-          firstChildElement = arrayUtil.first(childElements),
+          firstChildElement = array.first(childElements),
           text = firstChildElement.getText(),
           name = text; ///
 
@@ -19,7 +19,7 @@ class NameButton extends InputElement {
   setName(name) {
     const text = name, ///
           childElements = this.getChildElements(),
-          firstChildElement = arrayUtil.first(childElements);
+          firstChildElement = array.first(childElements);
 
     firstChildElement.setText(text);
   }

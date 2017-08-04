@@ -1,13 +1,14 @@
 'use strict';
 
-const easy = require('easy');
+const easy = require('easy'),
+      necessary = require('necessary');
 
 const Entry = require('../entry'),
       Entries = require('../entries'),
-      pathUtil = require('../../util/path'),
       DraggableEntry = require('../draggableEntry');
 
-const { Button, React } = easy;
+const { path } = necessary,
+      { Button, React } = easy;
 
 class DirectoryNameDraggableEntry extends DraggableEntry {
   constructor(selector, name, explorer) {
@@ -119,7 +120,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(filePath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
-      const filePathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(filePath);
+      const filePathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
       topmostDirectoryNameDraggableEntry.addFilePath(filePathWithoutTopmostDirectoryName, recognised);
     } else {
@@ -139,7 +140,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(directoryPath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
-      const directoryPathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+      const directoryPathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
       topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
     } else {
@@ -164,7 +165,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(filePath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
-      const filePathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(filePath);
+      const filePathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
       removeEmptyParentDirectoryNameDraggableEntries = topmostDirectoryNameDraggableEntry.removeFilePath(filePathWithoutTopmostDirectoryName);
     } else {
@@ -198,7 +199,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(directoryPath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
-      const directoryPathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+      const directoryPathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
       removeEmptyParentDirectoryNameDraggableEntries = topmostDirectoryNameDraggableEntry.removeDirectoryPath(directoryPathWithoutTopmostDirectoryName);
     } else {
@@ -226,7 +227,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   }
   
   addMarkerEntry(markerPath, draggableEntryType) {
-    const topmostDirectoryName = pathUtil.topmostDirectoryNameFromPath(markerPath);
+    const topmostDirectoryName = path.topmostDirectoryNameFromPath(markerPath);
 
     if (topmostDirectoryName === null) {
       const markerName = markerPath;  ///
@@ -234,7 +235,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       this.entries.addMarkerEntry(markerName, draggableEntryType);
     } else {
       const topmostDirectoryNameDraggableEntry = this.entries.findDirectoryNameDraggableEntry(topmostDirectoryName),
-            markerPathWithoutTopmostDirectoryName = pathUtil.pathWithoutTopmostDirectoryNameFromPath(markerPath);
+            markerPathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(markerPath);
 
       topmostDirectoryNameDraggableEntry.addMarkerEntry(markerPathWithoutTopmostDirectoryName, draggableEntryType);
     }
@@ -328,7 +329,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   retrieveTopmostDirectoryNameDraggableEntry(path, addIfNecessary) {
     let topmostDirectoryNameDraggableEntry;
 
-    const topmostDirectoryName = pathUtil.topmostDirectoryNameFromPath(path);
+    const topmostDirectoryName = path.topmostDirectoryNameFromPath(path);
 
     if (topmostDirectoryName === null) {
       topmostDirectoryNameDraggableEntry = null;
