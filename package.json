@@ -1,7 +1,7 @@
 {
   "name": "easy-draganddrop",
   "author": "James Smith",
-  "version": "8.0.49",
+  "version": "8.0.50",
   "license": "MIT",
   "homepage": "https://github.com/djalbat/Easy-DragAndDrop",
   "description": "Drag and drop elements including a file explorer and a rubbish bin.",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "easy": "^7.11.28",
-    "necessary": "^1.0.5"
+    "necessary": "^1.0.10"
   },
   "devDependencies": {
     "babel": "^6.5.2",
