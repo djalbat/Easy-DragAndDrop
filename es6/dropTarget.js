@@ -6,7 +6,8 @@ const easy = require('easy'),
 const options = require('./options');
 
 const { Element } = easy,
-      { array } = necessary;
+      { array } = necessary,
+      { first, last } = array;
 
 class DropTarget extends Element {
   constructor(selector, moveHandler = function(pathMaps, done) { done(); }) {
@@ -73,8 +74,8 @@ class DropTarget extends Element {
     const pathMaps = this.pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath);
 
     this.moveHandler(pathMaps, function() {
-      const lastDraggableEntry = array.last(draggableEntries),
-            firstDraggableEntry = array.first(draggableEntries),
+      const lastDraggableEntry = last(draggableEntries),
+            firstDraggableEntry = first(draggableEntries),
             firstDraggableEntryExplorer = firstDraggableEntry.getExplorer(),
             draggableEntriesExplorer = firstDraggableEntryExplorer, ///
             removeEmptyParentDirectoryNameDraggableEntries = draggableEntriesExplorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES); ///

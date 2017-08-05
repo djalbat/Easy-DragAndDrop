@@ -2,7 +2,8 @@
 
 const necessary = require('necessary');
 
-const { array } = necessary;
+const { array } = necessary,
+      { second } = array;
 
 class nameUtilities {
   static extensionFromName(name) {
@@ -11,7 +12,7 @@ class nameUtilities {
     const matches = name.match(/^.*\.([^.]+)$/);
 
     if (matches !== null) {
-      const secondMatch = array.second(matches);
+      const secondMatch = second(matches);
 
       extension = secondMatch;  ///
     }
@@ -25,7 +26,7 @@ class nameUtilities {
     const matches = name.match(/^(.+)\.[^.]+$/);
 
     if (matches !== null) {
-      const secondMatch = array.second(matches);
+      const secondMatch = second(matches);
 
       nameWithoutExtension = secondMatch;  ///
     }

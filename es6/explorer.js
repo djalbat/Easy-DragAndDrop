@@ -9,7 +9,9 @@ const options = require('./options'),
       TopmostDirectoryNameDraggableEntry = require('./explorer/draggableEntry/directoryName/topmost');
 
 const { Element, React } = easy,
-      { path, array } = necessary;
+      { path, array } = necessary,
+      { second } = array,
+      { isPathTopmostDirectoryName, pathWithoutBottommostNameFromPath } = path;
 
 class Explorer extends DropTarget {
   constructor(selector, moveHandler, openHandler = function(sourcePath) {}, options = {}) {
@@ -75,7 +77,7 @@ class Explorer extends DropTarget {
   addMarkerEntryInPlace(draggableEntry) {
     const draggableEntryPath = draggableEntry.getPath(),
           draggableEntryType = draggableEntry.getType(),
-          draggableEntryPathTopmostDirectoryName = path.isPathTopmostDirectoryName(draggableEntryPath);
+          draggableEntryPathTopmostDirectoryName = isPathTopmostDirectoryName(draggableEntryPath);
 
     if (draggableEntryPathTopmostDirectoryName) {
       const topmostDirectoryMarkerPath = draggableEntryPath;
@@ -141,7 +143,7 @@ class Explorer extends DropTarget {
           markedDirectoryNameDraggableEntryPath = (markedDirectoryNameDraggableEntry !== null) ?
                                                     markedDirectoryNameDraggableEntry.getPath() :
                                                       null,
-          draggableEntryPathWithoutBottommostName = path.pathWithoutBottommostNameFromPath(draggableEntryPath),
+          draggableEntryPathWithoutBottommostName = pathWithoutBottommostNameFromPath(draggableEntryPath),
           sourcePath = draggableEntryPathWithoutBottommostName,
           targetPath = markedDirectoryNameDraggableEntryPath,
           unmoved = (sourcePath === targetPath);
@@ -352,7 +354,7 @@ function replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath,
 
   const regExp = new RegExp('^' + sourcePath + '(.*$)'),
         matches = draggableEntryPath.match(regExp),
-        secondMatch = array.second(matches);
+        secondMatch = second(matches);
 
   draggableEntryPath = targetPath + secondMatch; ///
 

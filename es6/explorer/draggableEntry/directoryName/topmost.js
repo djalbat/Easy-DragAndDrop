@@ -5,7 +5,8 @@ const necessary = require('necessary');
 const options = require('../../../options'),
       DirectoryNameDraggableEntry = require('../../draggableEntry/directoryName');
 
-const { path } = necessary;
+const { path } = necessary,
+      { pathWithoutTopmostDirectoryNameFromPath } = path;
 
 class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   retrieve() {
@@ -17,7 +18,7 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   addFilePath(filePath, recognised = true) {
-    const filePathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(filePath);
+    const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutTopmostDirectoryName !== null) {
       super.addFilePath(filePathWithoutTopmostDirectoryName, recognised);
@@ -25,7 +26,7 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   addDirectoryPath(directoryPath, collapsed = false) {
-    const directoryPathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+    const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
     if (directoryPathWithoutTopmostDirectoryName !== null) {
       super.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
@@ -33,7 +34,7 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   removeFilePath(filePath) {
-    const filePathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(filePath);
+    const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutTopmostDirectoryName !== null) {
       super.removeFilePath(filePathWithoutTopmostDirectoryName);
@@ -41,7 +42,7 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   removeDirectoryPath(directoryPath) {
-    const directoryPathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+    const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
     if (directoryPathWithoutTopmostDirectoryName !== null) {
       super.removeDirectoryPath(directoryPathWithoutTopmostDirectoryName);
@@ -68,7 +69,7 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   addMarkerEntry(markerPath, draggableEntryType) {
-    const markerPathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(markerPath);
+    const markerPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(markerPath);
 
     super.addMarkerEntry(markerPathWithoutTopmostDirectoryName, draggableEntryType);
   }

@@ -4,12 +4,13 @@ const easy = require('easy'),
       necessary = require('necessary');
 
 const { array } = necessary,
-      { InputElement } = easy;
+      { InputElement } = easy,
+      { first } = array;
 
 class NameButton extends InputElement {
   getName() {
     const childElements = this.getChildElements(),
-          firstChildElement = array.first(childElements),
+          firstChildElement = first(childElements),
           text = firstChildElement.getText(),
           name = text; ///
 
@@ -19,7 +20,7 @@ class NameButton extends InputElement {
   setName(name) {
     const text = name, ///
           childElements = this.getChildElements(),
-          firstChildElement = array.first(childElements);
+          firstChildElement = first(childElements);
 
     firstChildElement.setText(text);
   }
