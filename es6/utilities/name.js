@@ -37,15 +37,15 @@ class nameUtilities {
     let before = (name.localeCompare(entryName) < 0);
 
     const nameExtension = nameUtilities.extensionFromName(name),
-        entryNameExtension = nameUtilities.extensionFromName(entryName),
-        nameWithoutExtension = nameUtilities.nameWithoutExtensionFromName(name),
-        entryNameWithoutExtension = nameUtilities.nameWithoutExtensionFromName(entryName),
-        nameExtensionPresent = (nameExtension !== null),
-        entryNameExtensionPresent = (entryNameExtension !== null),
-        nameWithoutExtensionMissing = (nameWithoutExtension === null),
-        entryNameWithoutExtensionMissing = (entryNameWithoutExtension === null),
-        extensionsBothPresent = (nameExtensionPresent && entryNameExtensionPresent),
-        namesWithoutExtensionsBothMissing = (nameWithoutExtensionMissing && entryNameWithoutExtensionMissing);
+          entryNameExtension = nameUtilities.extensionFromName(entryName),
+          nameWithoutExtension = nameUtilities.nameWithoutExtensionFromName(name),
+          entryNameWithoutExtension = nameUtilities.nameWithoutExtensionFromName(entryName),
+          nameExtensionPresent = (nameExtension !== null),
+          entryNameExtensionPresent = (entryNameExtension !== null),
+          nameWithoutExtensionMissing = (nameWithoutExtension === null),
+          entryNameWithoutExtensionMissing = (entryNameWithoutExtension === null),
+          extensionsBothPresent = (nameExtensionPresent && entryNameExtensionPresent),
+          namesWithoutExtensionsBothMissing = (nameWithoutExtensionMissing && entryNameWithoutExtensionMissing);
 
     if (namesWithoutExtensionsBothMissing) {
       ///

@@ -6,7 +6,7 @@ const easy = require('easy'),
 const options = require('./options'),
       DropTarget = require('./dropTarget'),
       DirectoryNameMarkerEntry = require('./explorer/entry/marker/directoryName'),
-      RootDirectoryNameDraggableEntry = require('./explorer/draggableEntry/directoryName/root');
+      TopmostDirectoryNameDraggableEntry = require('./explorer/draggableEntry/directoryName/topmost');
 
 const { Element, React } = easy,
       { path, array } = necessary;
@@ -37,9 +37,9 @@ class Explorer extends DropTarget {
   isMarked() {
     let marked;
 
-    const rootDirectoryNameDraggableEntryMarked = this.isRootDirectoryNameDraggableEntryMarked();
+    const topmostDirectoryNameDraggableEntryMarked = this.isTopmostDirectoryNameDraggableEntryMarked();
 
-    if (rootDirectoryNameDraggableEntryMarked) {
+    if (topmostDirectoryNameDraggableEntryMarked) {
       marked = true;
     } else {
       const topmostDirectoryNameMarkerEntry = this.findTopmostDirectoryNameMarkerEntry();
@@ -69,7 +69,7 @@ class Explorer extends DropTarget {
           directoryOverlappingDraggableEntryPath = directoryNameDraggableEntryOverlappingDraggableEntry.getPath(),
           markerEntryPath = directoryOverlappingDraggableEntryPath + '/' + draggableEntryName;
 
-    this.addRootDirectoryNameDraggableEntryMarkerEntry(markerEntryPath, draggableEntryType);
+    this.addTopmostDirectoryNameDraggableEntryMarkerEntry(markerEntryPath, draggableEntryType);
   }
 
   addMarkerEntryInPlace(draggableEntry) {
@@ -84,7 +84,7 @@ class Explorer extends DropTarget {
     } else {
       const markerEntryPath = draggableEntryPath;
 
-      this.addRootDirectoryNameDraggableEntryMarkerEntry(markerEntryPath, draggableEntryType);
+      this.addTopmostDirectoryNameDraggableEntryMarkerEntry(markerEntryPath, draggableEntryType);
     }
   }
 
@@ -109,10 +109,10 @@ class Explorer extends DropTarget {
   }
 
   removeMarkerEntry() {
-    const rootDirectoryNameDraggableEntryMarked = this.isRootDirectoryNameDraggableEntryMarked();
+    const topmostDirectoryNameDraggableEntryMarked = this.isTopmostDirectoryNameDraggableEntryMarked();
 
-    if (rootDirectoryNameDraggableEntryMarked) {
-      this.removeRootDirectoryNameDraggableEntryMarkerEntry();
+    if (topmostDirectoryNameDraggableEntryMarked) {
+      this.removeTopmostDirectoryNameDraggableEntryMarkerEntry();
     } else {
       const topmostDirectoryNameMarkerEntry = this.findTopmostDirectoryNameMarkerEntry();
 
@@ -262,8 +262,8 @@ class Explorer extends DropTarget {
   }
 
   openFileNameDraggableEntry(fileNameDraggableEntry) {
-    const rootDirectoryNameDraggableEntry = this.retrieveRootDirectoryNameDraggableEntry(),
-          fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(rootDirectoryNameDraggableEntry),
+    const topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(),
+          fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(topmostDirectoryNameDraggableEntry),
           filePath = fileNameDraggableEntryPath;  ///
 
     this.openHandler(filePath);
@@ -280,13 +280,13 @@ class Explorer extends DropTarget {
   }
 
   childElements(properties) {
-    const { rootDirectoryName, rootDirectoryCollapsed } = properties,
-          name = rootDirectoryName, ///
-          collapsed = rootDirectoryCollapsed, ///
+    const { topmostDirectoryName, topmostDirectoryCollapsed } = properties,
+          name = topmostDirectoryName, ///
+          collapsed = topmostDirectoryCollapsed, ///
           explorer = this,  ///
-          rootDirectory = <RootDirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />;
+          topmostDirectory = <TopmostDirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />;
 
-    return rootDirectory;
+    return topmostDirectory;
   }
 
   initialise() {
@@ -311,8 +311,8 @@ Object.assign(Explorer, {
     className: 'explorer'
   },
   ignoredProperties: [
-    'rootDirectoryName',
-    'rootDirectoryCollapsed',
+    'topmostDirectoryName',
+    'topmostDirectoryCollapsed',
     'onOpen',
     'onMove',
     'options'

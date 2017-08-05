@@ -7,44 +7,44 @@ const options = require('../../../options'),
 
 const { path } = necessary;
 
-class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
+class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   retrieve() {
     return this;  ///
   }
   
-  isRootDirectoryNameDraggableEntry() {
+  isTopmostDirectoryNameDraggableEntry() {
     return true;
   }
 
   addFilePath(filePath, recognised = true) {
-    const filePathWithoutRootDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(filePath);
+    const filePathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
-    if (filePathWithoutRootDirectoryName !== null) {
-      super.addFilePath(filePathWithoutRootDirectoryName, recognised);
+    if (filePathWithoutTopmostDirectoryName !== null) {
+      super.addFilePath(filePathWithoutTopmostDirectoryName, recognised);
     }
   }
 
   addDirectoryPath(directoryPath, collapsed = false) {
-    const directoryPathWithoutRootDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+    const directoryPathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
-    if (directoryPathWithoutRootDirectoryName !== null) {
-      super.addDirectoryPath(directoryPathWithoutRootDirectoryName, collapsed);
+    if (directoryPathWithoutTopmostDirectoryName !== null) {
+      super.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
     }
   }
 
   removeFilePath(filePath) {
-    const filePathWithoutRootDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(filePath);
+    const filePathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(filePath);
 
-    if (filePathWithoutRootDirectoryName !== null) {
-      super.removeFilePath(filePathWithoutRootDirectoryName);
+    if (filePathWithoutTopmostDirectoryName !== null) {
+      super.removeFilePath(filePathWithoutTopmostDirectoryName);
     }
   }
 
   removeDirectoryPath(directoryPath) {
-    const directoryPathWithoutRootDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+    const directoryPathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
-    if (directoryPathWithoutRootDirectoryName !== null) {
-      super.removeDirectoryPath(directoryPathWithoutRootDirectoryName);
+    if (directoryPathWithoutTopmostDirectoryName !== null) {
+      super.removeDirectoryPath(directoryPathWithoutTopmostDirectoryName);
     }
   }
 
@@ -68,9 +68,9 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   addMarkerEntry(markerPath, draggableEntryType) {
-    const markerPathWithoutRootDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(markerPath);
+    const markerPathWithoutTopmostDirectoryName = path.pathWithoutTopmostDirectoryNameFromPath(markerPath);
 
-    super.addMarkerEntry(markerPathWithoutRootDirectoryName, draggableEntryType);
+    super.addMarkerEntry(markerPathWithoutTopmostDirectoryName, draggableEntryType);
   }
 
   parentContext() {
@@ -80,18 +80,18 @@ class RootDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
       addDirectoryPath: this.addDirectoryPath.bind(this),
       removeDirectoryPath: this.removeDirectoryPath.bind(this),
       retrieveDraggableEntryPath: this.retrieveDraggableEntryPath.bind(this),
-      retrieveRootDirectoryNameDraggableEntry: this.retrieve.bind(this),  ///
+      retrieveTopmostDirectoryNameDraggableEntry: this.retrieve.bind(this),  ///
       retrieveMarkedDirectoryNameDraggableEntry: this.retrieveMarkedDirectoryNameDraggableEntry.bind(this),
       retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry: this.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry.bind(this),
-      addRootDirectoryNameDraggableEntryMarkerEntry: this.addMarkerEntry.bind(this), ///
-      removeRootDirectoryNameDraggableEntryMarkerEntry: this.removeMarkerEntry.bind(this), ///
-      isRootDirectoryNameDraggableEntryMarked: this.isMarked.bind(this),  ///
-      getRootDirectoryName: this.getName.bind(this),  ///
+      addTopmostDirectoryNameDraggableEntryMarkerEntry: this.addMarkerEntry.bind(this), ///
+      removeTopmostDirectoryNameDraggableEntryMarkerEntry: this.removeMarkerEntry.bind(this), ///
+      isTopmostDirectoryNameDraggableEntryMarked: this.isMarked.bind(this),  ///
+      getTopmostDirectoryName: this.getName.bind(this),  ///
       retrieveFilePaths: this.retrieveFilePaths.bind(this)
     });
   }
 
-  static fromProperties(properties) { return DirectoryNameDraggableEntry.fromProperties(RootDirectoryNameDraggableEntry, properties); }
+  static fromProperties(properties) { return DirectoryNameDraggableEntry.fromProperties(TopmostDirectoryNameDraggableEntry, properties); }
 }
 
-module.exports = RootDirectoryNameDraggableEntry;
+module.exports = TopmostDirectoryNameDraggableEntry;

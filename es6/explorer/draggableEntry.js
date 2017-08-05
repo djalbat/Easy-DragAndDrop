@@ -53,7 +53,7 @@ class DraggableEntry extends Element {
     return collapsedBounds;
   }
   
-  isRootDirectoryNameDraggableEntry() {
+  isTopmostDirectoryNameDraggableEntry() {
     return false;
   }
 
@@ -114,13 +114,13 @@ class DraggableEntry extends Element {
       timeout = setTimeout(function() {
         this.resetTimeout();
 
-        const rootDirectoryNameDraggableEntry = this.isRootDirectoryNameDraggableEntry(),
-              subEntry = !rootDirectoryNameDraggableEntry,  ///
+        const topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry(),
+              subEntry = !topmostDirectoryNameDraggableEntry,  ///
               noDragging = this.explorer.hasOption(options.NO_DRAGGING),
               noDraggingSubEntries = this.explorer.hasOption(options.NO_DRAGGING_SUB_ENTRIES),
-              noDraggingRootDirectoryNameDraggableEntry = this.explorer.hasOption(options.NO_DRAGGING_ROOT_DIRECTORY);  ///
+              noDraggingTopmostDirectoryNameDraggableEntry = this.explorer.hasOption(options.NO_DRAGGING_TOPMOST_DIRECTORY);  ///
 
-        if ((noDragging) || (subEntry && noDraggingSubEntries) || (rootDirectoryNameDraggableEntry && noDraggingRootDirectoryNameDraggableEntry)) {
+        if ((noDragging) || (subEntry && noDraggingSubEntries) || (topmostDirectoryNameDraggableEntry && noDraggingTopmostDirectoryNameDraggableEntry)) {
           return;
         }
 

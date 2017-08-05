@@ -178,9 +178,9 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     }
 
     if (removeEmptyParentDirectoryNameDraggableEntries === true) {
-      const rootDirectory = this.isRootDirectoryNameDraggableEntry();
+      const topmostDirectory = this.isTopmostDirectoryNameDraggableEntry();
 
-      if (!rootDirectory) {
+      if (!topmostDirectory) {
         const empty = this.isEmpty();
 
         if (empty) {
@@ -212,9 +212,9 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     }
 
     if (removeEmptyParentDirectoryNameDraggableEntries === true) {
-      const rootDirectory = this.isRootDirectoryNameDraggableEntry();
+      const topmostDirectory = this.isTopmostDirectoryNameDraggableEntry();
 
-      if (!rootDirectory) {
+      if (!topmostDirectory) {
         const empty = this.isEmpty();
 
         if (empty) {
