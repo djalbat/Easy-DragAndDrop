@@ -141,13 +141,23 @@ class Explorer extends DropTarget {
                                this :
                                  this.getMarkedDropTarget(),
           markedDirectoryNameDraggableEntry = markedDropTarget.retrieveMarkedDirectoryNameDraggableEntry(),
-          markedDirectoryNameDraggableEntryPath = (markedDirectoryNameDraggableEntry !== null) ?
-                                                    markedDirectoryNameDraggableEntry.getPath() :
-                                                      null,
+          markedDirectoryNameDraggableEntryPath = markedDirectoryNameDraggableEntry.getPath(),
           draggableEntryPathWithoutBottommostName = pathWithoutBottommostNameFromPath(draggableEntryPath),
-          sourcePath = draggableEntryPathWithoutBottommostName,
-          targetPath = markedDirectoryNameDraggableEntryPath,
-          unmoved = (sourcePath === targetPath);
+          sourcePath = draggableEntryPathWithoutBottommostName;
+
+    let targetPath = null;
+
+    if (markedDirectoryNameDraggableEntry !== null) {
+      const draggableEntryName = draggableEntry.getName(),
+            name = draggableEntryName,  ///
+            draggableEntryPresent = markedDirectoryNameDraggableEntry.isDraggableEntryPresent(name);
+
+      if (!draggableEntryPresent) {
+        targetPath = markedDirectoryNameDraggableEntryPath;
+      }
+    }
+
+    const unmoved = (sourcePath === targetPath);
 
     if (marked && unmoved) {
       this.removeMarkerEntry();

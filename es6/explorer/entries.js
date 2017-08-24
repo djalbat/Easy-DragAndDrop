@@ -63,6 +63,13 @@ class Entries extends Element {
     return removeEmptyParentDirectories;
   }
 
+  isDraggableEntryPresent(name) {
+    const draggableEntry = this.findDraggableEntry(name),
+          draggableEntryPresent = (draggableEntry !== null); ///
+
+    return draggableEntryPresent;
+  }
+
   isFileNameDraggableEntryPresent(fileName) {
     const fileNameDraggableEntry = this.findFileNameDraggableEntry(fileName),
           fileNameDraggableEntryPresent = (fileNameDraggableEntry !== null); ///
@@ -117,7 +124,7 @@ class Entries extends Element {
 
     return empty;
   }
-
+  
   addEntry(entry) {
     const nextEntry = entry,
           previousEntry = this.findEntry(function(entry) {
@@ -144,6 +151,8 @@ class Entries extends Element {
 
     return markerEntry;
   }
+
+  findDraggableEntry(name) { return this.findEntryByName(name) }
 
   findFileNameDraggableEntry(fileName) { return this.findEntryByNameAndType(fileName, Entry.types.FILE_NAME) }
 
@@ -266,6 +275,17 @@ class Entries extends Element {
     return entry;
   }
 
+  findEntryByName(name) {
+    const entry = this.findEntry(function(entry) {
+      const entryName = entry.getName(),
+            found = (entryName === name);
+
+      return found;
+    });
+
+    return entry;
+  }
+
   findEntryByType(callback, type) {
     const entries = this.getEntries(),
           entry = entries.find(function(entry) {
@@ -276,14 +296,14 @@ class Entries extends Element {
               
               return found;
             }
-          }) || null;
+          }) || null ///;
     
     return entry;
   }
 
   findEntry(callback) {
     const entries = this.getEntries(),
-          entry = entries.find(callback) || null;
+          entry = entries.find(callback) || null; ///
 
     return entry;
   }

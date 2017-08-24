@@ -262,6 +262,8 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return removed;
   }
 
+  isDraggableEntryPresent(name) { return this.entries.isDraggableEntryPresent(name); }
+
   forEachFileNameDraggableEntry(callback) { this.entries.forEachFileNameDraggableEntry(callback); }
 
   forEachDirectoryNameDraggableEntry(callback) { this.entries.forEachDirectoryNameDraggableEntry(callback); }
