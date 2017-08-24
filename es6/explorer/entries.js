@@ -8,7 +8,8 @@ const options = require('../options'),
       DirectoryNameMarkerEntry = require('./entry/marker/directoryName'),
       FileNameDraggableEntry = require('./draggableEntry/fileName');
 
-const { Element, React } = easy;
+const { Element, React } = easy,
+      { REMOVE_EMPTY_PARENT_DIRECTORIES } = options;
 
 class Entries extends Element {
   constructor(selector, DirectoryNameDraggableEntry) {
@@ -36,7 +37,8 @@ class Entries extends Element {
   removeFileNameDraggableEntry(fileName) {
     const fileNameDraggableEntry = this.findFileNameDraggableEntry(fileName),
           explorer = fileNameDraggableEntry.getExplorer(),
-          removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+          removeEmptyParentDirectoriesOptionPresent = explorer.isOptionPresent(REMOVE_EMPTY_PARENT_DIRECTORIES),
+          removeEmptyParentDirectories = removeEmptyParentDirectoriesOptionPresent; ///
 
     fileNameDraggableEntry.remove();
     
@@ -50,9 +52,10 @@ class Entries extends Element {
           directoryNameDraggableEntryEmpty = directoryNameDraggableEntry.isEmpty();
     
     if (directoryNameDraggableEntryEmpty) {
-      const explorer = directoryNameDraggableEntry.getExplorer();
-      
-      removeEmptyParentDirectories = explorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+      const explorer = directoryNameDraggableEntry.getExplorer(),
+            removeEmptyParentDirectoriesOptionPresent = explorer.isOptionPresent(REMOVE_EMPTY_PARENT_DIRECTORIES);
+
+      removeEmptyParentDirectories = removeEmptyParentDirectoriesOptionPresent;  ///
 
       directoryNameDraggableEntry.remove();
     }

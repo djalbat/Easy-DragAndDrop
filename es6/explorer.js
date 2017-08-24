@@ -9,6 +9,7 @@ const options = require('./options'),
       TopmostDirectoryNameDraggableEntry = require('./explorer/draggableEntry/directoryName/topmost');
 
 const { Element, React } = easy,
+      { NO_DRAGGING_WITHIN } = options,
       { path, array } = necessary,
       { second } = array,
       { isPathTopmostDirectoryName, pathWithoutBottommostNameFromPath } = path;
@@ -30,10 +31,10 @@ class Explorer extends DropTarget {
     delete(this.options[option]);
   }
 
-  hasOption(option) {
-    option = (this.options[option] === true); ///
+  isOptionPresent(option) {
+    const optionPresent = (this.options[option] === true);
 
-    return option;
+    return optionPresent;
   }
 
   isMarked() {
@@ -177,8 +178,8 @@ class Explorer extends DropTarget {
 
       if (toBeMarked) {
         const within = (explorer === this), ///
-              noDraggingWithin = this.hasOption(options.NO_DRAGGING_WITHIN),
-              noDragging = within && noDraggingWithin;
+              noDraggingWithinOptionPresent = this.isOptionPresent(NO_DRAGGING_WITHIN),
+              noDragging = within && noDraggingWithinOptionPresent;
 
         if (!noDragging) {
           const markedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry();

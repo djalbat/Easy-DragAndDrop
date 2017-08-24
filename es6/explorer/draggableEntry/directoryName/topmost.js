@@ -6,7 +6,8 @@ const options = require('../../../options'),
       DirectoryNameDraggableEntry = require('../../draggableEntry/directoryName');
 
 const { path } = necessary,
-      { pathWithoutTopmostDirectoryNameFromPath } = path;
+      { pathWithoutTopmostDirectoryNameFromPath } = path,
+      { NO_DRAGGING_INTO_SUB_DIRECTORIES } = options;
 
 class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   retrieve() {
@@ -53,14 +54,14 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     let directoryNameDraggableEntryOverlappingDraggableEntry;
 
     const explorer = this.getExplorer(),
-          noDraggingIntoSubdirectories = explorer.hasOption(options.NO_DRAGGING_INTO_SUB_DIRECTORIES);
+          noDraggingIntoSubdirectoriesOptionPresent = explorer.isOptionPresent(NO_DRAGGING_INTO_SUB_DIRECTORIES);
 
-    if (noDraggingIntoSubdirectories) {
+    if (noDraggingIntoSubdirectoriesOptionPresent) {
       const overlappingDraggableEntry = this.isOverlappingDraggableEntry(draggableEntry);
 
       directoryNameDraggableEntryOverlappingDraggableEntry = overlappingDraggableEntry ?
-        this :
-          null;
+                                                               this :
+                                                                 null;
     } else {
       directoryNameDraggableEntryOverlappingDraggableEntry = super.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
     }

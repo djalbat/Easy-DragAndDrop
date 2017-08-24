@@ -8,7 +8,8 @@ const options = require('../options'),
 const ESCAPE_KEYCODE = 27,
       START_DRAGGING_DELAY = 175;
 
-const { window, Element, React } = easy;
+const { window, Element, React } = easy,
+      { NO_DRAGGING, NO_DRAGGING_SUB_ENTRIES, NO_DRAGGING_TOPMOST_DIRECTORY, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
 class DraggableEntry extends Element {
   constructor(selector, name, explorer, type) {
@@ -69,7 +70,7 @@ class DraggableEntry extends Element {
   onDoubleClick(handler) { this.nameButton.onDoubleClick(handler); }
 
   startDragging(mouseTop, mouseLeft) {
-    const escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING),
+    const escapeKeyStopsDraggingOptionPresent = this.explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING),
           bounds = this.getBounds(),
           boundsTop = bounds.getTop(),
           boundsLeft = bounds.getLeft(),
@@ -80,7 +81,7 @@ class DraggableEntry extends Element {
 
     this.setLeftOffset(leftOffset);
 
-    if (escapeKeyStopsDragging) {
+    if (escapeKeyStopsDraggingOptionPresent) {
       const keyDownHandler = this.keyDownHandler.bind(this);
       
       this.onKeyDown(keyDownHandler);
@@ -92,9 +93,9 @@ class DraggableEntry extends Element {
   }
 
   stopDragging() {
-    const escapeKeyStopsDragging = this.explorer.hasOption(options.ESCAPE_KEY_STOPS_DRAGGING);
+    const escapeKeyStopsDraggingOptionPresent = this.explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
 
-    if (escapeKeyStopsDragging) {
+    if (escapeKeyStopsDraggingOptionPresent) {
       this.offKeyDown();
     }
 
@@ -116,11 +117,11 @@ class DraggableEntry extends Element {
 
         const topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry(),
               subEntry = !topmostDirectoryNameDraggableEntry,  ///
-              noDragging = this.explorer.hasOption(options.NO_DRAGGING),
-              noDraggingSubEntries = this.explorer.hasOption(options.NO_DRAGGING_SUB_ENTRIES),
-              noDraggingTopmostDirectoryNameDraggableEntry = this.explorer.hasOption(options.NO_DRAGGING_TOPMOST_DIRECTORY);  ///
+              noDraggingOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING),
+              noDraggingSubEntriesOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING_SUB_ENTRIES),
+              noDraggingTopmostDirectoryNameDraggableEntryOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING_TOPMOST_DIRECTORY);  ///
 
-        if ((noDragging) || (subEntry && noDraggingSubEntries) || (topmostDirectoryNameDraggableEntry && noDraggingTopmostDirectoryNameDraggableEntry)) {
+        if ((noDraggingOptionPresent) || (subEntry && noDraggingSubEntriesOptionPresent) || (topmostDirectoryNameDraggableEntry && noDraggingTopmostDirectoryNameDraggableEntryOptionPresent)) {
           return;
         }
 

@@ -7,7 +7,8 @@ const options = require('./options');
 
 const { Element } = easy,
       { array } = necessary,
-      { first, last } = array;
+      { first, last } = array,
+      { REMOVE_EMPTY_PARENT_DIRECTORIES } = options;
 
 class DropTarget extends Element {
   constructor(selector, moveHandler = function(pathMaps, done) { done(); }) {
@@ -78,16 +79,16 @@ class DropTarget extends Element {
             firstDraggableEntry = first(draggableEntries),
             firstDraggableEntryExplorer = firstDraggableEntry.getExplorer(),
             draggableEntriesExplorer = firstDraggableEntryExplorer, ///
-            removeEmptyParentDirectoryNameDraggableEntries = draggableEntriesExplorer.hasOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES); ///
+            removeEmptyParentDirectoriesOptionPresent = draggableEntriesExplorer.isOptionPresent(REMOVE_EMPTY_PARENT_DIRECTORIES); ///
 
-      if (removeEmptyParentDirectoryNameDraggableEntries) {
-        draggableEntriesExplorer.unsetOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+      if (removeEmptyParentDirectoriesOptionPresent) {
+        draggableEntriesExplorer.unsetOption(REMOVE_EMPTY_PARENT_DIRECTORIES);
       }
 
       draggableEntries.forEach(function(draggableEntry) {
         if (draggableEntry === lastDraggableEntry) {
-          if (removeEmptyParentDirectoryNameDraggableEntries) {
-            draggableEntriesExplorer.setOption(options.REMOVE_EMPTY_PARENT_DIRECTORIES);
+          if (removeEmptyParentDirectoriesOptionPresent) {
+            draggableEntriesExplorer.setOption(REMOVE_EMPTY_PARENT_DIRECTORIES);
           }
         }
 
