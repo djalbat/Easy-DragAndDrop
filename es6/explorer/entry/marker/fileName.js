@@ -13,7 +13,7 @@ class FileNameMarkerEntry extends MarkerEntry {
     switch (draggableEntryType) {
       case Entry.types.FILE_NAME:
         const name = this.getName(),
-            draggableEntryName = draggableEntry.getName();
+              draggableEntryName = draggableEntry.getName();
 
         before = nameUtilities.nameIsBeforeEntryName(name, draggableEntryName);
         break;

@@ -142,21 +142,20 @@ class Entries extends Element {
   }
 
   findMarkerEntry() {
-    const type = Entry.types.MARKER,
-          markerEntry = this.findEntryByType(function(entry) {
+    const markerEntry = this.findEntryByTypes(function(entry) {
             const found = true; ///
   
             return found;
-          }, type);
+          }, Entry.types.MARKER);
 
     return markerEntry;
   }
 
-  findDraggableEntry(name) { return this.findEntryByName(name) }
+  findDraggableEntry(name) { return this.findEntryByNameAndTypes(name, Entry.types.FILE_NAME, Entry.types.DIRECTORY_NAME) }
 
-  findFileNameDraggableEntry(fileName) { return this.findEntryByNameAndType(fileName, Entry.types.FILE_NAME) }
+  findFileNameDraggableEntry(fileName) { return this.findEntryByNameAndTypes(fileName, Entry.types.FILE_NAME) }
 
-  findDirectoryNameDraggableEntry(directoryName) { return this.findEntryByNameAndType(directoryName, Entry.types.DIRECTORY_NAME) }
+  findDirectoryNameDraggableEntry(directoryName) { return this.findEntryByNameAndTypes(directoryName, Entry.types.DIRECTORY_NAME) }
 
   retrieveMarkedDirectoryNameDraggableEntry() {
     let markedDirectoryNameDraggableEntry = null;
@@ -214,21 +213,22 @@ class Entries extends Element {
     return directoryNameDraggableEntryOverlappingDraggableEntry;
   }
 
-  forEachFileNameDraggableEntry(callback) { this.forEachEntryByType(callback, Entry.types.FILE_NAME) }
+  forEachFileNameDraggableEntry(callback) { this.forEachEntryByTypes(callback, Entry.types.FILE_NAME) }
 
-  forEachDirectoryNameDraggableEntry(callback) { this.forEachEntryByType(callback, Entry.types.DIRECTORY_NAME) }
+  forEachDirectoryNameDraggableEntry(callback) { this.forEachEntryByTypes(callback, Entry.types.DIRECTORY_NAME) }
 
-  someFileNameDraggableEntry(callback) { return this.someEntryByType(callback, Entry.types.FILE_NAME) }
+  someFileNameDraggableEntry(callback) { return this.someEntryByTypes(callback, Entry.types.FILE_NAME) }
 
-  someDirectoryNameDraggableEntry(callback) { return this.someEntryByType(callback, Entry.types.DIRECTORY_NAME) }
+  someDirectoryNameDraggableEntry(callback) { return this.someEntryByTypes(callback, Entry.types.DIRECTORY_NAME) }
 
-  forEachEntryByType(callback, type) {
+  forEachEntryByTypes(callback, ...types) {
     const entries = this.getEntries();
 
     entries.forEach(function(entry) {
-      const entryType = entry.getType();
+      const entryType = entry.getType(),
+            typesIncludesEntryType = types.includes(entryType);
 
-      if (entryType === type) {
+      if (typesIncludesEntryType) {
         callback(entry);
       }
     });
@@ -242,13 +242,14 @@ class Entries extends Element {
     });
   }
 
-  someEntryByType(callback, type) {
+  someEntryByTypes(callback, ...types) {
     const entries = this.getEntries();
 
     return entries.some(function(entry) {
-      const entryType = entry.getType();
+      const entryType = entry.getType(),
+            typesIncludesEntryType = types.includes(entryType);
 
-      if (entryType === type) {
+      if (typesIncludesEntryType) {
         const result = callback(entry);
         
         return result;
@@ -256,7 +257,7 @@ class Entries extends Element {
     });
   }
 
-  someEntry(callback, type) {
+  someEntry(callback) {
     const entries = this.getEntries();
 
     return entries.some(function(entry) {
@@ -264,13 +265,29 @@ class Entries extends Element {
     });
   }
 
-  findEntryByNameAndType(name, type) {
-    const entry = this.findEntryByType(function(entry) {
+  findEntryByNameAndTypes(name, ...types) {
+    const entry = this.findEntryByTypes(function(entry) {
       const entryName = entry.getName(),
             found = (entryName === name);
       
       return found;
-    }, type);
+    }, ...types);
+    
+    return entry;
+  }
+
+  findEntryByTypes(callback, ...types) {
+    const entries = this.getEntries(),
+          entry = entries.find(function(entry) {
+            const entryType = entry.getType(),
+                typesIncludesEntryType = types.includes(entryType);
+
+            if (typesIncludesEntryType) {
+              const found = callback(entry);
+              
+              return found;
+            }
+          }) || null; ///;
     
     return entry;
   }
@@ -283,21 +300,6 @@ class Entries extends Element {
       return found;
     });
 
-    return entry;
-  }
-
-  findEntryByType(callback, type) {
-    const entries = this.getEntries(),
-          entry = entries.find(function(entry) {
-            const entryType = entry.getType();
-            
-            if (entryType === type) {
-              const found = callback(entry);
-              
-              return found;
-            }
-          }) || null ///;
-    
     return entry;
   }
 

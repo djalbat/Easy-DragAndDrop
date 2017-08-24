@@ -20,7 +20,7 @@ class Entry extends Element {
   getType() {
     return this.type;
   }
-
+  
   initialise() {
     this.append(this.nameButton);
   }
