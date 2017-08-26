@@ -5,8 +5,8 @@ const easy = require('easy');
 const options = require('../options'),
       Entry = require('./entry'),
       FileNameMarkerEntry = require('./entry/marker/fileName'),
-      DirectoryNameMarkerEntry = require('./entry/marker/directoryName'),
-      FileNameDraggableEntry = require('./draggableEntry/fileName');
+      FileNameDraggableEntry = require('./entry/draggable/fileName'),
+      DirectoryNameMarkerEntry = require('./entry/marker/directoryName');
 
 const { Element, React } = easy,
       { types } = Entry,

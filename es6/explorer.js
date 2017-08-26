@@ -6,7 +6,7 @@ const easy = require('easy'),
 const options = require('./options'),
       DropTarget = require('./dropTarget'),
       DirectoryNameMarkerEntry = require('./explorer/entry/marker/directoryName'),
-      TopmostDirectoryNameDraggableEntry = require('./explorer/draggableEntry/directoryName/topmost');
+      TopmostDirectoryNameDraggableEntry = require('./explorer/entry/draggable/directoryName/topmost');
 
 const { Element, React } = easy,
       { NO_DRAGGING_WITHIN } = options,
