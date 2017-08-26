@@ -104,11 +104,8 @@ Object.assign(FileNameDraggableEntry, {
     className: 'fileName'
   },
   ignoredProperties: [
-    'name',
-    'explorer',
     'recognised'
   ]
 });
 
 module.exports = FileNameDraggableEntry;
-

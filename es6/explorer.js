@@ -4,14 +4,17 @@ const easy = require('easy'),
       necessary = require('necessary');
 
 const options = require('./options'),
+      Entry = require('./explorer/entry'),
       DropTarget = require('./dropTarget'),
       DirectoryNameMarkerEntry = require('./explorer/entry/marker/directoryName'),
       TopmostDirectoryNameDraggableEntry = require('./explorer/entry/draggable/directoryName/topmost');
 
 const { Element, React } = easy,
-      { NO_DRAGGING_WITHIN } = options,
+      { types } = Entry,
       { path, array } = necessary,
       { second } = array,
+      { NO_DRAGGING_WITHIN } = options,
+      { DIRECTORY_NAME_MARKER_TYPE } = types,
       { isPathTopmostDirectoryName, pathWithoutBottommostNameFromPath } = path;
 
 class Explorer extends DropTarget {
@@ -83,7 +86,7 @@ class Explorer extends DropTarget {
     if (draggableEntryPathTopmostDirectoryName) {
       const topmostDirectoryMarkerPath = draggableEntryPath;
 
-      this.addTopmostDirectoryMarker(topmostDirectoryMarkerPath);
+      this.addTopmostDirectoryMarkerEntry(topmostDirectoryMarkerPath);
     } else {
       const markerEntryPath = draggableEntryPath;
 
@@ -91,7 +94,7 @@ class Explorer extends DropTarget {
     }
   }
 
-  addTopmostDirectoryMarker(topmostDirectoryMarkerPath) {
+  addTopmostDirectoryMarkerEntry(topmostDirectoryMarkerPath) {
     const topmostDirectoryMarkerName = topmostDirectoryMarkerPath,  ///
           name = topmostDirectoryMarkerName,  ///
           topmostDirectoryNameMarkerEntry = <DirectoryNameMarkerEntry name={name} />;
@@ -100,9 +103,11 @@ class Explorer extends DropTarget {
   }
 
   findTopmostDirectoryNameMarkerEntry() {
-    const childListElements = this.getChildElements('li'),
-          topmostDirectoryNameMarkerEntry = childListElements.find(function(childListElement) {
-            const found = (childListElement instanceof DirectoryNameMarkerEntry);
+    const childListEntryElements = this.getChildElements('li.entry'),
+          childEntries = childListEntryElements,  ///
+          topmostDirectoryNameMarkerEntry = childEntries.find(function(childEntry) {
+            const childEntryType = childEntry.getType(),
+                  found = (childEntryType === DIRECTORY_NAME_MARKER_TYPE);
                 
             return found;
           }) || null; /// 

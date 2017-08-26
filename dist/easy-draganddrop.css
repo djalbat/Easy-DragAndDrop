@@ -2,13 +2,19 @@ ul.explorer {
   position: relative;
   overflow: hidden;
 }
+
 ul.explorer,
 ul.explorer ul {
   margin: 0;
   padding: 0;
   border: 0;
 }
-ul.explorer li {
+
+ul.explorer ul.entries {
+  padding-left: 1.5rem;
+}
+
+ul.explorer li.entry {
   margin: 0;
   padding: 0;
   border: 0;
@@ -16,56 +22,54 @@ ul.explorer li {
   list-style-type: none;
 }
 
-ul.explorer li.dragging {
+ul.explorer li.draggable.entry.dragging {
   position: fixed;
   z-index: 10000;
 }
 
-ul.explorer ul.entries {
-  padding-left: 1.5rem;
-}
-
-ul.explorer li.collapsed.directoryName > ul.entries {
+ul.explorer li.collapsed.directoryName.draggable.entry > ul.entries {
   display: none;
 }
 
-ul.explorer li > button {
+ul.explorer li.entry > button.name {
   outline: none;
   border: none;
   height: 1.75rem;
+  text-align: left;
+  background-repeat: no-repeat;
   background-color: transparent;
 }
 
-ul.explorer li > button.toggle {
+ul.explorer li.draggable.entry > button.toggle {
   width: 1.5rem;
+  height: 0;
+  overflow: visible;
+  position: relative;
 }
-ul.explorer li > button.toggle::before {
+
+ul.explorer li.draggable.entry > button.toggle::before {
   width: 1.5rem;
   content: '\025bc';
 }
-ul.explorer li.collapsed.directoryName > button.toggle::before {
+
+ul.explorer li.collapsed.directoryName.draggable.entry > button.toggle::before {
   content: '\025b6';
 }
 
-ul.explorer li > button.name {
-  text-align: left;
-  background-repeat: no-repeat;
-}
-
-ul.explorer li.fileName > button.name {
+ul.explorer li.fileName.draggable.entry > button.name {
   padding-left: 3rem;
   background-image: url("file.png");
   background-position: 1.5rem 0;
 }
 
-ul.explorer li.marker > button.name {
+ul.explorer li.marker.entry > button.name {
   width: 3rem;
   color: rgba(0, 0, 0, 0);
   background-image: url("marker.png");
   background-position: 1.5rem 0;
 }
 
-ul.explorer li.directoryName > button.name {
+ul.explorer li.directoryName.draggable.entry > button.name {
   padding-left: 1.5rem;
   background-image: url("directory.png");
   background-position: 0 0;

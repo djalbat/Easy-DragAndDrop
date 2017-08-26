@@ -313,8 +313,8 @@ class Entries extends Element {
   }
 
   getEntries() {
-    const childListElements = this.getChildElements('li'),
-          entries = childListElements;  ///
+    const childListEntryElements = this.getChildElements('li.entry'),
+          entries = childListEntryElements;  ///
 
     return entries;
   }

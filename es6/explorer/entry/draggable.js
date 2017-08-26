@@ -288,7 +288,13 @@ class DraggableEntry extends Entry {
 }
 
 Object.assign(DraggableEntry, {
-  tagName: 'li'
+  tagName: 'li',
+  defaultProperties: {
+    className: 'draggable'
+  },
+  ignoredProperties: [
+    'explorer'
+  ]
 });
 
 module.exports = DraggableEntry;

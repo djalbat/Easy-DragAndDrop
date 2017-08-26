@@ -44,4 +44,10 @@ class FileNameMarkerEntry extends MarkerEntry {
   }
 }
 
+Object.assign(FileNameMarkerEntry, {
+  defaultProperties: {
+    className: 'fileName'
+  }
+});
+
 module.exports = FileNameMarkerEntry;

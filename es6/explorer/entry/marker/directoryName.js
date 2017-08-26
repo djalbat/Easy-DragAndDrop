@@ -45,4 +45,10 @@ class DirectoryNameMarkerEntry extends MarkerEntry {
   }
 }
 
+Object.assign(DirectoryNameMarkerEntry, {
+  defaultProperties: {
+    className: 'directoryName'
+  }
+});
+
 module.exports = DirectoryNameMarkerEntry;

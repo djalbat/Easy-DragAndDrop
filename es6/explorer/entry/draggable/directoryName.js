@@ -447,8 +447,6 @@ Object.assign(DirectoryNameDraggableEntry, {
     className: 'directoryName'
   },
   ignoredProperties: [
-    'name',
-    'explorer',
     'collapsed'
   ]
 });
