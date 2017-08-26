@@ -25,11 +25,9 @@ class Entry extends Element {
     this.append(this.nameButton);
   }
   
-  static fromProperties(Class, properties) {
+  static fromProperties(Class, properties, ...remainingArguments) {
     const { name } = properties,
-          entry = Element.fromProperties(Class, properties, name);
-
-    entry.initialise();
+          entry = Element.fromProperties(Class, properties, name, ...remainingArguments);
     
     return entry;
   }
@@ -41,9 +39,10 @@ Object.assign(Entry, {
     'name'
   ],
   types: {
-    MARKER: 'MARKER',
-    FILE_NAME: 'FILE_NAME',
-    DIRECTORY_NAME: 'DIRECTORY_NAME'
+    FILE_NAME_TYPE: 'FILE_NAME_TYPE',
+    DIRECTORY_NAME_TYPE: 'DIRECTORY_NAME_TYPE',
+    FILE_NAME_MARKER_TYPE: 'FILE_NAME_MARKER_TYPE',
+    DIRECTORY_NAME_MARKER_TYPE: 'DIRECTORY_NAME_MARKER_TYPE'
   }
 });
 

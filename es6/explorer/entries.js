@@ -9,7 +9,9 @@ const options = require('../options'),
       FileNameDraggableEntry = require('./draggableEntry/fileName');
 
 const { Element, React } = easy,
-      { REMOVE_EMPTY_PARENT_DIRECTORIES } = options;
+      { types } = Entry,
+      { REMOVE_EMPTY_PARENT_DIRECTORIES } = options,
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class Entries extends Element {
   constructor(selector, DirectoryNameDraggableEntry) {
@@ -90,11 +92,11 @@ class Entries extends Element {
     const name = markerName;  ///
 
     switch (draggableEntryType) {
-      case Entry.types.FILE_NAME:
+      case FILE_NAME_TYPE:
         markerEntry = <FileNameMarkerEntry name={name} />;
         break;
 
-      case Entry.types.DIRECTORY_NAME:
+      case DIRECTORY_NAME_TYPE:
         markerEntry = <DirectoryNameMarkerEntry name={name} />;
         break;
     }
@@ -146,16 +148,16 @@ class Entries extends Element {
             const found = true; ///
   
             return found;
-          }, Entry.types.MARKER);
+          }, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE);
 
     return markerEntry;
   }
 
-  findDraggableEntry(name) { return this.findEntryByNameAndTypes(name, Entry.types.FILE_NAME, Entry.types.DIRECTORY_NAME) }
+  findDraggableEntry(name) { return this.findEntryByNameAndTypes(name, FILE_NAME_TYPE, DIRECTORY_NAME_TYPE) }
 
-  findFileNameDraggableEntry(fileName) { return this.findEntryByNameAndTypes(fileName, Entry.types.FILE_NAME) }
+  findFileNameDraggableEntry(fileName) { return this.findEntryByNameAndTypes(fileName, FILE_NAME_TYPE) }
 
-  findDirectoryNameDraggableEntry(directoryName) { return this.findEntryByNameAndTypes(directoryName, Entry.types.DIRECTORY_NAME) }
+  findDirectoryNameDraggableEntry(directoryName) { return this.findEntryByNameAndTypes(directoryName, DIRECTORY_NAME_TYPE) }
 
   retrieveMarkedDirectoryNameDraggableEntry() {
     let markedDirectoryNameDraggableEntry = null;
@@ -213,13 +215,13 @@ class Entries extends Element {
     return directoryNameDraggableEntryOverlappingDraggableEntry;
   }
 
-  forEachFileNameDraggableEntry(callback) { this.forEachEntryByTypes(callback, Entry.types.FILE_NAME) }
+  forEachFileNameDraggableEntry(callback) { this.forEachEntryByTypes(callback, FILE_NAME_TYPE) }
 
-  forEachDirectoryNameDraggableEntry(callback) { this.forEachEntryByTypes(callback, Entry.types.DIRECTORY_NAME) }
+  forEachDirectoryNameDraggableEntry(callback) { this.forEachEntryByTypes(callback, DIRECTORY_NAME_TYPE) }
 
-  someFileNameDraggableEntry(callback) { return this.someEntryByTypes(callback, Entry.types.FILE_NAME) }
+  someFileNameDraggableEntry(callback) { return this.someEntryByTypes(callback, FILE_NAME_TYPE) }
 
-  someDirectoryNameDraggableEntry(callback) { return this.someEntryByTypes(callback, Entry.types.DIRECTORY_NAME) }
+  someDirectoryNameDraggableEntry(callback) { return this.someEntryByTypes(callback, DIRECTORY_NAME_TYPE) }
 
   forEachEntryByTypes(callback, ...types) {
     const entries = this.getEntries();

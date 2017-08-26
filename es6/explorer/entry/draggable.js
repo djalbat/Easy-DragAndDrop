@@ -2,36 +2,27 @@
 
 const easy = require('easy');
 
-const options = require('../options'),
-      NameButton = require('./nameButton');
+const Entry = require('../entry'),
+      options = require('../../options');
 
 const ESCAPE_KEYCODE = 27,
       START_DRAGGING_DELAY = 175;
 
-const { window, Element, React } = easy,
+const { window, React, Element } = easy,
+      { LEFT_MOUSE_BUTTON } = Element,
       { NO_DRAGGING, NO_DRAGGING_SUB_ENTRIES, NO_DRAGGING_TOPMOST_DIRECTORY, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
-class DraggableEntry extends Element {
+class DraggableEntry extends Entry {
   constructor(selector, name, explorer, type) {
-    super(selector);
-
-    this.nameButton = <NameButton>{name}</NameButton>;
+    super(selector, name, type);
 
     this.explorer = explorer;
-    
-    this.type = type;
     
     this.setInitialState();
   }
 
-  getName() { return this.nameButton.getName(); }
-
   getExplorer() {
     return this.explorer;
-  }
-
-  getType() {
-    return this.type;
   }
 
   isDragging() {
@@ -165,7 +156,7 @@ class DraggableEntry extends Element {
 
     window.onMouseMove(this.mouseMoveHandler, this);
 
-    if (mouseButton === Element.LEFT_MOUSE_BUTTON) {
+    if (mouseButton === LEFT_MOUSE_BUTTON) {
       const dragging = this.isDragging();
 
       if (!dragging) {
@@ -281,14 +272,19 @@ class DraggableEntry extends Element {
   }
 
   initialise() {
-    this.append(this.nameButton);
+    super.initialise();
 
     const mouseDownHandler = this.mouseDownHandler.bind(this);
 
     this.onMouseDown(mouseDownHandler);
   }
 
-  static fromProperties(Class, properties, ...remainingArguments) { return Element.fromProperties(Class, properties, ...remainingArguments); }
+  static fromProperties(Class, properties) {
+    const { explorer }  = properties,
+          draggableEntry = Entry.fromProperties(Class, properties, explorer);
+
+    return draggableEntry;
+  }
 }
 
 Object.assign(DraggableEntry, {

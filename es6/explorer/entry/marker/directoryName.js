@@ -3,19 +3,28 @@
 const Entry = require('../../entry'),
       MarkerEntry = require('../../entry/marker');
 
+const { types } = Entry,
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
+
 class DirectoryNameMarkerEntry extends MarkerEntry {
+  constructor(selector, name) {
+    const type = DIRECTORY_NAME_MARKER_TYPE;
+    
+    super(selector, name, type);
+  }
+  
   isBefore(draggableEntry) {
     let before;
 
     const draggableEntryType = draggableEntry.getType();
 
     switch (draggableEntryType) {
-      case Entry.types.FILE_NAME:
+      case FILE_NAME_TYPE:
         before = true;
 
         break;
 
-      case Entry.types.DIRECTORY_NAME:
+      case DIRECTORY_NAME_TYPE:
         const name = this.getName(),
               draggableEntryName = draggableEntry.getName();
 
@@ -27,7 +36,13 @@ class DirectoryNameMarkerEntry extends MarkerEntry {
     return before;
   }
   
-  static fromProperties(properties) { return MarkerEntry.fromProperties(DirectoryNameMarkerEntry, properties); }
+  static fromProperties(properties) { 
+    const draggableNameMarkerEntry = MarkerEntry.fromProperties(DirectoryNameMarkerEntry, properties);
+
+    draggableNameMarkerEntry.initialise();
+    
+    return draggableNameMarkerEntry;
+  }
 }
 
 module.exports = DirectoryNameMarkerEntry;

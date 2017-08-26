@@ -1,12 +1,15 @@
 'use strict';
 
-const Entry = require('../entry'),
-      DraggableEntry = require('../draggableEntry'),
-      nameUtilities = require('../../utilities/name');
+const Entry = require('../../entry'),
+      DraggableEntry = require('../../entry/draggable'),
+      nameUtilities = require('../../../utilities/name');
+
+const { types } = Entry,
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class FileNameDraggableEntry extends DraggableEntry {
   constructor(selector, name, explorer) {
-    const type = Entry.types.FILE_NAME;
+    const type = FILE_NAME_TYPE;
 
     super(selector, name, explorer, type);
   }
@@ -21,15 +24,16 @@ class FileNameDraggableEntry extends DraggableEntry {
     const entryType = entry.getType();
 
     switch (entryType) {
-      case Entry.types.MARKER:
-      case Entry.types.FILE_NAME:
+      case FILE_NAME_TYPE:
+      case FILE_NAME_MARKER_TYPE:
+      case DIRECTORY_NAME_MARKER_TYPE:
         const name = this.getName(),
               entryName = entry.getName();
           
         before = nameUtilities.nameIsBeforeEntryName(name, entryName);
         break;
 
-      case Entry.types.DIRECTORY_NAME:
+      case DIRECTORY_NAME_TYPE:
         before = false;          
         break;
     }
@@ -86,8 +90,8 @@ class FileNameDraggableEntry extends DraggableEntry {
       Class = FileNameDraggableEntry;
     }
 
-    const { name, explorer, recognised } = properties,
-          fileNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, name, explorer);
+    const { recognised } = properties,
+          fileNameDraggableEntry = DraggableEntry.fromProperties(Class, properties);
 
     fileNameDraggableEntry.initialise(recognised);
 

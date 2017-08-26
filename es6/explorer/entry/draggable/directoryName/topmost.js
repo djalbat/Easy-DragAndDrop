@@ -2,8 +2,8 @@
 
 const necessary = require('necessary');
 
-const options = require('../../../options'),
-      DirectoryNameDraggableEntry = require('../../draggableEntry/directoryName');
+const options = require('../../../../options'),
+      DirectoryNameDraggableEntry = require('../../../entry/draggable/directoryName');
 
 const { path } = necessary,
       { pathWithoutTopmostDirectoryNameFromPath } = path,

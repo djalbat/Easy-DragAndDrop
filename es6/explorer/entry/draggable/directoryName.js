@@ -3,17 +3,19 @@
 const easy = require('easy'),
       necessary = require('necessary');
 
-const Entry = require('../entry'),
-      Entries = require('../entries'),
-      DraggableEntry = require('../draggableEntry');
+const Entry = require('../../entry'),
+      Entries = require('../../entries'),
+      DraggableEntry = require('../../entry/draggable');
 
 const { path } = necessary,
+      { types } = Entry,
       { Button, React } = easy,
-      { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = path;
+      { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = path,
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class DirectoryNameDraggableEntry extends DraggableEntry {
   constructor(selector, name, explorer) {
-    const type = Entry.types.DIRECTORY_NAME;
+    const type = DIRECTORY_NAME_TYPE;
 
     super(selector, name, explorer, type);
 
@@ -34,13 +36,14 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     const entryType = entry.getType();
 
     switch (entryType) {
-      case Entry.types.MARKER:
-      case Entry.types.FILE_NAME:
+      case FILE_NAME_TYPE:
+      case FILE_NAME_MARKER_TYPE:
+      case DIRECTORY_NAME_MARKER_TYPE:
         before = true;
           
         break;
 
-      case Entry.types.DIRECTORY_NAME:
+      case DIRECTORY_NAME_TYPE:
         const name = this.getName(),
               entryName = entry.getName();
 
@@ -430,8 +433,8 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       Class = DirectoryNameDraggableEntry;
     }
 
-    const { name, explorer, collapsed } = properties,
-          directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, name, explorer);
+    const { collapsed } = properties,
+          directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties);
 
     directoryNameDraggableEntry.initialise(collapsed);
 
