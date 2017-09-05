@@ -236,6 +236,8 @@ class Explorer extends DropTarget {
   }
 
   moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath) {
+    let draggableEntry = null;
+    
     const explorer = fileNameDraggableEntry.getExplorer();
 
     let filePath;
@@ -253,11 +255,17 @@ class Explorer extends DropTarget {
 
       filePath = targetFilePath; ///
 
-      this.addFilePath(filePath);
-    }
-  }
+      const fileNameDraggableEntry = this.addFilePath(filePath);
 
+      draggableEntry = fileNameDraggableEntry;  ///
+    }
+    
+    return draggableEntry;
+  }
+  
   moveDirectoryNameDraggableEntry(directoryNameDraggableEntry, sourceDirectoryPath, targetDirectoryPath) {
+    let draggableEntry = null;
+    
     const explorer = directoryNameDraggableEntry.getExplorer();
     
     let directoryPath;
@@ -275,10 +283,13 @@ class Explorer extends DropTarget {
 
       directoryPath = targetDirectoryPath; ///
 
-      const collapsed = directoryNameDraggableEntry.isCollapsed();
-      
-      this.addDirectoryPath(directoryPath, collapsed);
+      const collapsed = directoryNameDraggableEntry.isCollapsed(),
+            directoryNameDraggableEntry = this.addDirectoryPath(directoryPath, collapsed);
+
+      draggableEntry = directoryNameDraggableEntry; ///
     }
+    
+    return draggableEntry;
   }
 
   openFileNameDraggableEntry(fileNameDraggableEntry) {

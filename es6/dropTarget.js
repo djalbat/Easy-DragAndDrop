@@ -96,17 +96,22 @@ class DropTarget extends Element {
 
         if (draggableEntryPath !== null) {
           const pathMap = pathMaps.find(function(pathMap) {
-                  const sourcePath = pathMap['sourcePath'],
+                  const { sourcePath } = pathMap,
                         found = (sourcePath === draggableEntryPath);
   
                   return found;
                 }),
-                sourcePath = pathMap['sourcePath'],
-                targetPath = pathMap['targetPath'];
+                { sourcePath, targetPath, callback } = pathMap;
 
-          this.moveDraggableEntry(draggableEntry, sourcePath, targetPath);
+          draggableEntry = this.moveDraggableEntry(draggableEntry, sourcePath, targetPath);
+          
+          if (callback) {
+            callback(draggableEntry);
+          }
         }
-      }.bind(this));
+
+        return draggableEntries;
+      }.bind(this), []);
 
       done();
     }.bind(this));
@@ -120,14 +125,16 @@ class DropTarget extends Element {
             sourceDirectoryPath = sourcePath, ///
             targetDirectoryPath = targetPath; ///
 
-      this.moveDirectoryNameDraggableEntry(directoryDraggableEntry, sourceDirectoryPath, targetDirectoryPath);
+      draggableEntry = this.moveDirectoryNameDraggableEntry(directoryDraggableEntry, sourceDirectoryPath, targetDirectoryPath);
     } else {
       const fileNameDraggableEntry = draggableEntry, ///
             sourceFilePath = sourcePath,  ///
-            targetFilePath = targetPath;  ///
+            targetFilePath = targetPath;
 
-      this.moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath);
+      draggableEntry = this.moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath);
     }
+
+    return draggableEntry;
   }
   
   addDropTarget(dropTarget) {

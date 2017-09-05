@@ -74,21 +74,29 @@ class RubbishBin extends DropTarget {
   }
 
   moveDirectoryNameDraggableEntry(directoryNameDraggableEntry, sourceDirectoryPath, targetDirectoryPath) {
+    const draggableEntry = null;
+
     if (targetDirectoryPath === null) {
       const explorer = directoryNameDraggableEntry.getExplorer(),
             directoryPath = sourceDirectoryPath;  ///
 
       explorer.removeDirectoryPath(directoryPath);
     }
+
+    return draggableEntry;
   }
 
   moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath) {
+    const draggableEntry = null;
+    
     if (targetFilePath === null) {
       const explorer = fileNameDraggableEntry.getExplorer(),
             filePath = sourceFilePath;  ///
 
       explorer.removeFilePath(filePath);
     }
+    
+    return draggableEntry;
   }
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
