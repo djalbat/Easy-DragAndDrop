@@ -26,6 +26,8 @@ class Entries extends Element {
           entry = fileNameDraggableEntry; ///
 
     this.addEntry(entry);
+    
+    return fileNameDraggableEntry;
   }
 
   addDirectoryNameDraggableEntry(directoryName, explorer, collapsed) {
@@ -34,6 +36,8 @@ class Entries extends Element {
           entry = directoryNameDraggableEntry;  ///
     
     this.addEntry(entry);
+    
+    return directoryNameDraggableEntry;
   }
 
   removeFileNameDraggableEntry(fileName) {

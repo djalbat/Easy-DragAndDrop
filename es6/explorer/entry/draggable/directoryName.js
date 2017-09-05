@@ -120,13 +120,15 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   }
 
   addFilePath(filePath) {
+    let fileNameDraggableEntry = null;
+
     const addIfNecessary = true,
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(filePath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
       const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
 
-      topmostDirectoryNameDraggableEntry.addFilePath(filePathWithoutTopmostDirectoryName);
+      fileNameDraggableEntry = topmostDirectoryNameDraggableEntry.addFilePath(filePathWithoutTopmostDirectoryName);
     } else {
       const fileName = filePath,  ///
             entriesFile = this.entries.isFileNameDraggableEntryPresent(fileName);
@@ -134,19 +136,23 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       if (!entriesFile) {
         const explorer = this.getExplorer();
         
-        this.entries.addFileNameDraggableEntry(fileName, explorer);
+        fileNameDraggableEntry = this.entries.addFileNameDraggableEntry(fileName, explorer);
       }
     }
+
+    return fileNameDraggableEntry;
   }
 
   addDirectoryPath(directoryPath, collapsed) {
+    let directoryNameDraggableEntry = null;
+
     const addIfNecessary = true,
           topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(directoryPath, addIfNecessary);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
       const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
-      topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
+      directoryNameDraggableEntry = topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
     } else {
       const directoryName = directoryPath,  ///
             entriesDirectoryNameDraggableEntry = this.entries.findDirectoryNameDraggableEntry(directoryName),
@@ -157,9 +163,11 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       } else {
         const explorer = this.getExplorer();
 
-        this.entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed);
+        directoryNameDraggableEntry = this.entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed);
       }
     }
+
+    return directoryNameDraggableEntry;
   }
 
   removeFilePath(filePath) {

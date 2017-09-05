@@ -19,19 +19,27 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   addFilePath(filePath) {
+    let fileNameDraggableEntry = null;
+
     const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutTopmostDirectoryName !== null) {
-      super.addFilePath(filePathWithoutTopmostDirectoryName);
+      fileNameDraggableEntry = super.addFilePath(filePathWithoutTopmostDirectoryName);
     }
+
+    return fileNameDraggableEntry;
   }
 
   addDirectoryPath(directoryPath, collapsed = false) {
+    let directoryNameDraggableEntry = null;
+    
     const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
     if (directoryPathWithoutTopmostDirectoryName !== null) {
-      super.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
+      directoryNameDraggableEntry = super.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
     }
+    
+    return directoryNameDraggableEntry;
   }
 
   removeFilePath(filePath) {
