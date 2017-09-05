@@ -253,9 +253,7 @@ class Explorer extends DropTarget {
 
       filePath = targetFilePath; ///
 
-      const recognised = fileNameDraggableEntry.isRecognised();
-
-      this.addFilePath(filePath, recognised);
+      this.addFilePath(filePath);
     }
   }
 

@@ -41,32 +41,12 @@ class FileNameDraggableEntry extends DraggableEntry {
     return before;
   }
 
-  isRecognised() {
-    const recognised = this.hasClass('recognised');
-
-    return recognised;
-  }
-
   retrieveSubEntries() {
     const subEntries = [];  ///
     
     return subEntries;
   }
   
-  setRecognised(recognised) {
-    recognised ?
-      this.recognise() :
-        this.overlook();
-  }
-
-  recognise() {
-    this.addClass('recognised');
-  }
-
-  overlook() {
-    this.removeClass('recognised');
-  }
-
   doubleClickHandler() {
     const explorer = this.getExplorer(),
           file = this; ///
@@ -74,10 +54,8 @@ class FileNameDraggableEntry extends DraggableEntry {
     explorer.openFileNameDraggableEntry(file);
   }
   
-  initialise(recognised)  {
+  initialise()  {
     super.initialise();
-    
-    this.setRecognised(recognised);
     
     const doubleClickHandler = this.doubleClickHandler.bind(this);
 
@@ -90,10 +68,9 @@ class FileNameDraggableEntry extends DraggableEntry {
       Class = FileNameDraggableEntry;
     }
 
-    const { recognised } = properties,
-          fileNameDraggableEntry = DraggableEntry.fromProperties(Class, properties);
+    const fileNameDraggableEntry = DraggableEntry.fromProperties(Class, properties);
 
-    fileNameDraggableEntry.initialise(recognised);
+    fileNameDraggableEntry.initialise();
 
     return fileNameDraggableEntry;
   }
@@ -102,10 +79,7 @@ class FileNameDraggableEntry extends DraggableEntry {
 Object.assign(FileNameDraggableEntry, {
   defaultProperties: {
     className: 'fileName'
-  },
-  ignoredProperties: [
-    'recognised'
-  ]
+  }
 });
 
 module.exports = FileNameDraggableEntry;

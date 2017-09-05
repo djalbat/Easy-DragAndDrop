@@ -18,11 +18,11 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     return true;
   }
 
-  addFilePath(filePath, recognised = true) {
+  addFilePath(filePath) {
     const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutTopmostDirectoryName !== null) {
-      super.addFilePath(filePathWithoutTopmostDirectoryName, recognised);
+      super.addFilePath(filePathWithoutTopmostDirectoryName);
     }
   }
 
