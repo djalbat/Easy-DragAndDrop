@@ -7,10 +7,10 @@ const Entry = require('../../entry'),
       Entries = require('../../entries'),
       DraggableEntry = require('../../entry/draggable');
 
-const { path } = necessary,
+const { pathUtilities } = necessary,
       { types } = Entry,
       { Button, React } = easy,
-      { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = path,
+      { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class DirectoryNameDraggableEntry extends DraggableEntry {

@@ -6,8 +6,8 @@ const easy = require('easy'),
 const options = require('./options');
 
 const { Element } = easy,
-      { array } = necessary,
-      { first, last } = array,
+      { arrayUtilities } = necessary,
+      { first, last } = arrayUtilities,
       { REMOVE_EMPTY_PARENT_DIRECTORIES } = options;
 
 class DropTarget extends Element {

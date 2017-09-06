@@ -5,6 +5,7 @@ const Entry = require('../../entry'),
       nameUtilities = require('../../../utilities/name');
 
 const { types } = Entry,
+      { nameIsBeforeEntryName } = nameUtilities,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class FileNameDraggableEntry extends DraggableEntry {
@@ -30,7 +31,7 @@ class FileNameDraggableEntry extends DraggableEntry {
         const name = this.getName(),
               entryName = entry.getName();
           
-        before = nameUtilities.nameIsBeforeEntryName(name, entryName);
+        before = nameIsBeforeEntryName(name, entryName);
         break;
 
       case DIRECTORY_NAME_TYPE:

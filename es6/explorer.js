@@ -11,11 +11,11 @@ const options = require('./options'),
 
 const { Element, React } = easy,
       { types } = Entry,
-      { path, array } = necessary,
-      { second } = array,
+      { pathUtilities, arrayUtilities } = necessary,
+      { second } = arrayUtilities,
       { NO_DRAGGING_WITHIN } = options,
       { DIRECTORY_NAME_MARKER_TYPE } = types,
-      { isPathTopmostDirectoryName, pathWithoutBottommostNameFromPath } = path;
+      { isPathTopmostDirectoryName, pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
   constructor(selector, moveHandler, openHandler = function(sourcePath) {}, options = {}) {

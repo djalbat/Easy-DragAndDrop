@@ -5,9 +5,9 @@ const necessary = require('necessary');
 const options = require('../../../../options'),
       DirectoryNameDraggableEntry = require('../../../entry/draggable/directoryName');
 
-const { path } = necessary,
+const { pathUtilities } = necessary,
       { NO_DRAGGING_INTO_SUB_DIRECTORIES } = options,
-      { pathWithoutTopmostDirectoryNameFromPath } = path;
+      { pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
 class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   retrieve() {

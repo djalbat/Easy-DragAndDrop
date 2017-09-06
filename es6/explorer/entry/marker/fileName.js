@@ -5,6 +5,7 @@ const Entry = require('../../entry'),
       nameUtilities = require('../../../utilities/name');
 
 const { types } = Entry,
+      { nameIsBeforeEntryName } = nameUtilities,
       { FILE_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_TYPE } = types;
 
 class FileNameMarkerEntry extends MarkerEntry {
@@ -24,7 +25,7 @@ class FileNameMarkerEntry extends MarkerEntry {
         const name = this.getName(),
               draggableEntryName = draggableEntry.getName();
 
-        before = nameUtilities.nameIsBeforeEntryName(name, draggableEntryName);
+        before = nameIsBeforeEntryName(name, draggableEntryName);
         break;
 
       case DIRECTORY_NAME_TYPE:

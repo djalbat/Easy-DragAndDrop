@@ -3,9 +3,9 @@
 const easy = require('easy'),
       necessary = require('necessary');
 
-const { array } = necessary,
-      { InputElement } = easy,
-      { first } = array;
+const { InputElement } = easy,
+      { arrayUtilities } = necessary,
+      { first } = arrayUtilities;
 
 class NameButton extends InputElement {
   getName() {
