@@ -97,7 +97,8 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
       removeTopmostDirectoryNameDraggableEntryMarkerEntry: this.removeMarkerEntry.bind(this), ///
       isTopmostDirectoryNameDraggableEntryMarked: this.isMarked.bind(this),  ///
       getTopmostDirectoryName: this.getName.bind(this),  ///
-      retrieveFilePaths: this.retrieveFilePaths.bind(this)
+      retrieveFilePaths: this.retrieveFilePaths.bind(this),
+      retrieveDirectoryPaths: this.retrieveDirectoryPaths.bind(this)
     });
   }
 

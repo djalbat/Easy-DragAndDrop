@@ -68,12 +68,18 @@ class Explorer extends DropTarget {
     
     return filePaths;
   }
+
+  getDirectoryPaths() {
+    const directoryPaths = this.retrieveDirectoryPaths();
+
+    return directoryPaths;
+  }
   
   addMarkerEntry(draggableEntry, directoryNameDraggableEntryOverlappingDraggableEntry) {
     const draggableEntryName = draggableEntry.getName(),
           draggableEntryType = draggableEntry.getType(),
           directoryOverlappingDraggableEntryPath = directoryNameDraggableEntryOverlappingDraggableEntry.getPath(),
-          markerEntryPath = directoryOverlappingDraggableEntryPath + '/' + draggableEntryName;
+          markerEntryPath = `${directoryOverlappingDraggableEntryPath}/${draggableEntryName}`;
 
     this.addTopmostDirectoryNameDraggableEntryMarkerEntry(markerEntryPath, draggableEntryType);
   }
@@ -373,7 +379,7 @@ function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
 }
 
 function prependTargetPathToDraggableEntryPath(draggableEntryPath,  targetPath) {
-  draggableEntryPath = targetPath + '/' + draggableEntryPath;
+  draggableEntryPath = `${targetPath}/${draggableEntryPath}`;
 
   return draggableEntryPath;
 }
@@ -381,7 +387,7 @@ function prependTargetPathToDraggableEntryPath(draggableEntryPath,  targetPath) 
 function replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath) {
   sourcePath = sourcePath.replace(/\(/g, '\\(').replace(/\)/g, '\\)');  ///
 
-  const regExp = new RegExp('^' + sourcePath + '(.*$)'),
+  const regExp = new RegExp(`'^${sourcePath}(.*$)`),
         matches = draggableEntryPath.match(regExp),
         secondMatch = second(matches);
 

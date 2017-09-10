@@ -301,6 +301,23 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return filePaths;
   }
 
+  retrieveDirectoryPaths() {
+    let directoryPaths = [];
+
+    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      const directoryNameDraggableEntryPath = directoryNameDraggableEntry.getPath(),
+            directoryNameDraggableEntryDirectoryPaths = directoryNameDraggableEntry.retrieveDirectoryPaths(),
+            directoryPath = directoryNameDraggableEntryPath,  ///
+            directoryDirectoryPaths = directoryNameDraggableEntryDirectoryPaths;
+
+      directoryPaths.push(directoryPath);
+
+      directoryPaths = directoryPaths.concat(directoryDirectoryPaths);
+    });
+
+    return directoryPaths;
+  }
+
   retrieveSubEntries() {
     let subEntries = [];
 
@@ -312,7 +329,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
 
     this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
       const subEntry = directoryNameDraggableEntry, ///
-           directoryNameDraggableEntrySubEntries = directoryNameDraggableEntry.retrieveSubEntries();
+            directoryNameDraggableEntrySubEntries = directoryNameDraggableEntry.retrieveSubEntries();
 
       subEntries.push(subEntry);
 
@@ -333,7 +350,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       draggableEntryPath = this.entries.retrieveDraggableEntryPath(draggableEntry);
 
       if (draggableEntryPath !== null) {
-        draggableEntryPath = name + '/' + draggableEntryPath;
+        draggableEntryPath = `${name}/${draggableEntryPath}`;
       }
     }
 
