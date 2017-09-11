@@ -387,7 +387,7 @@ function prependTargetPathToDraggableEntryPath(draggableEntryPath,  targetPath) 
 function replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath) {
   sourcePath = sourcePath.replace(/\(/g, '\\(').replace(/\)/g, '\\)');  ///
 
-  const regExp = new RegExp(`'^${sourcePath}(.*$)`),
+  const regExp = new RegExp(`^${sourcePath}(.*$)`),
         matches = draggableEntryPath.match(regExp),
         secondMatch = second(matches);
 
