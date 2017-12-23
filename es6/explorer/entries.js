@@ -109,13 +109,6 @@ class Entries extends Element {
 
     markerEntry.remove();
   }
-  
-  isMarked() {
-    const markerEntry = this.findMarkerEntry(),
-          marked = (markerEntry!== null);
-
-    return marked;
-  }
 
   isEmpty() {
     const entries = this.getEntries(),
@@ -124,7 +117,14 @@ class Entries extends Element {
 
     return empty;
   }
-  
+
+  isMarked() {
+    const markerEntry = this.findMarkerEntry(),
+          marked = (markerEntry!== null);
+
+    return marked;
+  }
+
   addEntry(entry) {
     const nextEntry = entry,
           previousEntry = this.findEntry(function(entry) {
@@ -315,6 +315,29 @@ class Entries extends Element {
           entries = childEntryListItemElements;  ///
 
     return entries;
+  }
+  
+  parentContext() {
+    return ({
+      isEmpty: this.isEmpty.bind(this),
+      isDraggableEntryPresent: this.isDraggableEntryPresent.bind(this),
+      isFileNameDraggableEntryPresent: this.isFileNameDraggableEntryPresent.bind(this),
+      isDirectoryNameDraggableEntryPresent: this.isDirectoryNameDraggableEntryPresent.bind(this),
+      addFileNameDraggableEntry: this.addFileNameDraggableEntry.bind(this),
+      removeFileNameDraggableEntry: this.removeFileNameDraggableEntry.bind(this),
+      addDirectoryNameDraggableEntry: this.addDirectoryNameDraggableEntry.bind(this),
+      removeDirectoryNameDraggableEntry: this.removeDirectoryNameDraggableEntry.bind(this),
+      forEachFileNameDraggableEntry: this.forEachFileNameDraggableEntry.bind(this),
+      forEachDirectoryNameDraggableEntry: this.forEachDirectoryNameDraggableEntry.bind(this),
+      someDirectoryNameDraggableEntry: this.someDirectoryNameDraggableEntry.bind(this),
+      findDirectoryNameDraggableEntry: this.findDirectoryNameDraggableEntry.bind(this),
+      areEntriesMarked: this.isMarked.bind(this), ///
+      entriesAddMarkerEntry: this.addMarkerEntry.bind(this),  ///
+      entriesRemoveMarkerEntry: this.removeMarkerEntry.bind(this), ///
+      entriesRetrieveDraggableEntryPath: this.retrieveDraggableEntryPath.bind(this),  ///
+      entriesRetrieveMarkedDirectoryNameDraggableEntry: this.retrieveMarkedDirectoryNameDraggableEntry.bind(this),  ///
+      entriesRetrieveDirectoryNameDraggableEntryOverlappingDraggableEntry: this.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry.bind(this) ///
+    });
   }
 
   static fromProperties(properties) { return Element.fromProperties(Entries, properties); }

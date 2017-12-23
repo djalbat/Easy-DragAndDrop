@@ -55,21 +55,8 @@ class FileNameDraggableEntry extends DraggableEntry {
     explorer.openFileNameDraggableEntry(file);
   }
   
-  initialise()  {
-    super.initialise();
-    
-    const doubleClickHandler = this.doubleClickHandler.bind(this);
-
-    this.onDoubleClick(doubleClickHandler);
-  }
-
-  static fromProperties(Class, properties) {
-    if (arguments.length === 1) {
-      properties = Class;
-      Class = FileNameDraggableEntry;
-    }
-
-    const fileNameDraggableEntry = DraggableEntry.fromProperties(Class, properties);
+  static fromProperties(properties) {
+    const fileNameDraggableEntry = DraggableEntry.fromProperties(FileNameDraggableEntry, properties);
 
     fileNameDraggableEntry.initialise();
 

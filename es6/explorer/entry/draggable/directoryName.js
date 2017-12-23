@@ -18,12 +18,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     const type = DIRECTORY_NAME_TYPE;
 
     super(selector, type, explorer);
-
-    const toggleButtonClickHandler = this.toggleButtonClickHandler.bind(this);
-    
-    this.entries = <Entries DirectoryNameDraggableEntry={DirectoryNameDraggableEntry} />;
-    
-    this.toggleButton = <Button className="toggle" onClick={toggleButtonClickHandler} />;
   }
 
   isDirectoryNameDraggableEntry() {
@@ -79,12 +73,12 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   isMarked() {
     let marked;
 
-    const entriesMarked = this.entries.isMarked();
+    const entriesMarked = this.areEntriesMarked();
 
     if (entriesMarked) {
       marked = entriesMarked;
     } else {
-      const directoryNameDraggableEntryMarked = this.entries.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      const directoryNameDraggableEntryMarked = this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
         const directoryNameDraggableEntryMarked = directoryNameDraggableEntry.isMarked();
 
         return directoryNameDraggableEntryMarked;
@@ -95,8 +89,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
 
     return marked;
   }
-
-  isEmpty() { return this.entries.isEmpty(); }
 
   isOverlappingDraggableEntry(draggableEntry) {
     let overlappingDraggableEntry;
@@ -131,12 +123,12 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       fileNameDraggableEntry = topmostDirectoryNameDraggableEntry.addFilePath(filePathWithoutTopmostDirectoryName);
     } else {
       const fileName = filePath,  ///
-            entriesFile = this.entries.isFileNameDraggableEntryPresent(fileName);
+            entriesFile = this.isFileNameDraggableEntryPresent(fileName);
 
       if (!entriesFile) {
         const explorer = this.getExplorer();
         
-        fileNameDraggableEntry = this.entries.addFileNameDraggableEntry(fileName, explorer);
+        fileNameDraggableEntry = this.addFileNameDraggableEntry(fileName, explorer);
       }
     }
 
@@ -155,7 +147,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       directoryNameDraggableEntry = topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
     } else {
       const directoryName = directoryPath,  ///
-            entriesDirectoryNameDraggableEntry = this.entries.findDirectoryNameDraggableEntry(directoryName),
+            entriesDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName),
             entriesDirectoryNameDraggableEntryPresent = (entriesDirectoryNameDraggableEntry !== null);
 
       if (entriesDirectoryNameDraggableEntryPresent) {
@@ -163,7 +155,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       } else {
         const explorer = this.getExplorer();
 
-        directoryNameDraggableEntry = this.entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, DirectoryNameDraggableEntry);
+        directoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, DirectoryNameDraggableEntry);
       }
     }
 
@@ -182,10 +174,10 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       removeEmptyParentDirectoryNameDraggableEntries = topmostDirectoryNameDraggableEntry.removeFilePath(filePathWithoutTopmostDirectoryName);
     } else {
       const fileName = filePath,  ///
-            entriesFile = this.entries.isFileNameDraggableEntryPresent(fileName);
+            entriesFile = this.isFileNameDraggableEntryPresent(fileName);
 
       if (entriesFile) {
-        removeEmptyParentDirectoryNameDraggableEntries = this.entries.removeFileNameDraggableEntry(fileName);
+        removeEmptyParentDirectoryNameDraggableEntries = this.removeFileNameDraggableEntry(fileName);
       }
     }
 
@@ -216,10 +208,10 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       removeEmptyParentDirectoryNameDraggableEntries = topmostDirectoryNameDraggableEntry.removeDirectoryPath(directoryPathWithoutTopmostDirectoryName);
     } else {
       const directoryName = directoryPath,  ///
-            entriesDirectoryNameDraggableEntryPresent = this.entries.isDirectoryNameDraggableEntryPresent(directoryName);
+            entriesDirectoryNameDraggableEntryPresent = this.isDirectoryNameDraggableEntryPresent(directoryName);
 
       if (entriesDirectoryNameDraggableEntryPresent) {
-        removeEmptyParentDirectoryNameDraggableEntries = this.entries.removeDirectoryNameDraggableEntry(directoryName);
+        removeEmptyParentDirectoryNameDraggableEntries = this.removeDirectoryNameDraggableEntry(directoryName);
       }
     }
 
@@ -244,9 +236,9 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     if (topmostDirectoryName === null) {
       const markerName = markerPath;  ///
 
-      this.entries.addMarkerEntry(markerName, draggableEntryType);
+      this.entriesAddMarkerEntry(markerName, draggableEntryType);
     } else {
-      const topmostDirectoryNameDraggableEntry = this.entries.findDirectoryNameDraggableEntry(topmostDirectoryName),
+      const topmostDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(topmostDirectoryName),
             markerPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(markerPath);
 
       topmostDirectoryNameDraggableEntry.addMarkerEntry(markerPathWithoutTopmostDirectoryName, draggableEntryType);
@@ -256,14 +248,14 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   removeMarkerEntry() {
     let removed;
 
-    const entriesMarked = this.entries.isMarked();
+    const entriesMarked = this.areEntriesMarked();
     
     if (entriesMarked) {
-      this.entries.removeMarkerEntry();
+      this.entriesRemoveMarkerEntry();
 
       removed = true;
     } else {
-      removed = this.entries.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      removed = this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
         const removed = directoryNameDraggableEntry.removeMarkerEntry();
         
         return removed;
@@ -272,14 +264,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     
     return removed;
   }
-
-  isDraggableEntryPresent(name) { return this.entries.isDraggableEntryPresent(name); }
-
-  forEachFileNameDraggableEntry(callback) { this.entries.forEachFileNameDraggableEntry(callback); }
-
-  forEachDirectoryNameDraggableEntry(callback) { this.entries.forEachDirectoryNameDraggableEntry(callback); }
-
-  someDirectoryNameDraggableEntry(callback) { this.entries.someDirectoryNameDraggableEntry(callback); }
 
   retrieveFilePaths() {
     let filePaths = [];
@@ -347,7 +331,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     if (draggableEntry === this) {
       draggableEntryPath = name;  ///
     } else {
-      draggableEntryPath = this.entries.retrieveDraggableEntryPath(draggableEntry);
+      draggableEntryPath = this.entriesRetrieveDraggableEntryPath(draggableEntry);
 
       if (draggableEntryPath !== null) {
         draggableEntryPath = `${name}/${draggableEntryPath}`;
@@ -366,17 +350,17 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       topmostDirectoryNameDraggableEntry = null;
     } else {
       if (addIfNecessary) {
-        const entriesDirectoryNameDraggableEntryPresent = this.entries.isDirectoryNameDraggableEntryPresent(topmostDirectoryName);
+        const entriesDirectoryNameDraggableEntryPresent = this.isDirectoryNameDraggableEntryPresent(topmostDirectoryName);
 
         if (!entriesDirectoryNameDraggableEntryPresent) {
           const collapsed = true, ///
                 explorer = this.getExplorer();
 
-          this.entries.addDirectoryNameDraggableEntry(topmostDirectoryName, explorer, collapsed, DirectoryNameDraggableEntry);
+          this.addDirectoryNameDraggableEntry(topmostDirectoryName, explorer, collapsed, DirectoryNameDraggableEntry);
         }
       }
 
-      const directoryNameDraggableEntry = this.entries.findDirectoryNameDraggableEntry(topmostDirectoryName);
+      const directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(topmostDirectoryName);
 
       topmostDirectoryNameDraggableEntry = directoryNameDraggableEntry; ///
     }
@@ -385,7 +369,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   }
 
   retrieveMarkedDirectoryNameDraggableEntry() {
-    let markedDirectoryNameDraggableEntry = this.entries.retrieveMarkedDirectoryNameDraggableEntry();
+    let markedDirectoryNameDraggableEntry = this.entriesRetrieveMarkedDirectoryNameDraggableEntry();
 
     if (markedDirectoryNameDraggableEntry === null) {
       const marked = this.isMarked();
@@ -404,7 +388,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     const overlappingDraggableEntry = this.isOverlappingDraggableEntry(draggableEntry);
 
     if (overlappingDraggableEntry) {
-      directoryNameDraggableEntryOverlappingDraggableEntry = this.entries.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
+      directoryNameDraggableEntryOverlappingDraggableEntry = this.entriesRetrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
 
       if (directoryNameDraggableEntryOverlappingDraggableEntry === null) {
         directoryNameDraggableEntryOverlappingDraggableEntry = this;
@@ -439,17 +423,22 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   toggle() {
     this.toggleClass('collapsed');
   }
+
+  childElements(properties) {
+    const childElements = super.childElements(properties),
+          toggleButtonClickHandler = this.toggleButtonClickHandler.bind(this);
+
+    childElements.unshift(<Button className="toggle" onClick={toggleButtonClickHandler} />);
+
+    childElements.push(<Entries />);
+
+    return childElements;
+  }
   
   initialise(collapsed) {
-    super.initialise();
-    
-    this.onDoubleClick(this.doubleClickHandler.bind(this));
-
-    this.append(this.entries);
-
-    this.prepend(this.toggleButton);
-
     this.setCollapsed(collapsed);
+
+    super.initialise();
   }
   
   static fromProperties(Class, properties) {

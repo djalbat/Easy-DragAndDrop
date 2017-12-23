@@ -271,19 +271,21 @@ class DraggableEntry extends Entry {
   childElements(properties) {
     const { name } = properties;
 
-    return(
+    return ([
 
       <NameButton>{name}</NameButton>
 
-    );
+    ]);
   }
 
-  initialise() {
+  initialise(properties) {
     this.assignContext();
 
-    const mouseDownHandler = this.mouseDownHandler.bind(this);
-
+    const mouseDownHandler = this.mouseDownHandler.bind(this),
+          doubleClickHandler = this.doubleClickHandler.bind(this);
+    
     this.onMouseDown(mouseDownHandler);
+    this.onDoubleClick(doubleClickHandler);
   }
 
   static fromProperties(Class, properties) {
