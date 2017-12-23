@@ -14,12 +14,6 @@ const { Element, React } = easy,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class Entries extends Element {
-  constructor(selector, DirectoryNameDraggableEntry) {
-    super(selector);
-
-    this.DirectoryNameDraggableEntry = DirectoryNameDraggableEntry;
-  }
-  
   addFileNameDraggableEntry(fileName, explorer) {
     const name = fileName,
           fileNameDraggableEntry = <FileNameDraggableEntry name={name} explorer={explorer} />,
@@ -30,9 +24,9 @@ class Entries extends Element {
     return fileNameDraggableEntry;
   }
 
-  addDirectoryNameDraggableEntry(directoryName, explorer, collapsed) {
+  addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, DirectoryNameDraggableEntry) {
     const name = directoryName,
-          directoryNameDraggableEntry = <this.DirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />,
+          directoryNameDraggableEntry = <DirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />,
           entry = directoryNameDraggableEntry;  ///
     
     this.addEntry(entry);
@@ -323,22 +317,14 @@ class Entries extends Element {
     return entries;
   }
 
-  static fromProperties(properties) {
-    const { DirectoryNameDraggableEntry } = properties,
-          entries = Element.fromProperties(Entries, properties, DirectoryNameDraggableEntry);
-    
-    return entries;
-  }
+  static fromProperties(properties) { return Element.fromProperties(Entries, properties); }
 }
 
 Object.assign(Entries, {
   tagName: 'ul',
   defaultProperties: {
     className: 'entries'
-  },
-  ignoredProperties: [
-    'DirectoryNameDraggableEntry'
-  ]
+  }
 });
 
 module.exports = Entries;

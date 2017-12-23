@@ -163,7 +163,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       } else {
         const explorer = this.getExplorer();
 
-        directoryNameDraggableEntry = this.entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed);
+        directoryNameDraggableEntry = this.entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, DirectoryNameDraggableEntry);
       }
     }
 
@@ -372,7 +372,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
           const collapsed = true, ///
                 explorer = this.getExplorer();
 
-          this.entries.addDirectoryNameDraggableEntry(topmostDirectoryName, explorer, collapsed);
+          this.entries.addDirectoryNameDraggableEntry(topmostDirectoryName, explorer, collapsed, DirectoryNameDraggableEntry);
         }
       }
 
