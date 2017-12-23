@@ -57,10 +57,6 @@ class DraggableEntry extends Entry {
     return overlappingCollapsedBounds;
   }
 
-  setName(name) { this.nameButton.setName(name); }
-
-  onDoubleClick(handler) { this.nameButton.onDoubleClick(handler); }
-
   startDragging(mouseTop, mouseLeft) {
     const escapeKeyStopsDraggingOptionPresent = this.explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING),
           bounds = this.getBounds(),
@@ -277,7 +273,7 @@ class DraggableEntry extends Entry {
 
     return(
 
-        <NameButton>{name}</NameButton>
+      <NameButton>{name}</NameButton>
 
     );
   }
