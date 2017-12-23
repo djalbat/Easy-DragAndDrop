@@ -11,22 +11,21 @@ class NameButton extends InputElement {
   getName() {
     const childElements = this.getChildElements(),
           firstChildElement = first(childElements),
-          text = firstChildElement.getText(),
-          name = text; ///
+          firstChildElementText = firstChildElement.getText(),
+          name = firstChildElementText; ///
 
     return name;
   }
 
-  setName(name) {
-    const text = name, ///
-          childElements = this.getChildElements(),
-          firstChildElement = first(childElements);
-
-    firstChildElement.setText(text);
-  }
-  
   onDoubleClick(handler) {
     this.on('dblclick', handler);
+  }
+  
+  parentContext() {
+    return ({
+      getName: this.getName.bind(this),
+      onDoubleClick: this.onDoubleClick.bind(this)
+    });
   }
   
   static fromProperties(properties) { return InputElement.fromProperties(NameButton, properties); }

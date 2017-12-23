@@ -96,11 +96,11 @@ class Entries extends Element {
     const name = markerName;  ///
 
     switch (draggableEntryType) {
-      case FILE_NAME_TYPE:
+      case FILE_NAME_TYPE :
         markerEntry = <FileNameMarkerEntry name={name} />;
         break;
 
-      case DIRECTORY_NAME_TYPE:
+      case DIRECTORY_NAME_TYPE :
         markerEntry = <DirectoryNameMarkerEntry name={name} />;
         break;
     }
@@ -286,7 +286,7 @@ class Entries extends Element {
     const entries = this.getEntries(),
           entry = entries.find(function(entry) {
             const entryType = entry.getType(),
-                typesIncludesEntryType = types.includes(entryType);
+                  typesIncludesEntryType = types.includes(entryType);
 
             if (typesIncludesEntryType) {
               const found = callback(entry);
@@ -317,8 +317,8 @@ class Entries extends Element {
   }
 
   getEntries() {
-    const childListEntryElements = this.getChildElements('li.entry'),
-          entries = childListEntryElements;  ///
+    const childEntryListItemElements = this.getChildElements('li.entry'),
+          entries = childEntryListItemElements;  ///
 
     return entries;
   }

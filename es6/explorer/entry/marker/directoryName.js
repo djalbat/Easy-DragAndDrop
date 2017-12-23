@@ -10,7 +10,7 @@ class DirectoryNameMarkerEntry extends MarkerEntry {
   constructor(selector, name) {
     const type = DIRECTORY_NAME_MARKER_TYPE;
     
-    super(selector, name, type);
+    super(selector, type, name);
   }
   
   isBefore(draggableEntry) {
@@ -36,13 +36,7 @@ class DirectoryNameMarkerEntry extends MarkerEntry {
     return before;
   }
   
-  static fromProperties(properties) { 
-    const draggableNameMarkerEntry = MarkerEntry.fromProperties(DirectoryNameMarkerEntry, properties);
-
-    draggableNameMarkerEntry.initialise();
-    
-    return draggableNameMarkerEntry;
-  }
+  static fromProperties(properties) { return MarkerEntry.fromProperties(DirectoryNameMarkerEntry, properties); }
 }
 
 Object.assign(DirectoryNameMarkerEntry, {

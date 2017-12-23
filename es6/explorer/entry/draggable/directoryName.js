@@ -14,10 +14,10 @@ const { pathUtilities } = necessary,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class DirectoryNameDraggableEntry extends DraggableEntry {
-  constructor(selector, name, explorer) {
+  constructor(selector, explorer) {
     const type = DIRECTORY_NAME_TYPE;
 
-    super(selector, name, explorer, type);
+    super(selector, type, explorer);
 
     const toggleButtonClickHandler = this.toggleButtonClickHandler.bind(this);
     

@@ -4,17 +4,14 @@ const easy = require('easy'),
       necessary = require('necessary');
 
 const options = require('./options'),
-      Entry = require('./explorer/entry'),
       DropTarget = require('./dropTarget'),
       DirectoryNameMarkerEntry = require('./explorer/entry/marker/directoryName'),
       TopmostDirectoryNameDraggableEntry = require('./explorer/entry/draggable/directoryName/topmost');
 
-const { Element, React } = easy,
-      { types } = Entry,
-      { pathUtilities, arrayUtilities } = necessary,
-      { second } = arrayUtilities,
+const { pathUtilities, arrayUtilities } = necessary,
+      { Element, React } = easy,
+      { first, second } = arrayUtilities,
       { NO_DRAGGING_WITHIN } = options,
-      { DIRECTORY_NAME_MARKER_TYPE } = types,
       { isPathTopmostDirectoryName, pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
@@ -109,15 +106,17 @@ class Explorer extends DropTarget {
   }
 
   findTopmostDirectoryNameMarkerEntry() {
-    const childListEntryElements = this.getChildElements('li.entry'),
-          childEntries = childListEntryElements,  ///
-          topmostDirectoryNameMarkerEntry = childEntries.find(function(childEntry) {
-            const childEntryType = childEntry.getType(),
-                  found = (childEntryType === DIRECTORY_NAME_MARKER_TYPE);
-                
-            return found;
-          }) || null; /// 
+    let topmostDirectoryNameMarkerEntry = null;
 
+    const childDirectoryNameMarkerEntryListItemElements = this.getChildElements('li.directoryName marker entry'),
+         childDirectoryNameMarkerEntryListItemElementsLength = childDirectoryNameMarkerEntryListItemElements.length;
+
+    if (childDirectoryNameMarkerEntryListItemElementsLength === 1) {
+      const firstChildDirectoryNameMarkerEntryListItemElement = first(childDirectoryNameMarkerEntryListItemElements);
+
+      topmostDirectoryNameMarkerEntry = firstChildDirectoryNameMarkerEntryListItemElement;  ///
+
+    }
     
     return topmostDirectoryNameMarkerEntry;
   }

@@ -2,35 +2,20 @@
 
 const easy = require('easy');
 
-const NameButton = require('./nameButton');
-
 const { Element, React } = easy;
 
 class Entry extends Element {
-  constructor(selector, name, type) {
+  constructor(selector, type) {
     super(selector);
-
-    this.nameButton = <NameButton>{name}</NameButton>;
 
     this.type = type;
   }
-
-  getName() { return this.nameButton.getName(); }
 
   getType() {
     return this.type;
   }
 
-  initialise() {
-    this.append(this.nameButton);
-  }
-  
-  static fromProperties(Class, properties, ...remainingArguments) {
-    const { name } = properties,
-          entry = Element.fromProperties(Class, properties, name, ...remainingArguments);
-    
-    return entry;
-  }
+  static fromProperties(Class, properties, ...remainingArguments) { return Element.fromProperties(Class, properties, ...remainingArguments); }
 }
 
 Object.assign(Entry, {

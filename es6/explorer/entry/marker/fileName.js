@@ -12,7 +12,7 @@ class FileNameMarkerEntry extends MarkerEntry {
   constructor(selector, name) {
     const type = FILE_NAME_MARKER_TYPE;
 
-    super(selector, name, type);
+    super(selector, type, name);
   }
 
   isBefore(draggableEntry) {
@@ -36,13 +36,7 @@ class FileNameMarkerEntry extends MarkerEntry {
     return before;
   }
   
-  static fromProperties(properties) { 
-    const fileNameMarkerEntry = MarkerEntry.fromProperties(FileNameMarkerEntry, properties);
-
-    fileNameMarkerEntry.initialise();
-    
-    return fileNameMarkerEntry;
-  }
+  static fromProperties(properties) { return MarkerEntry.fromProperties(FileNameMarkerEntry, properties); }
 }
 
 Object.assign(FileNameMarkerEntry, {

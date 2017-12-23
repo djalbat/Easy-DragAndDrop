@@ -40,6 +40,14 @@ ul.explorer li.entry > button.name {
   background-color: transparent;
 }
 
+ul.explorer li.marker.entry {
+  height: 1.75rem;
+  width: 3rem;
+  background-image: url("marker.png");
+  background-position: 1.5rem 0;
+  background-repeat: no-repeat;
+}
+
 ul.explorer li.draggable.entry > button.toggle {
   width: 1.5rem;
   height: 0;
@@ -59,13 +67,6 @@ ul.explorer li.collapsed.directoryName.draggable.entry > button.toggle::before {
 ul.explorer li.fileName.draggable.entry > button.name {
   padding-left: 3rem;
   background-image: url("file.png");
-  background-position: 1.5rem 0;
-}
-
-ul.explorer li.marker.entry > button.name {
-  width: 3rem;
-  color: rgba(0, 0, 0, 0);
-  background-image: url("marker.png");
   background-position: 1.5rem 0;
 }
 
