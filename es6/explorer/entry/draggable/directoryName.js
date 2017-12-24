@@ -447,7 +447,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       Class = DirectoryNameDraggableEntry;
     }
 
-    const { collapsed } = properties,
+    const { collapsed = false } = properties,
           directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties);
 
     directoryNameDraggableEntry.initialise(collapsed);

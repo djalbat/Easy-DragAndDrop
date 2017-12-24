@@ -30,7 +30,7 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     return fileNameDraggableEntry;
   }
 
-  addDirectoryPath(directoryPath, collapsed = false) {
+  addDirectoryPath(directoryPath, collapsed) {
     let directoryNameDraggableEntry = null;
     
     const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
