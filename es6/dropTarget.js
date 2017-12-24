@@ -3,11 +3,13 @@
 const easy = require('easy'),
       necessary = require('necessary');
 
-const options = require('./options');
+const options = require('./options'),
+      entryTypes = require('./entryTypes');
 
 const { Element } = easy,
       { arrayUtilities } = necessary,
       { first, last } = arrayUtilities,
+      { DIRECTORY_NAME_TYPE } = entryTypes,
       { REMOVE_EMPTY_PARENT_DIRECTORIES } = options;
 
 class DropTarget extends Element {
@@ -118,7 +120,8 @@ class DropTarget extends Element {
   }
 
   moveDraggableEntry(draggableEntry, sourcePath, targetPath) {
-    const draggableEntryDirectoryNameDraggableEntry = draggableEntry.isDirectoryNameDraggableEntry();
+    const draggableEntryType = draggableEntry.getType(),
+          draggableEntryDirectoryNameDraggableEntry = (draggableEntryType === DIRECTORY_NAME_TYPE);
 
     if (draggableEntryDirectoryNameDraggableEntry) {
       const directoryDraggableEntry = draggableEntry,  ///

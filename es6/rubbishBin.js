@@ -2,9 +2,11 @@
 
 const easy = require('easy');
 
-const DropTarget = require('./dropTarget');
+const DropTarget = require('./dropTarget'),
+      entryTypes = require('./entryTypes');
 
-const { Element } = easy;
+const { Element } = easy,
+      { DIRECTORY_NAME_TYPE } = entryTypes;
 
 class RubbishBin extends DropTarget {
   constructor(selector, removeHandler) {
@@ -150,7 +152,8 @@ module.exports = RubbishBin;
 
 function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
   const draggableEntryPath = draggableEntry.getPath(),
-        draggableEntryDirectoryNameDraggableEntry = draggableEntry.isDirectoryNameDraggableEntry(),
+        draggableEntryType = draggableEntry.getType(),
+        draggableEntryDirectoryNameDraggableEntry = (draggableEntryType === DIRECTORY_NAME_TYPE),
         directory = draggableEntryDirectoryNameDraggableEntry;  ///
 
   targetPath = null;  ///

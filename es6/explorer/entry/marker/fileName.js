@@ -1,12 +1,11 @@
 'use strict';
 
-const Entry = require('../../entry'),
+const entryTypes = require('../../../entryTypes'),
       MarkerEntry = require('../../entry/marker'),
       nameUtilities = require('../../../utilities/name');
 
-const { types } = Entry,
-      { nameIsBeforeEntryName } = nameUtilities,
-      { FILE_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_TYPE } = types;
+const { nameIsBeforeEntryName } = nameUtilities,
+      { FILE_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_TYPE } = entryTypes;
 
 class FileNameMarkerEntry extends MarkerEntry {
   constructor(selector, name) {

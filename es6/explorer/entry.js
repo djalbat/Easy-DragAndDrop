@@ -25,13 +25,7 @@ Object.assign(Entry, {
   },
   ignoredProperties: [
     'name'
-  ],
-  types: {
-    FILE_NAME_TYPE: 'FILE_NAME_TYPE',
-    DIRECTORY_NAME_TYPE: 'DIRECTORY_NAME_TYPE',
-    FILE_NAME_MARKER_TYPE: 'FILE_NAME_MARKER_TYPE',
-    DIRECTORY_NAME_MARKER_TYPE: 'DIRECTORY_NAME_MARKER_TYPE'
-  }
+  ]
 });
 
 module.exports = Entry;

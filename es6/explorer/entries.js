@@ -3,15 +3,14 @@
 const easy = require('easy');
 
 const options = require('../options'),
-      Entry = require('./entry'),
+      entryTypes = require('../entryTypes'),
       FileNameMarkerEntry = require('./entry/marker/fileName'),
       FileNameDraggableEntry = require('./entry/draggable/fileName'),
       DirectoryNameMarkerEntry = require('./entry/marker/directoryName');
 
 const { Element, React } = easy,
-      { types } = Entry,
       { REMOVE_EMPTY_PARENT_DIRECTORIES } = options,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
 
 class Entries extends Element {
   addFileNameDraggableEntry(fileName, explorer) {

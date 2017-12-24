@@ -3,25 +3,20 @@
 const easy = require('easy'),
       necessary = require('necessary');
 
-const Entry = require('../../entry'),
-      Entries = require('../../entries'),
+const Entries = require('../../entries'),
+      entryTypes = require('../../../entryTypes'),
       DraggableEntry = require('../../entry/draggable');
 
 const { pathUtilities } = necessary,
-      { types } = Entry,
       { Button, React } = easy,
       { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
 
 class DirectoryNameDraggableEntry extends DraggableEntry {
   constructor(selector, explorer) {
     const type = DIRECTORY_NAME_TYPE;
 
     super(selector, type, explorer);
-  }
-
-  isDirectoryNameDraggableEntry() {
-    return true;
   }
 
   isBefore(entry) {

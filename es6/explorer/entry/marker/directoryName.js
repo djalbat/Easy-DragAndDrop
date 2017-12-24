@@ -1,10 +1,9 @@
 'use strict';
 
-const Entry = require('../../entry'),
+const entryTypes = require('../../../entryTypes'),
       MarkerEntry = require('../../entry/marker');
 
-const { types } = Entry,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
+const { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
 
 class DirectoryNameMarkerEntry extends MarkerEntry {
   constructor(selector, name) {

@@ -5,6 +5,7 @@ const easy = require('easy'),
 
 const options = require('./options'),
       DropTarget = require('./dropTarget'),
+      entryTypes = require('./entryTypes'),
       DirectoryNameMarkerEntry = require('./explorer/entry/marker/directoryName'),
       TopmostDirectoryNameDraggableEntry = require('./explorer/entry/draggable/directoryName/topmost');
 
@@ -12,6 +13,7 @@ const { pathUtilities, arrayUtilities } = necessary,
       { Element, React } = easy,
       { first, second } = arrayUtilities,
       { NO_DRAGGING_WITHIN } = options,
+      { DIRECTORY_NAME_TYPE } = entryTypes,
       { isPathTopmostDirectoryName, pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
@@ -360,7 +362,8 @@ module.exports = Explorer;
 
 function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
   const draggableEntryPath = draggableEntry.getPath(),
-        draggableEntryDirectoryNameDraggableEntry = draggableEntry.isDirectoryNameDraggableEntry(),
+        draggableEntryType = draggableEntry.getType(),
+        draggableEntryDirectoryNameDraggableEntry = (draggableEntryType === DIRECTORY_NAME_TYPE),
         directory = draggableEntryDirectoryNameDraggableEntry;  ///
 
   targetPath = (sourcePath === null) ?

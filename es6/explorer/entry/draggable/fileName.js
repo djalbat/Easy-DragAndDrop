@@ -1,22 +1,17 @@
 'use strict';
 
-const Entry = require('../../entry'),
+const entryTypes = require('../../../entryTypes'),
       DraggableEntry = require('../../entry/draggable'),
       nameUtilities = require('../../../utilities/name');
 
-const { types } = Entry,
-      { nameIsBeforeEntryName } = nameUtilities,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
+const { nameIsBeforeEntryName } = nameUtilities,
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
 
 class FileNameDraggableEntry extends DraggableEntry {
   constructor(selector, explorer) {
     const type = FILE_NAME_TYPE;
 
     super(selector, type, explorer);
-  }
-
-  isDirectoryNameDraggableEntry() {
-    return false;
   }
 
   isBefore(entry) {
