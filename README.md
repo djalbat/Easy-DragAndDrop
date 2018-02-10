@@ -34,6 +34,8 @@ You can also clone the repository with [Git](https://git-scm.com/)...
 
 ## Usage
 
+Only building with [Node.js](http://nodejs.org) (or equivalent) is supported, there is no support for the browser anymore. The usage is as follows:
+
 ```js
 const easydraganddrop = require('easy-draganddrop'),
       { Explorer, RubbishBin } = easydraganddrop;
@@ -183,7 +185,7 @@ If no remove handler is provided the array of path maps is left unchanged.
 
 ## CSS
 
-There is a fair amount of CSS. Some of it is functional, in the sense that it the elements will not work properly without it. You should also include the `easy-draganddrop.css` file, found in the `dist/` directory, together with the PNG files therein, at least to get yourself started. The positioning of the background images is left deliberately awry, you will need to adjust this aspect at least.
+There is a fair amount of CSS. Some of it is functional, in the sense that it the elements will not work properly without it. You should also include the `easy-draganddrop.css` file, found in the `css/` directory, together with the PNG files therein, at least to get yourself started. The positioning of the background images is left deliberately awry, you will need to adjust this aspect at least.
 
 ## Compiling from source
 
