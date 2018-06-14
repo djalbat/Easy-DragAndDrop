@@ -166,7 +166,7 @@ class DropTarget extends Element {
     const dropTargets = [];
     
     this.setState({
-      dropTargets: dropTargets
+      dropTargets
     });
   }  
 }

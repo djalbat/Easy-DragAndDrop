@@ -161,9 +161,9 @@ function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
   sourcePath = draggableEntryPath;  ///
 
   const pathMap = {
-    sourcePath: sourcePath,
-    targetPath: targetPath,
-    directory: directory
+    sourcePath,
+    targetPath,
+    directory
   };
 
   return pathMap;

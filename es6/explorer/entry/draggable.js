@@ -217,8 +217,8 @@ class DraggableEntry extends Entry {
     left = `${left}px`; ///
 
     const css = {
-      top: top,
-      left: left
+      top,
+      left
     };
 
     this.css(css);
@@ -240,19 +240,19 @@ class DraggableEntry extends Entry {
 
   setTimeout(timeout) {
     this.updateState({
-      timeout: timeout
+      timeout
     });
   }
 
   setTopOffset(topOffset) {
     this.updateState({
-      topOffset: topOffset
+      topOffset
     });
   }
 
   setLeftOffset(leftOffset) {
     this.updateState({
-      leftOffset: leftOffset
+      leftOffset
     });
   }
 
@@ -262,9 +262,9 @@ class DraggableEntry extends Entry {
           leftOffset = null;
     
     this.setState({
-      timeout: timeout,
-      topOffset: topOffset,
-      leftOffset: leftOffset
+      timeout,
+      topOffset,
+      leftOffset
     });
   }
 

@@ -22,9 +22,12 @@ class NameButton extends InputElement {
   }
   
   parentContext() {
+	  const getName = this.getName.bind(this),
+				  onDoubleClick = this.onDoubleClick.bind(this);
+
     return ({
-      getName: this.getName.bind(this),
-      onDoubleClick: this.onDoubleClick.bind(this)
+      getName,
+      onDoubleClick
     });
   }
   

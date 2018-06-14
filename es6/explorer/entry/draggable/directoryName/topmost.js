@@ -84,21 +84,36 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   }
 
   parentContext() {
+	  const addFilePath = this.addFilePath.bind(this),
+				  removeFilePath = this.removeFilePath.bind(this),
+				  addDirectoryPath = this.addDirectoryPath.bind(this),
+				  removeDirectoryPath = this.removeDirectoryPath.bind(this),
+				  retrieveDraggableEntryPath = this.retrieveDraggableEntryPath.bind(this),
+				  retrieveTopmostDirectoryNameDraggableEntry = this.retrieve.bind(this),  ///
+				  retrieveMarkedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry.bind(this),
+				  retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry.bind(this),
+				  addTopmostDirectoryNameDraggableEntryMarkerEntry = this.addMarkerEntry.bind(this), ///
+				  removeTopmostDirectoryNameDraggableEntryMarkerEntry = this.removeMarkerEntry.bind(this), ///
+				  isTopmostDirectoryNameDraggableEntryMarked = this.isMarked.bind(this),  ///
+				  getTopmostDirectoryName = this.getName.bind(this),  ///
+				  retrieveFilePaths = this.retrieveFilePaths.bind(this),
+				  retrieveDirectoryPaths = this.retrieveDirectoryPaths.bind(this);
+
     return ({
-      addFilePath: this.addFilePath.bind(this),
-      removeFilePath: this.removeFilePath.bind(this),
-      addDirectoryPath: this.addDirectoryPath.bind(this),
-      removeDirectoryPath: this.removeDirectoryPath.bind(this),
-      retrieveDraggableEntryPath: this.retrieveDraggableEntryPath.bind(this),
-      retrieveTopmostDirectoryNameDraggableEntry: this.retrieve.bind(this),  ///
-      retrieveMarkedDirectoryNameDraggableEntry: this.retrieveMarkedDirectoryNameDraggableEntry.bind(this),
-      retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry: this.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry.bind(this),
-      addTopmostDirectoryNameDraggableEntryMarkerEntry: this.addMarkerEntry.bind(this), ///
-      removeTopmostDirectoryNameDraggableEntryMarkerEntry: this.removeMarkerEntry.bind(this), ///
-      isTopmostDirectoryNameDraggableEntryMarked: this.isMarked.bind(this),  ///
-      getTopmostDirectoryName: this.getName.bind(this),  ///
-      retrieveFilePaths: this.retrieveFilePaths.bind(this),
-      retrieveDirectoryPaths: this.retrieveDirectoryPaths.bind(this)
+      addFilePath,
+      removeFilePath,
+      addDirectoryPath,
+      removeDirectoryPath,
+      retrieveDraggableEntryPath,
+      retrieveTopmostDirectoryNameDraggableEntry,
+      retrieveMarkedDirectoryNameDraggableEntry,
+      retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry,
+      addTopmostDirectoryNameDraggableEntryMarkerEntry,
+      removeTopmostDirectoryNameDraggableEntryMarkerEntry,
+      isTopmostDirectoryNameDraggableEntryMarked,
+      getTopmostDirectoryName,
+      retrieveFilePaths,
+      retrieveDirectoryPaths
     });
   }
 

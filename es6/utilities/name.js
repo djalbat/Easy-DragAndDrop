@@ -71,7 +71,7 @@ function nameIsBeforeEntryName(name, entryName) {
 }
 
 module.exports = {
-  extensionFromName: extensionFromName,
-  nameWithoutExtensionFromName: nameWithoutExtensionFromName,
-  nameIsBeforeEntryName: nameIsBeforeEntryName
+  extensionFromName,
+  nameWithoutExtensionFromName,
+  nameIsBeforeEntryName
 };

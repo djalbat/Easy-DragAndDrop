@@ -317,25 +317,44 @@ class Entries extends Element {
   }
   
   parentContext() {
+	  const isEmpty = this.isEmpty.bind(this),
+				  isDraggableEntryPresent = this.isDraggableEntryPresent.bind(this),
+				  isFileNameDraggableEntryPresent = this.isFileNameDraggableEntryPresent.bind(this),
+				  isDirectoryNameDraggableEntryPresent = this.isDirectoryNameDraggableEntryPresent.bind(this),
+				  addFileNameDraggableEntry = this.addFileNameDraggableEntry.bind(this),
+				  removeFileNameDraggableEntry = this.removeFileNameDraggableEntry.bind(this),
+				  addDirectoryNameDraggableEntry = this.addDirectoryNameDraggableEntry.bind(this),
+				  removeDirectoryNameDraggableEntry = this.removeDirectoryNameDraggableEntry.bind(this),
+				  forEachFileNameDraggableEntry = this.forEachFileNameDraggableEntry.bind(this),
+				  forEachDirectoryNameDraggableEntry = this.forEachDirectoryNameDraggableEntry.bind(this),
+				  someDirectoryNameDraggableEntry = this.someDirectoryNameDraggableEntry.bind(this),
+				  findDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry.bind(this),
+				  areEntriesMarked = this.isMarked.bind(this), ///
+				  entriesAddMarkerEntry = this.addMarkerEntry.bind(this),  ///
+				  entriesRemoveMarkerEntry = this.removeMarkerEntry.bind(this), ///
+				  entriesRetrieveDraggableEntryPath = this.retrieveDraggableEntryPath.bind(this),  ///
+				  entriesRetrieveMarkedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry.bind(this),  ///
+				  entriesRetrieveDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry.bind(this); ///
+
     return ({
-      isEmpty: this.isEmpty.bind(this),
-      isDraggableEntryPresent: this.isDraggableEntryPresent.bind(this),
-      isFileNameDraggableEntryPresent: this.isFileNameDraggableEntryPresent.bind(this),
-      isDirectoryNameDraggableEntryPresent: this.isDirectoryNameDraggableEntryPresent.bind(this),
-      addFileNameDraggableEntry: this.addFileNameDraggableEntry.bind(this),
-      removeFileNameDraggableEntry: this.removeFileNameDraggableEntry.bind(this),
-      addDirectoryNameDraggableEntry: this.addDirectoryNameDraggableEntry.bind(this),
-      removeDirectoryNameDraggableEntry: this.removeDirectoryNameDraggableEntry.bind(this),
-      forEachFileNameDraggableEntry: this.forEachFileNameDraggableEntry.bind(this),
-      forEachDirectoryNameDraggableEntry: this.forEachDirectoryNameDraggableEntry.bind(this),
-      someDirectoryNameDraggableEntry: this.someDirectoryNameDraggableEntry.bind(this),
-      findDirectoryNameDraggableEntry: this.findDirectoryNameDraggableEntry.bind(this),
-      areEntriesMarked: this.isMarked.bind(this), ///
-      entriesAddMarkerEntry: this.addMarkerEntry.bind(this),  ///
-      entriesRemoveMarkerEntry: this.removeMarkerEntry.bind(this), ///
-      entriesRetrieveDraggableEntryPath: this.retrieveDraggableEntryPath.bind(this),  ///
-      entriesRetrieveMarkedDirectoryNameDraggableEntry: this.retrieveMarkedDirectoryNameDraggableEntry.bind(this),  ///
-      entriesRetrieveDirectoryNameDraggableEntryOverlappingDraggableEntry: this.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry.bind(this) ///
+      isEmpty,
+      isDraggableEntryPresent,
+      isFileNameDraggableEntryPresent,
+      isDirectoryNameDraggableEntryPresent,
+      addFileNameDraggableEntry,
+      removeFileNameDraggableEntry,
+      addDirectoryNameDraggableEntry,
+      removeDirectoryNameDraggableEntry,
+      forEachFileNameDraggableEntry,
+      forEachDirectoryNameDraggableEntry,
+      someDirectoryNameDraggableEntry,
+      findDirectoryNameDraggableEntry,
+      areEntriesMarked,
+      entriesAddMarkerEntry,
+      entriesRemoveMarkerEntry,
+      entriesRetrieveDraggableEntryPath,
+      entriesRetrieveMarkedDirectoryNameDraggableEntry,
+      entriesRetrieveDirectoryNameDraggableEntryOverlappingDraggableEntry
     });
   }
 
