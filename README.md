@@ -1,4 +1,4 @@
-# Easy-DragAndDrop
+# Easy DragAndDrop
 
 Drag and drop elements including an explorer and a rubbish bin.
 
