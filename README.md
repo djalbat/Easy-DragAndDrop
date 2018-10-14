@@ -26,7 +26,7 @@ You can install Easy-DragAndDrop with [npm](https://www.npmjs.com/):
 
 You can also clone the repository with [Git](https://git-scm.com/)...
 
-    git clone https://github.com/djalbat/Easy-DragAndDrop.git
+    git clone https://github.com/djalbat/easy-draganddrop.git
 
 ...and then install the necessary modules with npm from within the project's topmost directory:
 
