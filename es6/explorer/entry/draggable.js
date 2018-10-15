@@ -232,11 +232,26 @@ class DraggableEntry extends Entry {
     this.setTimeout(timeout);
   }
   
-  getTimeout() { return this.fromState('timeout'); }
+  getTimeout() {
+    const state = this.getState(),
+          { timeout } = state;
 
-  getTopOffset() { return this.fromState('topOffset'); }
+    return timeout;
+  }
 
-  getLeftOffset() { return this.fromState('leftOffset'); }
+  getTopOffset() {
+    const state = this.getState(),
+          { topOffset } = state;
+
+    return topOffset;
+  }
+
+  getLeftOffset() {
+    const state = this.getState(),
+          { leftOffset } = state;
+
+    return leftOffset;
+  }
 
   setTimeout(timeout) {
     this.updateState({

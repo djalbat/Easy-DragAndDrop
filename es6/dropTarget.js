@@ -160,7 +160,12 @@ class DropTarget extends Element {
     }
   }
 
-  getDropTargets() { return this.fromState('dropTargets'); }
+  getDropTargets() {
+    const state = this.getState(),
+          { dropTargets } = state;
+
+    return dropTargets;
+  }
   
   setInitialState() {
     const dropTargets = [];
