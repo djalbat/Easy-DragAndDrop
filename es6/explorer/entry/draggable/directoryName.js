@@ -453,7 +453,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
 
 Object.assign(DirectoryNameDraggableEntry, {
   defaultProperties: {
-    className: 'directoryName'
+    className: 'directory-name'
   },
   ignoredProperties: [
     'collapsed'

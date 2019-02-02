@@ -61,7 +61,7 @@ class FileNameDraggableEntry extends DraggableEntry {
 
 Object.assign(FileNameDraggableEntry, {
   defaultProperties: {
-    className: 'fileName'
+    className: 'file-name'
   }
 });
 

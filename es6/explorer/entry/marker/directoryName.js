@@ -40,7 +40,7 @@ class DirectoryNameMarkerEntry extends MarkerEntry {
 
 Object.assign(DirectoryNameMarkerEntry, {
   defaultProperties: {
-    className: 'directoryName'
+    className: 'directory-name'
   }
 });
 

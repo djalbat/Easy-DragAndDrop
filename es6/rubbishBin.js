@@ -141,7 +141,7 @@ class RubbishBin extends DropTarget {
 Object.assign(RubbishBin, {
   tagName: 'div',
   defaultProperties: {
-    className: 'rubbishBin'
+    className: 'rubbish-bin'
   },
   ignoredProperties: [
     'onRemove'
