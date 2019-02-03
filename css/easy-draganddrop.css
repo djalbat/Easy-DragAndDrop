@@ -43,7 +43,7 @@ ul.explorer li.entry > button.name {
 ul.explorer li.marker.entry {
   height: 1.75rem;
   width: 3rem;
-  background-image: url("marker.png");
+  background-image: url('image/marker.png');
   background-position: 1.5rem 0;
   background-repeat: no-repeat;
 }
@@ -66,22 +66,22 @@ ul.explorer li.collapsed.directory-name.draggable.entry > button.toggle::before 
 
 ul.explorer li.file-name.draggable.entry > button.name {
   padding-left: 3rem;
-  background-image: url("file.png");
+  background-image: url('image/file.png');
   background-position: 1.5rem 0;
 }
 
 ul.explorer li.directory-name.draggable.entry > button.name {
   padding-left: 1.5rem;
-  background-image: url("directory.png");
+  background-image: url('image/directory.png');
   background-position: 0 0;
 }
 
 .rubbish-bin {
-  background-image: url("rubbish-bin.png");
+  background-image: url('image/rubbish-bin.png');
   width: 25px;
   height: 26px;
 }
 
 .open.rubbish-bin {
-  background-image: url("open-rubbish-bin.png");
+  background-image: url('image/open-rubbish-bin.png');
 }
