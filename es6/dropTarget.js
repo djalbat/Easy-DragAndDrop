@@ -76,7 +76,7 @@ class DropTarget extends Element {
   moveDraggableEntries(draggableEntries, sourcePath, targetPath, done) {
     const pathMaps = this.pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath);
 
-    this.moveHandler(pathMaps, function() {
+    this.moveHandler(pathMaps, () => {
       const lastDraggableEntry = last(draggableEntries),
             firstDraggableEntry = first(draggableEntries),
             firstDraggableEntryExplorer = firstDraggableEntry.getExplorer(),
@@ -87,7 +87,7 @@ class DropTarget extends Element {
         draggableEntriesExplorer.unsetOption(REMOVE_EMPTY_PARENT_DIRECTORIES);
       }
 
-      draggableEntries.forEach(function(draggableEntry) {
+      draggableEntries.forEach((draggableEntry) => {
         if (draggableEntry === lastDraggableEntry) {
           if (removeEmptyParentDirectoriesOptionPresent) {
             draggableEntriesExplorer.setOption(REMOVE_EMPTY_PARENT_DIRECTORIES);
@@ -113,10 +113,10 @@ class DropTarget extends Element {
         }
 
         return draggableEntries;
-      }.bind(this), []);
+      }, []);
 
       done();
-    }.bind(this));
+    });
   }
 
   moveDraggableEntry(draggableEntry, sourcePath, targetPath) {

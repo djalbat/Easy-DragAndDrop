@@ -100,7 +100,7 @@ class DraggableEntry extends Entry {
     let timeout = this.getTimeout();
     
     if (timeout === null) {
-      timeout = setTimeout(function() {
+      timeout = setTimeout(() => {
         this.resetTimeout();
 
         const topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry(),
@@ -122,7 +122,7 @@ class DraggableEntry extends Entry {
             this.startDragging(mouseTop, mouseLeft);
           }
         }
-      }.bind(this), START_DRAGGING_DELAY);
+      }, START_DRAGGING_DELAY);
       
       this.setTimeout(timeout);
     }
@@ -174,9 +174,9 @@ class DraggableEntry extends Entry {
     if (dragging) {
       const draggableEntry = this;  ///
       
-      this.explorer.stopDragging(draggableEntry, function() {
+      this.explorer.stopDragging(draggableEntry, () => {
         this.stopDragging();
-      }.bind(this));
+      });
     } else {
       this.stopWaitingToDrag();
     }
