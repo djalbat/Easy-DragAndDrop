@@ -31,49 +31,56 @@ ul.explorer li.collapsed.directory-name.draggable.entry > ul.entries {
   display: none;
 }
 
+ul.explorer li.marker.entry {
+  height: 1.75rem;
+  width: 3rem;
+  background-image: url('image/marker.png');
+  background-repeat: no-repeat;
+  background-position: 1.25rem 0.75rem;
+}
+
 ul.explorer li.entry > button.name {
   outline: none;
   border: none;
   height: 1.75rem;
   text-align: left;
-  background-repeat: no-repeat;
+  vertical-align: top;
   background-color: transparent;
-}
-
-ul.explorer li.marker.entry {
-  height: 1.75rem;
-  width: 3rem;
-  background-image: url('image/marker.png');
-  background-position: 1.5rem 0;
   background-repeat: no-repeat;
-}
-
-ul.explorer li.draggable.entry > button.toggle {
-  width: 1.5rem;
-  height: 0;
-  overflow: visible;
-  position: relative;
-}
-
-ul.explorer li.draggable.entry > button.toggle::before {
-  width: 1.5rem;
-  content: '\025bc';
-}
-
-ul.explorer li.collapsed.directory-name.draggable.entry > button.toggle::before {
-  content: '\025b6';
 }
 
 ul.explorer li.file-name.draggable.entry > button.name {
-  padding-left: 3rem;
+  padding-left: 2.75rem;
   background-image: url('image/file.png');
-  background-position: 1.5rem 0;
+  background-position: 1.5rem 0.5rem;
 }
 
 ul.explorer li.directory-name.draggable.entry > button.name {
   padding-left: 1.5rem;
   background-image: url('image/directory.png');
-  background-position: 0 0;
+  background-position: 0.125rem 0.5rem;
+}
+
+ul.explorer li.directory-name.draggable.entry > button.toggle {
+  outline: none;
+  border: none;
+  height: 1.75rem;
+  width: 1.5rem;
+  position: relative;
+  vertical-align: top;
+  background-color: transparent;
+}
+
+ul.explorer li.directory-name.draggable.entry > button.toggle::before {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  width: 1rem;
+  content: '\025bc';
+}
+
+ul.explorer li.collapsed.directory-name.draggable.entry > button.toggle::before {
+  content: '\025b6';
 }
 
 .rubbish-bin {
