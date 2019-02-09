@@ -102,7 +102,11 @@ class Explorer extends DropTarget {
   addTopmostDirectoryMarkerEntry(topmostDirectoryMarkerPath) {
     const topmostDirectoryMarkerName = topmostDirectoryMarkerPath,  ///
           name = topmostDirectoryMarkerName,  ///
-          topmostDirectoryNameMarkerEntry = <DirectoryNameMarkerEntry name={name} />;
+          topmostDirectoryNameMarkerEntry =
+
+            <DirectoryNameMarkerEntry name={name} />
+
+          ;
 
     this.append(topmostDirectoryNameMarkerEntry);
   }
@@ -323,7 +327,11 @@ class Explorer extends DropTarget {
           name = topmostDirectoryName, ///
           collapsed = topmostDirectoryCollapsed, ///
           explorer = this,  ///
-          topmostDirectory = <TopmostDirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />;
+          topmostDirectory =
+
+            <TopmostDirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />
+
+          ;
 
     return topmostDirectory;
   }

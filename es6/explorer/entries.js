@@ -15,7 +15,11 @@ const { Element, React } = easy,
 class Entries extends Element {
   addFileNameDraggableEntry(fileName, explorer) {
     const name = fileName,
-          fileNameDraggableEntry = <FileNameDraggableEntry name={name} explorer={explorer} />,
+          fileNameDraggableEntry =
+
+            <FileNameDraggableEntry name={name} explorer={explorer} />
+
+          ,
           entry = fileNameDraggableEntry; ///
 
     this.addEntry(entry);
@@ -25,7 +29,11 @@ class Entries extends Element {
 
   addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, DirectoryNameDraggableEntry) {
     const name = directoryName,
-          directoryNameDraggableEntry = <DirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />,
+          directoryNameDraggableEntry =
+
+            <DirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />
+
+          ,
           entry = directoryNameDraggableEntry;  ///
     
     this.addEntry(entry);
@@ -90,11 +98,19 @@ class Entries extends Element {
 
     switch (draggableEntryType) {
       case FILE_NAME_TYPE :
-        markerEntry = <FileNameMarkerEntry name={name} />;
+        markerEntry =
+
+          <FileNameMarkerEntry name={name} />
+
+        ;
         break;
 
       case DIRECTORY_NAME_TYPE :
-        markerEntry = <DirectoryNameMarkerEntry name={name} />;
+        markerEntry =
+
+          <DirectoryNameMarkerEntry name={name} />
+
+        ;
         break;
     }
 

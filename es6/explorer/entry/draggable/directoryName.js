@@ -420,12 +420,29 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   }
 
   childElements(properties) {
+    let childElement;
+
     const childElements = super.childElements(properties),
-          toggleButtonClickHandler = this.toggleButtonClickHandler.bind(this);
+          toggleButtonClickHandler = this.toggleButtonClickHandler.bind(this),
+          button =
 
-    childElements.unshift(<Button className="toggle" onClick={toggleButtonClickHandler} />);
+            <Button className="toggle" onClick={toggleButtonClickHandler} />
 
-    childElements.push(<Entries />);
+          ;
+
+    childElement = button;  ///
+
+    childElements.unshift(childElement);
+
+    const entries =
+
+      <Entries />
+
+    ;
+      
+    childElement = entries; ///
+
+    childElements.push(childElement);
 
     return childElements;
   }
