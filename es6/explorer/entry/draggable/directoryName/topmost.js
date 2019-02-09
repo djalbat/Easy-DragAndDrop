@@ -24,7 +24,9 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutTopmostDirectoryName !== null) {
-      fileNameDraggableEntry = super.addFilePath(filePathWithoutTopmostDirectoryName);
+      filePath = filePathWithoutTopmostDirectoryName; ///
+
+      fileNameDraggableEntry = super.addFilePath(filePath);
     }
 
     return fileNameDraggableEntry;
@@ -36,7 +38,9 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
     if (directoryPathWithoutTopmostDirectoryName !== null) {
-      directoryNameDraggableEntry = super.addDirectoryPath(directoryPathWithoutTopmostDirectoryName, collapsed);
+      directoryPath = directoryPathWithoutTopmostDirectoryName; ///
+
+      directoryNameDraggableEntry = super.addDirectoryPath(directoryPath, collapsed);
     }
     
     return directoryNameDraggableEntry;
@@ -46,7 +50,9 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
 
     if (filePathWithoutTopmostDirectoryName !== null) {
-      super.removeFilePath(filePathWithoutTopmostDirectoryName);
+      filePath = filePathWithoutTopmostDirectoryName; ///
+
+      super.removeFilePath(filePath);
     }
   }
 
@@ -54,7 +60,9 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
 
     if (directoryPathWithoutTopmostDirectoryName !== null) {
-      super.removeDirectoryPath(directoryPathWithoutTopmostDirectoryName);
+      directoryPath = directoryPathWithoutTopmostDirectoryName;  ///
+
+      super.removeDirectoryPath(directoryPath);
     }
   }
 
@@ -80,7 +88,9 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
   addMarkerEntry(markerPath, draggableEntryType) {
     const markerPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(markerPath);
 
-    super.addMarkerEntry(markerPathWithoutTopmostDirectoryName, draggableEntryType);
+    markerPath = markerPathWithoutTopmostDirectoryName; ///
+
+    super.addMarkerEntry(markerPath, draggableEntryType);
   }
 
   parentContext() {

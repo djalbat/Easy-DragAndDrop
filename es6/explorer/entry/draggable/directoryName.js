@@ -439,7 +439,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       <Entries />
 
     ;
-      
+
     childElement = entries; ///
 
     childElements.push(childElement);
