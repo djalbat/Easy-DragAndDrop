@@ -85,6 +85,14 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return marked;
   }
 
+  isFileNameDraggableEntry() {
+    return false;
+  }
+
+  isDirectoryNameDraggableEntry() {
+    return true;
+  }
+
   isOverlappingDraggableEntry(draggableEntry) {
     let overlappingDraggableEntry;
     
@@ -118,9 +126,9 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       fileNameDraggableEntry = topmostDirectoryNameDraggableEntry.addFilePath(filePathWithoutTopmostDirectoryName);
     } else {
       const fileName = filePath,  ///
-            entriesFile = this.isFileNameDraggableEntryPresent(fileName);
+            fileNameDraggableEntryPresent = this.isFileNameDraggableEntryPresent(fileName);
 
-      if (!entriesFile) {
+      if (!fileNameDraggableEntryPresent) {
         const explorer = this.getExplorer();
         
         fileNameDraggableEntry = this.addFileNameDraggableEntry(fileName, explorer);
@@ -169,9 +177,9 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
       removeEmptyParentDirectoryNameDraggableEntries = topmostDirectoryNameDraggableEntry.removeFilePath(filePathWithoutTopmostDirectoryName);
     } else {
       const fileName = filePath,  ///
-            entriesFile = this.isFileNameDraggableEntryPresent(fileName);
+            fileNameDraggableEntryPresent = this.isFileNameDraggableEntryPresent(fileName);
 
-      if (entriesFile) {
+      if (fileNameDraggableEntryPresent) {
         removeEmptyParentDirectoryNameDraggableEntries = this.removeFileNameDraggableEntry(fileName);
       }
     }

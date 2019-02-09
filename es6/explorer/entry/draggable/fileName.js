@@ -14,6 +14,14 @@ class FileNameDraggableEntry extends DraggableEntry {
     super(selector, type, explorer);
   }
 
+  isFileNameDraggableEntry() {
+    return true;
+  }
+
+  isDirectoryNameDraggableEntry() {
+    return false;
+  }
+
   isBefore(entry) {
     let before;
     

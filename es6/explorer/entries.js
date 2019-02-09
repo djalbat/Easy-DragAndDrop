@@ -135,13 +135,13 @@ class Entries extends Element {
 
   isMarked() {
     const markerEntry = this.findMarkerEntry(),
-          marked = (markerEntry!== null);
+          marked = (markerEntry !== null);
 
     return marked;
   }
 
   addEntry(entry) {
-    const nextEntry = entry,
+    const nextEntry = entry,  ///
           previousEntry = this.findEntry(function(entry) {
             const nextEntryBeforeEntry = nextEntry.isBefore(entry);
 
