@@ -127,10 +127,11 @@ class Entries extends Element {
   addEntry(entry) {
     const nextEntry = entry,
           previousEntry = this.findEntry(function(entry) {
-            const nextEntryBeforeEntry = nextEntry.isBefore(entry),
-                  found = nextEntryBeforeEntry; ///
-            
-            return found;
+            const nextEntryBeforeEntry = nextEntry.isBefore(entry);
+
+            if (nextEntryBeforeEntry) {
+              return true;
+            }
           });
 
     if (previousEntry === null) {
@@ -142,9 +143,7 @@ class Entries extends Element {
 
   findMarkerEntry() {
     const markerEntry = this.findEntryByTypes(function(entry) {
-            const found = true; ///
-  
-            return found;
+            return true;  ///
           }, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE);
 
     return markerEntry;
@@ -266,10 +265,11 @@ class Entries extends Element {
 
   findEntryByNameAndTypes(name, ...types) {
     const entry = this.findEntryByTypes(function(entry) {
-      const entryName = entry.getName(),
-            found = (entryName === name);
-      
-      return found;
+      const entryName = entry.getName();
+
+      if (entryName === name) {
+        return true;
+      }
     }, ...types);
     
     return entry;
@@ -282,9 +282,11 @@ class Entries extends Element {
                   typesIncludesEntryType = types.includes(entryType);
 
             if (typesIncludesEntryType) {
-              const found = callback(entry);
-              
-              return found;
+              const result = callback(entry);
+
+              if (result) {
+                return true;
+              }
             }
           }) || null; ///;
     
@@ -293,10 +295,11 @@ class Entries extends Element {
 
   findEntryByName(name) {
     const entry = this.findEntry(function(entry) {
-      const entryName = entry.getName(),
-            found = (entryName === name);
+      const entryName = entry.getName();
 
-      return found;
+      if (entryName === name) {
+        return true;
+      }
     });
 
     return entry;
