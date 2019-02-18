@@ -11,7 +11,7 @@ ul.explorer ul {
 }
 
 ul.explorer ul.entries {
-  padding-left: 1.5rem;
+  padding-left: 2.4rem;
 }
 
 ul.explorer li.entry {
@@ -19,6 +19,7 @@ ul.explorer li.entry {
   padding: 0;
   border: 0;
   width: 10000px;
+  font-size: 0;
   list-style-type: none;
 }
 
@@ -32,17 +33,17 @@ ul.explorer li.collapsed.directory-name.draggable.entry > ul.entries {
 }
 
 ul.explorer li.marker.entry {
-  height: 1.75rem;
-  width: 3rem;
+  height: 2.4rem;
+  width: 4rem;
   background-image: url('image/marker.png');
   background-repeat: no-repeat;
-  background-position: 1.25rem 0.75rem;
+  background-position: 1.8rem 1rem;
 }
 
 ul.explorer li.entry > button.name {
   outline: none;
   border: none;
-  height: 1.75rem;
+  height: 2.4rem;
   text-align: left;
   vertical-align: top;
   background-color: transparent;
@@ -50,22 +51,22 @@ ul.explorer li.entry > button.name {
 }
 
 ul.explorer li.file-name.draggable.entry > button.name {
-  padding-left: 2.75rem;
+  padding-left: 4rem;
   background-image: url('image/file.png');
-  background-position: 1.5rem 0.5rem;
+  background-position: 2.2rem 0.5rem;
 }
 
 ul.explorer li.directory-name.draggable.entry > button.name {
-  padding-left: 1.5rem;
+  padding-left: 2.4rem;
   background-image: url('image/directory.png');
-  background-position: 0.125rem 0.5rem;
+  background-position: 0.3rem 0.6rem;
 }
 
 ul.explorer li.directory-name.draggable.entry > button.toggle {
   outline: none;
   border: none;
-  height: 1.75rem;
-  width: 1.5rem;
+  height: 2.4rem;
+  width: 2rem;
   position: relative;
   vertical-align: top;
   background-color: transparent;
@@ -73,9 +74,9 @@ ul.explorer li.directory-name.draggable.entry > button.toggle {
 
 ul.explorer li.directory-name.draggable.entry > button.toggle::before {
   position: absolute;
-  top: 0.25rem;
-  left: 0.25rem;
-  width: 1rem;
+  top: 0.4rem;
+  left: 0.4rem;
+  width: 1.6rem;
   content: '\025bc';
 }
 
@@ -85,8 +86,8 @@ ul.explorer li.collapsed.directory-name.draggable.entry > button.toggle::before 
 
 .rubbish-bin {
   background-image: url('image/rubbish-bin.png');
-  width: 25px;
-  height: 26px;
+  width: 2rem;
+  height: 2rem;
 }
 
 .open.rubbish-bin {
