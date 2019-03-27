@@ -115,7 +115,7 @@ class Explorer extends DropTarget {
     let topmostDirectoryNameMarkerEntry = null;
 
     const childDirectoryNameMarkerEntryListItemElements = this.getChildElements('li.directoryName marker entry'),
-         childDirectoryNameMarkerEntryListItemElementsLength = childDirectoryNameMarkerEntryListItemElements.length;
+          childDirectoryNameMarkerEntryListItemElementsLength = childDirectoryNameMarkerEntryListItemElements.length;
 
     if (childDirectoryNameMarkerEntryListItemElementsLength === 1) {
       const firstChildDirectoryNameMarkerEntryListItemElement = first(childDirectoryNameMarkerEntryListItemElements);
