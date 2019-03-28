@@ -326,14 +326,13 @@ class Explorer extends DropTarget {
     const { topmostDirectoryName, topmostDirectoryCollapsed } = properties,
           name = topmostDirectoryName, ///
           collapsed = topmostDirectoryCollapsed, ///
-          explorer = this,  ///
-          topmostDirectory =
+          explorer = this;  ///
 
-            <TopmostDirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />
+    return (
 
-          ;
+      <TopmostDirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />
 
-    return topmostDirectory;
+    );
   }
 
   initialise() {
