@@ -86,6 +86,7 @@ ul.explorer li.collapsed.directory-name.draggable.entry > button.toggle::before 
 
 .rubbish-bin {
   background-image: url('image/rubbish-bin.png');
+  background-repeat: no-repeat;
   width: 4rem;
   height: 4rem;
 }
