@@ -37,12 +37,12 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     return directoryNameDraggableEntryOverlappingDraggableEntry;
   }
 
-  addMarkerEntry(markerPath, draggableEntryType) {
-    const markerPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(markerPath);
+  addMarkerEntry(markerEntryPath, draggableEntryType) {
+    const markerEntryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(markerEntryPath);
 
-    markerPath = markerPathWithoutTopmostDirectoryName; ///
+    markerEntryPath = markerEntryPathWithoutTopmostDirectoryName; ///
 
-    super.addMarkerEntry(markerPath, draggableEntryType);
+    super.addMarkerEntry(markerEntryPath, draggableEntryType);
   }
 
   parentContext() {

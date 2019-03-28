@@ -171,6 +171,34 @@ class Entries extends Element {
 
   findDirectoryNameDraggableEntry(directoryName) { return this.findEntryByNameAndTypes(directoryName, DIRECTORY_NAME_TYPE) }
 
+  retrieveDraggableEntryPath(draggableEntry) {
+    let draggableEntryPath = null;
+
+    this.someEntry(function(entry) {
+      if (entry === draggableEntry) {  ///
+        const entryName = entry.getName();
+
+        draggableEntryPath = entryName;  ///
+
+        return true;
+      }
+    });
+
+    if (draggableEntryPath === null) {
+      this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+        const directoryDraggableEntryPath = directoryNameDraggableEntry.retrieveDraggableEntryPath(draggableEntry);
+
+        if (directoryDraggableEntryPath !== null) {
+          draggableEntryPath = directoryDraggableEntryPath; ///
+
+          return true;
+        }
+      });
+    }
+
+    return draggableEntryPath;
+  }
+
   retrieveMarkedDirectoryNameDraggableEntry() {
     let markedDirectoryNameDraggableEntry = null;
 
@@ -185,34 +213,6 @@ class Entries extends Element {
     return markedDirectoryNameDraggableEntry;
   }
   
-  retrieveDraggableEntryPath(draggableEntry) {
-    let draggableEntryPath = null;
-    
-    this.someEntry(function(entry) {
-      if (entry === draggableEntry) {  ///
-        const entryName = entry.getName();
-        
-        draggableEntryPath = entryName;  ///
-        
-        return true;
-      }
-    });
-    
-    if (draggableEntryPath === null) {
-      this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
-        const directoryDraggableEntryPath = directoryNameDraggableEntry.retrieveDraggableEntryPath(draggableEntry);
-        
-        if (directoryDraggableEntryPath !== null) {
-          draggableEntryPath = directoryDraggableEntryPath; ///
-          
-          return true;
-        }
-      });
-    }
-    
-    return draggableEntryPath;
-  }
-
   retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
     let directoryNameDraggableEntryOverlappingDraggableEntry = null;
 

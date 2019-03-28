@@ -234,18 +234,18 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return removeEmptyParentDirectoryNameDraggableEntries;
   }
   
-  addMarkerEntry(markerPath, draggableEntryType) {
-    const topmostDirectoryName = topmostDirectoryNameFromPath(markerPath);
+  addMarkerEntry(markerEntryPath, draggableEntryType) {
+    const topmostDirectoryName = topmostDirectoryNameFromPath(markerEntryPath);
 
     if (topmostDirectoryName === null) {
-      const markerName = markerPath;  ///
+      const markerName = markerEntryPath;  ///
 
       this.entriesAddMarkerEntry(markerName, draggableEntryType);
     } else {
       const topmostDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(topmostDirectoryName),
-            markerPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(markerPath);
+            markerEntryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(markerEntryPath);
 
-      topmostDirectoryNameDraggableEntry.addMarkerEntry(markerPathWithoutTopmostDirectoryName, draggableEntryType);
+      topmostDirectoryNameDraggableEntry.addMarkerEntry(markerEntryPathWithoutTopmostDirectoryName, draggableEntryType);
     }
   }
 
