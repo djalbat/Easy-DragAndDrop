@@ -3,13 +3,12 @@
 const easy = require('easy');
 
 const Entry = require('../entry'),
-      options = require('../options'),
-      NameButton = require('../nameButton');
+      options = require('../options');
 
 const ESCAPE_KEYCODE = 27,
       START_DRAGGING_DELAY = 175;
 
-const { window, React, Element } = easy,
+const { window, Element } = easy,
       { LEFT_MOUSE_BUTTON } = Element,
       { NO_DRAGGING, NO_DRAGGING_SUB_ENTRIES, NO_DRAGGING_TOPMOST_DIRECTORY, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
@@ -281,16 +280,6 @@ class DraggableEntry extends Entry {
       topOffset,
       leftOffset
     });
-  }
-
-  childElements(properties) {
-    const { name } = properties;
-
-    return ([
-
-      <NameButton>{name}</NameButton>
-
-    ]);
   }
 
   initialise(properties) {

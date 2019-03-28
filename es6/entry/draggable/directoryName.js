@@ -4,6 +4,7 @@ const easy = require('easy'),
       necessary = require('necessary');
 
 const Entries = require('../../entries'),
+      NameButton = require('../../nameButton'),
       entryTypes = require('../../entryTypes'),
       DraggableEntry = require('../../entry/draggable');
 
@@ -428,31 +429,16 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   }
 
   childElements(properties) {
-    let childElement;
+    const { name } = properties,
+          toggleButtonClickHandler = this.toggleButtonClickHandler.bind(this);
 
-    const childElements = super.childElements(properties),
-          toggleButtonClickHandler = this.toggleButtonClickHandler.bind(this),
-          button =
+    return ([
 
-            <Button className="toggle" onClick={toggleButtonClickHandler} />
-
-          ;
-
-    childElement = button;  ///
-
-    childElements.unshift(childElement);
-
-    const entries =
-
+      <Button className="toggle" onClick={toggleButtonClickHandler} />,
+      <NameButton>{name}</NameButton>,
       <Entries />
 
-    ;
-
-    childElement = entries; ///
-
-    childElements.push(childElement);
-
-    return childElements;
+    ]);
   }
   
   initialise(collapsed) {

@@ -1,10 +1,14 @@
 'use strict';
 
-const entryTypes = require('../../entryTypes'),
+const easy = require('easy');
+
+const NameButton = require('../../nameButton'),
+      entryTypes = require('../../entryTypes'),
       nameUtilities = require('../../utilities/name'),
       DraggableEntry = require('../../entry/draggable');
 
-const { nameIsBeforeEntryName } = nameUtilities,
+const { React } = easy,
+      { nameIsBeforeEntryName } = nameUtilities,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
 
 class FileNameDraggableEntry extends DraggableEntry {
@@ -57,7 +61,17 @@ class FileNameDraggableEntry extends DraggableEntry {
     
     explorer.openFileNameDraggableEntry(file);
   }
-  
+
+  childElements(properties) {
+    const { name } = properties;
+
+    return ([
+
+      <NameButton>{name}</NameButton>
+
+    ]);
+  }
+
   static fromProperties(properties) {
     const fileNameDraggableEntry = DraggableEntry.fromProperties(FileNameDraggableEntry, properties);
 
