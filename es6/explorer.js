@@ -4,17 +4,18 @@ const easy = require('easy'),
       necessary = require('necessary');
 
 const options = require('./options'),
+      Entries = require('./entries'),
       DropTarget = require('./dropTarget'),
       entryTypes = require('./entryTypes'),
       DirectoryNameMarkerEntry = require('./entry/marker/directoryName'),
-      TopmostDirectoryNameDraggableEntry = require('./entry/draggable/directoryName/topmost');
+      DirectoryNameDraggableEntry = require('./entry/draggable/directoryName');
 
 const { pathUtilities, arrayUtilities } = necessary,
       { Element, React } = easy,
       { first, second } = arrayUtilities,
       { NO_DRAGGING_WITHIN } = options,
       { DIRECTORY_NAME_TYPE } = entryTypes,
-      { isPathTopmostDirectoryName, pathWithoutBottommostNameFromPath } = pathUtilities;
+      { isPathTopmostDirectoryName, topmostDirectoryNameFromPath, pathWithoutBottommostNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
   constructor(selector, moveHandler, openHandler = function(sourcePath) {}, options = {}) {
@@ -322,17 +323,83 @@ class Explorer extends DropTarget {
     return pathMaps;
   }
 
+  addFilePath(filePath) {
+    const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(filePath);
+
+    if (topmostDirectoryNameDraggableEntry !== null) {
+      const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
+
+      filePath = filePathWithoutTopmostDirectoryName; ///
+
+      topmostDirectoryNameDraggableEntry.addFilePath(filePath);
+    }
+  }
+
+  removeFilePath(filePath) {
+    const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(filePath);
+
+    if (topmostDirectoryNameDraggableEntry !== null) {
+      const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
+
+      filePath = filePathWithoutTopmostDirectoryName; ///
+
+      topmostDirectoryNameDraggableEntry.removeFilePath(filePath);
+    }
+  }
+
+  addDirectoryPath(directoryPath, collapsed = false) {
+    const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(directoryPath);
+
+    if (topmostDirectoryNameDraggableEntry!== null) {
+      const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+
+      directoryPath = directoryPathWithoutTopmostDirectoryName; ///
+
+      topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPath, collapsed);
+    }
+  }
+
+  removeDirectoryPath(directoryPath) {
+    const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(directoryPath);
+
+    if (topmostDirectoryNameDraggableEntry !== null) {
+      const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+
+      directoryPath = directoryPathWithoutTopmostDirectoryName; ///
+
+      topmostDirectoryNameDraggableEntry.removeDirectoryPath(directoryPath);
+    }
+  }
+
+  findTopmostDirectoryNameDraggableEntry(path) {
+    let topmostDirectoryNameDraggableEntry = null;
+
+    const topmostDirectoryName = topmostDirectoryNameFromPath(path),
+          directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(topmostDirectoryName);
+
+    if (directoryNameDraggableEntry !== null) {
+      topmostDirectoryNameDraggableEntry = directoryNameDraggableEntry; ///
+    }
+
+    return topmostDirectoryNameDraggableEntry;
+  }
+
   childElements(properties) {
     const { topmostDirectoryName, topmostDirectoryCollapsed } = properties,
-          name = topmostDirectoryName, ///
-          collapsed = topmostDirectoryCollapsed, ///
-          explorer = this;  ///
+          explorer = this,  ///
+          collapsed = topmostDirectoryCollapsed,  ///
+          directoryName = topmostDirectoryName, ///
+          entries =
 
-    return (
+            <Entries />
 
-      <TopmostDirectoryNameDraggableEntry name={name} explorer={explorer} collapsed={collapsed} />
+          ;
 
-    );
+    entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, DirectoryNameDraggableEntry);
+
+    const childElements = entries;  ///
+
+    return childElements;
   }
 
   initialise() {
@@ -352,7 +419,7 @@ class Explorer extends DropTarget {
 }
 
 Object.assign(Explorer, {
-  tagName: 'ul',
+  tagName: 'div',
   defaultProperties: {
     className: 'explorer'
   },

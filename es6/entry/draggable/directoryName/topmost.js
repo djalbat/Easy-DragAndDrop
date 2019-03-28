@@ -18,54 +18,6 @@ class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
     return true;
   }
 
-  addFilePath(filePath) {
-    let fileNameDraggableEntry = null;
-
-    const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
-
-    if (filePathWithoutTopmostDirectoryName !== null) {
-      filePath = filePathWithoutTopmostDirectoryName; ///
-
-      fileNameDraggableEntry = super.addFilePath(filePath);
-    }
-
-    return fileNameDraggableEntry;
-  }
-
-  addDirectoryPath(directoryPath, collapsed) {
-    let directoryNameDraggableEntry = null;
-    
-    const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
-
-    if (directoryPathWithoutTopmostDirectoryName !== null) {
-      directoryPath = directoryPathWithoutTopmostDirectoryName; ///
-
-      directoryNameDraggableEntry = super.addDirectoryPath(directoryPath, collapsed);
-    }
-    
-    return directoryNameDraggableEntry;
-  }
-
-  removeFilePath(filePath) {
-    const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
-
-    if (filePathWithoutTopmostDirectoryName !== null) {
-      filePath = filePathWithoutTopmostDirectoryName; ///
-
-      super.removeFilePath(filePath);
-    }
-  }
-
-  removeDirectoryPath(directoryPath) {
-    const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
-
-    if (directoryPathWithoutTopmostDirectoryName !== null) {
-      directoryPath = directoryPathWithoutTopmostDirectoryName;  ///
-
-      super.removeDirectoryPath(directoryPath);
-    }
-  }
-
   retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
     let directoryNameDraggableEntryOverlappingDraggableEntry;
 

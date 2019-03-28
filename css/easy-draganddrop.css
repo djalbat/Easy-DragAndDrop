@@ -1,20 +1,20 @@
-ul.explorer {
+div.explorer {
   position: relative;
   overflow: hidden;
 }
 
-ul.explorer,
-ul.explorer ul {
+div.explorer,
+div.explorer ul {
   margin: 0;
   padding: 0;
   border: 0;
 }
 
-ul.explorer ul.entries {
+div.explorer ul.entries {
   padding-left: 2.4rem;
 }
 
-ul.explorer li.entry {
+div.explorer li.entry {
   margin: 0;
   padding: 0;
   border: 0;
@@ -23,16 +23,16 @@ ul.explorer li.entry {
   list-style-type: none;
 }
 
-ul.explorer li.draggable.entry.dragging {
+div.explorer li.draggable.entry.dragging {
   position: fixed;
   z-index: 10000;
 }
 
-ul.explorer li.collapsed.directory-name.draggable.entry > ul.entries {
+div.explorer li.collapsed.directory-name.draggable.entry > ul.entries {
   display: none;
 }
 
-ul.explorer li.marker.entry {
+div.explorer li.marker.entry {
   height: 2.4rem;
   width: 4rem;
   background-image: url('image/marker.png');
@@ -40,7 +40,7 @@ ul.explorer li.marker.entry {
   background-position: 1.8rem 1rem;
 }
 
-ul.explorer li.entry > button.name {
+div.explorer li.entry > button.name {
   outline: none;
   border: none;
   height: 2.4rem;
@@ -50,19 +50,19 @@ ul.explorer li.entry > button.name {
   background-repeat: no-repeat;
 }
 
-ul.explorer li.file-name.draggable.entry > button.name {
+div.explorer li.file-name.draggable.entry > button.name {
   padding-left: 4rem;
   background-image: url('image/file.png');
   background-position: 2.2rem 0.5rem;
 }
 
-ul.explorer li.directory-name.draggable.entry > button.name {
+div.explorer li.directory-name.draggable.entry > button.name {
   padding-left: 2.4rem;
   background-image: url('image/directory.png');
   background-position: 0.3rem 0.6rem;
 }
 
-ul.explorer li.directory-name.draggable.entry > button.toggle {
+div.explorer li.directory-name.draggable.entry > button.toggle {
   outline: none;
   border: none;
   height: 2.4rem;
@@ -72,7 +72,7 @@ ul.explorer li.directory-name.draggable.entry > button.toggle {
   background-color: transparent;
 }
 
-ul.explorer li.directory-name.draggable.entry > button.toggle::before {
+div.explorer li.directory-name.draggable.entry > button.toggle::before {
   position: absolute;
   top: 0.4rem;
   left: 0.4rem;
@@ -80,17 +80,17 @@ ul.explorer li.directory-name.draggable.entry > button.toggle::before {
   content: '\025bc';
 }
 
-ul.explorer li.collapsed.directory-name.draggable.entry > button.toggle::before {
+div.explorer li.collapsed.directory-name.draggable.entry > button.toggle::before {
   content: '\025b6';
 }
 
-.rubbish-bin {
+div.rubbish-bin {
   background-image: url('image/rubbish-bin.png');
   background-repeat: no-repeat;
   width: 4rem;
   height: 4rem;
 }
 
-.open.rubbish-bin {
+div.open.rubbish-bin {
   background-image: url('image/open-rubbish-bin.png');
 }
