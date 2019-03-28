@@ -2,8 +2,8 @@
 
 const easy = require('easy');
 
-const options = require('../options'),
-      entryTypes = require('../entryTypes'),
+const options = require('./options'),
+      entryTypes = require('./entryTypes'),
       FileNameMarkerEntry = require('./entry/marker/fileName'),
       FileNameDraggableEntry = require('./entry/draggable/fileName'),
       DirectoryNameMarkerEntry = require('./entry/marker/directoryName');

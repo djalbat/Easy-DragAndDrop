@@ -1,8 +1,8 @@
 'use strict';
 
-const entryTypes = require('../../../entryTypes'),
-      DraggableEntry = require('../../entry/draggable'),
-      nameUtilities = require('../../../utilities/name');
+const entryTypes = require('../../entryTypes'),
+      nameUtilities = require('../../utilities/name'),
+      DraggableEntry = require('../../entry/draggable');
 
 const { nameIsBeforeEntryName } = nameUtilities,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;

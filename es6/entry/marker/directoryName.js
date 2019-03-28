@@ -1,6 +1,6 @@
 'use strict';
 
-const entryTypes = require('../../../entryTypes'),
+const entryTypes = require('../../entryTypes'),
       MarkerEntry = require('../../entry/marker');
 
 const { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;

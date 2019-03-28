@@ -2,7 +2,7 @@
 
 const necessary = require('necessary');
 
-const options = require('../../../../options'),
+const options = require('../../../options'),
       DirectoryNameDraggableEntry = require('../../../entry/draggable/directoryName');
 
 const { pathUtilities } = necessary,

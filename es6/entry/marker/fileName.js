@@ -1,8 +1,8 @@
 'use strict';
 
-const entryTypes = require('../../../entryTypes'),
+const entryTypes = require('../../entryTypes'),
       MarkerEntry = require('../../entry/marker'),
-      nameUtilities = require('../../../utilities/name');
+      nameUtilities = require('../../utilities/name');
 
 const { nameIsBeforeEntryName } = nameUtilities,
       { FILE_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_TYPE } = entryTypes;

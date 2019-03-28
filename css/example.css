@@ -1,0 +1,20 @@
+html {
+  font-size: 10px;
+}
+
+html *,
+html *:after,
+html *:before {
+  font-family: serif;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  padding: 10rem;
+  background-color: lightgray;
+}
+
+.rubbish-bin {
+  margin-bottom: 4rem;
+}

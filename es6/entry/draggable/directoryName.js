@@ -4,7 +4,7 @@ const easy = require('easy'),
       necessary = require('necessary');
 
 const Entries = require('../../entries'),
-      entryTypes = require('../../../entryTypes'),
+      entryTypes = require('../../entryTypes'),
       DraggableEntry = require('../../entry/draggable');
 
 const { pathUtilities } = necessary,

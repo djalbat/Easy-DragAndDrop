@@ -6,8 +6,8 @@ const easy = require('easy'),
 const options = require('./options'),
       DropTarget = require('./dropTarget'),
       entryTypes = require('./entryTypes'),
-      DirectoryNameMarkerEntry = require('./explorer/entry/marker/directoryName'),
-      TopmostDirectoryNameDraggableEntry = require('./explorer/entry/draggable/directoryName/topmost');
+      DirectoryNameMarkerEntry = require('./entry/marker/directoryName'),
+      TopmostDirectoryNameDraggableEntry = require('./entry/draggable/directoryName/topmost');
 
 const { pathUtilities, arrayUtilities } = necessary,
       { Element, React } = easy,
@@ -209,7 +209,7 @@ class Explorer extends DropTarget {
       if (toBeMarked) {
         const within = (explorer === this), ///
               noDraggingWithinOptionPresent = this.isOptionPresent(NO_DRAGGING_WITHIN),
-              noDragging = within && noDraggingWithinOptionPresent;
+              noDragging = (within && noDraggingWithinOptionPresent);
 
         if (!noDragging) {
           const markedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry();
@@ -358,11 +358,11 @@ Object.assign(Explorer, {
     className: 'explorer'
   },
   ignoredProperties: [
-    'topmostDirectoryName',
-    'topmostDirectoryCollapsed',
     'onOpen',
     'onMove',
-    'options'
+    'options',
+    'topmostDirectoryName',
+    'topmostDirectoryCollapsed'
   ]
 });
 

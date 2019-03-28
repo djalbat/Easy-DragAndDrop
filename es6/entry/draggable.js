@@ -3,7 +3,7 @@
 const easy = require('easy');
 
 const Entry = require('../entry'),
-      options = require('../../options'),
+      options = require('../options'),
       NameButton = require('../nameButton');
 
 const ESCAPE_KEYCODE = 27,
