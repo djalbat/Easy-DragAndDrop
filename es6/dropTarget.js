@@ -61,15 +61,15 @@ class DropTarget extends Element {
     return markedDropTarget;
   }
 
-  removeMarkerEntryGlobally() {
+  unmarkGlobally() {
     const marked = this.isMarked();
 
     if (marked) {
-      this.removeMarkerEntry();
+      this.unmark();
     } else {
       const markedDropTarget = this.getMarkedDropTarget();
 
-      markedDropTarget.removeMarkerEntry();
+      markedDropTarget.unmark();
     }
   }
 

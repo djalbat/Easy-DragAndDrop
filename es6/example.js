@@ -18,9 +18,14 @@ const openHandler = (filePath) => {
       };
 
 const body = new Body(),
-      explorer =
+      explorer1 =
 
-        <Explorer topmostDirectoryName="explorer" onOpen={openHandler} onMove={moveHandler} />
+        <Explorer topmostDirectoryName="explorer1" onOpen={openHandler} onMove={moveHandler} />
+
+      ,
+      explorer2 =
+
+          <Explorer topmostDirectoryName="explorer2" onOpen={openHandler} onMove={moveHandler} />
 
       ,
       rubbishBin =
@@ -31,14 +36,24 @@ const body = new Body(),
 
 body.append(rubbishBin);
 
-body.append(explorer);
+body.append(explorer1);
 
-explorer.addDropTarget(rubbishBin);
+body.append(explorer2);
 
-rubbishBin.addDropTarget(explorer);
+explorer1.addDropTarget(rubbishBin);
 
-explorer.addDirectoryPath('explorer/directory1');
-explorer.addDirectoryPath('explorer/directory2');
-explorer.addFilePath('explorer/directory1/file1.txt');
-explorer.addFilePath('explorer/directory1/file2.txt');
-explorer.addFilePath('explorer/directory2/file3.txt');
+explorer1.addDropTarget(explorer2);
+
+explorer2.addDropTarget(rubbishBin);
+
+explorer2.addDropTarget(explorer1);
+
+rubbishBin.addDropTarget(explorer1);
+
+rubbishBin.addDropTarget(explorer2);
+
+explorer1.addDirectoryPath('explorer1/directory1');
+explorer1.addDirectoryPath('explorer1/directory2');
+explorer1.addFilePath('explorer1/directory1/file1.txt');
+explorer1.addFilePath('explorer1/directory1/file2.txt');
+explorer1.addFilePath('explorer1/directory2/file3.txt');

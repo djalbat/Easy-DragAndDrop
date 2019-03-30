@@ -45,11 +45,11 @@ class RubbishBin extends DropTarget {
     this.removeClass('open');
   }
 
-  addMarkerEntry(draggableEntry, directoryNameDraggableEntryOverlappingDraggableEntry) {
+  mark(draggableEntry) {
     this.open();
   }
 
-  removeMarkerEntry() {
+  unmark() {
     this.close();
   }
 
@@ -63,14 +63,18 @@ class RubbishBin extends DropTarget {
         const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
 
         if (dropTargetToBeMarked !== null) {
-          const directoryNameDraggableEntryOverlappingDraggableEntry = dropTargetToBeMarked.retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
+          const bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = dropTargetToBeMarked.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
 
-          dropTargetToBeMarked.addMarkerEntry(draggableEntry, directoryNameDraggableEntryOverlappingDraggableEntry);
+          const previousDraggableEntry = draggableEntry;  ///
+
+          draggableEntry = bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;  ///
+
+          dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
         } else {
-          explorer.addMarkerEntryInPlace(draggableEntry);
+          explorer.mark(draggableEntry);
         }
 
-        this.removeMarkerEntry();
+        this.unmark();
       }
     }
   }
@@ -112,15 +116,15 @@ class RubbishBin extends DropTarget {
   }
 
   retrieveMarkedDirectoryNameDraggableEntry() {
-    const markedDirectoryNameDraggableEntry = null;
+    const markedDirectoryNameDraggableEntry = null; ///
 
     return markedDirectoryNameDraggableEntry;
   }
 
-  retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
-    const directoryNameDraggableEntryOverlappingDraggableEntry = null; ///
+  retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
+    const bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = null; ///
 
-    return directoryNameDraggableEntryOverlappingDraggableEntry;
+    return bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;
   }
 
   initialise() {

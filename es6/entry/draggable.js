@@ -44,16 +44,18 @@ class DraggableEntry extends Entry {
 
     return collapsedBounds;
   }
-  
-  isTopmostDirectoryNameDraggableEntry() {
-    return false;
-  }
 
   isOverlappingCollapsedBounds(collapsedBounds) {
     const bounds = this.getBounds(),
           overlappingCollapsedBounds = bounds.areOverlapping(collapsedBounds);
 
     return overlappingCollapsedBounds;
+  }
+
+  isTopmostDirectoryNameDraggableEntry() {
+    const topmostDirectoryNameDraggableEntry = false;
+
+    return topmostDirectoryNameDraggableEntry;
   }
 
   startDragging(mouseTop, mouseLeft) {

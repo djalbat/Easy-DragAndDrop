@@ -8,8 +8,8 @@ const Entries = require('../../entries'),
       entryTypes = require('../../entryTypes'),
       DraggableEntry = require('../../entry/draggable');
 
-const { pathUtilities } = necessary,
-      { Button, React } = easy,
+const { Button, React } = easy,
+      { pathUtilities } = necessary,
       { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
 
@@ -18,6 +18,27 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     const type = DIRECTORY_NAME_TYPE;
 
     super(selector, type, explorer);
+  }
+
+  getCollapsedBounds() {
+    const collapsed = this.isCollapsed();
+
+    this.collapse();
+
+    const bounds = super.getBounds(),
+          collapsedBounds = bounds;  ///
+
+    if (!collapsed) {
+      this.expand();
+    }
+
+    return collapsedBounds;
+  }
+
+  isCollapsed() {
+    const collapsed = this.hasClass('collapsed');
+
+    return collapsed;
   }
 
   isBefore(entry) {
@@ -45,43 +66,9 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return before;
   }
 
-  getCollapsedBounds() {
-    const collapsed = this.isCollapsed();
-
-    this.collapse();
-
-    const bounds = super.getBounds(),
-          collapsedBounds = bounds;  ///
-
-    if (!collapsed) {
-      this.expand();
-    }
-
-    return collapsedBounds;
-  }
-
-  isCollapsed() {
-    const collapsed = this.hasClass('collapsed');
-
-    return collapsed;
-  }
-
   isMarked() {
-    let marked;
-
-    const entriesMarked = this.areEntriesMarked();
-
-    if (entriesMarked) {
-      marked = entriesMarked;
-    } else {
-      const directoryNameDraggableEntryMarked = this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
-        const directoryNameDraggableEntryMarked = directoryNameDraggableEntry.isMarked();
-
-        return directoryNameDraggableEntryMarked;
-      });
-
-      marked = directoryNameDraggableEntryMarked; ///
-    }
+    const markerEntryPresent = this.isMarkerEntryPresent(),
+          marked = markerEntryPresent;  ///
 
     return marked;
   }
@@ -139,6 +126,40 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return fileNameDraggableEntry;
   }
 
+  removeFilePath(filePath) {
+    let removeEmptyParentDirectoryNameDraggableEntries = null; ///
+
+    const addIfNecessary = false,
+          topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(filePath, addIfNecessary);
+
+    if (topmostDirectoryNameDraggableEntry !== null) {
+      const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
+
+      removeEmptyParentDirectoryNameDraggableEntries = topmostDirectoryNameDraggableEntry.removeFilePath(filePathWithoutTopmostDirectoryName);
+    } else {
+      const fileName = filePath,  ///
+          fileNameDraggableEntryPresent = this.isFileNameDraggableEntryPresent(fileName);
+
+      if (fileNameDraggableEntryPresent) {
+        removeEmptyParentDirectoryNameDraggableEntries = this.removeFileNameDraggableEntry(fileName);
+      }
+    }
+
+    if (removeEmptyParentDirectoryNameDraggableEntries === true) {
+      const topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry();
+
+      if (!topmostDirectoryNameDraggableEntry) {
+        const empty = this.isEmpty();
+
+        if (empty) {
+          this.remove();
+        }
+      }
+    }
+
+    return removeEmptyParentDirectoryNameDraggableEntries;
+  }
+
   addDirectoryPath(directoryPath, collapsed) {
     let directoryNameDraggableEntry = null;
 
@@ -166,40 +187,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return directoryNameDraggableEntry;
   }
 
-  removeFilePath(filePath) {
-    let removeEmptyParentDirectoryNameDraggableEntries = null; ///
-
-    const addIfNecessary = false,
-          topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(filePath, addIfNecessary);
-
-    if (topmostDirectoryNameDraggableEntry !== null) {
-      const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
-
-      removeEmptyParentDirectoryNameDraggableEntries = topmostDirectoryNameDraggableEntry.removeFilePath(filePathWithoutTopmostDirectoryName);
-    } else {
-      const fileName = filePath,  ///
-            fileNameDraggableEntryPresent = this.isFileNameDraggableEntryPresent(fileName);
-
-      if (fileNameDraggableEntryPresent) {
-        removeEmptyParentDirectoryNameDraggableEntries = this.removeFileNameDraggableEntry(fileName);
-      }
-    }
-
-    if (removeEmptyParentDirectoryNameDraggableEntries === true) {
-      const topmostDirectory = this.isTopmostDirectoryNameDraggableEntry();
-
-      if (!topmostDirectory) {
-        const empty = this.isEmpty();
-
-        if (empty) {
-          this.remove();
-        }
-      }
-    }
-
-    return removeEmptyParentDirectoryNameDraggableEntries;
-  }
-
   removeDirectoryPath(directoryPath) {
     let removeEmptyParentDirectoryNameDraggableEntries = false;
 
@@ -220,9 +207,9 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     }
 
     if (removeEmptyParentDirectoryNameDraggableEntries === true) {
-      const topmostDirectory = this.isTopmostDirectoryNameDraggableEntry();
+      const topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry();
 
-      if (!topmostDirectory) {
+      if (!topmostDirectoryNameDraggableEntry) {
         const empty = this.isEmpty();
 
         if (empty) {
@@ -234,41 +221,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return removeEmptyParentDirectoryNameDraggableEntries;
   }
   
-  addMarkerEntry(markerEntryPath, draggableEntryType) {
-    const topmostDirectoryName = topmostDirectoryNameFromPath(markerEntryPath);
-
-    if (topmostDirectoryName === null) {
-      const markerName = markerEntryPath;  ///
-
-      this.entriesAddMarkerEntry(markerName, draggableEntryType);
-    } else {
-      const topmostDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(topmostDirectoryName),
-            markerEntryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(markerEntryPath);
-
-      topmostDirectoryNameDraggableEntry.addMarkerEntry(markerEntryPathWithoutTopmostDirectoryName, draggableEntryType);
-    }
-  }
-
-  removeMarkerEntry() {
-    let removed;
-
-    const entriesMarked = this.areEntriesMarked();
-    
-    if (entriesMarked) {
-      this.entriesRemoveMarkerEntry();
-
-      removed = true;
-    } else {
-      removed = this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
-        const removed = directoryNameDraggableEntry.removeMarkerEntry();
-        
-        return removed;
-      });
-    }
-    
-    return removed;
-  }
-
   retrieveFilePaths() {
     let filePaths = [];
 
@@ -327,24 +279,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return subEntries;
   }
 
-  retrieveDraggableEntryPath(draggableEntry) {
-    let draggableEntryPath;
-
-    const name = this.getName();
-
-    if (draggableEntry === this) {
-      draggableEntryPath = name;  ///
-    } else {
-      draggableEntryPath = this.entriesRetrieveDraggableEntryPath(draggableEntry);
-
-      if (draggableEntryPath !== null) {
-        draggableEntryPath = `${name}/${draggableEntryPath}`;
-      }
-    }
-
-    return draggableEntryPath;
-  }
-
   retrieveTopmostDirectoryNameDraggableEntry(path, addIfNecessary) {
     let topmostDirectoryNameDraggableEntry;
 
@@ -372,36 +306,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return topmostDirectoryNameDraggableEntry;
   }
 
-  retrieveMarkedDirectoryNameDraggableEntry() {
-    let markedDirectoryNameDraggableEntry = this.entriesRetrieveMarkedDirectoryNameDraggableEntry();
-
-    if (markedDirectoryNameDraggableEntry === null) {
-      const marked = this.isMarked();
-      
-      if (marked) {
-        markedDirectoryNameDraggableEntry = this;
-      }
-    }
-
-    return markedDirectoryNameDraggableEntry;
-  }
-
-  retrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
-    let directoryNameDraggableEntryOverlappingDraggableEntry = null;
-
-    const overlappingDraggableEntry = this.isOverlappingDraggableEntry(draggableEntry);
-
-    if (overlappingDraggableEntry) {
-      directoryNameDraggableEntryOverlappingDraggableEntry = this.entriesRetrieveDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
-
-      if (directoryNameDraggableEntryOverlappingDraggableEntry === null) {
-        directoryNameDraggableEntryOverlappingDraggableEntry = this;
-      }
-    }
-
-    return directoryNameDraggableEntryOverlappingDraggableEntry;
-  }
-  
   toggleButtonClickHandler() {
     this.toggle();
   }
