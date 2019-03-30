@@ -33,6 +33,12 @@ class Explorer extends DropTarget {
     delete(this.options[option]);
   }
 
+  isOptionPresent(option) {
+    const optionPresent = (this.options[option] === true);
+
+    return optionPresent;
+  }
+
   getFilePaths() {
     const filePaths = this.retrieveFilePaths();
 
@@ -77,26 +83,6 @@ class Explorer extends DropTarget {
     }
   }
 
-  isOptionPresent(option) {
-    const optionPresent = (this.options[option] === true);
-
-    return optionPresent;
-  }
-
-  isMarked() {
-    const markedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry(),
-          marked = (markedDirectoryNameDraggableEntry !== null);
-
-    return marked;
-  }
-
-  isToBeMarked(draggableEntry) {
-    const bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry),
-          toBeMarked = (bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry !== null);
-
-    return toBeMarked;
-  }
-
   mark(draggableEntry, previousDraggableEntry = null) {
     const draggableEntryPath = draggableEntry.getPath(),
           draggableEntryType = draggableEntry.getType();
@@ -118,7 +104,21 @@ class Explorer extends DropTarget {
   unmark() {
     this.removeMarker();
   }
-  
+
+  isMarked() {
+    const markedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry(),
+          marked = (markedDirectoryNameDraggableEntry !== null);
+
+    return marked;
+  }
+
+  isToBeMarked(draggableEntry) {
+    const bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry),
+          toBeMarked = (bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry !== null);
+
+    return toBeMarked;
+  }
+
   findTopmostDirectoryNameDraggableEntry(path) {
     let topmostDirectoryNameDraggableEntry = null;
 

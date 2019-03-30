@@ -15,10 +15,26 @@ class RubbishBin extends DropTarget {
     super(selector, moveHandler);
   }
 
+  open() {
+    this.addClass('open');
+  }
+
+  close() {
+    this.removeClass('open');
+  }
+
   isOpen() {
     const open = this.hasClass('open');
 
     return open;
+  }
+
+  mark(draggableEntry) {
+    this.open();
+  }
+
+  unmark() {
+    this.close();
   }
 
   isMarked() {
@@ -35,22 +51,6 @@ class RubbishBin extends DropTarget {
           toBeMarked = overlappingDraggableEntryCollapsedBounds; ///
 
     return toBeMarked;
-  }
-
-  open() {
-    this.addClass('open');
-  }
-
-  close() {
-    this.removeClass('open');
-  }
-
-  mark(draggableEntry) {
-    this.open();
-  }
-
-  unmark() {
-    this.close();
   }
 
   dragging(draggableEntry, explorer) {
@@ -79,6 +79,19 @@ class RubbishBin extends DropTarget {
     }
   }
 
+  moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath) {
+    const draggableEntry = null;
+
+    if (targetFilePath === null) {
+      const explorer = fileNameDraggableEntry.getExplorer(),
+            filePath = sourceFilePath;  ///
+
+      explorer.removeFilePath(filePath);
+    }
+
+    return draggableEntry;
+  }
+
   moveDirectoryNameDraggableEntry(directoryNameDraggableEntry, sourceDirectoryPath, targetDirectoryPath) {
     const draggableEntry = null;
 
@@ -89,19 +102,6 @@ class RubbishBin extends DropTarget {
       explorer.removeDirectoryPath(directoryPath);
     }
 
-    return draggableEntry;
-  }
-
-  moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath) {
-    const draggableEntry = null;
-    
-    if (targetFilePath === null) {
-      const explorer = fileNameDraggableEntry.getExplorer(),
-            filePath = sourceFilePath;  ///
-
-      explorer.removeFilePath(filePath);
-    }
-    
     return draggableEntry;
   }
 
