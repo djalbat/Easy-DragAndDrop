@@ -4,7 +4,7 @@ const easy = require('easy');
 
 const types = require('../../types'),
       Entries = require('../../entries'),
-      NameButton = require('../../nameButton'),
+      NameButton = require('../../button/name'),
       DraggableEntry = require('../../entry/draggable');
 
 const { Button, React } = easy,

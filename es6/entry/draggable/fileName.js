@@ -3,7 +3,7 @@
 const easy = require('easy');
 
 const types = require('../../types'),
-      NameButton = require('../../nameButton'),
+      NameButton = require('../../button/name'),
       nameUtilities = require('../../utilities/name'),
       DraggableEntry = require('../../entry/draggable');
 
