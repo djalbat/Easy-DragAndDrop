@@ -18,17 +18,9 @@ class FileNameDraggableEntry extends DraggableEntry {
     super(selector, type, explorer);
   }
 
-  isFileNameDraggableEntry() {
-    return true;
-  }
-
-  isDirectoryNameDraggableEntry() {
-    return false;
-  }
-
   isBefore(entry) {
     let before;
-    
+
     const entryType = entry.getType();
 
     switch (entryType) {
@@ -37,22 +29,30 @@ class FileNameDraggableEntry extends DraggableEntry {
       case DIRECTORY_NAME_MARKER_TYPE:
         const name = this.getName(),
               entryName = entry.getName();
-          
+
         before = nameIsBeforeEntryName(name, entryName);
         break;
 
       case DIRECTORY_NAME_TYPE:
-        before = false;          
+        before = false;
         break;
     }
-    
+
     return before;
   }
 
-  retrieveSubEntries() {
-    const subEntries = [];  ///
+  isFileNameDraggableEntry() {
+    return true;
+  }
+
+  isDirectoryNameDraggableEntry() {
+    return false;
+  }
+
+  retrieveDraggableSubEntries() {
+    const draggableSubEntries = [];  ///
     
-    return subEntries;
+    return draggableSubEntries;
   }
   
   doubleClickHandler() {

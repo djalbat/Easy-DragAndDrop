@@ -258,27 +258,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return directoryPaths;
   }
 
-  retrieveSubEntries() {
-    let subEntries = [];
-
-    this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
-      const subEntry = fileNameDraggableEntry; ///
-
-      subEntries.push(subEntry);
-    });
-
-    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
-      const subEntry = directoryNameDraggableEntry, ///
-            directoryNameDraggableEntrySubEntries = directoryNameDraggableEntry.retrieveSubEntries();
-
-      subEntries.push(subEntry);
-
-      subEntries = subEntries.concat(directoryNameDraggableEntrySubEntries);
-    });
-
-    return subEntries;
-  }
-
   retrieveTopmostDirectoryNameDraggableEntry(path, addIfNecessary) {
     let topmostDirectoryNameDraggableEntry;
 

@@ -264,6 +264,20 @@ class Entries extends Element {
     return draggableEntryPath;
   }
 
+  retrieveDraggableSubEntries(subEntries = []) {
+    this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
+      const subEntry = fileNameDraggableEntry; ///
+
+      subEntries.push(subEntry);
+    });
+
+    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      directoryNameDraggableEntry.retrieveDraggableSubEntries(subEntries);
+    });
+
+    return subEntries;
+  }
+
   retrieveMarkedDirectoryNameDraggableEntry() {
     let markedDirectoryNameDraggableEntry = this.findMarkedDirectoryNameDraggableEntry();
 
@@ -446,6 +460,7 @@ class Entries extends Element {
           findDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry.bind(this),
           retrieveMarkerEntry = this.retrieveMarkerEntry.bind(this),
           retrieveDraggableEntryPath = this.retrieveDraggableEntryPath.bind(this),
+          retrieveDraggableSubEntries = this.retrieveDraggableSubEntries.bind(this),
           retrieveMarkedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry.bind(this),
           retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry.bind(this);
 
@@ -467,6 +482,7 @@ class Entries extends Element {
       findDirectoryNameDraggableEntry,
       retrieveMarkerEntry,
       retrieveDraggableEntryPath,
+      retrieveDraggableSubEntries,
       retrieveMarkedDirectoryNameDraggableEntry,
       retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry
     });

@@ -229,7 +229,7 @@ class Explorer extends DropTarget {
 
       done();
     } else {
-      const draggableEntrySubEntries = draggableEntry.retrieveSubEntries(),
+      const draggableEntrySubEntries = draggableEntry.retrieveDraggableSubEntries(),
             draggableEntries = draggableEntrySubEntries; ///
 
       draggableEntries.reverse();
