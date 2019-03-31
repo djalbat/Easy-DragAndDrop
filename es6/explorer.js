@@ -18,7 +18,7 @@ const { pathUtilities, arrayUtilities } = necessary,
       { pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
-  constructor(selector, moveHandler, openHandler = function(sourcePath) {}, options = {}) {
+  constructor(selector, moveHandler, openHandler = defaultOpenHandler, options = {}) {
     super(selector, moveHandler);
 
     this.openHandler = openHandler;
@@ -191,7 +191,7 @@ class Explorer extends DropTarget {
 
       draggableEntries.push(draggableEntry);
 
-      markedDropTarget.moveDraggableEntries(draggableEntries, sourcePath, targetPath, function() {
+      markedDropTarget.moveDraggableEntries(draggableEntries, sourcePath, targetPath, () => {
         markedDropTarget.unmark();
 
         done();
@@ -269,7 +269,7 @@ class Explorer extends DropTarget {
   }
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
-    const pathMaps = draggableEntries.map(function(draggableEntry) {
+    const pathMaps = draggableEntries.map((draggableEntry) => {
       const pathMap = pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath);
 
       return pathMap;
@@ -365,4 +365,8 @@ function replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath,
   draggableEntryPath = targetPath + secondMatch; ///
 
   return draggableEntryPath;
+}
+
+function defaultOpenHandler(sourcePath) {
+  ///
 }

@@ -27,7 +27,7 @@ const body = new Body(),
       ,
       explorer2 =
 
-          <Explorer topmostDirectoryName="explorer2" onOpen={openHandler} onMove={moveHandler} options={{ NO_DRAGGING_SUB_ENTRIES }} />
+        <Explorer topmostDirectoryName="explorer2" onOpen={openHandler} onMove={moveHandler} options={{ NO_DRAGGING_SUB_ENTRIES }} />
 
       ,
       rubbishBin =

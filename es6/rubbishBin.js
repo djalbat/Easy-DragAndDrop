@@ -106,7 +106,7 @@ class RubbishBin extends DropTarget {
   }
 
   pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
-    const pathMaps = draggableEntries.map(function(draggableEntry) {
+    const pathMaps = draggableEntries.map((draggableEntry) => {
       const pathMap = pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath);
       
       return pathMap;

@@ -20,8 +20,9 @@ class DraggableEntry extends Entry {
   }
 
   getPath() {
-    const draggableEntry = this,  ///
-          path = this.explorer.retrieveDraggableEntryPath(draggableEntry);
+    const explorer = this.getExplorer(),
+          draggableEntry = this,  ///
+          path = explorer.retrieveDraggableEntryPath(draggableEntry);
 
     return path;
   }
@@ -61,7 +62,8 @@ class DraggableEntry extends Entry {
   }
 
   startDragging(mouseTop, mouseLeft) {
-    const escapeKeyStopsDraggingOptionPresent = this.explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING),
+    const explorer = this.getExplorer(),
+          escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING),
           bounds = this.getBounds(),
           boundsTop = bounds.getTop(),
           boundsLeft = bounds.getLeft(),
@@ -84,7 +86,8 @@ class DraggableEntry extends Entry {
   }
 
   stopDragging() {
-    const escapeKeyStopsDraggingOptionPresent = this.explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
+    const explorer = this.getExplorer(),
+          escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
 
     if (escapeKeyStopsDraggingOptionPresent) {
       this.offKeyDown();
@@ -94,9 +97,11 @@ class DraggableEntry extends Entry {
   }
 
   dragging(mouseTop, mouseLeft) {
+    const explorer = this.getExplorer();
+
     this.drag(mouseTop, mouseLeft);
 
-    this.explorer.dragging(this);
+    explorer.dragging(this);
   }
 
   startWaitingToDrag(mouseTop, mouseLeft, mouseButton) {
@@ -106,9 +111,10 @@ class DraggableEntry extends Entry {
       timeout = setTimeout(() => {
         this.resetTimeout();
 
-        const topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry(),
+        const explorer = this.getExplorer(),
+              topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry(),
               subEntry = !topmostDirectoryNameDraggableEntry,
-              noDraggingSubEntriesOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING_SUB_ENTRIES);
+              noDraggingSubEntriesOptionPresent = explorer.isOptionPresent(NO_DRAGGING_SUB_ENTRIES);
 
         if (topmostDirectoryNameDraggableEntry) {
           return;
@@ -121,7 +127,7 @@ class DraggableEntry extends Entry {
         const mouseOver = this.isMouseOver(mouseTop, mouseLeft);
 
         if (mouseOver) {
-          const startedDragging = this.explorer.startDragging(this);
+          const startedDragging = explorer.startDragging(this);
 
           if (startedDragging) {
             this.startDragging(mouseTop, mouseLeft);
@@ -169,9 +175,10 @@ class DraggableEntry extends Entry {
     const dragging = this.isDragging();
 
     if (dragging) {
-      const draggableEntry = this;  ///
+      const explorer = this.getExplorer(),
+            draggableEntry = this;  ///
       
-      this.explorer.stopDragging(draggableEntry, () => {
+      explorer.stopDragging(draggableEntry, () => {
         this.stopDragging();
       });
     } else {
@@ -194,7 +201,9 @@ class DraggableEntry extends Entry {
       const dragging = this.isDragging();
 
       if (dragging) {
-        this.explorer.escapeDragging();
+        const explorer = this.getExplorer();
+
+        explorer.escapeDragging();
 
         this.stopDragging();
       }
@@ -220,7 +229,9 @@ class DraggableEntry extends Entry {
 
     this.css(css);
 
-    this.explorer.dragging(this);
+    const explorer = this.getExplorer();
+
+    explorer.dragging(this);
   }
   
   resetTimeout() {

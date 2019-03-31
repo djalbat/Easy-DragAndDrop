@@ -13,7 +13,7 @@ const { Element } = easy,
       { REMOVE_EMPTY_PARENT_DIRECTORIES } = options;
 
 class DropTarget extends Element {
-  constructor(selector, moveHandler = function(pathMaps, done) { done(); }) {
+  constructor(selector, moveHandler = defaultMoveHandler) {
     super(selector);
     
     this.moveHandler = moveHandler;
@@ -31,7 +31,7 @@ class DropTarget extends Element {
 
   getDropTargetToBeMarked(draggableEntry) {
     const dropTargets = this.getDropTargets(),
-          dropTargetToBeMarked = dropTargets.reduce(function(dropTargetToBeMarked, dropTarget) {
+          dropTargetToBeMarked = dropTargets.reduce((dropTargetToBeMarked, dropTarget) => {
             if (dropTargetToBeMarked === null) {
               if (dropTarget.isToBeMarked(draggableEntry)) { ///
                 dropTargetToBeMarked = dropTarget;
@@ -54,7 +54,7 @@ class DropTarget extends Element {
     } else {
       const dropTargets = this.getDropTargets();
 
-      dropTargets.some(function(dropTarget) {
+      dropTargets.some((dropTarget) => {
         const dropTargetMarked = dropTarget.isMarked();
 
         if (dropTargetMarked) {
@@ -98,7 +98,7 @@ class DropTarget extends Element {
         const draggableEntryPath = draggableEntry.getPath();
 
         if (draggableEntryPath !== null) {
-          const pathMap = pathMaps.find(function(pathMap) {
+          const pathMap = pathMaps.find((pathMap) => {
                   const { sourcePath } = pathMap;
 
                   if (sourcePath === draggableEntryPath) {
@@ -177,3 +177,7 @@ class DropTarget extends Element {
 }
 
 module.exports = DropTarget;
+
+function defaultMoveHandler(pathMaps, done) {
+  done();
+}

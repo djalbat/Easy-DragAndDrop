@@ -64,7 +64,7 @@ class Entries extends Element {
 
   addEntry(entry) {
     const nextEntry = entry,  ///
-          previousEntry = this.findEntry(function(entry) {
+          previousEntry = this.findEntry((entry) => {
             const nextEntryBeforeEntry = nextEntry.isBefore(entry);
 
             if (nextEntryBeforeEntry) {
@@ -320,7 +320,7 @@ class Entries extends Element {
   }
 
   findMarkerEntry() {
-    const markerEntry = this.findEntryByTypes(function(entry) {
+    const markerEntry = this.findEntryByTypes((entry) => {
             return true;  ///
           }, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE);
 
@@ -330,7 +330,7 @@ class Entries extends Element {
   findDraggableEntryPath(draggableEntry) {
     let draggableEntryPath = null;
 
-    this.someEntry(function(entry) {
+    this.someEntry((entry) => {
       if (entry === draggableEntry) {  ///
         const entryName = entry.getName();
 
@@ -346,7 +346,7 @@ class Entries extends Element {
   findMarkedDirectoryNameDraggableEntry() {
     let markedDirectoryNameDraggableEntry = null;
 
-    this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+    this.someDirectoryNameDraggableEntry((directoryNameDraggableEntry) => {
       const directoryNameDraggableEntryMarked = directoryNameDraggableEntry.isMarked();
 
       if (directoryNameDraggableEntryMarked) {
@@ -362,7 +362,7 @@ class Entries extends Element {
   findTopmostDirectoryNameDraggableEntry() {
     let topmostDirectoryNameDraggableEntry = null;
 
-    this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+    this.someDirectoryNameDraggableEntry((directoryNameDraggableEntry) => {
       const directoryNameDraggableEntryTopmostDirectoryNameDraggableEntry = directoryNameDraggableEntry.isTopmostDirectoryNameDraggableEntry();
 
       if (directoryNameDraggableEntryTopmostDirectoryNameDraggableEntry) {
@@ -379,7 +379,7 @@ class Entries extends Element {
     let markerEntry = this.findMarkerEntry();
 
     if (markerEntry === null) {
-      this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      this.someDirectoryNameDraggableEntry((directoryNameDraggableEntry) => {
         markerEntry = directoryNameDraggableEntry.retrieveMarkerEntry();
 
         if (markerEntry !== null) {
@@ -392,14 +392,14 @@ class Entries extends Element {
   }
 
   retrieveFilePaths(filePaths = []) {
-    this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
+    this.forEachFileNameDraggableEntry((fileNameDraggableEntry) => {
       const fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(),
             filePath = fileNameDraggableEntryPath;  ///
 
       filePaths.push(filePath);
     });
 
-    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+    this.forEachDirectoryNameDraggableEntry((directoryNameDraggableEntry) => {
       directoryNameDraggableEntry.retrieveFilePaths(filePaths);
     });
 
@@ -407,7 +407,7 @@ class Entries extends Element {
   }
 
   retrieveDirectoryPaths(directoryPaths = []) {
-    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+    this.forEachDirectoryNameDraggableEntry((directoryNameDraggableEntry) => {
       const directoryNameDraggableEntryPath = directoryNameDraggableEntry.getPath(),
             directoryPath = directoryNameDraggableEntryPath;  ///
 
@@ -423,7 +423,7 @@ class Entries extends Element {
     let draggableEntryPath = this.findDraggableEntryPath(draggableEntry);
 
     if (draggableEntryPath === null) {
-      this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      this.someDirectoryNameDraggableEntry((directoryNameDraggableEntry) => {
         draggableEntryPath = directoryNameDraggableEntry.retrieveDraggableEntryPath(draggableEntry);
 
         if (draggableEntryPath !== null) {
@@ -440,13 +440,13 @@ class Entries extends Element {
   }
 
   retrieveDraggableSubEntries(subEntries = []) {
-    this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
+    this.forEachFileNameDraggableEntry((fileNameDraggableEntry) => {
       const subEntry = fileNameDraggableEntry; ///
 
       subEntries.push(subEntry);
     });
 
-    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+    this.forEachDirectoryNameDraggableEntry((directoryNameDraggableEntry) => {
       const subEntry = directoryNameDraggableEntry; ///
 
       subEntries.push(subEntry);
@@ -461,7 +461,7 @@ class Entries extends Element {
     let markedDirectoryNameDraggableEntry = this.findMarkedDirectoryNameDraggableEntry();
 
     if (markedDirectoryNameDraggableEntry === null) {
-      this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      this.someDirectoryNameDraggableEntry((directoryNameDraggableEntry) => {
         markedDirectoryNameDraggableEntry = directoryNameDraggableEntry.retrieveMarkedDirectoryNameDraggableEntry();
 
         if (markedDirectoryNameDraggableEntry !== null) {
@@ -476,7 +476,7 @@ class Entries extends Element {
   retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
     let bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = null;
 
-    this.someDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+    this.someDirectoryNameDraggableEntry((directoryNameDraggableEntry) => {
       const directoryNameDraggableEntryOverlappingDraggableEntry = directoryNameDraggableEntry.isOverlappingDraggableEntry(draggableEntry);
 
       if (directoryNameDraggableEntryOverlappingDraggableEntry) {
@@ -522,7 +522,7 @@ class Entries extends Element {
   forEachEntryByTypes(callback, ...types) {
     const entries = this.getEntries();
 
-    entries.forEach(function(entry) {
+    entries.forEach((entry) => {
       const entryType = entry.getType(),
             typesIncludesEntryType = types.includes(entryType);
 
@@ -535,7 +535,7 @@ class Entries extends Element {
   forEachEntry(callback) {
     const entries = this.getEntries();
 
-    entries.forEach(function(entry) {
+    entries.forEach((entry) => {
       callback(entry);
     });
   }
@@ -543,7 +543,7 @@ class Entries extends Element {
   someEntryByTypes(callback, ...types) {
     const entries = this.getEntries();
 
-    return entries.some(function(entry) {
+    return entries.some((entry) => {
       const entryType = entry.getType(),
             typesIncludesEntryType = types.includes(entryType);
 
@@ -558,13 +558,13 @@ class Entries extends Element {
   someEntry(callback) {
     const entries = this.getEntries();
 
-    return entries.some(function(entry) {
+    return entries.some((entry) => {
       return callback(entry);
     });
   }
 
   findEntryByNameAndTypes(name, ...types) {
-    const entry = this.findEntryByTypes(function(entry) {
+    const entry = this.findEntryByTypes((entry) => {
       const entryName = entry.getName();
 
       if (entryName === name) {
@@ -577,7 +577,7 @@ class Entries extends Element {
 
   findEntryByTypes(callback, ...types) {
     const entries = this.getEntries(),
-          entry = entries.find(function(entry) {
+          entry = entries.find((entry) => {
             const entryType = entry.getType(),
                   typesIncludesEntryType = types.includes(entryType);
 
@@ -594,7 +594,7 @@ class Entries extends Element {
   }
 
   findEntryByName(name) {
-    const entry = this.findEntry(function(entry) {
+    const entry = this.findEntry((entry) => {
       const entryName = entry.getName();
 
       if (entryName === name) {
@@ -620,7 +620,8 @@ class Entries extends Element {
   }
   
   parentContext() {
-	  const isEmpty = this.isEmpty.bind(this),
+	  const getExplorer = this.getExplorer.bind(this),
+          isEmpty = this.isEmpty.bind(this),
           addMarker = this.addMarker.bind(this),
           removeMarker = this.removeMarker.bind(this),
           addFilePath = this.addFilePath.bind(this),
@@ -629,6 +630,7 @@ class Entries extends Element {
           removeDirectoryPath = this.removeDirectoryPath.bind(this),
           isMarkerEntryPresent = this.isMarkerEntryPresent.bind(this),
           isDraggableEntryPresent = this.isDraggableEntryPresent.bind(this),
+          retrieveMarkerEntry = this.retrieveMarkerEntry.bind(this),
           retrieveFilePaths = this.retrieveFilePaths.bind(this),
           retrieveDirectoryPaths = this.retrieveDirectoryPaths.bind(this),
           retrieveDraggableEntryPath = this.retrieveDraggableEntryPath.bind(this),
@@ -637,6 +639,7 @@ class Entries extends Element {
           retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry.bind(this);
 
     return ({
+      getExplorer,
       isEmpty,
       addMarker,
       removeMarker,
@@ -646,6 +649,7 @@ class Entries extends Element {
       removeDirectoryPath,
       isMarkerEntryPresent,
       isDraggableEntryPresent,
+      retrieveMarkerEntry,
       retrieveFilePaths,
       retrieveDirectoryPaths,
       retrieveDraggableEntryPath,
