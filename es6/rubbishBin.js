@@ -3,11 +3,9 @@
 const easy = require('easy');
 
 const types = require('./types'),
-      options = require('./options'),
       DropTarget = require('./dropTarget');
 
 const { Element } = easy,
-      { NO_DRAGGING_WITHIN } = options,
       { DIRECTORY_NAME_TYPE } = types;
 
 class RubbishBin extends DropTarget {
@@ -68,32 +66,23 @@ class RubbishBin extends DropTarget {
     if (dropTargetToBeMarked === this) {
       ///
     } else if (dropTargetToBeMarked !== null) {
-      const noDraggingWithinOptionPresent = dropTargetToBeMarked.isOptionPresent(NO_DRAGGING_WITHIN);
+      this.unmark();
 
-      if (noDraggingWithinOptionPresent) {
-        const previousDraggableEntry = null;
-
-        dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
-
-        this.unmark();
-      } else {
-        const previousDraggableEntry = draggableEntry,  ///
-              bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = dropTargetToBeMarked.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
-
-        draggableEntry = bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;  ///
-
-        dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
-
-        this.unmark();
-      }
+      dropTargetToBeMarked.markDraggableEntry(draggableEntry);
     } else {
       const dropTargetToBeMarked = explorer,  ///
             previousDraggableEntry = null;
 
-      dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
-
       this.unmark();
+
+      dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
     }
+  }
+
+  markDraggableEntry(draggableEntry) {
+    const previousDraggableEntry = null;
+
+    this.mark(draggableEntry, previousDraggableEntry);
   }
 
   moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath) {

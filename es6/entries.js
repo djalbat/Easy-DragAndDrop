@@ -83,7 +83,7 @@ class Entries extends Element {
     let markerEntry;
 
     const name = markerEntryName, ///
-        type = draggableEntryType;  ///
+          type = draggableEntryType;  ///
 
     switch (type) {
       case FILE_NAME_TYPE :
