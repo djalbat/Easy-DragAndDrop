@@ -10,7 +10,7 @@ const ESCAPE_KEYCODE = 27,
 
 const { window, Element } = easy,
       { LEFT_MOUSE_BUTTON } = Element,
-      { NO_DRAGGING, NO_DRAGGING_SUB_ENTRIES, NO_DRAGGING_TOPMOST_DIRECTORY, ESCAPE_KEY_STOPS_DRAGGING } = options;
+      { NO_DRAGGING, NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
 class DraggableEntry extends Entry {
   constructor(selector, type, explorer) {
@@ -104,13 +104,17 @@ class DraggableEntry extends Entry {
       timeout = setTimeout(() => {
         this.resetTimeout();
 
-        const topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry(),
-              subEntry = !topmostDirectoryNameDraggableEntry,  ///
-              noDraggingOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING),
-              noDraggingSubEntriesOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING_SUB_ENTRIES),
-              noDraggingTopmostDirectoryNameDraggableEntryOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING_TOPMOST_DIRECTORY);  ///
+        const noDraggingOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING),
+              topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry();
 
-        if ((noDraggingOptionPresent) || (subEntry && noDraggingSubEntriesOptionPresent) || (topmostDirectoryNameDraggableEntry && noDraggingTopmostDirectoryNameDraggableEntryOptionPresent)) {
+        if (topmostDirectoryNameDraggableEntry || noDraggingOptionPresent) {
+          return;
+        }
+
+        const subEntry = !topmostDirectoryNameDraggableEntry,
+              noDraggingSubEntriesOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING_SUB_ENTRIES);
+
+        if (subEntry && noDraggingSubEntriesOptionPresent) {
           return;
         }
 

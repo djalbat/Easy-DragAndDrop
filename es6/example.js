@@ -36,7 +36,11 @@ const body = new Body(),
 
 body.append(rubbishBin);
 
+body.append(<br />);
+
 body.append(explorer1);
+
+body.append(<br />);
 
 body.append(explorer2);
 
