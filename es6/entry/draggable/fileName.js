@@ -12,9 +12,7 @@ const { React } = easy,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
 
 class FileNameDraggableEntry extends DraggableEntry {
-  constructor(selector, explorer) {
-    const type = FILE_NAME_TYPE;
-
+  constructor(selector, type, explorer) {
     super(selector, type);
 
     this.explorer = explorer;
@@ -80,7 +78,8 @@ class FileNameDraggableEntry extends DraggableEntry {
 
   static fromProperties(properties) {
     const { explorer } = properties,
-          fileNameDraggableEntry = DraggableEntry.fromProperties(FileNameDraggableEntry, properties, explorer);
+          type = FILE_NAME_TYPE,  ///
+          fileNameDraggableEntry = DraggableEntry.fromProperties(FileNameDraggableEntry, properties, type, explorer);
 
     fileNameDraggableEntry.initialise();
 

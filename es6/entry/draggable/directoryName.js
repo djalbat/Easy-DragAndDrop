@@ -11,12 +11,6 @@ const { Button, React } = easy,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
 
 class DirectoryNameDraggableEntry extends DraggableEntry {
-  constructor(selector) {
-    const type = DIRECTORY_NAME_TYPE;
-
-    super(selector, type);
-  }
-
   getCollapsedBounds() {
     const collapsed = this.isCollapsed();
 
@@ -151,7 +145,8 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     }
 
     const { collapsed = false } = properties,
-          directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties);
+          type = DIRECTORY_NAME_TYPE, ///
+          directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, type);
 
     directoryNameDraggableEntry.initialise(collapsed);
 

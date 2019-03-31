@@ -13,9 +13,9 @@ class MarkerEntry extends Entry {
     return this.name;
   }
 
-  static fromProperties(Class, properties) {
+  static fromProperties(Class, properties, type) {
     const { name } = properties,
-          markerEntry = Entry.fromProperties(Class, properties, name);
+          markerEntry = Entry.fromProperties(Class, properties, type, name);
 
     return markerEntry;
   }

@@ -301,9 +301,8 @@ class DraggableEntry extends Entry {
     this.onDoubleClick(doubleClickHandler);
   }
 
-  static fromProperties(Class, properties) {
-    const { explorer } = properties,
-          draggableEntry = Entry.fromProperties(Class, properties, explorer);
+  static fromProperties(Class, properties, type, ...remainingArguments) {
+    const draggableEntry = Entry.fromProperties(Class, properties, type, ...remainingArguments);
 
     return draggableEntry;
   }

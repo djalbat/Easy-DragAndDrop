@@ -6,12 +6,6 @@ const entryTypes = require('../../entryTypes'),
 const { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
 
 class DirectoryNameMarkerEntry extends MarkerEntry {
-  constructor(selector, name) {
-    const type = DIRECTORY_NAME_MARKER_TYPE;
-    
-    super(selector, type, name);
-  }
-  
   isBefore(draggableEntry) {
     let before;
 
@@ -35,7 +29,12 @@ class DirectoryNameMarkerEntry extends MarkerEntry {
     return before;
   }
   
-  static fromProperties(properties) { return MarkerEntry.fromProperties(DirectoryNameMarkerEntry, properties); }
+  static fromProperties(properties) {
+    const type = DIRECTORY_NAME_MARKER_TYPE,  ///
+          directoryNameMarkerEntry = MarkerEntry.fromProperties(DirectoryNameMarkerEntry, properties, type);
+
+    return directoryNameMarkerEntry;
+  }
 }
 
 Object.assign(DirectoryNameMarkerEntry, {
