@@ -30,16 +30,25 @@ class DropTarget extends Element {
   }
 
   getDropTargetToBeMarked(draggableEntry) {
-    const dropTargets = this.getDropTargets(),
-          dropTargetToBeMarked = dropTargets.reduce((dropTargetToBeMarked, dropTarget) => {
-            if (dropTargetToBeMarked === null) {
-              if (dropTarget.isToBeMarked(draggableEntry)) { ///
-                dropTargetToBeMarked = dropTarget;
-              }
-            }
-      
-            return dropTargetToBeMarked;
-          }, null);
+    let dropTargetToBeMarked = null;
+
+    const toBeMarked = this.isToBeMarked(draggableEntry);
+
+    if (toBeMarked) {
+      dropTargetToBeMarked = this;  ///
+    } else {
+      const dropTargets = this.getDropTargets();
+
+      dropTargets.some((dropTarget) => {
+        const toBeMarked = dropTarget.isToBeMarked(draggableEntry);
+
+        if (toBeMarked) {
+          dropTargetToBeMarked = dropTarget;  ///
+
+          return true;
+        }
+      });
+    }
 
     return dropTargetToBeMarked;
   }

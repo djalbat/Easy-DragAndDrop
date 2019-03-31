@@ -3,9 +3,11 @@
 const easy = require('easy');
 
 const types = require('./types'),
+      options = require('./options'),
       DropTarget = require('./dropTarget');
 
 const { Element } = easy,
+      { NO_DRAGGING_WITHIN } = options,
       { DIRECTORY_NAME_TYPE } = types;
 
 class RubbishBin extends DropTarget {
@@ -29,7 +31,7 @@ class RubbishBin extends DropTarget {
     return open;
   }
 
-  mark(draggableEntry) {
+  mark(draggableEntry, previousDraggableEntry) {
     this.open();
   }
 
@@ -53,29 +55,44 @@ class RubbishBin extends DropTarget {
     return toBeMarked;
   }
 
-  dragging(draggableEntry, explorer) {
-    const marked = this.isMarked();
+  dragging(draggableEntry) {
+    const explorer = draggableEntry.getExplorer(),
+          markedDropTarget = this.getMarkedDropTarget();
 
-    if (marked) {
-      const toBeMarked = this.isToBeMarked(draggableEntry);
+    if (markedDropTarget !== this) {
+      return;
+    }
 
-      if (!toBeMarked) {
-        const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
+    const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
 
-        if (dropTargetToBeMarked !== null) {
-          const bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = dropTargetToBeMarked.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
+    if (dropTargetToBeMarked === this) {
+      ///
+    } else if (dropTargetToBeMarked !== null) {
+      const noDraggingWithinOptionPresent = dropTargetToBeMarked.isOptionPresent(NO_DRAGGING_WITHIN);
 
-          const previousDraggableEntry = draggableEntry;  ///
+      if (noDraggingWithinOptionPresent) {
+        const previousDraggableEntry = null;
 
-          draggableEntry = bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;  ///
+        dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
 
-          dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
-        } else {
-          explorer.mark(draggableEntry);
-        }
+        this.unmark();
+      } else {
+        const previousDraggableEntry = draggableEntry,  ///
+              bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = dropTargetToBeMarked.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
+
+        draggableEntry = bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;  ///
+
+        dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
 
         this.unmark();
       }
+    } else {
+      const dropTargetToBeMarked = explorer,  ///
+            previousDraggableEntry = null;
+
+      dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
+
+      this.unmark();
     }
   }
 

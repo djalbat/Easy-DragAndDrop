@@ -56,7 +56,7 @@ class Explorer extends DropTarget {
     return DirectoryNameDraggableEntry; ///
   }
 
-  mark(draggableEntry, previousDraggableEntry = null) {
+  mark(draggableEntry, previousDraggableEntry) {
     const draggableEntryPath = draggableEntry.getPath(),
           draggableEntryType = draggableEntry.getType();
 
@@ -97,59 +97,76 @@ class Explorer extends DropTarget {
           startedDragging = !marked;
 
     if (startedDragging) {
-      this.mark(draggableEntry);
+      const previousDraggableEntry = null;
+
+      this.mark(draggableEntry, previousDraggableEntry);
     }
 
     return startedDragging;
   }
 
-  dragging(draggableEntry, explorer = this) {
-    const markedDropTarget = this.getMarkedDropTarget();
+  dragging(draggableEntry) {
+    const explorer = draggableEntry.getExplorer(),
+          markedDropTarget = this.getMarkedDropTarget();
 
-    if (markedDropTarget === this) {
-      let bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;
+    if (markedDropTarget !== this) {
+      markedDropTarget.dragging(draggableEntry);
 
-      const toBeMarked = this.isToBeMarked(draggableEntry);
+      return;
+    }
 
-      if (toBeMarked) {
-        const within = (explorer === this), ///
-              noDraggingWithinOptionPresent = this.isOptionPresent(NO_DRAGGING_WITHIN),
-              noDragging = (within && noDraggingWithinOptionPresent);
+    const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
 
-        if (!noDragging) {
-          const markedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry();
+    if (dropTargetToBeMarked === this) {
+      const draggingWithin = (explorer === this); ///
 
-          bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
+      if (draggingWithin) {
+        const noDraggingWithinOptionPresent = this.isOptionPresent(NO_DRAGGING_WITHIN);
 
-          if (markedDirectoryNameDraggableEntry !== bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry) {
-            this.unmark();
-
-            const previousDraggableEntry = draggableEntry;  ///
-
-            draggableEntry = bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;  ///
-
-            this.mark(draggableEntry, previousDraggableEntry);
-          }
+        if (noDraggingWithinOptionPresent) {
+          return;
         }
+      }
+
+      const markedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry(),
+            bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
+
+      if (markedDirectoryNameDraggableEntry !== bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry) {
+        const dropTargetToBeMarked = this,  ///
+              previousDraggableEntry = draggableEntry;  ///
+
+        draggableEntry = bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;  ///
+
+        dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
+
+        this.unmark();
+      }
+    } else if (dropTargetToBeMarked !== null) {
+      const noDraggingWithinOptionPresent = dropTargetToBeMarked.isOptionPresent(NO_DRAGGING_WITHIN);
+
+      if (noDraggingWithinOptionPresent) {
+        const previousDraggableEntry = null;
+
+        dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
+
+        this.unmark();
       } else {
-        const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
+        const previousDraggableEntry = draggableEntry,  ///
+              bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = dropTargetToBeMarked.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
 
-        if (dropTargetToBeMarked !== null) {
-          bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = dropTargetToBeMarked.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
+        draggableEntry = bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;  ///
 
-          const previousDraggableEntry = draggableEntry;  ///
-
-          draggableEntry = bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;  ///
-
-          dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
-        } else {
-          explorer.mark(draggableEntry);
-        }
+        dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
 
         this.unmark();
       }
     } else {
-      markedDropTarget.dragging(draggableEntry, explorer);
+      const dropTargetToBeMarked = explorer,  ///
+            previousDraggableEntry = null;
+
+      dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
+
+      this.unmark();
     }
   }
 
