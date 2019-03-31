@@ -10,25 +10,13 @@ const ESCAPE_KEYCODE = 27,
 
 const { window, Element } = easy,
       { LEFT_MOUSE_BUTTON } = Element,
-      { NO_DRAGGING, NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
+      { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
 class DraggableEntry extends Entry {
-  constructor(selector, type, explorer) {
+  constructor(selector, type) {
     super(selector, type);
 
-    this.explorer = explorer;
-    
     this.setInitialState();
-  }
-
-  getExplorer() {
-    return this.explorer;
-  }
-
-  isDragging() {
-    const dragging = this.hasClass('dragging');
-
-    return dragging;
   }
 
   getPath() {
@@ -43,6 +31,20 @@ class DraggableEntry extends Entry {
           collapsedBounds = bounds;  ///
 
     return collapsedBounds;
+  }
+
+  isDragging() {
+    const dragging = this.hasClass('dragging');
+
+    return dragging;
+  }
+
+  isMouseOver(mouseTop, mouseLeft) {
+    const collapsedBounds = this.getCollapsedBounds(),
+          collapsedBoundsOverlappingMouse = collapsedBounds.isOverlappingMouse(mouseTop, mouseLeft),
+          mouseOver = collapsedBoundsOverlappingMouse;
+
+    return mouseOver;
   }
 
   isOverlappingCollapsedBounds(collapsedBounds) {
@@ -104,15 +106,13 @@ class DraggableEntry extends Entry {
       timeout = setTimeout(() => {
         this.resetTimeout();
 
-        const noDraggingOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING),
-              topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry();
+        const topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry(),
+              subEntry = !topmostDirectoryNameDraggableEntry,
+              noDraggingSubEntriesOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING_SUB_ENTRIES);
 
-        if (topmostDirectoryNameDraggableEntry || noDraggingOptionPresent) {
+        if (topmostDirectoryNameDraggableEntry) {
           return;
         }
-
-        const subEntry = !topmostDirectoryNameDraggableEntry,
-              noDraggingSubEntriesOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING_SUB_ENTRIES);
 
         if (subEntry && noDraggingSubEntriesOptionPresent) {
           return;
@@ -141,14 +141,6 @@ class DraggableEntry extends Entry {
 
       this.resetTimeout();
     }
-  }
-
-  isMouseOver(mouseTop, mouseLeft) {
-    const collapsedBounds = this.getCollapsedBounds(),
-          collapsedBoundsOverlappingMouse = collapsedBounds.isOverlappingMouse(mouseTop, mouseLeft),
-          mouseOver = collapsedBoundsOverlappingMouse;
-
-    return mouseOver;
   }
 
   mouseDownHandler(mouseTop, mouseLeft, mouseButton) {

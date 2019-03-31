@@ -3,10 +3,6 @@
 const DirectoryNameDraggableEntry = require('../../../entry/draggable/directoryName');
 
 class TopmostDirectoryNameDraggableEntry extends DirectoryNameDraggableEntry {
-  retrieve() {
-    return this;  ///
-  }
-
   isTopmostDirectoryNameDraggableEntry() {
     const topmostDirectoryNameDraggableEntry = true;
 

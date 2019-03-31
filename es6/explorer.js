@@ -7,6 +7,7 @@ const options = require('./options'),
       Entries = require('./entries'),
       DropTarget = require('./dropTarget'),
       entryTypes = require('./entryTypes'),
+      DirectoryNameDraggableEntry = require('./entry/draggable/directoryName'),
       TopmostDirectoryNameDraggableEntry = require('./entry/draggable/directoryName/topmost');
 
 const { pathUtilities, arrayUtilities } = necessary,
@@ -14,7 +15,7 @@ const { pathUtilities, arrayUtilities } = necessary,
       { second } = arrayUtilities,
       { NO_DRAGGING_WITHIN } = options,
       { DIRECTORY_NAME_TYPE } = entryTypes,
-      { topmostDirectoryNameFromPath, pathWithoutBottommostNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
+      { pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
   constructor(selector, moveHandler, openHandler = function(sourcePath) {}, options = {}) {
@@ -51,52 +52,8 @@ class Explorer extends DropTarget {
     return directoryPaths;
   }
 
-  addFilePath(filePath) {
-    const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(filePath);
-
-    if (topmostDirectoryNameDraggableEntry !== null) {
-      const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
-
-      filePath = filePathWithoutTopmostDirectoryName; ///
-
-      topmostDirectoryNameDraggableEntry.addFilePath(filePath);
-    }
-  }
-
-  removeFilePath(filePath) {
-    const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(filePath);
-
-    if (topmostDirectoryNameDraggableEntry !== null) {
-      const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
-
-      filePath = filePathWithoutTopmostDirectoryName; ///
-
-      topmostDirectoryNameDraggableEntry.removeFilePath(filePath);
-    }
-  }
-
-  addDirectoryPath(directoryPath, collapsed = false) {
-    const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(directoryPath);
-
-    if (topmostDirectoryNameDraggableEntry!== null) {
-      const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
-
-      directoryPath = directoryPathWithoutTopmostDirectoryName; ///
-
-      topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPath, collapsed);
-    }
-  }
-
-  removeDirectoryPath(directoryPath) {
-    const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(directoryPath);
-
-    if (topmostDirectoryNameDraggableEntry !== null) {
-      const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
-
-      directoryPath = directoryPathWithoutTopmostDirectoryName; ///
-
-      topmostDirectoryNameDraggableEntry.removeDirectoryPath(directoryPath);
-    }
+  getDirectoryNameDraggableEntry() {
+    return DirectoryNameDraggableEntry; ///
   }
 
   mark(draggableEntry, previousDraggableEntry = null) {
@@ -133,19 +90,6 @@ class Explorer extends DropTarget {
           toBeMarked = (bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry !== null);
 
     return toBeMarked;
-  }
-
-  findTopmostDirectoryNameDraggableEntry(path) {
-    let topmostDirectoryNameDraggableEntry = null;
-
-    const topmostDirectoryName = topmostDirectoryNameFromPath(path),
-          directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(topmostDirectoryName);
-
-    if (directoryNameDraggableEntry !== null) {
-      topmostDirectoryNameDraggableEntry = directoryNameDraggableEntry; ///
-    }
-
-    return topmostDirectoryNameDraggableEntry;
   }
 
   startDragging(draggableEntry) {
@@ -318,8 +262,7 @@ class Explorer extends DropTarget {
   }
 
   openFileNameDraggableEntry(fileNameDraggableEntry) {
-    const topmostDirectoryNameDraggableEntry = this.retrieveTopmostDirectoryNameDraggableEntry(),
-          fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(topmostDirectoryNameDraggableEntry),
+    const fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(),
           filePath = fileNameDraggableEntryPath;  ///
 
     this.openHandler(filePath);
@@ -342,11 +285,11 @@ class Explorer extends DropTarget {
           directoryName = topmostDirectoryName, ///
           entries =
 
-            <Entries />
+            <Entries explorer={explorer} />
 
           ;
 
-    entries.addDirectoryNameDraggableEntry(directoryName, explorer, collapsed, TopmostDirectoryNameDraggableEntry);
+    entries.addDirectoryNameDraggableEntry(directoryName, collapsed, TopmostDirectoryNameDraggableEntry);
 
     const childElements = entries;  ///
 

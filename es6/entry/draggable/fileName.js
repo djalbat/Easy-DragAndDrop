@@ -12,10 +12,10 @@ const { React } = easy,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
 
 class FileNameDraggableEntry extends DraggableEntry {
-  constructor(selector, explorer) {
+  constructor(selector) {
     const type = FILE_NAME_TYPE;
 
-    super(selector, type, explorer);
+    super(selector, type);
   }
 
   isBefore(entry) {

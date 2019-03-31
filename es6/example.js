@@ -7,7 +7,7 @@ const options = require('./options'),
       RubbishBin = require('./rubbishBin');
 
 const { Body, React } = easy,
-      { NO_DRAGGING, NO_DRAGGING_WITHIN, NO_DRAGGING_SUB_ENTRIES, REMOVE_EMPTY_PARENT_DIRECTORIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
+      { NO_DRAGGING_WITHIN, NO_DRAGGING_SUB_ENTRIES } = options;
 
 const openHandler = (filePath) => {
         alert(filePath)
@@ -22,12 +22,12 @@ const openHandler = (filePath) => {
 const body = new Body(),
       explorer1 =
 
-        <Explorer topmostDirectoryName="explorer1" onOpen={openHandler} onMove={moveHandler} options={{ ESCAPE_KEY_STOPS_DRAGGING }} />
+        <Explorer topmostDirectoryName="explorer1" onOpen={openHandler} onMove={moveHandler} options={{ NO_DRAGGING_WITHIN }} />
 
       ,
       explorer2 =
 
-          <Explorer topmostDirectoryName="explorer2" onOpen={openHandler} onMove={moveHandler} options={{ ESCAPE_KEY_STOPS_DRAGGING }} />
+          <Explorer topmostDirectoryName="explorer2" onOpen={openHandler} onMove={moveHandler} options={{ NO_DRAGGING_SUB_ENTRIES }} />
 
       ,
       rubbishBin =
@@ -58,8 +58,6 @@ rubbishBin.addDropTarget(explorer1);
 
 rubbishBin.addDropTarget(explorer2);
 
-explorer1.addDirectoryPath('explorer1/directory1');
-explorer1.addDirectoryPath('explorer1/directory1/directory2');
-// explorer1.addFilePath('explorer1/directory1/file1.txt');
-// explorer1.addFilePath('explorer1/directory1/file2.txt');
-// explorer1.addFilePath('explorer1/directory2/file3.txt');
+explorer1.addFilePath('explorer1/file1.txt');
+explorer1.addFilePath('explorer1/directory1/file2.txt');
+explorer2.addFilePath('explorer2/directory2/file3.txt');
