@@ -221,43 +221,6 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     return removeEmptyParentDirectoryNameDraggableEntries;
   }
   
-  retrieveFilePaths() {
-    let filePaths = [];
-
-    this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
-      const fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(),
-            filePath = fileNameDraggableEntryPath;  ///
-
-      filePaths.push(filePath);
-    });
-
-    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
-      const directoryNameDraggableEntryFilePaths = directoryNameDraggableEntry.retrieveFilePaths(),
-            directoryFilePaths = directoryNameDraggableEntryFilePaths;
-
-      filePaths = filePaths.concat(directoryFilePaths);
-    });
-
-    return filePaths;
-  }
-
-  retrieveDirectoryPaths() {
-    let directoryPaths = [];
-
-    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
-      const directoryNameDraggableEntryPath = directoryNameDraggableEntry.getPath(),
-            directoryNameDraggableEntryDirectoryPaths = directoryNameDraggableEntry.retrieveDirectoryPaths(),
-            directoryPath = directoryNameDraggableEntryPath,  ///
-            directoryDirectoryPaths = directoryNameDraggableEntryDirectoryPaths;
-
-      directoryPaths.push(directoryPath);
-
-      directoryPaths = directoryPaths.concat(directoryDirectoryPaths);
-    });
-
-    return directoryPaths;
-  }
-
   retrieveTopmostDirectoryNameDraggableEntry(path, addIfNecessary) {
     let topmostDirectoryNameDraggableEntry;
 

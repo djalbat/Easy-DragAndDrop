@@ -244,6 +244,34 @@ class Entries extends Element {
     return markerEntry;
   }
 
+  retrieveFilePaths(filePaths = []) {
+    this.forEachFileNameDraggableEntry(function(fileNameDraggableEntry) {
+      const fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(),
+            filePath = fileNameDraggableEntryPath;  ///
+
+      filePaths.push(filePath);
+    });
+
+    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      directoryNameDraggableEntry.retrieveFilePaths(filePaths);
+    });
+
+    return filePaths;
+  }
+
+  retrieveDirectoryPaths(directoryPaths = []) {
+    this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      const directoryNameDraggableEntryPath = directoryNameDraggableEntry.getPath(),
+            directoryPath = directoryNameDraggableEntryPath;  ///
+
+      directoryPaths.push(directoryPath);
+
+      directoryNameDraggableEntry.retrieveDirectoryPaths(directoryPaths);
+    });
+
+    return directoryPaths;
+  }
+
   retrieveDraggableEntryPath(draggableEntry) {
     let draggableEntryPath = this.findDraggableEntryPath(draggableEntry);
 
@@ -459,6 +487,8 @@ class Entries extends Element {
 				  someDirectoryNameDraggableEntry = this.someDirectoryNameDraggableEntry.bind(this),
           findDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry.bind(this),
           retrieveMarkerEntry = this.retrieveMarkerEntry.bind(this),
+          retrieveFilePaths = this.retrieveFilePaths.bind(this),
+          retrieveDirectoryPaths = this.retrieveDirectoryPaths.bind(this),
           retrieveDraggableEntryPath = this.retrieveDraggableEntryPath.bind(this),
           retrieveDraggableSubEntries = this.retrieveDraggableSubEntries.bind(this),
           retrieveMarkedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry.bind(this),
@@ -481,6 +511,8 @@ class Entries extends Element {
       someDirectoryNameDraggableEntry,
       findDirectoryNameDraggableEntry,
       retrieveMarkerEntry,
+      retrieveFilePaths,
+      retrieveDirectoryPaths,
       retrieveDraggableEntryPath,
       retrieveDraggableSubEntries,
       retrieveMarkedDirectoryNameDraggableEntry,
