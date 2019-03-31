@@ -45,32 +45,33 @@ class DropTarget extends Element {
   }
 
   getMarkedDropTarget() {
-    const dropTargets = this.getDropTargets(),
-          markedDropTarget = dropTargets.reduce(function(markedDropTarget, dropTarget) {
-            if (markedDropTarget === null) {
-              const dropTargetMarked = dropTarget.isMarked();
-              
-              if (dropTargetMarked) {
-                markedDropTarget = dropTarget;
-              }
-            }
-      
-            return markedDropTarget;
-          }, null);
+    let markedDropTarget = null;
+
+    const marked = this.isMarked();
+
+    if (marked) {
+      markedDropTarget = this;  ///
+    } else {
+      const dropTargets = this.getDropTargets();
+
+      dropTargets.some(function(dropTarget) {
+        const dropTargetMarked = dropTarget.isMarked();
+
+        if (dropTargetMarked) {
+          markedDropTarget = dropTarget;
+
+          return true;
+        }
+      });
+    }
 
     return markedDropTarget;
   }
 
   unmarkGlobally() {
-    const marked = this.isMarked();
+    const markedDropTarget = this.getMarkedDropTarget();
 
-    if (marked) {
-      this.unmark();
-    } else {
-      const markedDropTarget = this.getMarkedDropTarget();
-
-      markedDropTarget.unmark();
-    }
+    markedDropTarget.unmark();
   }
 
   moveDraggableEntries(draggableEntries, sourcePath, targetPath, done) {

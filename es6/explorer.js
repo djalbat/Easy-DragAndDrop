@@ -14,7 +14,7 @@ const { pathUtilities, arrayUtilities } = necessary,
       { second } = arrayUtilities,
       { NO_DRAGGING_WITHIN } = options,
       { DIRECTORY_NAME_TYPE } = entryTypes,
-      { topmostDirectoryNameFromPath, pathWithoutBottommostNameFromPath } = pathUtilities;
+      { topmostDirectoryNameFromPath, pathWithoutBottommostNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
   constructor(selector, moveHandler, openHandler = function(sourcePath) {}, options = {}) {
@@ -34,7 +34,7 @@ class Explorer extends DropTarget {
   }
 
   isOptionPresent(option) {
-    const optionPresent = (this.options[option] === true);
+    const optionPresent = !!this.options[option]; ///
 
     return optionPresent;
   }
@@ -55,6 +55,10 @@ class Explorer extends DropTarget {
     const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(filePath);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
+      const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
+
+      filePath = filePathWithoutTopmostDirectoryName; ///
+
       topmostDirectoryNameDraggableEntry.addFilePath(filePath);
     }
   }
@@ -63,6 +67,10 @@ class Explorer extends DropTarget {
     const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(filePath);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
+      const filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
+
+      filePath = filePathWithoutTopmostDirectoryName; ///
+
       topmostDirectoryNameDraggableEntry.removeFilePath(filePath);
     }
   }
@@ -71,6 +79,10 @@ class Explorer extends DropTarget {
     const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(directoryPath);
 
     if (topmostDirectoryNameDraggableEntry!== null) {
+      const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+
+      directoryPath = directoryPathWithoutTopmostDirectoryName; ///
+
       topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPath, collapsed);
     }
   }
@@ -79,6 +91,10 @@ class Explorer extends DropTarget {
     const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(directoryPath);
 
     if (topmostDirectoryNameDraggableEntry !== null) {
+      const directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
+
+      directoryPath = directoryPathWithoutTopmostDirectoryName; ///
+
       topmostDirectoryNameDraggableEntry.removeDirectoryPath(directoryPath);
     }
   }
@@ -144,9 +160,9 @@ class Explorer extends DropTarget {
   }
 
   dragging(draggableEntry, explorer = this) {
-    const marked = this.isMarked();
+    const markedDropTarget = this.getMarkedDropTarget();
 
-    if (marked) {
+    if (markedDropTarget === this) {
       let bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;
 
       const toBeMarked = this.isToBeMarked(draggableEntry);
@@ -189,18 +205,13 @@ class Explorer extends DropTarget {
         this.unmark();
       }
     } else {
-      const markedDropTarget = this.getMarkedDropTarget();
-
       markedDropTarget.dragging(draggableEntry, explorer);
     }
   }
 
   stopDragging(draggableEntry, done) {
-    const draggableEntryPath = draggableEntry.getPath(),
-          marked = this.isMarked(),
-          markedDropTarget = marked ?
-                               this :
-                                 this.getMarkedDropTarget(),
+    const markedDropTarget = this.getMarkedDropTarget(),
+          draggableEntryPath = draggableEntry.getPath(),
           markedDirectoryNameDraggableEntry = markedDropTarget.retrieveMarkedDirectoryNameDraggableEntry(),
           draggableEntryPathWithoutBottommostName = pathWithoutBottommostNameFromPath(draggableEntryPath),
           sourcePath = draggableEntryPathWithoutBottommostName; ///

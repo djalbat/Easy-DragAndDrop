@@ -300,6 +300,10 @@ class Entries extends Element {
     });
 
     this.forEachDirectoryNameDraggableEntry(function(directoryNameDraggableEntry) {
+      const subEntry = directoryNameDraggableEntry; ///
+
+      subEntries.push(subEntry);
+
       directoryNameDraggableEntry.retrieveDraggableSubEntries(subEntries);
     });
 
