@@ -2,14 +2,14 @@
 
 const easy = require('easy');
 
-const NameButton = require('../../nameButton'),
-      entryTypes = require('../../entryTypes'),
+const types = require('../../types'),
+      NameButton = require('../../nameButton'),
       nameUtilities = require('../../utilities/name'),
       DraggableEntry = require('../../entry/draggable');
 
 const { React } = easy,
       { nameIsBeforeEntryName } = nameUtilities,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class FileNameDraggableEntry extends DraggableEntry {
   constructor(selector, type, explorer) {

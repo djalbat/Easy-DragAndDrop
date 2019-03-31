@@ -2,13 +2,13 @@
 
 const easy = require('easy');
 
-const Entries = require('../../entries'),
+const types = require('../../types'),
+      Entries = require('../../entries'),
       NameButton = require('../../nameButton'),
-      entryTypes = require('../../entryTypes'),
       DraggableEntry = require('../../entry/draggable');
 
 const { Button, React } = easy,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class DirectoryNameDraggableEntry extends DraggableEntry {
   getCollapsedBounds() {

@@ -3,13 +3,13 @@
 const easy = require('easy'),
       necessary = require('necessary');
 
-const options = require('./options'),
-      entryTypes = require('./entryTypes');
+const types = require('./types'),
+      options = require('./options');
 
 const { Element } = easy,
       { arrayUtilities } = necessary,
       { first, last } = arrayUtilities,
-      { DIRECTORY_NAME_TYPE } = entryTypes,
+      { DIRECTORY_NAME_TYPE } = types,
       { REMOVE_EMPTY_PARENT_DIRECTORIES } = options;
 
 class DropTarget extends Element {

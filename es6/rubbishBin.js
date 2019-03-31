@@ -2,11 +2,11 @@
 
 const easy = require('easy');
 
-const DropTarget = require('./dropTarget'),
-      entryTypes = require('./entryTypes');
+const types = require('./types'),
+      DropTarget = require('./dropTarget');
 
 const { Element } = easy,
-      { DIRECTORY_NAME_TYPE } = entryTypes;
+      { DIRECTORY_NAME_TYPE } = types;
 
 class RubbishBin extends DropTarget {
   constructor(selector, removeHandler) {

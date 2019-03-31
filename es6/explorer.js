@@ -3,10 +3,10 @@
 const easy = require('easy'),
       necessary = require('necessary');
 
-const options = require('./options'),
+const types = require('./types'),
+      options = require('./options'),
       Entries = require('./entries'),
       DropTarget = require('./dropTarget'),
-      entryTypes = require('./entryTypes'),
       DirectoryNameDraggableEntry = require('./entry/draggable/directoryName'),
       TopmostDirectoryNameDraggableEntry = require('./entry/draggable/directoryName/topmost');
 
@@ -14,7 +14,7 @@ const { pathUtilities, arrayUtilities } = necessary,
       { Element, React } = easy,
       { second } = arrayUtilities,
       { NO_DRAGGING_WITHIN } = options,
-      { DIRECTORY_NAME_TYPE } = entryTypes,
+      { DIRECTORY_NAME_TYPE } = types,
       { pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {

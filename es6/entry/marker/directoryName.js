@@ -1,9 +1,9 @@
 'use strict';
 
-const entryTypes = require('../../entryTypes'),
+const types = require('../../types'),
       MarkerEntry = require('../../entry/marker');
 
-const { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
+const { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class DirectoryNameMarkerEntry extends MarkerEntry {
   isBefore(draggableEntry) {

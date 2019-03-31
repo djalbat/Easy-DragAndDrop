@@ -3,8 +3,8 @@
 const easy = require('easy'),
       necessary = require('necessary');
 
-const options = require('./options'),
-      entryTypes = require('./entryTypes'),
+const types = require('./types'),
+      options = require('./options'),
       FileNameMarkerEntry = require('./entry/marker/fileName'),
       FileNameDraggableEntry = require('./entry/draggable/fileName'),
       DirectoryNameMarkerEntry = require('./entry/marker/directoryName');
@@ -13,7 +13,7 @@ const { Element, React } = easy,
       { pathUtilities } = necessary,
       { REMOVE_EMPTY_PARENT_DIRECTORIES, NO_DRAGGING_INTO_SUB_DIRECTORIES } = options,
       { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = entryTypes;
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class Entries extends Element {
   constructor(selector, explorer) {
