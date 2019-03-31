@@ -11,14 +11,14 @@ const types = require('./types'),
       TopmostDirectoryNameDraggableEntry = require('./entry/draggable/directoryName/topmost');
 
 const { pathUtilities, arrayUtilities } = necessary,
-      { Element, React } = easy,
+      { React } = easy,
       { second } = arrayUtilities,
       { NO_DRAGGING_WITHIN } = options,
       { DIRECTORY_NAME_TYPE } = types,
       { pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
-  constructor(selector, moveHandler, openHandler = defaultOpenHandler, options = {}) {
+  constructor(selector, moveHandler, openHandler, options) {
     super(selector, moveHandler);
 
     this.openHandler = openHandler;
@@ -144,16 +144,16 @@ class Explorer extends DropTarget {
         this.mark(draggableEntry, previousDraggableEntry);
       }
     } else if (dropTargetToBeMarked !== null) {
-      this.unmark();
-
       dropTargetToBeMarked.markDraggableEntry(draggableEntry);
+
+      this.unmark();
     } else {
       const dropTargetToBeMarked = explorer,  ///
             previousDraggableEntry = null;
 
-      this.unmark();
-
       dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
+
+      this.unmark();
     }
   }
 
@@ -322,10 +322,10 @@ class Explorer extends DropTarget {
   }
 
   static fromProperties(properties) {
-    const { onMove, onOpen, options } = properties,
-          moveHandler = onMove, ///
-          openHandler = onOpen, ///
-          explorer = Element.fromProperties(Explorer, properties, moveHandler, openHandler, options);
+    const { onMove, onOpen, options = {}} = properties, ///
+          moveHandler = onMove || defaultMoveHandler, ///
+          openHandler = onOpen || defaultOpenHandler, ///
+          explorer = DropTarget.fromProperties(Explorer, properties, moveHandler, openHandler, options);
 
     explorer.initialise();
     
@@ -348,6 +348,14 @@ Object.assign(Explorer, {
 });
 
 module.exports = Explorer;
+
+function defaultOpenHandler(sourcePath) {
+  ///
+}
+
+function defaultMoveHandler(pathMaps, done) {
+  done();
+}
 
 function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
   const draggableEntryPath = draggableEntry.getPath(),
@@ -386,8 +394,4 @@ function replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath,
   draggableEntryPath = targetPath + secondMatch; ///
 
   return draggableEntryPath;
-}
-
-function defaultOpenHandler(sourcePath) {
-  ///
 }

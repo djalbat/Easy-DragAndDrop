@@ -13,7 +13,7 @@ const { Element } = easy,
       { REMOVE_EMPTY_PARENT_DIRECTORIES } = options;
 
 class DropTarget extends Element {
-  constructor(selector, moveHandler = defaultMoveHandler) {
+  constructor(selector, moveHandler) {
     super(selector);
     
     this.moveHandler = moveHandler;
@@ -182,11 +182,9 @@ class DropTarget extends Element {
     this.setState({
       dropTargets
     });
-  }  
+  }
+
+  static fromProperties(Class, properties, moveHandler, ...remainingArguments) { return Element.fromProperties(Class, properties, moveHandler, ...remainingArguments); }
 }
 
 module.exports = DropTarget;
-
-function defaultMoveHandler(pathMaps, done) {
-  done();
-}

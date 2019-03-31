@@ -1,20 +1,11 @@
 'use strict';
 
-const easy = require('easy');
-
 const types = require('./types'),
       DropTarget = require('./dropTarget');
 
-const { Element } = easy,
-      { DIRECTORY_NAME_TYPE } = types;
+const { DIRECTORY_NAME_TYPE } = types;
 
 class RubbishBin extends DropTarget {
-  constructor(selector, removeHandler) {
-    const moveHandler = removeHandler;  ///
-    
-    super(selector, moveHandler);
-  }
-
   open() {
     this.addClass('open');
   }
@@ -66,16 +57,16 @@ class RubbishBin extends DropTarget {
     if (dropTargetToBeMarked === this) {
       ///
     } else if (dropTargetToBeMarked !== null) {
-      this.unmark();
-
       dropTargetToBeMarked.markDraggableEntry(draggableEntry);
+
+      this.unmark();
     } else {
       const dropTargetToBeMarked = explorer,  ///
             previousDraggableEntry = null;
 
-      this.unmark();
-
       dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
+
+      this.unmark();
     }
   }
 
@@ -139,8 +130,9 @@ class RubbishBin extends DropTarget {
 
   static fromProperties(properties) {
     const { onRemove } = properties,
-          removeHandler = onRemove, ///
-          rubbishBin = Element.fromProperties(RubbishBin, properties, removeHandler);
+          removeHandler = onRemove || defaultRemoveHandler, ///
+          moveHandler = removeHandler,  ///
+          rubbishBin = DropTarget.fromProperties(RubbishBin, properties, moveHandler);
 
     rubbishBin.initialise();
     
@@ -159,6 +151,10 @@ Object.assign(RubbishBin, {
 });
 
 module.exports = RubbishBin;
+
+function defaultRemoveHandler(pathMaps, done) {
+  done();
+}
 
 function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
   const draggableEntryPath = draggableEntry.getPath(),
