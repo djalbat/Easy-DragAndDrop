@@ -180,6 +180,8 @@ class Entries extends Element {
   }
 
   addFilePath(filePath) {
+    let fileNameDraggableEntry = null;
+
     const topmostDirectoryName = topmostDirectoryNameFromPath(filePath),
           topmostDirectoryNameEntry = this.findTopmostDirectoryNameDraggableEntry(),
           filePathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(filePath);
@@ -191,33 +193,33 @@ class Entries extends Element {
         if (topmostDirectoryName === topmostDirectoryNameEntryName) {
           filePath = filePathWithoutTopmostDirectoryName; ///
 
-          topmostDirectoryNameEntry.addFilePath(filePath);
+          fileNameDraggableEntry = topmostDirectoryNameEntry.addFilePath(filePath);
         }
       }
     } else {
       if (topmostDirectoryName !== null) {
-        const directoryName = topmostDirectoryName;  ///
+        let topmostDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(topmostDirectoryName);
 
-        let directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
-
-        if (directoryNameDraggableEntry === null) {
+        if (topmostDirectoryNameDraggableEntry === null) {
           const collapsed = true; ///
 
-          directoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(directoryName, collapsed);
+          topmostDirectoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(topmostDirectoryName, collapsed);
         }
 
         const filePath = filePathWithoutTopmostDirectoryName; ///
 
-        directoryNameDraggableEntry.addFilePath(filePath);
+        fileNameDraggableEntry = topmostDirectoryNameDraggableEntry.addFilePath(filePath);
       } else {
         const fileName = filePath,  ///
               fileNameDraggableEntryPresent = this.isFileNameDraggableEntryPresent(fileName);
 
-        if (!fileNameDraggableEntryPresent) {
-          this.addFileNameDraggableEntry(fileName);
-        }
+        fileNameDraggableEntry = fileNameDraggableEntryPresent ?
+                                   this.findFileNameDraggableEntry(fileName) :
+                                     this.addFileNameDraggableEntry(fileName);
       }
     }
+
+    return fileNameDraggableEntry;
   }
 
   removeFilePath(filePath) {
@@ -258,6 +260,8 @@ class Entries extends Element {
   }
 
   addDirectoryPath(directoryPath, collapsed = false) {
+    let directoryNameDraggableEntry = null;
+
     const topmostDirectoryName = topmostDirectoryNameFromPath(directoryPath),
           topmostDirectoryNameEntry = this.findTopmostDirectoryNameDraggableEntry(),
           directoryPathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(directoryPath);
@@ -269,37 +273,36 @@ class Entries extends Element {
         if (topmostDirectoryName === topmostDirectoryNameEntryName) {
           directoryPath = directoryPathWithoutTopmostDirectoryName; ///
 
-          topmostDirectoryNameEntry.addDirectoryPath(directoryPath, collapsed);
+          directoryNameDraggableEntry = topmostDirectoryNameEntry.addDirectoryPath(directoryPath, collapsed);
         }
       }
     } else {
       if (topmostDirectoryName !== null) {
-        const directoryName = topmostDirectoryName;  ///
+        let topmostDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(topmostDirectoryName);
 
-        let directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
-
-        if (directoryNameDraggableEntry === null) {
+        if (topmostDirectoryNameDraggableEntry === null) {
           const collapsed = true; ///
 
-          directoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(directoryName, collapsed);
+          topmostDirectoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(topmostDirectoryName, collapsed);
         }
 
         const directoryPath = directoryPathWithoutTopmostDirectoryName; ///
 
-        directoryNameDraggableEntry.addDirectoryPath(directoryPath, collapsed);
+        directoryNameDraggableEntry = topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPath, collapsed);
       } else {
         const directoryName = directoryPath,  ///
               directoryNameDraggableEntryPresent = this.isDirectoryNameDraggableEntryPresent(directoryName);
 
-        if (directoryNameDraggableEntryPresent) {
-          const directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
+        directoryNameDraggableEntry = directoryNameDraggableEntryPresent ?
+                                        this.findDirectoryNameDraggableEntry(directoryName) :
+                                          this.addDirectoryNameDraggableEntry(directoryName, collapsed);
 
-          directoryNameDraggableEntry.setCollapsed(collapsed);
-        } else {
-          this.addDirectoryNameDraggableEntry(directoryName, collapsed);
-        }
+
+        directoryNameDraggableEntry.setCollapsed(collapsed);
       }
     }
+
+    return directoryNameDraggableEntry;
   }
 
   removeDirectoryPath(directoryPath) {
