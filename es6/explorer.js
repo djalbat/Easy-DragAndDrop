@@ -232,7 +232,7 @@ class Explorer extends DropTarget {
     let filePath;
 
     if (targetFilePath === sourceFilePath) {
-
+      ///
     } else if (targetFilePath === null) {
       filePath = sourceFilePath;  ///
 
@@ -260,7 +260,7 @@ class Explorer extends DropTarget {
     let directoryPath;
     
     if (targetDirectoryPath === sourceDirectoryPath) {
-
+      ///
     } else if (targetDirectoryPath === null) {
       directoryPath = sourceDirectoryPath;  ///
 

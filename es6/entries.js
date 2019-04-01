@@ -26,6 +26,13 @@ class Entries extends Element {
     return this.explorer;
   }
 
+  getEntries() {
+    const childEntryListItemElements = this.getChildElements('li.entry'),
+          entries = childEntryListItemElements;  ///
+
+    return entries;
+  }
+
   isEmpty() {
     const entries = this.getEntries(),
           entriesLength = entries.length,
@@ -135,9 +142,10 @@ class Entries extends Element {
     return fileNameDraggableEntry;
   }
 
-  addDirectoryNameDraggableEntry(directoryName, collapsed, DirectoryNameDraggableEntry) {
+  addDirectoryNameDraggableEntry(directoryName, collapsed) {
     const name = directoryName,
           explorer = this.explorer, ///
+          DirectoryNameDraggableEntry = this.explorer.getDirectoryNameDraggableEntry(),
           directoryNameDraggableEntry =
 
             <DirectoryNameDraggableEntry name={name} collapsed={collapsed} explorer={explorer} />
@@ -193,19 +201,21 @@ class Entries extends Element {
         let directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
 
         if (directoryNameDraggableEntry === null) {
-          const collapsed = true, ///
-                DirectoryNameDraggableEntry = this.explorer.getDirectoryNameDraggableEntry();
+          const collapsed = true; ///
 
-          directoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(directoryName, collapsed, DirectoryNameDraggableEntry);
+          directoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(directoryName, collapsed);
         }
 
         const filePath = filePathWithoutTopmostDirectoryName; ///
 
         directoryNameDraggableEntry.addFilePath(filePath);
       } else {
-        const fileName = filePath;  ///
+        const fileName = filePath,  ///
+              fileNameDraggableEntryPresent = this.isFileNameDraggableEntryPresent(fileName);
 
-        this.addFileNameDraggableEntry(fileName);
+        if (!fileNameDraggableEntryPresent) {
+          this.addFileNameDraggableEntry(fileName);
+        }
       }
     }
   }
@@ -263,21 +273,31 @@ class Entries extends Element {
         }
       }
     } else {
-      const directoryName = (topmostDirectoryName !== null) ?
-                              topmostDirectoryName :
-                                directoryPath,
-            directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
+      if (topmostDirectoryName !== null) {
+        const directoryName = topmostDirectoryName;  ///
 
-      if (directoryNameDraggableEntry === null) {
-        const DirectoryNameDraggableEntry = this.explorer.getDirectoryNameDraggableEntry();
+        let directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
 
-        this.addDirectoryNameDraggableEntry(directoryName, collapsed, DirectoryNameDraggableEntry);
-      }
+        if (directoryNameDraggableEntry === null) {
+          const collapsed = true; ///
 
-      if (directoryPathWithoutTopmostDirectoryName !== null) {
+          directoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(directoryName, collapsed);
+        }
+
         const directoryPath = directoryPathWithoutTopmostDirectoryName; ///
 
-        this.addDirectoryPath(directoryPath, collapsed);
+        directoryNameDraggableEntry.addDirectoryPath(directoryPath, collapsed);
+      } else {
+        const directoryName = directoryPath,  ///
+              directoryNameDraggableEntryPresent = this.isDirectoryNameDraggableEntryPresent(directoryName);
+
+        if (directoryNameDraggableEntryPresent) {
+          const directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
+
+          directoryNameDraggableEntry.setCollapsed(collapsed);
+        } else {
+          this.addDirectoryNameDraggableEntry(directoryName, collapsed);
+        }
       }
     }
   }
@@ -612,13 +632,6 @@ class Entries extends Element {
     return entry;
   }
 
-  getEntries() {
-    const childEntryListItemElements = this.getChildElements('li.entry'),
-          entries = childEntryListItemElements;  ///
-
-    return entries;
-  }
-  
   parentContext() {
 	  const getExplorer = this.getExplorer.bind(this),
           isEmpty = this.isEmpty.bind(this),

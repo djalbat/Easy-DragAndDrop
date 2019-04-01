@@ -10,6 +10,53 @@ const { Body, React } = easy,
       { NO_DRAGGING_WITHIN, NO_DRAGGING_SUB_ENTRIES } = options;
 
 const openHandler = (filePath) => {
+      alert(filePath)
+      },
+      moveHandler = (pathMaps, done) => {
+        done();
+      },
+      removeHandler = (pathMaps, done) => {
+        pathMaps.forEach(function(pathMap) {
+          const sourcePath = pathMap['sourcePath'];
+
+          pathMap['targetPath'] = sourcePath; ///
+        });
+
+        done();
+      };
+
+const explorer =
+
+        <Explorer topmostDirectoryName="explorer" onOpen={openHandler} onMove={moveHandler} />
+
+      ,
+      rubbishBin =
+
+        <RubbishBin onRemove={removeHandler} />
+
+      ;
+
+explorer.addDropTarget(rubbishBin);
+
+rubbishBin.addDropTarget(explorer);
+
+explorer.addDirectoryPath('explorer/directory1');
+explorer.addDirectoryPath('explorer/directory2');
+
+explorer.addFilePath('explorer/directory1/file1.txt');
+explorer.addFilePath('explorer/directory1/file2.txt');
+explorer.addFilePath('explorer/directory2/file3.txt');
+
+const body = new Body();
+
+body.append(rubbishBin);
+
+body.append(<br />);
+
+body.append(explorer);
+
+/*
+const openHandler = (filePath) => {
         alert(filePath)
       },
       moveHandler = (pathMaps, done) => {
@@ -61,3 +108,4 @@ rubbishBin.addDropTarget(explorer2);
 explorer1.addFilePath('explorer1/file1.txt');
 explorer1.addFilePath('explorer1/directory1/file2.txt');
 explorer2.addFilePath('explorer2/directory2/file3.txt');
+*/

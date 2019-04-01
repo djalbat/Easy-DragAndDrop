@@ -9,8 +9,8 @@ const types = require('./types'),
 const { Element } = easy,
       { arrayUtilities } = necessary,
       { first, last } = arrayUtilities,
-      { DIRECTORY_NAME_TYPE } = types,
-      { REMOVE_EMPTY_PARENT_DIRECTORIES } = options;
+      { REMOVE_EMPTY_PARENT_DIRECTORIES } = options,
+      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE } = types;
 
 class DropTarget extends Element {
   constructor(selector, moveHandler) {
@@ -122,30 +122,33 @@ class DropTarget extends Element {
             callback(draggableEntry);
           }
         }
-
-        return draggableEntries;
-      }, []);
+      });
 
       done();
     });
   }
 
   moveDraggableEntry(draggableEntry, sourcePath, targetPath) {
-    const draggableEntryType = draggableEntry.getType(),
-          draggableEntryDirectoryNameDraggableEntry = (draggableEntryType === DIRECTORY_NAME_TYPE);
+    const type = draggableEntry.getType();
 
-    if (draggableEntryDirectoryNameDraggableEntry) {
-      const directoryDraggableEntry = draggableEntry,  ///
-            sourceDirectoryPath = sourcePath, ///
-            targetDirectoryPath = targetPath; ///
+    switch (type) {
+      case FILE_NAME_TYPE :
+        const fileNameDraggableEntry = draggableEntry, ///
+              sourceFilePath = sourcePath,  ///
+              targetFilePath = targetPath;
 
-      draggableEntry = this.moveDirectoryNameDraggableEntry(directoryDraggableEntry, sourceDirectoryPath, targetDirectoryPath);
-    } else {
-      const fileNameDraggableEntry = draggableEntry, ///
-            sourceFilePath = sourcePath,  ///
-            targetFilePath = targetPath;
+        draggableEntry = this.moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath); ///
 
-      draggableEntry = this.moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath);
+        break;
+
+      case DIRECTORY_NAME_TYPE :
+        const directoryDraggableEntry = draggableEntry,  ///
+              sourceDirectoryPath = sourcePath, ///
+              targetDirectoryPath = targetPath; ///
+
+        draggableEntry = this.moveDirectoryNameDraggableEntry(directoryDraggableEntry, sourceDirectoryPath, targetDirectoryPath); ///
+
+        break;
     }
 
     return draggableEntry;
