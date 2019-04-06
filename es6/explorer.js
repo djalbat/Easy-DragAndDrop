@@ -317,7 +317,7 @@ class Explorer extends DropTarget {
 
           ;
 
-    entries.addDirectoryNameDraggableEntry(directoryName, collapsed, TopmostDirectoryNameDraggableEntry);
+    entries.addDirectoryNameDraggableEntry(directoryName, collapsed);
 
     const childElements = entries;  ///
 
