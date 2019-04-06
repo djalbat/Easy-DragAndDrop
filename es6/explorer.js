@@ -52,6 +52,14 @@ class Explorer extends DropTarget {
     return directoryPaths;
   }
 
+  getTopmostDirectoryName() {
+    const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(),
+          topmostDirectoryNameDraggableEntryName = topmostDirectoryNameDraggableEntry.getName(),
+          topmostDirectoryName = topmostDirectoryNameDraggableEntryName;  ///
+
+    return topmostDirectoryName;
+  }
+
   getDirectoryNameDraggableEntry() {
     return DirectoryNameDraggableEntry; ///
   }
