@@ -386,9 +386,9 @@ class Entries extends Element {
     let topmostDirectoryNameDraggableEntry = null;
 
     this.someDirectoryNameDraggableEntry((directoryNameDraggableEntry) => {
-      const directoryNameDraggableEntryTopmostDirectoryNameDraggableEntry = directoryNameDraggableEntry.isTopmostDirectoryNameDraggableEntry();
+      const directoryNameDraggableEntryTopmost = directoryNameDraggableEntry.isTopmost();
 
-      if (directoryNameDraggableEntryTopmostDirectoryNameDraggableEntry) {
+      if (directoryNameDraggableEntryTopmost) {
         topmostDirectoryNameDraggableEntry = directoryNameDraggableEntry;  ///
 
         return true;
@@ -505,9 +505,9 @@ class Entries extends Element {
       if (directoryNameDraggableEntryOverlappingDraggableEntry) {
         let dragIntoSubDirectories = true;
 
-        const directoryNameDraggableEntryTopmostDirectoryNameDraggableEntry = directoryNameDraggableEntry.isTopmostDirectoryNameDraggableEntry();
+        const directoryNameDraggableEntryTopmost = directoryNameDraggableEntry.isTopmost();
 
-        if (directoryNameDraggableEntryTopmostDirectoryNameDraggableEntry) {
+        if (directoryNameDraggableEntryTopmost) {
           const noDraggingIntoSubdirectoriesOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING_INTO_SUB_DIRECTORIES);
 
           if (noDraggingIntoSubdirectoriesOptionPresent) {

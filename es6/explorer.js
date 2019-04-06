@@ -7,8 +7,7 @@ const types = require('./types'),
       options = require('./options'),
       Entries = require('./entries'),
       DropTarget = require('./dropTarget'),
-      DirectoryNameDraggableEntry = require('./entry/draggable/directoryName'),
-      TopmostDirectoryNameDraggableEntry = require('./entry/draggable/directoryName/topmost');
+      DirectoryNameDraggableEntry = require('./entry/draggable/directoryName');
 
 const { pathUtilities, arrayUtilities } = necessary,
       { React } = easy,

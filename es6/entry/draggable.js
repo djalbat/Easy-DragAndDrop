@@ -56,7 +56,18 @@ class DraggableEntry extends Entry {
   }
 
   isTopmostDirectoryNameDraggableEntry() {
-    const topmostDirectoryNameDraggableEntry = false;
+    let topmostDirectoryNameDraggableEntry = false;
+
+    const directoryNameDraggableEntry = this.isDirectoryNameDraggableEntry();
+
+    if (directoryNameDraggableEntry) {
+      const directoryNameDraggableEntry = this, ///
+            directoryNameDraggableEntryTopmost = directoryNameDraggableEntry.isTopmost();
+
+      if (directoryNameDraggableEntryTopmost) {
+        topmostDirectoryNameDraggableEntry = true;
+      }
+    }
 
     return topmostDirectoryNameDraggableEntry;
   }

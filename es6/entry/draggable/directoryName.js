@@ -1,6 +1,7 @@
 'use strict';
 
-const easy = require('easy');
+const easy = require('easy'),
+      necessary = require('necessary');
 
 const types = require('../../types'),
       Entries = require('../../entries'),
@@ -8,6 +9,8 @@ const types = require('../../types'),
       DraggableEntry = require('../../entry/draggable');
 
 const { Button, React } = easy,
+      { pathUtilities } = necessary,
+      { pathWithoutTopmostDirectoryNameFromPath } = pathUtilities,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
 
 class DirectoryNameDraggableEntry extends DraggableEntry {
@@ -62,6 +65,14 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     }
     
     return before;
+  }
+
+  isTopmost() {
+    const path = this.getPath(),
+          pathWithoutTopmostDirectoryName = pathWithoutTopmostDirectoryNameFromPath(path),
+          topmost = (pathWithoutTopmostDirectoryName === null);
+
+    return topmost;
   }
 
   isFileNameDraggableEntry() {
