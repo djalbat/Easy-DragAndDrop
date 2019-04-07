@@ -21,10 +21,6 @@ class DropTarget extends Element {
     this.moveHandler = moveHandler;
   }
 
-  getDropTargets() {
-    return this.dropTargets;
-  }
-
   isOverlappingDraggableEntry(draggableEntryCollapsedBounds) {
     const bounds = this.getBounds(),
           boundsOverlappingDraggableEntry = bounds.areOverlapping(draggableEntryCollapsedBounds),
@@ -158,12 +154,7 @@ class DropTarget extends Element {
     this.dropTargets.push(dropTarget);
 
     if (reciprocated) {
-      const dropTargets = dropTarget.getDropTargets(),
-            reciprocated = false;
-
-      dropTarget = this;  ///
-
-      dropTargets.addDropTarget(dropTarget, reciprocated);
+      dropTarget.addDropTarget(this); ///
     }
   }
 
@@ -178,12 +169,7 @@ class DropTarget extends Element {
     }
 
     if (reciprocated) {
-      const dropTargets = dropTarget.getDropTargets(),
-            reciprocated = false;
-
-      dropTarget = this;  ///
-
-      dropTargets.removeDropTarget(dropTarget, reciprocated);
+      dropTarget.removeDropTarget(this); ///
     }
   }
 
