@@ -64,23 +64,24 @@ class Explorer extends DropTarget {
   }
 
   mark(draggableEntry, previousDraggableEntry) {
-  let markerEntryPath,
-      draggableEntryType;
+    let markerEntryPath,
+        draggableEntryType;
 
     const draggableEntryPath = draggableEntry.getPath();
 
-  if (previousDraggableEntry !== null) {
-    const previousDraggableEntryName = previousDraggableEntry.getName(),
-          previousDraggableEntryType = previousDraggableEntry.getType();
+    if (previousDraggableEntry !== null) {
+      const previousDraggableEntryName = previousDraggableEntry.getName(),
+            previousDraggableEntryType = previousDraggableEntry.getType();
 
-    markerEntryPath = `${draggableEntryPath}/${previousDraggableEntryName}`;
+      markerEntryPath = `${draggableEntryPath}/${previousDraggableEntryName}`;
 
-    draggableEntryType = previousDraggableEntryType;  ///
-  } else {
-    draggableEntryType = draggableEntry.getType();
+      draggableEntryType = previousDraggableEntryType;  ///
+    } else {
+      draggableEntryType = draggableEntry.getType();
 
-    markerEntryPath = draggableEntryPath; ///
-  }
+      markerEntryPath = draggableEntryPath; ///
+    }
+
     this.addMarker(markerEntryPath, draggableEntryType);
   }
 
@@ -128,14 +129,11 @@ class Explorer extends DropTarget {
     const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
 
     if (dropTargetToBeMarked === this) {
-      const draggingWithin = (explorer === this); ///
+      const draggingWithin = (explorer === this), ///
+            noDraggingWithinOptionPresent = this.isOptionPresent(NO_DRAGGING_WITHIN);
 
-      if (draggingWithin) {
-        const noDraggingWithinOptionPresent = this.isOptionPresent(NO_DRAGGING_WITHIN);
-
-        if (noDraggingWithinOptionPresent) {
-          return;
-        }
+      if (draggingWithin && noDraggingWithinOptionPresent) {
+        return;
       }
 
       const markedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry(),
@@ -215,9 +213,11 @@ class Explorer extends DropTarget {
   }
 
   markDraggableEntry(draggableEntry) {
-    const noDraggingWithinOptionPresent = this.isOptionPresent(NO_DRAGGING_WITHIN);
+    const explorer = draggableEntry.getExplorer(),
+          draggingWithin = (explorer === this), ///
+          noDraggingWithinOptionPresent = this.isOptionPresent(NO_DRAGGING_WITHIN);
 
-    if (noDraggingWithinOptionPresent) {
+    if (draggingWithin && noDraggingWithinOptionPresent) {
       const previousDraggableEntry = null;
 
       this.mark(draggableEntry, previousDraggableEntry);
