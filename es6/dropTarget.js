@@ -13,7 +13,7 @@ const { Element } = easy,
       { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE } = types;
 
 class DropTarget extends Element {
-  constructor(selector, moveHandler, dropTargets) {
+  constructor(selector, dropTargets, moveHandler) {
     super(selector);
 
     this.dropTargets = dropTargets;

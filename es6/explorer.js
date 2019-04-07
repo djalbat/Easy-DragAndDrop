@@ -17,8 +17,8 @@ const { pathUtilities, arrayUtilities } = necessary,
       { pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
-  constructor(selector, moveHandler, openHandler, options) {
-    super(selector, moveHandler);
+  constructor(selector, dropTargets, moveHandler, openHandler, options) {
+    super(selector, dropTargets, moveHandler);
 
     this.openHandler = openHandler;
 
