@@ -1,15 +1,10 @@
 "use strict";
 
-const easy = require("easy");
+import NameButton from "../../button/name";
+import DraggableEntry from "../../entry/draggable";
 
-const types = require("../../types"),
-      NameButton = require("../../button/name"),
-      nameUtilities = require("../../utilities/name"),
-      DraggableEntry = require("../../entry/draggable");
-
-const { React } = easy,
-      { nameIsBeforeEntryName } = nameUtilities,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
+import { nameIsBeforeEntryName } from "../../utilities/name";
+import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
 
 class FileNameDraggableEntry extends DraggableEntry {
   constructor(selector, type, explorer) {

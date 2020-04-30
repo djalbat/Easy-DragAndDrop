@@ -1,6 +1,6 @@
 "use strict";
 
-const Entry = require("../entry");
+import Entry from "../entry";
 
 class MarkerEntry extends Entry {
   constructor(selector, type, name) {

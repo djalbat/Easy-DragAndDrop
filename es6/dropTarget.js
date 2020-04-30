@@ -1,16 +1,12 @@
 "use strict";
 
-const easy = require("easy"),
-      necessary = require("necessary");
+import { Element } from "easy";
+import { arrayUtilities } from "necessary";
 
-const types = require("./types"),
-      options = require("./options");
+import { REMOVE_EMPTY_PARENT_DIRECTORIES } from "./options";
+import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE } from "./types";
 
-const { Element } = easy,
-      { arrayUtilities } = necessary,
-      { first, last } = arrayUtilities,
-      { REMOVE_EMPTY_PARENT_DIRECTORIES } = options,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE } = types;
+const { first, last } = arrayUtilities;
 
 class DropTarget extends Element {
   constructor(selector, dropTargets, moveHandler) {

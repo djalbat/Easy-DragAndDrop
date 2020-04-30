@@ -1,9 +1,8 @@
 "use strict";
 
-const necessary = require("necessary");
+import { arrayUtilities } from "necessary";
 
-const { arrayUtilities } = necessary,
-      { second } = arrayUtilities;
+const { second } = arrayUtilities;
 
 function extensionFromName(name) {
   let extension = null;

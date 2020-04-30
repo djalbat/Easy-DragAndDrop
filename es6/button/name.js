@@ -1,11 +1,9 @@
 "use strict";
 
-const easy = require("easy"),
-      necessary = require("necessary");
+import { InputElement } from "easy";
+import { arrayUtilities } from "necessary";
 
-const { InputElement } = easy,
-      { arrayUtilities } = necessary,
-      { first } = arrayUtilities;
+const { first } = arrayUtilities;
 
 class NameButton extends InputElement {
   getName() {

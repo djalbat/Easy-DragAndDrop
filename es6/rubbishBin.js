@@ -1,9 +1,8 @@
 "use strict";
 
-const types = require("./types"),
-      DropTarget = require("./dropTarget");
+import DropTarget from "./dropTarget";
 
-const { DIRECTORY_NAME_TYPE } = types;
+import { DIRECTORY_NAME_TYPE } from "./types";
 
 class RubbishBin extends DropTarget {
   open() {

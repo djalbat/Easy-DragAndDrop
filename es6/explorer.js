@@ -1,19 +1,15 @@
 "use strict";
 
-const easy = require("easy"),
-      necessary = require("necessary");
+import { pathUtilities, arrayUtilities } from "necessary";
 
-const types = require("./types"),
-      options = require("./options"),
-      Entries = require("./entries"),
-      DropTarget = require("./dropTarget"),
-      DirectoryNameDraggableEntry = require("./entry/draggable/directoryName");
+import Entries from "./entries";
+import DropTarget from "./dropTarget";
+import DirectoryNameDraggableEntry from "./entry/draggable/directoryName";
 
-const { pathUtilities, arrayUtilities } = necessary,
-      { React } = easy,
-      { second } = arrayUtilities,
-      { NO_DRAGGING_WITHIN } = options,
-      { DIRECTORY_NAME_TYPE } = types,
+import { NO_DRAGGING_WITHIN } from "./options";
+import { DIRECTORY_NAME_TYPE } from "./types";
+
+const { second } = arrayUtilities,
       { pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {

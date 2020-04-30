@@ -1,8 +1,6 @@
 "use strict";
 
-const easy = require("easy");
-
-const { Element, React } = easy;
+import { Element } from "easy";
 
 class Entry extends Element {
   constructor(selector, type) {

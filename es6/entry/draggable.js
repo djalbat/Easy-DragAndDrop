@@ -1,15 +1,13 @@
 "use strict";
 
-const easy = require("easy");
+import { window, constants } from "easy";
 
-const Entry = require("../entry"),
-      options = require("../options");
+import Entry from "../entry";
+import options from "../options";
 
-const ESCAPE_KEYCODE = 27,
-      START_DRAGGING_DELAY = 175;
+import { ESCAPE_KEYCODE, START_DRAGGING_DELAY } from "../constants";
 
-const { window, constants } = easy,
-      { LEFT_MOUSE_BUTTON } = constants,
+const { LEFT_MOUSE_BUTTON } = constants,
       { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
 class DraggableEntry extends Entry {

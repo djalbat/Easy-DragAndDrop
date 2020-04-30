@@ -1,11 +1,9 @@
 "use strict";
 
-const types = require("../../types"),
-      MarkerEntry = require("../../entry/marker"),
-      nameUtilities = require("../../utilities/name");
+import MarkerEntry from "../../entry/marker";
 
-const { nameIsBeforeEntryName } = nameUtilities,
-      { FILE_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_TYPE } = types;
+import { nameIsBeforeEntryName } from "../../utilities/name";
+import { FILE_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_TYPE } from "../../types";
 
 class FileNameMarkerEntry extends MarkerEntry {
   isBefore(draggableEntry) {

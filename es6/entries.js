@@ -1,19 +1,16 @@
 "use strict";
 
-const easy = require("easy"),
-      necessary = require("necessary");
+import { Element } from "easy";
+import { pathUtilities } from "necessary";
 
-const types = require("./types"),
-      options = require("./options"),
-      FileNameMarkerEntry = require("./entry/marker/fileName"),
-      FileNameDraggableEntry = require("./entry/draggable/fileName"),
-      DirectoryNameMarkerEntry = require("./entry/marker/directoryName");
+import FileNameMarkerEntry from "./entry/marker/fileName";
+import FileNameDraggableEntry from "./entry/draggable/fileName";
+import DirectoryNameMarkerEntry from "./entry/marker/directoryName";
 
-const { Element, React } = easy,
-      { pathUtilities } = necessary,
-      { REMOVE_EMPTY_PARENT_DIRECTORIES, NO_DRAGGING_INTO_SUB_DIRECTORIES } = options,
-      { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
+import { REMOVE_EMPTY_PARENT_DIRECTORIES, NO_DRAGGING_INTO_SUB_DIRECTORIES } from "./options";
+import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "./types";
+
+const { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
 class Entries extends Element {
   constructor(selector, explorer) {

@@ -1,17 +1,15 @@
 "use strict";
 
-const easy = require("easy"),
-      necessary = require("necessary");
+import { Button } from "easy";
+import { pathUtilities } from "necessary";
 
-const types = require("../../types"),
-      Entries = require("../../entries"),
-      NameButton = require("../../button/name"),
-      DraggableEntry = require("../../entry/draggable");
+import Entries from "../../entries";
+import NameButton from "../../button/name";
+import DraggableEntry from "../../entry/draggable";
 
-const { Button, React } = easy,
-      { pathUtilities } = necessary,
-      { pathWithoutTopmostDirectoryNameFromPath } = pathUtilities,
-      { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } = types;
+import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
+
+const { pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
 class DirectoryNameDraggableEntry extends DraggableEntry {
   getCollapsedBounds() {
