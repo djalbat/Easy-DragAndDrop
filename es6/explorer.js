@@ -320,7 +320,7 @@ export default class Explorer extends DropTarget {
     return childElements;
   }
 
-  initialise() {
+  initialise(properties) {
     this.assignContext();
   }
 
@@ -344,7 +344,7 @@ export default class Explorer extends DropTarget {
           openHandler = onOpen || defaultOpenHandler, ///
           explorer = DropTarget.fromClass(Class, properties, moveHandler, openHandler, options);
 
-    explorer.initialise();
+    explorer.initialise(properties);
     
     return explorer;
   }

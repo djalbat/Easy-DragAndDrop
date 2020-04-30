@@ -123,7 +123,7 @@ export default class RubbishBin extends DropTarget {
     return bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;
   }
 
-  initialise() {
+  initialise(properties) {
     this.close();
   }
 
@@ -143,7 +143,7 @@ export default class RubbishBin extends DropTarget {
           moveHandler = removeHandler,  ///
           rubbishBin = DropTarget.fromClass(Class, properties, moveHandler);
 
-    rubbishBin.initialise();
+    rubbishBin.initialise(properties);
     
     return rubbishBin;
   }

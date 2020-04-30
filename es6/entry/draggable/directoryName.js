@@ -141,18 +141,19 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
     ]);
   }
   
-  initialise(collapsed) {
+  initialise(properties) {
+    const { collapsed = false } = properties;
+
     this.setCollapsed(collapsed);
 
-    super.initialise();
+    super.initialise(properties);
   }
   
   static fromClass(Class, properties) {
-    const { collapsed = false } = properties,
-          type = DIRECTORY_NAME_TYPE, ///
+    const type = DIRECTORY_NAME_TYPE, ///
           directoryNameDraggableEntry = DraggableEntry.fromClass(Class, properties, type);
 
-    directoryNameDraggableEntry.initialise(collapsed);
+    directoryNameDraggableEntry.initialise(properties);
 
     return directoryNameDraggableEntry;
   }

@@ -76,7 +76,7 @@ export default class FileNameDraggableEntry extends DraggableEntry {
           type = FILE_NAME_TYPE,  ///
           fileNameDraggableEntry = DraggableEntry.fromClass(Class, properties, type, explorer);
 
-    fileNameDraggableEntry.initialise();
+    fileNameDraggableEntry.initialise(properties);
 
     return fileNameDraggableEntry;
   }
