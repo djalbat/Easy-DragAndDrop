@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const Entry = require('../entry');
+const Entry = require("../entry");
 
 class MarkerEntry extends Entry {
   constructor(selector, type, name) {
@@ -23,7 +23,7 @@ class MarkerEntry extends Entry {
 
 Object.assign(MarkerEntry, {
   defaultProperties: {
-    className: 'marker'
+    className: "marker"
   }
 });
 

@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const easy = require('easy');
+const easy = require("easy");
 
-const types = require('../../types'),
-      NameButton = require('../../button/name'),
-      nameUtilities = require('../../utilities/name'),
-      DraggableEntry = require('../../entry/draggable');
+const types = require("../../types"),
+      NameButton = require("../../button/name"),
+      nameUtilities = require("../../utilities/name"),
+      DraggableEntry = require("../../entry/draggable");
 
 const { React } = easy,
       { nameIsBeforeEntryName } = nameUtilities,
@@ -89,7 +89,7 @@ class FileNameDraggableEntry extends DraggableEntry {
 
 Object.assign(FileNameDraggableEntry, {
   defaultProperties: {
-    className: 'file-name'
+    className: "file-name"
   }
 });
 

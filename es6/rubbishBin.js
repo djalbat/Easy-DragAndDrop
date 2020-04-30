@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 
-const types = require('./types'),
-      DropTarget = require('./dropTarget');
+const types = require("./types"),
+      DropTarget = require("./dropTarget");
 
 const { DIRECTORY_NAME_TYPE } = types;
 
 class RubbishBin extends DropTarget {
   open() {
-    this.addClass('open');
+    this.addClass("open");
   }
 
   close() {
-    this.removeClass('open');
+    this.removeClass("open");
   }
 
   isOpen() {
-    const open = this.hasClass('open');
+    const open = this.hasClass("open");
 
     return open;
   }
@@ -141,12 +141,12 @@ class RubbishBin extends DropTarget {
 }
 
 Object.assign(RubbishBin, {
-  tagName: 'div',
+  tagName: "div",
   defaultProperties: {
-    className: 'rubbish-bin'
+    className: "rubbish-bin"
   },
   ignoredProperties: [
-    'onRemove'
+    "onRemove"
   ]
 });
 

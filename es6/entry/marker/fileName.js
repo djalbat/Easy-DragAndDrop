@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const types = require('../../types'),
-      MarkerEntry = require('../../entry/marker'),
-      nameUtilities = require('../../utilities/name');
+const types = require("../../types"),
+      MarkerEntry = require("../../entry/marker"),
+      nameUtilities = require("../../utilities/name");
 
 const { nameIsBeforeEntryName } = nameUtilities,
       { FILE_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_TYPE } = types;
@@ -39,7 +39,7 @@ class FileNameMarkerEntry extends MarkerEntry {
 
 Object.assign(FileNameMarkerEntry, {
   defaultProperties: {
-    className: 'file-name'
+    className: "file-name"
   }
 });
 

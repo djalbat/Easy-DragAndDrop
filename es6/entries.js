@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const easy = require('easy'),
-      necessary = require('necessary');
+const easy = require("easy"),
+      necessary = require("necessary");
 
-const types = require('./types'),
-      options = require('./options'),
-      FileNameMarkerEntry = require('./entry/marker/fileName'),
-      FileNameDraggableEntry = require('./entry/draggable/fileName'),
-      DirectoryNameMarkerEntry = require('./entry/marker/directoryName');
+const types = require("./types"),
+      options = require("./options"),
+      FileNameMarkerEntry = require("./entry/marker/fileName"),
+      FileNameDraggableEntry = require("./entry/draggable/fileName"),
+      DirectoryNameMarkerEntry = require("./entry/marker/directoryName");
 
 const { Element, React } = easy,
       { pathUtilities } = necessary,
@@ -27,7 +27,7 @@ class Entries extends Element {
   }
 
   getEntries() {
-    const childEntryListItemElements = this.getChildElements('li.entry'),
+    const childEntryListItemElements = this.getChildElements("li.entry"),
           entries = childEntryListItemElements;  ///
 
     return entries;
@@ -686,9 +686,9 @@ class Entries extends Element {
 }
 
 Object.assign(Entries, {
-  tagName: 'ul',
+  tagName: "ul",
   defaultProperties: {
-    className: 'entries'
+    className: "entries"
   }
 });
 

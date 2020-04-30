@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-const easy = require('easy'),
-      necessary = require('necessary');
+const easy = require("easy"),
+      necessary = require("necessary");
 
-const types = require('../../types'),
-      Entries = require('../../entries'),
-      NameButton = require('../../button/name'),
-      DraggableEntry = require('../../entry/draggable');
+const types = require("../../types"),
+      Entries = require("../../entries"),
+      NameButton = require("../../button/name"),
+      DraggableEntry = require("../../entry/draggable");
 
 const { Button, React } = easy,
       { pathUtilities } = necessary,
@@ -30,7 +30,7 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   }
 
   isCollapsed() {
-    const collapsed = this.hasClass('collapsed');
+    const collapsed = this.hasClass("collapsed");
 
     return collapsed;
   }
@@ -119,15 +119,15 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
   }
 
   collapse() {
-    this.addClass('collapsed');
+    this.addClass("collapsed");
   }
 
   expand() {
-    this.removeClass('collapsed');
+    this.removeClass("collapsed");
   }
 
   toggle() {
-    this.toggleClass('collapsed');
+    this.toggleClass("collapsed");
   }
 
   childElements(properties) {
@@ -167,10 +167,10 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
 
 Object.assign(DirectoryNameDraggableEntry, {
   defaultProperties: {
-    className: 'directory-name'
+    className: "directory-name"
   },
   ignoredProperties: [
-    'collapsed'
+    "collapsed"
   ]
 });
 

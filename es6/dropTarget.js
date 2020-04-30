@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const easy = require('easy'),
-      necessary = require('necessary');
+const easy = require("easy"),
+      necessary = require("necessary");
 
-const types = require('./types'),
-      options = require('./options');
+const types = require("./types"),
+      options = require("./options");
 
 const { Element } = easy,
       { arrayUtilities } = necessary,

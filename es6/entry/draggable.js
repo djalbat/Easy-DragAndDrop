@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const easy = require('easy');
+const easy = require("easy");
 
-const Entry = require('../entry'),
-      options = require('../options');
+const Entry = require("../entry"),
+      options = require("../options");
 
 const ESCAPE_KEYCODE = 27,
       START_DRAGGING_DELAY = 175;
@@ -35,7 +35,7 @@ class DraggableEntry extends Entry {
   }
 
   isDragging() {
-    const dragging = this.hasClass('dragging');
+    const dragging = this.hasClass("dragging");
 
     return dragging;
   }
@@ -91,7 +91,7 @@ class DraggableEntry extends Entry {
       this.onKeyDown(keyDownHandler);
     }
 
-    this.addClass('dragging');
+    this.addClass("dragging");
 
     this.drag(mouseTop, mouseLeft);
   }
@@ -104,7 +104,7 @@ class DraggableEntry extends Entry {
       this.offKeyDown();
     }
 
-    this.removeClass('dragging');
+    this.removeClass("dragging");
   }
 
   dragging(mouseTop, mouseLeft) {
@@ -161,7 +161,7 @@ class DraggableEntry extends Entry {
   }
 
   mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
-    window.on('blur', this.mouseUpHandler, this); ///
+    window.on("blur", this.mouseUpHandler, this); ///
 
     window.onMouseUp(this.mouseUpHandler, this);
 
@@ -177,7 +177,7 @@ class DraggableEntry extends Entry {
   }
 
   mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
-    window.off('blur', this.mouseUpHandler, this);  ///
+    window.off("blur", this.mouseUpHandler, this);  ///
 
     window.offMouseUp(this.mouseUpHandler, this);
 
@@ -320,12 +320,12 @@ class DraggableEntry extends Entry {
 }
 
 Object.assign(DraggableEntry, {
-  tagName: 'li',
+  tagName: "li",
   defaultProperties: {
-    className: 'draggable'
+    className: "draggable"
   },
   ignoredProperties: [
-    'explorer'
+    "explorer"
   ]
 });
 

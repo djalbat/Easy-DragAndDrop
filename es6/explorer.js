@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const easy = require('easy'),
-      necessary = require('necessary');
+const easy = require("easy"),
+      necessary = require("necessary");
 
-const types = require('./types'),
-      options = require('./options'),
-      Entries = require('./entries'),
-      DropTarget = require('./dropTarget'),
-      DirectoryNameDraggableEntry = require('./entry/draggable/directoryName');
+const types = require("./types"),
+      options = require("./options"),
+      Entries = require("./entries"),
+      DropTarget = require("./dropTarget"),
+      DirectoryNameDraggableEntry = require("./entry/draggable/directoryName");
 
 const { pathUtilities, arrayUtilities } = necessary,
       { React } = easy,
@@ -341,16 +341,16 @@ class Explorer extends DropTarget {
 }
 
 Object.assign(Explorer, {
-  tagName: 'div',
+  tagName: "div",
   defaultProperties: {
-    className: 'explorer'
+    className: "explorer"
   },
   ignoredProperties: [
-    'onOpen',
-    'onMove',
-    'options',
-    'topmostDirectoryName',
-    'topmostDirectoryCollapsed'
+    "onOpen",
+    "onMove",
+    "options",
+    "topmostDirectoryName",
+    "topmostDirectoryCollapsed"
   ]
 });
 
@@ -392,7 +392,7 @@ function prependTargetPathToDraggableEntryPath(draggableEntryPath,  targetPath) 
 }
 
 function replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath) {
-  sourcePath = sourcePath.replace(/\(/g, '\\(').replace(/\)/g, '\\)');  ///
+  sourcePath = sourcePath.replace(/\(/g, "\\(").replace(/\)/g, "\\)");  ///
 
   const regExp = new RegExp(`^${sourcePath}(.*$)`),
         matches = draggableEntryPath.match(regExp),

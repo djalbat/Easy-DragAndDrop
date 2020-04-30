@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const easy = require('easy');
+const easy = require("easy");
 
 const { Element, React } = easy;
 
@@ -19,12 +19,12 @@ class Entry extends Element {
 }
 
 Object.assign(Entry, {
-  tagName: 'li',
+  tagName: "li",
   defaultProperties: {
-    className: 'entry'
+    className: "entry"
   },
   ignoredProperties: [
-    'name'
+    "name"
   ]
 });
 

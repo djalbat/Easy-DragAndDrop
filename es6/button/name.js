@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const easy = require('easy'),
-      necessary = require('necessary');
+const easy = require("easy"),
+      necessary = require("necessary");
 
 const { InputElement } = easy,
       { arrayUtilities } = necessary,
@@ -18,7 +18,7 @@ class NameButton extends InputElement {
   }
 
   onDoubleClick(handler) {
-    this.on('dblclick', handler);
+    this.on("dblclick", handler);
   }
   
   parentContext() {
@@ -35,12 +35,12 @@ class NameButton extends InputElement {
 }
 
 Object.assign(NameButton, {
-  tagName: 'button',
+  tagName: "button",
   defaultProperties: {
-    className: 'name'
+    className: "name"
   },
   ignoredProperties: [
-    'name'
+    "name"
   ]
 });
 
