@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "easy": "^10.1.6",
-    "necessary": "^4.0.7"
+    "necessary": "^4.1.10"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
