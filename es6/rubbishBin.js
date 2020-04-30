@@ -138,8 +138,8 @@ export default class RubbishBin extends DropTarget {
   ];
 
   static fromClass(Class, properties) {
-    const { onRemove } = properties,
-          removeHandler = onRemove || defaultRemoveHandler, ///
+    const { onRemove = defaultRemoveHandler} = properties,
+          removeHandler = onRemove, ///
           moveHandler = removeHandler,  ///
           rubbishBin = DropTarget.fromClass(Class, properties, moveHandler);
 

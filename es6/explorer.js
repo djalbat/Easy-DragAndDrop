@@ -339,9 +339,9 @@ export default class Explorer extends DropTarget {
   ];
 
   static fromClass(Class, properties) {
-    const { onMove, onOpen, options = {}} = properties, ///
-          moveHandler = onMove || defaultMoveHandler, ///
-          openHandler = onOpen || defaultOpenHandler, ///
+    const { onMove = defaultMoveHandler, onOpen = defaultOpenHandler, options = defaultOptions} = properties, ///
+          moveHandler = onMove, ///
+          openHandler = onOpen, ///
           explorer = DropTarget.fromClass(Class, properties, moveHandler, openHandler, options);
 
     explorer.initialise(properties);
@@ -349,6 +349,8 @@ export default class Explorer extends DropTarget {
     return explorer;
   }
 }
+
+const defaultOptions = {};
 
 function defaultOpenHandler(sourcePath) {
   ///
