@@ -21,18 +21,22 @@ export default class Explorer extends DropTarget {
     this.options = options;
   }
 
+  isOptionPresent(option) {
+    const optionPresent = !!this.options[option];
+
+    return optionPresent;
+  }
+
+  setOptions(options) {
+    this.options = options;
+  }
+
   setOption(option) {
     this.options[option] = true;
   }
 
   unsetOption(option) {
     delete(this.options[option]);
-  }
-
-  isOptionPresent(option) {
-    const optionPresent = !!this.options[option]; ///
-
-    return optionPresent;
   }
 
   getFilePaths() {
