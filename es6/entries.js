@@ -12,7 +12,7 @@ import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_N
 
 const { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
-class Entries extends Element {
+export default class Entries extends Element {
   constructor(selector, explorer) {
     super(selector);
 
@@ -688,5 +688,3 @@ Object.assign(Entries, {
     className: "entries"
   }
 });
-
-module.exports = Entries;

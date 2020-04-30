@@ -5,7 +5,7 @@ import { arrayUtilities } from "necessary";
 
 const { first } = arrayUtilities;
 
-class NameButton extends InputElement {
+export default class NameButton extends InputElement {
   getName() {
     const childElements = this.getChildElements(),
           firstChildElement = first(childElements),
@@ -39,5 +39,3 @@ Object.assign(NameButton, {
     "name"
   ]
 });
-
-module.exports = NameButton;

@@ -4,7 +4,7 @@ import { arrayUtilities } from "necessary";
 
 const { second } = arrayUtilities;
 
-function extensionFromName(name) {
+export function extensionFromName(name) {
   let extension = null;
 
   const matches = name.match(/^.*\.([^.]+)$/);
@@ -18,7 +18,7 @@ function extensionFromName(name) {
   return extension;
 }
 
-function nameWithoutExtensionFromName(name) {
+export function nameWithoutExtensionFromName(name) {
   let nameWithoutExtension = null;
 
   const matches = name.match(/^(.+)\.[^.]+$/);
@@ -32,7 +32,7 @@ function nameWithoutExtensionFromName(name) {
   return nameWithoutExtension;
 }
 
-function nameIsBeforeEntryName(name, entryName) {
+export function nameIsBeforeEntryName(name, entryName) {
   let before = (name.localeCompare(entryName) < 0);
 
   const nameExtension = extensionFromName(name),
@@ -68,9 +68,3 @@ function nameIsBeforeEntryName(name, entryName) {
 
   return before;
 }
-
-module.exports = {
-  extensionFromName,
-  nameWithoutExtensionFromName,
-  nameIsBeforeEntryName
-};

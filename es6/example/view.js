@@ -1,6 +1,6 @@
 "use strict";
 
-import { Explorer, RubbishBin } from "../../index";
+import { Explorer, RubbishBin } from "../index";
 
 const View = (properties) => {
   const explorer =

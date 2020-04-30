@@ -2,7 +2,7 @@
 
 import Entry from "../entry";
 
-class MarkerEntry extends Entry {
+export default class MarkerEntry extends Entry {
   constructor(selector, type, name) {
     super(selector, type);
 
@@ -26,5 +26,3 @@ Object.assign(MarkerEntry, {
     className: "marker"
   }
 });
-
-module.exports = MarkerEntry;

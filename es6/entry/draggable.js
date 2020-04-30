@@ -10,7 +10,7 @@ import { ESCAPE_KEYCODE, START_DRAGGING_DELAY } from "../constants";
 const { LEFT_MOUSE_BUTTON } = constants,
       { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
-class DraggableEntry extends Entry {
+export default class DraggableEntry extends Entry {
   constructor(selector, type) {
     super(selector, type);
 
@@ -329,5 +329,3 @@ Object.assign(DraggableEntry, {
     "explorer"
   ]
 });
-
-module.exports = DraggableEntry;

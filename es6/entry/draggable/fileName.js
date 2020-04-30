@@ -6,7 +6,7 @@ import DraggableEntry from "../../entry/draggable";
 import { nameIsBeforeEntryName } from "../../utilities/name";
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
 
-class FileNameDraggableEntry extends DraggableEntry {
+export default class FileNameDraggableEntry extends DraggableEntry {
   constructor(selector, type, explorer) {
     super(selector, type);
 
@@ -87,5 +87,3 @@ Object.assign(FileNameDraggableEntry, {
     className: "file-name"
   }
 });
-
-module.exports = FileNameDraggableEntry;

@@ -11,7 +11,7 @@ import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_N
 
 const { pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
-class DirectoryNameDraggableEntry extends DraggableEntry {
+export default class DirectoryNameDraggableEntry extends DraggableEntry {
   getCollapsedBounds() {
     const collapsed = this.isCollapsed();
 
@@ -166,5 +166,3 @@ Object.assign(DirectoryNameDraggableEntry, {
     "collapsed"
   ]
 });
-
-module.exports = DirectoryNameDraggableEntry;

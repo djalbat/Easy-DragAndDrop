@@ -12,7 +12,7 @@ import { DIRECTORY_NAME_TYPE } from "./types";
 const { second } = arrayUtilities,
       { pathWithoutBottommostNameFromPath } = pathUtilities;
 
-class Explorer extends DropTarget {
+export default class Explorer extends DropTarget {
   constructor(selector, dropTargets, moveHandler, openHandler, options) {
     super(selector, dropTargets, moveHandler);
 
@@ -349,8 +349,6 @@ Object.assign(Explorer, {
     "topmostDirectoryCollapsed"
   ]
 });
-
-module.exports = Explorer;
 
 function defaultOpenHandler(sourcePath) {
   ///

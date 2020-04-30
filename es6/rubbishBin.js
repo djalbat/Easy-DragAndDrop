@@ -4,7 +4,7 @@ import DropTarget from "./dropTarget";
 
 import { DIRECTORY_NAME_TYPE } from "./types";
 
-class RubbishBin extends DropTarget {
+export default class RubbishBin extends DropTarget {
   open() {
     this.addClass("open");
   }
@@ -148,8 +148,6 @@ Object.assign(RubbishBin, {
     "onRemove"
   ]
 });
-
-module.exports = RubbishBin;
 
 function defaultRemoveHandler(pathMaps, done) {
   done();

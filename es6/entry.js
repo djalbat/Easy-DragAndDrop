@@ -2,7 +2,7 @@
 
 import { Element } from "easy";
 
-class Entry extends Element {
+export default class Entry extends Element {
   constructor(selector, type) {
     super(selector);
 
@@ -23,5 +23,3 @@ Object.assign(Entry, {
     "name"
   ]
 });
-
-module.exports = Entry;

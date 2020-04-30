@@ -8,7 +8,7 @@ import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE } from "./types";
 
 const { first, last } = arrayUtilities;
 
-class DropTarget extends Element {
+export default class DropTarget extends Element {
   constructor(selector, dropTargets, moveHandler) {
     super(selector);
 
@@ -176,5 +176,3 @@ class DropTarget extends Element {
     return dropTarget;
   }
 }
-
-module.exports = DropTarget;

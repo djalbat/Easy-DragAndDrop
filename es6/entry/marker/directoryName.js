@@ -4,7 +4,7 @@ import MarkerEntry from "../../entry/marker";
 
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
 
-class DirectoryNameMarkerEntry extends MarkerEntry {
+export default class DirectoryNameMarkerEntry extends MarkerEntry {
   isBefore(draggableEntry) {
     let before;
 
@@ -41,5 +41,3 @@ Object.assign(DirectoryNameMarkerEntry, {
     className: "directory-name"
   }
 });
-
-module.exports = DirectoryNameMarkerEntry;
