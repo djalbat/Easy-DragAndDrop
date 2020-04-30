@@ -677,9 +677,9 @@ class Entries extends Element {
     });
   }
 
-  static fromProperties(properties) {
+  static fromClass(Class, properties) {
     const { explorer } = properties,
-          entries = Element.fromProperties(Entries, properties, explorer);
+          entries = Element.fromClass(Class, properties, explorer);
 
     return entries;
   }

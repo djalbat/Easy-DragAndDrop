@@ -29,9 +29,9 @@ class DirectoryNameMarkerEntry extends MarkerEntry {
     return before;
   }
   
-  static fromProperties(properties) {
+  static fromClass(Class, properties) {
     const type = DIRECTORY_NAME_MARKER_TYPE,  ///
-          directoryNameMarkerEntry = MarkerEntry.fromProperties(DirectoryNameMarkerEntry, properties, type);
+          directoryNameMarkerEntry = MarkerEntry.fromClass(Class, properties, type);
 
     return directoryNameMarkerEntry;
   }

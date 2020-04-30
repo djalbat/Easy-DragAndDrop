@@ -30,8 +30,6 @@ class NameButton extends InputElement {
       onDoubleClick
     });
   }
-  
-  static fromProperties(properties) { return InputElement.fromProperties(NameButton, properties); }
 }
 
 Object.assign(NameButton, {

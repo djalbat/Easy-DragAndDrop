@@ -328,11 +328,11 @@ class Explorer extends DropTarget {
     this.assignContext();
   }
 
-  static fromProperties(properties) {
+  static fromClass(Class, properties) {
     const { onMove, onOpen, options = {}} = properties, ///
           moveHandler = onMove || defaultMoveHandler, ///
           openHandler = onOpen || defaultOpenHandler, ///
-          explorer = DropTarget.fromProperties(Explorer, properties, moveHandler, openHandler, options);
+          explorer = DropTarget.fromClass(Class, properties, moveHandler, openHandler, options);
 
     explorer.initialise();
     

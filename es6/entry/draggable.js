@@ -8,8 +8,8 @@ const Entry = require("../entry"),
 const ESCAPE_KEYCODE = 27,
       START_DRAGGING_DELAY = 175;
 
-const { window, Element } = easy,
-      { LEFT_MOUSE_BUTTON } = Element,
+const { window, constants } = easy,
+      { LEFT_MOUSE_BUTTON } = constants,
       { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
 class DraggableEntry extends Entry {
@@ -115,7 +115,7 @@ class DraggableEntry extends Entry {
     explorer.dragging(this);
   }
 
-  startWaitingToDrag(mouseTop, mouseLeft, mouseButton) {
+  startWaitingToDrag(mouseTop, mouseLeft) {
     let timeout = this.getTimeout();
     
     if (timeout === null) {
@@ -160,14 +160,18 @@ class DraggableEntry extends Entry {
     }
   }
 
-  mouseDownHandler(mouseTop, mouseLeft, mouseButton) {
+  mouseDownHandler(event, element) {
+    const { button, pageX, pageY } = event,
+          mouseTop = pageY,
+          mouseLeft = pageX;
+
     window.on("blur", this.mouseUpHandler, this); ///
 
     window.onMouseUp(this.mouseUpHandler, this);
 
     window.onMouseMove(this.mouseMoveHandler, this);
 
-    if (mouseButton === LEFT_MOUSE_BUTTON) {
+    if (button === LEFT_MOUSE_BUTTON) {
       const dragging = this.isDragging();
 
       if (!dragging) {
@@ -176,7 +180,7 @@ class DraggableEntry extends Entry {
     }
   }
 
-  mouseUpHandler(mouseTop, mouseLeft, mouseButton) {
+  mouseUpHandler(event, element) {
     window.off("blur", this.mouseUpHandler, this);  ///
 
     window.offMouseUp(this.mouseUpHandler, this);
@@ -197,7 +201,11 @@ class DraggableEntry extends Entry {
     }
   }
 
-  mouseMoveHandler(mouseTop, mouseLeft, mouseButton) {
+  mouseMoveHandler(event, element) {
+    const { pageX, pageY } = event,
+          mouseTop = pageY,
+          mouseLeft = pageX;
+
     const dragging = this.isDragging();
 
     if (dragging) {
@@ -205,8 +213,9 @@ class DraggableEntry extends Entry {
     }
   }
 
-  keyDownHandler(keyCode) {
-    const escapeKey = (keyCode === ESCAPE_KEYCODE);
+  keyDownHandler(event, element) {
+    const { keyCode } = event,
+          escapeKey = (keyCode === ESCAPE_KEYCODE);
 
     if (escapeKey) {
       const dragging = this.isDragging();
@@ -310,12 +319,6 @@ class DraggableEntry extends Entry {
     
     this.onMouseDown(mouseDownHandler);
     this.onDoubleClick(doubleClickHandler);
-  }
-
-  static fromProperties(Class, properties, type, ...remainingArguments) {
-    const draggableEntry = Entry.fromProperties(Class, properties, type, ...remainingArguments);
-
-    return draggableEntry;
   }
 }
 

@@ -128,11 +128,11 @@ class RubbishBin extends DropTarget {
     this.close();
   }
 
-  static fromProperties(properties) {
+  static fromClass(Class, properties) {
     const { onRemove } = properties,
           removeHandler = onRemove || defaultRemoveHandler, ///
           moveHandler = removeHandler,  ///
-          rubbishBin = DropTarget.fromProperties(RubbishBin, properties, moveHandler);
+          rubbishBin = DropTarget.fromClass(Class, properties, moveHandler);
 
     rubbishBin.initialise();
     

@@ -14,8 +14,6 @@ class Entry extends Element {
   getType() {
     return this.type;
   }
-
-  static fromProperties(Class, properties, type, ...remainingArguments) { return Element.fromProperties(Class, properties, type, ...remainingArguments); }
 }
 
 Object.assign(Entry, {

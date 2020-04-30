@@ -173,9 +173,9 @@ class DropTarget extends Element {
     }
   }
 
-  static fromProperties(Class, properties, moveHandler, ...remainingArguments) {
+  static fromClass(Class, properties, moveHandler, ...remainingArguments) {
     const dropTargets = [],
-          dropTarget = Element.fromProperties(Class, properties, dropTargets, moveHandler, ...remainingArguments);
+          dropTarget = Element.fromClass(Class, properties, dropTargets, moveHandler, ...remainingArguments);
 
     return dropTarget;
   }

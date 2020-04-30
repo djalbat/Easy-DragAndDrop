@@ -149,15 +149,10 @@ class DirectoryNameDraggableEntry extends DraggableEntry {
     super.initialise();
   }
   
-  static fromProperties(Class, properties) {
-    if (arguments.length === 1) {
-      properties = Class;
-      Class = DirectoryNameDraggableEntry;
-    }
-
+  static fromClass(Class, properties) {
     const { collapsed = false } = properties,
           type = DIRECTORY_NAME_TYPE, ///
-          directoryNameDraggableEntry = DraggableEntry.fromProperties(Class, properties, type);
+          directoryNameDraggableEntry = DraggableEntry.fromClass(Class, properties, type);
 
     directoryNameDraggableEntry.initialise(collapsed);
 

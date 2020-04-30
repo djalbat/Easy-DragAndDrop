@@ -76,10 +76,10 @@ class FileNameDraggableEntry extends DraggableEntry {
     ]);
   }
 
-  static fromProperties(properties) {
+  static fromClass(Class, properties) {
     const { explorer } = properties,
           type = FILE_NAME_TYPE,  ///
-          fileNameDraggableEntry = DraggableEntry.fromProperties(FileNameDraggableEntry, properties, type, explorer);
+          fileNameDraggableEntry = DraggableEntry.fromClass(Class, properties, type, explorer);
 
     fileNameDraggableEntry.initialise();
 
