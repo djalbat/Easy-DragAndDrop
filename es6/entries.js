@@ -674,6 +674,12 @@ export default class Entries extends Element {
     });
   }
 
+  static tagName = "ul";
+
+  static defaultProperties = {
+    className: "entries"
+  };
+
   static fromClass(Class, properties) {
     const { explorer } = properties,
           entries = Element.fromClass(Class, properties, explorer);
@@ -681,10 +687,3 @@ export default class Entries extends Element {
     return entries;
   }
 }
-
-Object.assign(Entries, {
-  tagName: "ul",
-  defaultProperties: {
-    className: "entries"
-  }
-});

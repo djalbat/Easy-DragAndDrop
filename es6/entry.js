@@ -12,14 +12,14 @@ export default class Entry extends Element {
   getType() {
     return this.type;
   }
-}
 
-Object.assign(Entry, {
-  tagName: "li",
-  defaultProperties: {
+  static tagName = "li";
+
+  static defaultProperties = {
     className: "entry"
-  },
-  ignoredProperties: [
+  };
+
+  static ignoredProperties = [
     "name"
-  ]
-});
+  ];
+}

@@ -34,10 +34,8 @@ export default class DirectoryNameMarkerEntry extends MarkerEntry {
 
     return directoryNameMarkerEntry;
   }
-}
 
-Object.assign(DirectoryNameMarkerEntry, {
-  defaultProperties: {
+  static defaultProperties = {
     className: "directory-name"
-  }
-});
+  };
+}

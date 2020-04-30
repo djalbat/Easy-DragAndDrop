@@ -13,6 +13,10 @@ export default class MarkerEntry extends Entry {
     return this.name;
   }
 
+  static defaultProperties = {
+    className: "marker"
+  };
+
   static fromClass(Class, properties, type) {
     const { name } = properties,
           markerEntry = Entry.fromClass(Class, properties, type, name);
@@ -20,9 +24,3 @@ export default class MarkerEntry extends Entry {
     return markerEntry;
   }
 }
-
-Object.assign(MarkerEntry, {
-  defaultProperties: {
-    className: "marker"
-  }
-});

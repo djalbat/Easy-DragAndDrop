@@ -156,13 +156,12 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
 
     return directoryNameDraggableEntry;
   }
-}
 
-Object.assign(DirectoryNameDraggableEntry, {
-  defaultProperties: {
+  static defaultProperties = {
     className: "directory-name"
-  },
-  ignoredProperties: [
+  };
+
+  static ignoredProperties = [
     "collapsed"
-  ]
-});
+  ];
+}

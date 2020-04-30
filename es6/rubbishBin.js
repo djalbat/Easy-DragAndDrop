@@ -127,6 +127,16 @@ export default class RubbishBin extends DropTarget {
     this.close();
   }
 
+  static tagName = "div";
+
+  static defaultProperties = {
+    className: "rubbish-bin"
+  };
+
+  static ignoredProperties = [
+    "onRemove"
+  ];
+
   static fromClass(Class, properties) {
     const { onRemove } = properties,
           removeHandler = onRemove || defaultRemoveHandler, ///
@@ -138,16 +148,6 @@ export default class RubbishBin extends DropTarget {
     return rubbishBin;
   }
 }
-
-Object.assign(RubbishBin, {
-  tagName: "div",
-  defaultProperties: {
-    className: "rubbish-bin"
-  },
-  ignoredProperties: [
-    "onRemove"
-  ]
-});
 
 function defaultRemoveHandler(pathMaps, done) {
   done();

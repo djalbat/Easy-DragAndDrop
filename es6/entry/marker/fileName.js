@@ -33,10 +33,8 @@ export default class FileNameMarkerEntry extends MarkerEntry {
 
     return fileNameMarkerEntry;
   }
-}
 
-Object.assign(FileNameMarkerEntry, {
-  defaultProperties: {
+  static defaultProperties = {
     className: "file-name"
-  }
-});
+  };
+}

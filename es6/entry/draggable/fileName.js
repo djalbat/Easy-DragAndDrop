@@ -80,10 +80,8 @@ export default class FileNameDraggableEntry extends DraggableEntry {
 
     return fileNameDraggableEntry;
   }
-}
 
-Object.assign(FileNameDraggableEntry, {
-  defaultProperties: {
+  static defaultProperties = {
     className: "file-name"
-  }
-});
+  };
+}

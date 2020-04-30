@@ -318,14 +318,14 @@ export default class DraggableEntry extends Entry {
     this.onMouseDown(mouseDownHandler);
     this.onDoubleClick(doubleClickHandler);
   }
-}
 
-Object.assign(DraggableEntry, {
-  tagName: "li",
-  defaultProperties: {
+  static tagName = "li";
+
+  static defaultProperties = {
     className: "draggable"
-  },
-  ignoredProperties: [
+  };
+
+  static ignoredProperties = [
     "explorer"
-  ]
-});
+  ];
+}

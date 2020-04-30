@@ -28,14 +28,14 @@ export default class NameButton extends InputElement {
       onDoubleClick
     });
   }
-}
 
-Object.assign(NameButton, {
-  tagName: "button",
-  defaultProperties: {
+  static tagName = "button";
+
+  static defaultProperties = {
     className: "name"
-  },
-  ignoredProperties: [
+  };
+
+  static ignoredProperties = [
     "name"
-  ]
-});
+  ];
+}

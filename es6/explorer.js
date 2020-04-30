@@ -324,6 +324,20 @@ export default class Explorer extends DropTarget {
     this.assignContext();
   }
 
+  static tagName = "div";
+
+  static defaultProperties = {
+    className: "explorer"
+  };
+
+  static ignoredProperties = [
+    "onOpen",
+    "onMove",
+    "options",
+    "topmostDirectoryName",
+    "topmostDirectoryCollapsed"
+  ];
+
   static fromClass(Class, properties) {
     const { onMove, onOpen, options = {}} = properties, ///
           moveHandler = onMove || defaultMoveHandler, ///
@@ -335,20 +349,6 @@ export default class Explorer extends DropTarget {
     return explorer;
   }
 }
-
-Object.assign(Explorer, {
-  tagName: "div",
-  defaultProperties: {
-    className: "explorer"
-  },
-  ignoredProperties: [
-    "onOpen",
-    "onMove",
-    "options",
-    "topmostDirectoryName",
-    "topmostDirectoryCollapsed"
-  ]
-});
 
 function defaultOpenHandler(sourcePath) {
   ///
