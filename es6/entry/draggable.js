@@ -11,12 +11,6 @@ const { LEFT_MOUSE_BUTTON } = constants,
       { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
 export default class DraggableEntry extends Entry {
-  constructor(selector, type) {
-    super(selector, type);
-
-    this.setInitialState();
-  }
-
   getPath() {
     const explorer = this.getExplorer(),
           draggableEntry = this,  ///
@@ -317,6 +311,8 @@ export default class DraggableEntry extends Entry {
     
     this.onMouseDown(mouseDownHandler);
     this.onDoubleClick(doubleClickHandler);
+
+    this.setInitialState();
   }
 
   static tagName = "li";
