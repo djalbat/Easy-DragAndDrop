@@ -40,10 +40,7 @@ import { Explorer, RubbishBin } from "easy-draganddrop";
 const topmostDirectoryName = "First explorer",
       explorer =
 
-        <Explorer topmostDirectoryName={topmostDirectoryName}
-                  onMove={moveHandler}
-                  onOpen={openHandler}
-        />,
+        <Explorer topmostDirectoryName={topmostDirectoryName} onMove={moveHandler} onOpen={openHandler} />,
 
       rubbishBin =
 
@@ -108,7 +105,7 @@ This is done by double clicking on them, in which case the requisite handler is 
 
 ```
 function openHandler(filePath) {
-  console.log(`open: '${filePath}'.'`)
+  console.log(`Open: '${filePath}'.`)
 }
 ```
 
@@ -180,10 +177,48 @@ function removeHandler(pathMaps, done) {
 
 If no remove handler is provided the array of path maps is left unchanged.
 
-## CSS
+## Styles
 
-There is a fair amount of CSS. Some of it is functional, in the sense that it the elements will not work properly without it. You should also include the `easy-draganddrop.css` file, found in the `css/` directory, together with the PNG files therein, at least to get yourself started. The positioning of the background images is left deliberately awry, you will need to adjust this aspect at least.
+There is a small amount of default styling. All the elements have class names, however, allowing you to override this with CSS. Or a better way is to use [Easy with Style](https://github.com/djalbat/easy-with-style). For example:
 
+```
+import withStyle from "easy-with-style";
+
+export default (Explorer)`
+
+  background: transparent;
+
+`;
+```
+In order to style the explorer's child elements, such as buttons and markers, you must appraise the parent element of the re-styled element by setting it as a static method. For example:
+
+```
+import FileNameDraggableEntry from "...";
+import DirectoryNameMarkerEntry from "...";
+
+export default class extends Explorer {
+  static FileNameDraggableEntry = FileNameDraggableEntry;
+
+  static DirectoryNameMarkerEntry = DirectoryNameMarkerEntry;
+};
+```
+Here an anonymous class with overriding static fields is exported. The five child classes of the `Explorer` class whose styles can be overridden in this way are:
+
+ * `Entries`
+ * `FileNameMarkerEntry`
+ * `FileNameDraggableEntry`
+ * `DirectoryNameMarkerEntry`
+ * `DirectoryNameDraggableEntry`
+
+The `DirectoryNameDraggableEntry` has two:
+
+ * `ToggleButton`
+ * `DirectoryNameButton`
+
+And the `FileNameDraggableEntry` has one:
+
+ * `FileNameButton`
+ 
 ## Compiling from source
 
 Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have a look at the `package.json` file. The pertinent commands are:

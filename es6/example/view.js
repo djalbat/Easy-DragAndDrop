@@ -7,10 +7,7 @@ import Explorer from "./explorer";
 const View = (properties) => {
   const explorer =
 
-          <Explorer topmostDirectoryName="explorer"
-                    onOpen={openHandler}
-                    onMove={moveHandler}
-          />
+          <Explorer topmostDirectoryName="explorer" onOpen={openHandler} onMove={moveHandler} />
 
         ,
         rubbishBin =
