@@ -17,7 +17,6 @@ const View = (properties) => {
 
         ;
 
-
   explorer.addDirectoryPath("explorer/directory1");
   explorer.addDirectoryPath("explorer/directory2");
   explorer.addFilePath("explorer/directory1/file1.txt");

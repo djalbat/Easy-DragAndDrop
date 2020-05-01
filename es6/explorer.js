@@ -1,5 +1,7 @@
 "use strict";
 
+import withStyle from "easy-with-style";  ///
+
 import { pathUtilities, arrayUtilities } from "necessary";
 
 import Entries from "./entries";
@@ -12,7 +14,7 @@ import { DIRECTORY_NAME_TYPE } from "./types";
 const { second } = arrayUtilities,
       { pathWithoutBottommostNameFromPath } = pathUtilities;
 
-export default class Explorer extends DropTarget {
+class Explorer extends DropTarget {
   constructor(selector, dropTargets, moveHandler, openHandler, options) {
     super(selector, dropTargets, moveHandler);
 
@@ -353,6 +355,16 @@ export default class Explorer extends DropTarget {
     return explorer;
   }
 }
+
+export default withStyle(Explorer)`
+
+  width: auto;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  margin-left: -2.4rem;
+
+`;
 
 const defaultOptions = {};
 

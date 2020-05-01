@@ -1,8 +1,10 @@
 "use strict";
 
+import withStyle from "easy-with-style";  ///
+
 import Entry from "../entry";
 
-export default class MarkerEntry extends Entry {
+class MarkerEntry extends Entry {
   constructor(selector, type, name) {
     super(selector, type);
 
@@ -24,3 +26,13 @@ export default class MarkerEntry extends Entry {
     return markerEntry;
   }
 }
+
+export default withStyle(MarkerEntry)`
+
+  width: 4rem;
+  height: 2.4rem;
+  background-image: url("image/marker.png");
+  background-repeat: no-repeat;
+  background-position: 1.8rem 1rem;
+
+`;

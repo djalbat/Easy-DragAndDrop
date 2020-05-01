@@ -1,7 +1,7 @@
 "use strict";
 
-import NameButton from "../../button/name";
 import DraggableEntry from "../../entry/draggable";
+import FileNameButton from "../../button/name/file";
 
 import { nameIsBeforeEntryName } from "../../utilities/name";
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
@@ -62,14 +62,19 @@ export default class FileNameDraggableEntry extends DraggableEntry {
   }
 
   childElements(properties) {
-    const { name } = properties;
+    const { name } = properties,
+          fileName= name; ///
 
     return ([
 
-      <NameButton>{name}</NameButton>
+      <FileNameButton>{fileName}</FileNameButton>
 
     ]);
   }
+
+  static defaultProperties = {
+    className: "file-name"
+  };
 
   static fromClass(Class, properties) {
     const { explorer } = properties,
@@ -80,8 +85,4 @@ export default class FileNameDraggableEntry extends DraggableEntry {
 
     return fileNameDraggableEntry;
   }
-
-  static defaultProperties = {
-    className: "file-name"
-  };
 }

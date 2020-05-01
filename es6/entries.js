@@ -1,5 +1,7 @@
 "use strict";
 
+import withStyle from "easy-with-style";  ///
+
 import { Element } from "easy";
 import { pathUtilities } from "necessary";
 
@@ -12,7 +14,7 @@ import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_N
 
 const { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
-export default class Entries extends Element {
+class Entries extends Element {
   constructor(selector, explorer) {
     super(selector);
 
@@ -64,6 +66,14 @@ export default class Entries extends Element {
           directoryNameDraggableEntryPresent = (directoryNameDraggableEntry !== null);
 
     return directoryNameDraggableEntryPresent;
+  }
+
+  expand() {
+    this.removeClass("collapsed");
+  }
+
+  collapse() {
+    this.addClass("collapsed");
   }
 
   addEntry(entry) {
@@ -293,7 +303,6 @@ export default class Entries extends Element {
         directoryNameDraggableEntry = directoryNameDraggableEntryPresent ?
                                         this.findDirectoryNameDraggableEntry(directoryName) :
                                           this.addDirectoryNameDraggableEntry(directoryName, collapsed);
-
 
         directoryNameDraggableEntry.setCollapsed(collapsed);
       }
@@ -637,6 +646,8 @@ export default class Entries extends Element {
           isEmpty = this.isEmpty.bind(this),
           addMarker = this.addMarker.bind(this),
           removeMarker = this.removeMarker.bind(this),
+          expandEntries = this.expand.bind(this), ///
+          collapseEntries = this.collapse.bind(this), ///
           addFilePath = this.addFilePath.bind(this),
           removeFilePath = this.removeFilePath.bind(this),
           addDirectoryPath = this.addDirectoryPath.bind(this),
@@ -657,6 +668,8 @@ export default class Entries extends Element {
       isEmpty,
       addMarker,
       removeMarker,
+      expandEntries,
+      collapseEntries,
       addFilePath,
       removeFilePath,
       addDirectoryPath,
@@ -687,3 +700,17 @@ export default class Entries extends Element {
     return entries;
   }
 }
+
+export default withStyle(Entries)`
+
+  width: auto;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  padding-left: 2.4rem;
+  
+  .collapsed {
+    display: none;
+  }
+
+`;

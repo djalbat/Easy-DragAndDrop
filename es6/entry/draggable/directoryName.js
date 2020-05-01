@@ -1,11 +1,11 @@
 "use strict";
 
-import { Button } from "easy";
 import { pathUtilities } from "necessary";
 
 import Entries from "../../entries";
-import NameButton from "../../button/name";
+import ToggleButton from "../../button/toggle";
 import DraggableEntry from "../../entry/draggable";
+import DirectoryNameButton from "../../button/name/directory";
 
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
 
@@ -25,12 +25,6 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
     }
 
     return collapsedBounds;
-  }
-
-  isCollapsed() {
-    const collapsed = this.hasClass("collapsed");
-
-    return collapsed;
   }
 
   isMarked() {
@@ -117,45 +111,53 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
   }
 
   collapse() {
-    this.addClass("collapsed");
+    this.collapseEntries();
+
+    this.collapseToggleButton();
   }
 
   expand() {
-    this.removeClass("collapsed");
+    this.expandEntries();
+
+    this.expandToggleButton();
   }
 
   toggle() {
-    this.toggleClass("collapsed");
+    let collapsed = this.isCollapsed();
+
+    collapsed = !collapsed;
+
+    this.setCollapsed(collapsed);
   }
 
   childElements(properties) {
     const { name, explorer } = properties,
+          directoryName = name, ///
           toggleButtonClickHandler = this.toggleButtonClickHandler.bind(this);
 
     return ([
 
-      <Button className="toggle" onClick={toggleButtonClickHandler} />,
-      <NameButton>{name}</NameButton>,
+      <ToggleButton onClick={toggleButtonClickHandler} />,
+      <DirectoryNameButton>{directoryName}</DirectoryNameButton>,
       <Entries explorer={explorer} />
 
     ]);
   }
   
   initialise(properties) {
+    this.assignContext([
+      "isCollapsed",
+      "expandEntries",
+      "collapseEntries",
+      "expandToggleButton",
+      "collapseToggleButton"
+    ]);
+
     const { collapsed = false } = properties;
 
     this.setCollapsed(collapsed);
 
     super.initialise(properties);
-  }
-  
-  static fromClass(Class, properties) {
-    const type = DIRECTORY_NAME_TYPE, ///
-          directoryNameDraggableEntry = DraggableEntry.fromClass(Class, properties, type);
-
-    directoryNameDraggableEntry.initialise(properties);
-
-    return directoryNameDraggableEntry;
   }
 
   static defaultProperties = {
@@ -165,4 +167,13 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
   static ignoredProperties = [
     "collapsed"
   ];
+
+  static fromClass(Class, properties) {
+    const type = DIRECTORY_NAME_TYPE, ///
+          directoryNameDraggableEntry = DraggableEntry.fromClass(Class, properties, type);
+
+    directoryNameDraggableEntry.initialise(properties);
+
+    return directoryNameDraggableEntry;
+  }
 }

@@ -1,10 +1,12 @@
 "use strict";
 
+import withStyle from "easy-with-style";  ///
+
 import DropTarget from "./dropTarget";
 
 import { DIRECTORY_NAME_TYPE } from "./types";
 
-export default class RubbishBin extends DropTarget {
+class RubbishBin extends DropTarget {
   open() {
     this.addClass("open");
   }
@@ -148,6 +150,19 @@ export default class RubbishBin extends DropTarget {
     return rubbishBin;
   }
 }
+
+export default withStyle(RubbishBin)`
+
+  background-image: url("image/rubbish-bin.png");
+  background-repeat: no-repeat;
+  width: 4rem;
+  height: 4rem;
+  
+  .open {
+    background-image: url("image/open-rubbish-bin.png");
+  }
+
+`;
 
 function defaultRemoveHandler(pathMaps, done) {
   done();

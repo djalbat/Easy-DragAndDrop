@@ -1,14 +1,20 @@
 "use strict";
 
-import { React, Body } from "easy";
+import withStyle from "easy-with-style";  ///
 
-import View from "./example/view"
+import { Body, React, window } from "easy";
 
-Object.assign(window, {
+import View from "./example/view";
+
+window.assign({
   React
 });
 
+const { renderStyles } = withStyle;
+
 const body = new Body();
+
+renderStyles();
 
 body.prepend(
 

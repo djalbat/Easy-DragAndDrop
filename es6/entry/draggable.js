@@ -1,5 +1,7 @@
 "use strict";
 
+import withStyle from "easy-with-style";  ///
+
 import { window, constants } from "easy";
 
 import Entry from "../entry";
@@ -10,7 +12,7 @@ import { ESCAPE_KEYCODE, START_DRAGGING_DELAY } from "../constants";
 const { LEFT_MOUSE_BUTTON } = constants,
       { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
-export default class DraggableEntry extends Entry {
+class DraggableEntry extends Entry {
   getPath() {
     const explorer = this.getExplorer(),
           draggableEntry = this,  ///
@@ -325,3 +327,12 @@ export default class DraggableEntry extends Entry {
     "explorer"
   ];
 }
+
+export default withStyle(DraggableEntry)`
+
+  .dragging {
+    position: fixed;
+    z-index: 10000;
+  }
+
+`;

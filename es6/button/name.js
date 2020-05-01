@@ -1,11 +1,13 @@
 "use strict";
 
+import withStyle from "easy-with-style";  ///
+
 import { InputElement } from "easy";
 import { arrayUtilities } from "necessary";
 
 const { first } = arrayUtilities;
 
-export default class NameButton extends InputElement {
+class NameButton extends InputElement {
   getName() {
     const childElements = this.getChildElements(),
           firstChildElement = first(childElements),
@@ -34,8 +36,16 @@ export default class NameButton extends InputElement {
   static defaultProperties = {
     className: "name"
   };
-
-  static ignoredProperties = [
-    "name"
-  ];
 }
+
+export default withStyle(NameButton)`
+
+  outline: none;
+  border: none;
+  height: 2.4rem;
+  text-align: left;
+  vertical-align: top;
+  background-color: transparent;
+  background-repeat: no-repeat;
+
+`;

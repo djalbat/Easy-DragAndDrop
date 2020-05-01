@@ -26,15 +26,15 @@ export default class FileNameMarkerEntry extends MarkerEntry {
 
     return before;
   }
-  
+
+  static defaultProperties = {
+    className: "file-name"
+  };
+
   static fromClass(Class, properties) {
     const type = FILE_NAME_MARKER_TYPE,
           fileNameMarkerEntry = MarkerEntry.fromClass(Class, properties, type);
 
     return fileNameMarkerEntry;
   }
-
-  static defaultProperties = {
-    className: "file-name"
-  };
 }

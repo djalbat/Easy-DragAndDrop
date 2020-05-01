@@ -27,15 +27,15 @@ export default class DirectoryNameMarkerEntry extends MarkerEntry {
 
     return before;
   }
-  
+
+  static defaultProperties = {
+    className: "directory-name"
+  };
+
   static fromClass(Class, properties) {
     const type = DIRECTORY_NAME_MARKER_TYPE,  ///
           directoryNameMarkerEntry = MarkerEntry.fromClass(Class, properties, type);
 
     return directoryNameMarkerEntry;
   }
-
-  static defaultProperties = {
-    className: "directory-name"
-  };
 }

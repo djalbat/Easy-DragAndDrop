@@ -1,8 +1,10 @@
 "use strict";
 
+import withStyle from "easy-with-style";  ///
+
 import { Element } from "easy";
 
-export default class Entry extends Element {
+class Entry extends Element {
   constructor(selector, type) {
     super(selector);
 
@@ -23,3 +25,14 @@ export default class Entry extends Element {
     "name"
   ];
 }
+
+export default withStyle(Entry)`
+
+  width: auto;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font-size: 0;
+  list-style-type: none;
+
+`;
