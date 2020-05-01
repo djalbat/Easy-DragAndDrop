@@ -14,9 +14,9 @@ From there you can easily navigate to get an overview of Juxtapose.
 
 ### Related projects
 
-- [Easy](https://github.com/djalbat/Easy) Elements that abstract away from the DOM.
-- [Easy Layout](https://github.com/djalbat/Easy-Layout) Layout elements that work with CSS flexbox.
-- [Easy RichTextarea](https://github.com/djalbat/Easy-RichTextarea) A textarea element that handles and hands off events well.
+- [Easy](https://github.com/djalbat/easy) Elements that abstract away from the DOM.
+- [Easy Layout](https://github.com/djalbat/easy-layout) Layout elements that work with CSS flexbox.
+- [Easy RichTextarea](https://github.com/djalbat/easy-richrextarea) A textarea element that handles and hands off events well.
 
 ## Installation
 
@@ -34,11 +34,10 @@ You can also clone the repository with [Git](https://git-scm.com/)...
 
 ## Usage
 
-```js
-const easydraganddrop = require('easy-draganddrop'),
-      { Explorer, RubbishBin } = easydraganddrop;
+```
+import { Explorer, RubbishBin } from "easy-draganddrop";
 
-const topmostDirectoryName = 'First explorer',
+const topmostDirectoryName = "First explorer",
       explorer =
 
         <Explorer topmostDirectoryName={topmostDirectoryName}
@@ -68,22 +67,22 @@ function openHandler(filePath) {
 
 You can add files or empty directories:
 
-```js
-secondExplorer.addDirectoryPath('Second explorer/First directory');
-secondExplorer.addDirectoryPath('Second explorer/Second directory');
-secondExplorer.addFilePath('Second explorer/First directory/First file.fls');
-secondExplorer.addFilePath('Second explorer/First directory/Second file.fls');
-secondExplorer.addFilePath('Second explorer/Second directory/Third file.fls');
+```
+secondExplorer.addDirectoryPath("Second explorer/First directory");
+secondExplorer.addDirectoryPath("Second explorer/Second directory");
+secondExplorer.addFilePath("Second explorer/First directory/First file.fls");
+secondExplorer.addFilePath("Second explorer/First directory/Second file.fls");
+secondExplorer.addFilePath("Second explorer/Second directory/Third file.fls");
 ```
 
 The `addDirectoryPath()` method has a second, optional `collapsed` argument. The default is `false`. The explorer will add the necessary parent directories for you whenever you add a file. If you try to add a file or directory more than once, nothing will happen.
 
 You can also remove files and non-empty directories programmatically:
 
-```js
-secondExplorer.removeFilePath('Second explorer/First directory/Second file.fls', true);
-secondExplorer.removeFilePath('Second explorer/Second directory/Third file.fls', false);
-secondExplorer.removeDirectoryPath('Second explorer/Second directory', false);
+```
+secondExplorer.removeFilePath("Second explorer/First directory/Second file.fls", true);
+secondExplorer.removeFilePath("Second explorer/Second directory/Third file.fls", false);
+secondExplorer.removeDirectoryPath("Second explorer/Second directory", false);
 ```
 
 You cannot remove the topmost directory, and if you try to remove a file or directory more than once, nothing happens.
@@ -94,7 +93,7 @@ Note that the methods are `addFilePath()`, `removeDirectoryPath()` and so on. Th
 
 Use the `addDropTarget()` method to have one element listen for the dragging events of another.
 
-```js
+```
 firstExplorer.addDropTarget(secondExplorer);
 secondExplorer.addDropTarget(firstExplorer);
 firstExplorer.addDropTarget(rubbishBin);
@@ -107,9 +106,9 @@ Here the rubbish bin will listen for dragging events from both of the explorers.
 
 This is done by double clicking on them, in which case the requisite handler is called with the file's path.
 
-```js
+```
 function openHandler(filePath) {
-  console.log('open: ' + filePath)
+  console.log(`open: '${filePath}'.'`)
 }
 ```
 
@@ -119,30 +118,30 @@ It is fine not to define the open handler.
 
 The requisite handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object with `sourcePath`, `targetPath` and `directory` properties. The `directory` property is set to `true` if the entry is a directory. If you want the entry to be moved, leave the object as-is. If you want the entry to be left in place, change the target path to the source path. If you want the entry to be removed, change the target path to `null`. Simply leaving the array of path maps alone with therefore move the entries as expected. 
 
-```js
+```
 function moveHandler(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
-    const sourcePath = pathMap['sourcePath'],
-          targetPath = pathMap['targetPath'];
+    const sourcePath = pathMap["sourcePath"],
+          targetPath = pathMap["targetPath"];
           
-    console.log('move file: ' + sourcePath + ' -> ' + targetPath)
+    console.log(`Move file: '${sourcePath}' -> '${targetPath}'.`)
 
     switch(sourcePath) {
-      case 'Second explorer/First directory/First file.fls':
-        console.log('...deleted.')
+      case "Second explorer/First directory/First file.fls":
+        console.log("...deleted.")
 
         targetPath = null;
         break;
 
-      case 'Second explorer/First directory/Second file.fls':
-      case 'Second explorer/First directory':
-        console.log('...left in place.')
+      case "Second explorer/First directory/Second file.fls":
+      case "Second explorer/First directory":
+        console.log("...left in place.")
 
         targetPath = sourcePath;
         break;
     }
 
-    pathMap['targetPath'] = targetPath;
+    pathMap["targetPath"] = targetPath;
   });
 
   done();
@@ -155,24 +154,24 @@ If no move handler is provided the array of path maps is left unchanged.
   
 The requisite handler is invoked with an array of path maps and a `done` argument. You must call the `done()` method when you are done. Each element of the array of path maps is a mutable plain old JavaScript object again with `sourcePath`, `targetPath` and `directory` properties. The target path will be set to `null` and again the `directory` property is set to `true` if the entry is a directory. If you want the entry to be removed, leave the object as-is. If you want the entry to be left in place, change the the target path to the source path. Simply leaving the array of path maps alone will therefore remove the entries as expected.
 
-```js
+```
 function removeHandler(pathMaps, done) {
   pathMaps.forEach(function(pathMap) {
-    const sourcePath = pathMap['sourcePath'],
-          targetPath = pathMap['targetPath'];
+    const sourcePath = pathMap["sourcePath"],
+          targetPath = pathMap["targetPath"];
 
-    console.log('remove file: ' + sourcePath)
+    console.log(`Remove file: '${sourcePath}'.`)
 
     switch(sourcePath) {
-      case 'Second explorer/First directory/Second file.fls':
-      case 'Second explorer/First directory':
-        console.log('...left in place.')
+      case "Second explorer/First directory/Second file.fls":
+      case "Second explorer/First directory":
+        console.log(""...left in place.")
 
         targetPath = sourcePath;
         break;
     }
 
-    pathMap['targetPath'] = targetPath;
+    pathMap["targetPath"] = targetPath;
   });
 
   done();
