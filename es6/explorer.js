@@ -6,6 +6,9 @@ import { pathUtilities, arrayUtilities } from "necessary";
 
 import Entries from "./entries";
 import DropTarget from "./dropTarget";
+import FileNameMarkerEntry from "./entry/marker/fileName";
+import FileNameDraggableEntry from "./entry/draggable/fileName";
+import DirectoryNameMarkerEntry from "./entry/marker/directoryName";
 import DirectoryNameDraggableEntry from "./entry/draggable/directoryName";
 
 import { NO_DRAGGING_WITHIN } from "./options";
@@ -61,8 +64,34 @@ class Explorer extends DropTarget {
     return topmostDirectoryName;
   }
 
+  getEntries() {
+    const { Entries } = this.constructor;
+
+    return Entries;
+  }
+
+  getFileNameMarkerEntry() {
+    const { FileNameMarkerEntry } = this.constructor;
+
+    return FileNameMarkerEntry;
+  }
+
+  getFileNameDraggableEntry() {
+    const { FileNameDraggableEntry } = this.constructor;
+
+    return FileNameDraggableEntry;
+  }
+
+  getDirectoryNameMarkerEntry() {
+    const { DirectoryNameMarkerEntry } = this.constructor;
+
+    return DirectoryNameMarkerEntry;
+  }
+
   getDirectoryNameDraggableEntry() {
-    return DirectoryNameDraggableEntry; ///
+    const { DirectoryNameDraggableEntry } = this.constructor;
+
+    return DirectoryNameDraggableEntry;
   }
 
   mark(draggableEntry, previousDraggableEntry) {
@@ -310,6 +339,7 @@ class Explorer extends DropTarget {
 
   childElements(properties) {
     const { topmostDirectoryName, topmostDirectoryCollapsed } = properties,
+          Entries = this.getEntries(),
           explorer = this,  ///
           collapsed = topmostDirectoryCollapsed,  ///
           directoryName = topmostDirectoryName, ///
@@ -329,6 +359,16 @@ class Explorer extends DropTarget {
   initialise(properties) {
     this.assignContext();
   }
+
+  static Entries = Entries;
+
+  static FileNameMarkerEntry = FileNameMarkerEntry;
+
+  static FileNameDraggableEntry = FileNameDraggableEntry;
+
+  static DirectoryNameMarkerEntry = DirectoryNameMarkerEntry;
+
+  static DirectoryNameDraggableEntry = DirectoryNameDraggableEntry;
 
   static tagName = "div";
 

@@ -5,10 +5,6 @@ import withStyle from "easy-with-style";  ///
 import { Element } from "easy";
 import { pathUtilities } from "necessary";
 
-import FileNameMarkerEntry from "./entry/marker/fileName";
-import FileNameDraggableEntry from "./entry/draggable/fileName";
-import DirectoryNameMarkerEntry from "./entry/marker/directoryName";
-
 import { REMOVE_EMPTY_PARENT_DIRECTORIES, NO_DRAGGING_INTO_SUB_DIRECTORIES } from "./options";
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "./types";
 
@@ -100,27 +96,31 @@ class Entries extends Element {
           type = draggableEntryType;  ///
 
     switch (type) {
-      case FILE_NAME_TYPE :
-        const fileNameMarkerEntry =
+      case FILE_NAME_TYPE : {
+        const FileNameMarkerEntry = this.explorer.getFileNameMarkerEntry(),
+              fileNameMarkerEntry =
 
-          <FileNameMarkerEntry name={name} />
+                <FileNameMarkerEntry name={name} />
 
-        ;
+              ;
 
         markerEntry = fileNameMarkerEntry;  ///
 
         break;
+      }
 
-      case DIRECTORY_NAME_TYPE :
-        const directoryNameMarkerEntry =
+      case DIRECTORY_NAME_TYPE : {
+        const DirectoryNameMarkerEntry = this.explorer.getDirectoryNameMarkerEntry(),
+              directoryNameMarkerEntry =
 
-          <DirectoryNameMarkerEntry name={name} />
+                <DirectoryNameMarkerEntry name={name} />
 
-        ;
+              ;
 
         markerEntry = directoryNameMarkerEntry; ///
 
         break;
+      }
     }
 
     const entry = markerEntry; ///
@@ -137,6 +137,7 @@ class Entries extends Element {
   addFileNameDraggableEntry(fileName) {
     const name = fileName,
           explorer = this.explorer,
+          FileNameDraggableEntry = this.explorer.getFileNameDraggableEntry(),
           fileNameDraggableEntry =
 
             <FileNameDraggableEntry name={name} explorer={explorer} />
@@ -704,9 +705,6 @@ class Entries extends Element {
 export default withStyle(Entries)`
 
   width: auto;
-  margin: 0;
-  border: 0;
-  padding: 0;
   padding-left: 2.4rem;
   
   .collapsed {

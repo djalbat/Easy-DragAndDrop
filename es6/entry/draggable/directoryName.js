@@ -2,7 +2,6 @@
 
 import { pathUtilities } from "necessary";
 
-import Entries from "../../entries";
 import ToggleButton from "../../button/toggle";
 import DraggableEntry from "../../entry/draggable";
 import DirectoryNameButton from "../../button/name/directory";
@@ -25,6 +24,18 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
     }
 
     return collapsedBounds;
+  }
+
+  getDirectoryNameButton() {
+    const { DirectoryNameButton } = this.constructor;
+
+    return DirectoryNameButton;
+  }
+
+  getToggleButton() {
+    const { ToggleButton } = this.constructor;
+
+    return ToggleButton;
   }
 
   isMarked() {
@@ -133,6 +144,9 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
   childElements(properties) {
     const { name, explorer } = properties,
           directoryName = name, ///
+          Entries = explorer.getEntries(),
+          ToggleButton = this.getToggleButton(),
+          DirectoryNameButton = this.getDirectoryNameButton(),
           toggleButtonClickHandler = this.toggleButtonClickHandler.bind(this);
 
     return ([
@@ -145,20 +159,16 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
   }
   
   initialise(properties) {
-    this.assignContext([
-      "isCollapsed",
-      "expandEntries",
-      "collapseEntries",
-      "expandToggleButton",
-      "collapseToggleButton"
-    ]);
+    super.initialise(properties);
 
     const { collapsed = false } = properties;
 
     this.setCollapsed(collapsed);
-
-    super.initialise(properties);
   }
+
+  static ToggleButton = ToggleButton;
+
+  static DirectoryNameButton = DirectoryNameButton;
 
   static defaultProperties = {
     className: "directory-name"

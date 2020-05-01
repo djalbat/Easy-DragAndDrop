@@ -17,6 +17,12 @@ export default class FileNameDraggableEntry extends DraggableEntry {
     return this.explorer;
   }
 
+  getFileNameButton() {
+    const { FileNameButton } = this.constructor;
+
+    return FileNameButton;
+  }
+
   isBefore(entry) {
     let before;
 
@@ -63,7 +69,8 @@ export default class FileNameDraggableEntry extends DraggableEntry {
 
   childElements(properties) {
     const { name } = properties,
-          fileName= name; ///
+          fileName= name, ///
+          FileNameButton = this.getFileNameButton();
 
     return ([
 
@@ -71,6 +78,8 @@ export default class FileNameDraggableEntry extends DraggableEntry {
 
     ]);
   }
+
+  static FileNameButton = FileNameButton;
 
   static defaultProperties = {
     className: "file-name"

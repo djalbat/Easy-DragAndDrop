@@ -17,8 +17,8 @@ class NameButton extends InputElement {
     return name;
   }
 
-  onDoubleClick(handler) {
-    this.on("dblclick", handler);
+  onDoubleClick(doubleClickHandler) {
+    this.on("dblclick", doubleClickHandler);
   }
   
   parentContext() {

@@ -10,8 +10,8 @@
     "url": "https://github.com/djalbat/easy-draganddrop"
   },
   "dependencies": {
-    "easy": "^10.1.6",
-    "easy-with-style": "^1.0.10",
+    "easy": "^10.1.8",
+    "easy-with-style": "^1.0.11",
     "necessary": "^4.1.10"
   },
   "devDependencies": {
