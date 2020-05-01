@@ -210,15 +210,15 @@ Here an anonymous class with overriding static fields is exported. The five chil
  * `DirectoryNameMarkerEntry`
  * `DirectoryNameDraggableEntry`
 
-The `DirectoryNameDraggableEntry` has two:
+The `DirectoryNameDraggableEntry` class has two:
 
  * `ToggleButton`
  * `DirectoryNameButton`
 
-And the `FileNameDraggableEntry` has one:
+And the `FileNameDraggableEntry` class has one:
 
  * `FileNameButton`
- 
+
 ## Compiling from source
 
 Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have a look at the `package.json` file. The pertinent commands are:
