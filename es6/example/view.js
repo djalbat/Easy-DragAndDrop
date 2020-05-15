@@ -1,6 +1,6 @@
 "use strict";
 
-import { RubbishBin } from "../index";
+import { RubbishBin } from "../index";  ///
 
 import Explorer from "./explorer";
 

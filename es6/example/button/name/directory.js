@@ -2,7 +2,7 @@
 
 import withStyle from "easy-with-style";  ///
 
-import { DirectoryNameButton } from "../../../index";
+import { DirectoryNameButton } from "../../../index"; ///
 
 export default withStyle(DirectoryNameButton)`
 

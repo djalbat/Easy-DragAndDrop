@@ -1,6 +1,6 @@
 "use strict";
 
-import { Explorer } from "../index";
+import { Explorer } from "../index";  ///
 
 import Entries from "./entries";
 import FileNameMarkerEntry from "./entry/marker/fileName";

@@ -1,6 +1,6 @@
 "use strict";
 
-import { FileNameDraggableEntry } from "../../../index";
+import { FileNameDraggableEntry } from "../../../index";  ///
 
 import FileNameButton from "../../button/name/file";
 

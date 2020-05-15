@@ -2,7 +2,7 @@
 
 import withStyle from "easy-with-style";  ///
 
-import { ToggleButton } from "../../index";
+import { ToggleButton } from "../../index"; ///
 
 export default withStyle(ToggleButton)`
 

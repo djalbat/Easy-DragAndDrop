@@ -1,6 +1,6 @@
 "use strict";
 
-import { DirectoryNameDraggableEntry } from "../../../index";
+import { DirectoryNameDraggableEntry } from "../../../index"; ///
 
 import ToggleButton from "../../button/toggle";
 import DirectoryNameButton from "../../button/name/directory";

@@ -2,7 +2,7 @@
 
 import withStyle from "easy-with-style";  ///
 
-import { DirectoryNameMarkerEntry } from "../../../index";
+import { DirectoryNameMarkerEntry } from "../../../index";  ///
 
 export default withStyle(DirectoryNameMarkerEntry)`
 
