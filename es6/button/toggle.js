@@ -45,10 +45,6 @@ export default withStyle(ToggleButton)`
   position: relative;
   vertical-align: top;
   background-color: transparent;
-  
-  .collapsed {
-    content: "\\025b6";
-  }
 
   ::before {
     position: absolute;
@@ -56,6 +52,10 @@ export default withStyle(ToggleButton)`
     left: 0.4rem;
     width: 1.6rem;
     content: "\\025bc";
+  }
+  
+  .collapsed::before {
+    content: "\\025b6";
   }
   
 `;
