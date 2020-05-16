@@ -40,11 +40,11 @@ class NameButton extends InputElement {
 
 export default withStyle(NameButton)`
 
-  outline: none;
   border: none;
   height: 2.4rem;
+  outline: none;
+  display: inline-block;
   text-align: left;
-  vertical-align: top;
   background-color: transparent;
   background-repeat: no-repeat;
 

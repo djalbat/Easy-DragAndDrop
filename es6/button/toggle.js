@@ -38,18 +38,14 @@ class ToggleButton extends Button {
 
 export default withStyle(ToggleButton)`
 
-  outline: none;
-  border: none;
-  height: 2.4rem;
   width: 2rem;
-  position: relative;
-  vertical-align: top;
+  height: 2.4rem;
+  border: none;
+  outline: none;
+  display: inline-block;
   background-color: transparent;
 
   ::before {
-    position: absolute;
-    top: 0.4rem;
-    left: 0.4rem;
     width: 1.6rem;
     content: "\\025bc";
   }
