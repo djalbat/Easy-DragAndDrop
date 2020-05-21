@@ -9,8 +9,8 @@ import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE } from "./types";
 const { first, last } = arrayUtilities;
 
 export default class DropTarget extends Element {
-  constructor(selector, dropTargets, moveHandler) {
-    super(selector);
+  constructor(selectorOrDOMElement, dropTargets, moveHandler) {
+    super(selectorOrDOMElement);
 
     this.dropTargets = dropTargets;
 

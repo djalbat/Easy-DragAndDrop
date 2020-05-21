@@ -11,8 +11,8 @@ import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_N
 const { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
 class Entries extends Element {
-  constructor(selector, explorer) {
-    super(selector);
+  constructor(selectorOrDOMElement, explorer) {
+    super(selectorOrDOMElement);
 
     this.explorer = explorer;
   }

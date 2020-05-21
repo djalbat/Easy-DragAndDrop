@@ -5,8 +5,8 @@ import withStyle from "easy-with-style";  ///
 import Entry from "../entry";
 
 class MarkerEntry extends Entry {
-  constructor(selector, type, name) {
-    super(selector, type);
+  constructor(selectorOrDOMElement, type, name) {
+    super(selectorOrDOMElement, type);
 
     this.name = name;
   }

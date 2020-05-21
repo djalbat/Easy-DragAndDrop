@@ -7,8 +7,8 @@ import { nameIsBeforeEntryName } from "../../utilities/name";
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
 
 export default class FileNameDraggableEntry extends DraggableEntry {
-  constructor(selector, type, explorer) {
-    super(selector, type);
+  constructor(selectorOrDOMElement, type, explorer) {
+    super(selectorOrDOMElement, type);
 
     this.explorer = explorer;
   }
