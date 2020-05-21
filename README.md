@@ -117,7 +117,7 @@ The requisite handler is invoked with an array of path maps and a `done` argumen
 
 ```
 function moveHandler(pathMaps, done) {
-  pathMaps.forEach(function(pathMap) {
+  pathMaps.forEach((pathMap) => {
     const sourcePath = pathMap["sourcePath"],
           targetPath = pathMap["targetPath"];
           
@@ -153,7 +153,7 @@ The requisite handler is invoked with an array of path maps and a `done` argumen
 
 ```
 function removeHandler(pathMaps, done) {
-  pathMaps.forEach(function(pathMap) {
+  pathMaps.forEach((pathMap) => {
     const sourcePath = pathMap["sourcePath"],
           targetPath = pathMap["targetPath"];
 
