@@ -190,7 +190,7 @@ export default (Explorer)`
 
 `;
 ```
-In order to style the explorer's child elements, such as buttons and markers, you must appraise the parent element of the re-styled element by setting it as a static method. For example:
+In order to style the explorer's child elements, such as buttons and markers, you must appraise the parent element of the re-styled element by setting it as a static property. For example:
 
 ```
 import FileNameDraggableEntry from "...";
@@ -218,6 +218,8 @@ The `DirectoryNameDraggableEntry` class has two:
 And the `FileNameDraggableEntry` class has one:
 
  * `FileNameButton`
+
+Finally, the `font-family`, `font-size` and `font-weight` properties of all of the buttons have been set to `inherit`. Therefore you can affect these properties for the explorer overall by setting them on the explorer itself, saving you the trouble of overriding any of the buttons by the means above.
 
 ## Compiling from source
 

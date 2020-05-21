@@ -2,12 +2,13 @@
 
 import withStyle from "easy-with-style";  ///
 
-import { InputElement } from "easy";
+import Button from "../button";
+
 import { arrayUtilities } from "necessary";
 
 const { first } = arrayUtilities;
 
-class NameButton extends InputElement {
+class NameButton extends Button {
   getName() {
     const childElements = this.getChildElements(),
           firstChildElement = first(childElements),
@@ -30,8 +31,6 @@ class NameButton extends InputElement {
       onDoubleClick
     });
   }
-
-  static tagName = "button";
 
   static defaultProperties = {
     className: "name"

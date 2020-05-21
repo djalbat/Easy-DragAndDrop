@@ -32,7 +32,6 @@ export default withStyle(Entry)`
   margin: 0;
   border: 0;
   padding: 0;
-  font-size: 0;
   list-style-type: none;
 
 `;

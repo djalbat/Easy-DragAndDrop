@@ -2,7 +2,7 @@
 
 import withStyle from "easy-with-style";  ///
 
-import { Button } from "easy";
+import Button from "../button";
 
 class ToggleButton extends Button {
   expand() {
