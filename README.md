@@ -219,7 +219,7 @@ And the `FileNameDraggableEntry` class has one:
 
  * `FileNameButton`
 
-Finally, the `font-family`, `font-size` and `font-weight` properties of all of the buttons have been set to `inherit`. Therefore you can affect these properties for the explorer overall by setting them on the explorer itself, saving you the trouble of overriding any of the buttons by the means above.
+Finally, the `font-family`, `font-size` and `font-weight` properties of all of the buttons have been set to `inherit`. Therefore you can affect these properties for the explorer overall by setting them on the explorer itself, saving you the trouble of overriding any of the font styles by the above means.
 
 ## Compiling from source
 
