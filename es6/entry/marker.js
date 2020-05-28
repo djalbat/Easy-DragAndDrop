@@ -31,7 +31,7 @@ export default withStyle(MarkerEntry)`
 
   width: 4rem;
   height: 2.4rem;
-  background-image: url("image/marker.png");
+  background-image: url("css/image/marker.png");
   background-repeat: no-repeat;
   background-position: 1.8rem 1rem;
 

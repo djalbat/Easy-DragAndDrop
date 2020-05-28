@@ -13,7 +13,7 @@ class FileNameButton extends NameButton {
 export default withStyle(FileNameButton)`
 
   padding-left: 4rem;
-  background-image: url("image/file.png");
+  background-image: url("css/image/file.png");
   background-position: 2.2rem 0.5rem;
 
 `;
