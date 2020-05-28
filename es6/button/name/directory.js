@@ -13,7 +13,7 @@ class DirectoryNameButton extends NameButton {
 export default withStyle(DirectoryNameButton)`
 
   padding-left: 2.4rem;
-  background-image: url("/css/image/directory.png");
+  background-image: url("css/image/directory.png");
   background-position: 0.3rem 0.6rem;
 
 `;
