@@ -11,6 +11,8 @@ import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_N
 const { pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
 export default class DirectoryNameDraggableEntry extends DraggableEntry {
+  type = DIRECTORY_NAME_TYPE; ///
+
   getCollapsedBounds() {
     const collapsed = this.isCollapsed();
 
@@ -141,8 +143,8 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
     this.setCollapsed(collapsed);
   }
 
-  childElements(properties) {
-    const { name, explorer } = properties,
+  childElements() {
+    const { name, explorer } = this.properties,
           directoryName = name, ///
           Entries = explorer.getEntries(),
           ToggleButton = this.getToggleButton(),
@@ -158,10 +160,10 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
     ]);
   }
   
-  initialise(properties) {
-    super.initialise(properties);
+  initialise() {
+    super.initialise();
 
-    const { collapsed = false } = properties;
+    const { collapsed = false } = this.properties;
 
     this.setCollapsed(collapsed);
   }
@@ -179,10 +181,9 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
   ];
 
   static fromClass(Class, properties) {
-    const type = DIRECTORY_NAME_TYPE, ///
-          directoryNameDraggableEntry = DraggableEntry.fromClass(Class, properties, type);
+    const directoryNameDraggableEntry = DraggableEntry.fromClass(Class, properties);
 
-    directoryNameDraggableEntry.initialise(properties);
+    directoryNameDraggableEntry.initialise();
 
     return directoryNameDraggableEntry;
   }

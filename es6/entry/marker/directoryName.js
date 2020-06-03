@@ -5,6 +5,8 @@ import MarkerEntry from "../../entry/marker";
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
 
 export default class DirectoryNameMarkerEntry extends MarkerEntry {
+  type = DIRECTORY_NAME_MARKER_TYPE;
+
   isBefore(draggableEntry) {
     let before;
 

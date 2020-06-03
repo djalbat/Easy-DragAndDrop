@@ -7,15 +7,7 @@ import { nameIsBeforeEntryName } from "../../utilities/name";
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
 
 export default class FileNameDraggableEntry extends DraggableEntry {
-  constructor(selectorOrDOMElement, type, explorer) {
-    super(selectorOrDOMElement, type);
-
-    this.explorer = explorer;
-  }
-
-  getExplorer() {
-    return this.explorer;
-  }
+  type = FILE_NAME_TYPE;  ///
 
   getFileNameButton() {
     const { FileNameButton } = this.constructor;
@@ -67,8 +59,8 @@ export default class FileNameDraggableEntry extends DraggableEntry {
     explorer.openFileNameDraggableEntry(file);
   }
 
-  childElements(properties) {
-    const { name } = properties,
+  childElements() {
+    const { name } = this.properties,
           fileName= name, ///
           FileNameButton = this.getFileNameButton();
 
@@ -86,11 +78,9 @@ export default class FileNameDraggableEntry extends DraggableEntry {
   };
 
   static fromClass(Class, properties) {
-    const { explorer } = properties,
-          type = FILE_NAME_TYPE,  ///
-          fileNameDraggableEntry = DraggableEntry.fromClass(Class, properties, type, explorer);
+    const fileNameDraggableEntry = DraggableEntry.fromClass(Class, properties);
 
-    fileNameDraggableEntry.initialise(properties);
+    fileNameDraggableEntry.initialise();
 
     return fileNameDraggableEntry;
   }

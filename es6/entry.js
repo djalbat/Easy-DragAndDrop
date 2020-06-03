@@ -5,12 +5,6 @@ import withStyle from "easy-with-style";  ///
 import { Element } from "easy";
 
 class Entry extends Element {
-  constructor(selectorOrDOMElement, type) {
-    super(selectorOrDOMElement);
-
-    this.type = type;
-  }
-
   getType() {
     return this.type;
   }

@@ -11,14 +11,10 @@ import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_N
 const { topmostDirectoryNameFromPath, pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
 class Entries extends Element {
-  constructor(selectorOrDOMElement, explorer) {
-    super(selectorOrDOMElement);
-
-    this.explorer = explorer;
-  }
-
   getExplorer() {
-    return this.explorer;
+    const { explorer } = this.properties;
+
+    return explorer;
   }
 
   getEntries() {
@@ -97,7 +93,8 @@ class Entries extends Element {
 
     switch (type) {
       case FILE_NAME_TYPE : {
-        const FileNameMarkerEntry = this.explorer.getFileNameMarkerEntry(),
+        const explorer = this.getExplorer(),
+              FileNameMarkerEntry = explorer.getFileNameMarkerEntry(),
               fileNameMarkerEntry =
 
                 <FileNameMarkerEntry name={name} />
@@ -110,7 +107,8 @@ class Entries extends Element {
       }
 
       case DIRECTORY_NAME_TYPE : {
-        const DirectoryNameMarkerEntry = this.explorer.getDirectoryNameMarkerEntry(),
+        const explorer = this.getExplorer(),
+              DirectoryNameMarkerEntry = explorer.getDirectoryNameMarkerEntry(),
               directoryNameMarkerEntry =
 
                 <DirectoryNameMarkerEntry name={name} />
@@ -136,8 +134,8 @@ class Entries extends Element {
 
   addFileNameDraggableEntry(fileName) {
     const name = fileName,
-          explorer = this.explorer,
-          FileNameDraggableEntry = this.explorer.getFileNameDraggableEntry(),
+          explorer = this.getExplorer(),
+          FileNameDraggableEntry = explorer.getFileNameDraggableEntry(),
           fileNameDraggableEntry =
 
             <FileNameDraggableEntry name={name} explorer={explorer} />
@@ -152,8 +150,8 @@ class Entries extends Element {
 
   addDirectoryNameDraggableEntry(directoryName, collapsed) {
     const name = directoryName,
-          explorer = this.explorer, ///
-          DirectoryNameDraggableEntry = this.explorer.getDirectoryNameDraggableEntry(),
+          explorer = this.getExplorer(),
+          DirectoryNameDraggableEntry = explorer.getDirectoryNameDraggableEntry(),
           directoryNameDraggableEntry =
 
             <DirectoryNameDraggableEntry name={name} collapsed={collapsed} explorer={explorer} />
@@ -243,7 +241,8 @@ class Entries extends Element {
 
         directoryNameDraggableEntry.removeFilePath(filePath);
 
-        const removeEmptyParentDirectoriesOptionPresent = this.explorer.isOptionPresent(REMOVE_EMPTY_PARENT_DIRECTORIES);
+        const explorer = this.getExplorer(),
+              removeEmptyParentDirectoriesOptionPresent = explorer.isOptionPresent(REMOVE_EMPTY_PARENT_DIRECTORIES);
 
         if (removeEmptyParentDirectoriesOptionPresent) {
           const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry();
@@ -325,7 +324,8 @@ class Entries extends Element {
 
         directoryNameDraggableEntry.removeDirectoryPath(directoryPath);
 
-        const removeEmptyParentDirectoriesOptionPresent = this.explorer.isOptionPresent(REMOVE_EMPTY_PARENT_DIRECTORIES);
+        const explorer = this.getExplorer(),
+              removeEmptyParentDirectoriesOptionPresent = explorer.isOptionPresent(REMOVE_EMPTY_PARENT_DIRECTORIES);
 
         if (removeEmptyParentDirectoriesOptionPresent) {
           const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry();
@@ -515,7 +515,8 @@ class Entries extends Element {
         const directoryNameDraggableEntryTopmost = directoryNameDraggableEntry.isTopmost();
 
         if (directoryNameDraggableEntryTopmost) {
-          const noDraggingIntoSubdirectoriesOptionPresent = this.explorer.isOptionPresent(NO_DRAGGING_INTO_SUB_DIRECTORIES);
+          const explorer = this.getExplorer(),
+                noDraggingIntoSubdirectoriesOptionPresent = explorer.isOptionPresent(NO_DRAGGING_INTO_SUB_DIRECTORIES);
 
           if (noDraggingIntoSubdirectoriesOptionPresent) {
             dragIntoSubDirectories = false;
@@ -644,25 +645,25 @@ class Entries extends Element {
 
   parentContext() {
 	  const getExplorer = this.getExplorer.bind(this),
-          isEmpty = this.isEmpty.bind(this),
-          addMarker = this.addMarker.bind(this),
-          removeMarker = this.removeMarker.bind(this),
-          expandEntries = this.expand.bind(this), ///
-          collapseEntries = this.collapse.bind(this), ///
-          addFilePath = this.addFilePath.bind(this),
-          removeFilePath = this.removeFilePath.bind(this),
-          addDirectoryPath = this.addDirectoryPath.bind(this),
-          removeDirectoryPath = this.removeDirectoryPath.bind(this),
-          isMarkerEntryPresent = this.isMarkerEntryPresent.bind(this),
-          isDraggableEntryPresent = this.isDraggableEntryPresent.bind(this),
-          findTopmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry.bind(this),
-          retrieveMarkerEntry = this.retrieveMarkerEntry.bind(this),
-          retrieveFilePaths = this.retrieveFilePaths.bind(this),
-          retrieveDirectoryPaths = this.retrieveDirectoryPaths.bind(this),
-          retrieveDraggableEntryPath = this.retrieveDraggableEntryPath.bind(this),
-          retrieveDraggableSubEntries = this.retrieveDraggableSubEntries.bind(this),
-          retrieveMarkedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry.bind(this),
-          retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry.bind(this);
+            isEmpty = this.isEmpty.bind(this),
+            addMarker = this.addMarker.bind(this),
+            removeMarker = this.removeMarker.bind(this),
+            expandEntries = this.expand.bind(this), ///
+            collapseEntries = this.collapse.bind(this), ///
+            addFilePath = this.addFilePath.bind(this),
+            removeFilePath = this.removeFilePath.bind(this),
+            addDirectoryPath = this.addDirectoryPath.bind(this),
+            removeDirectoryPath = this.removeDirectoryPath.bind(this),
+            isMarkerEntryPresent = this.isMarkerEntryPresent.bind(this),
+            isDraggableEntryPresent = this.isDraggableEntryPresent.bind(this),
+            findTopmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry.bind(this),
+            retrieveMarkerEntry = this.retrieveMarkerEntry.bind(this),
+            retrieveFilePaths = this.retrieveFilePaths.bind(this),
+            retrieveDirectoryPaths = this.retrieveDirectoryPaths.bind(this),
+            retrieveDraggableEntryPath = this.retrieveDraggableEntryPath.bind(this),
+            retrieveDraggableSubEntries = this.retrieveDraggableSubEntries.bind(this),
+            retrieveMarkedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry.bind(this),
+            retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry.bind(this);
 
     return ({
       getExplorer,
@@ -693,13 +694,6 @@ class Entries extends Element {
   static defaultProperties = {
     className: "entries"
   };
-
-  static fromClass(Class, properties) {
-    const { explorer } = properties,
-          entries = Element.fromClass(Class, properties, explorer);
-
-    return entries;
-  }
 }
 
 export default withStyle(Entries)`

@@ -18,8 +18,8 @@ const { second } = arrayUtilities,
       { pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
-  constructor(selectorOrDOMElement, dropTargets, moveHandler, openHandler, options) {
-    super(selectorOrDOMElement, dropTargets, moveHandler);
+  constructor(selector, dropTargets, moveHandler, openHandler, options) {
+    super(selector, dropTargets, moveHandler);
 
     this.openHandler = openHandler;
 
@@ -337,8 +337,8 @@ class Explorer extends DropTarget {
     return pathMaps;
   }
 
-  childElements(properties) {
-    const { topmostDirectoryName, topmostDirectoryCollapsed } = properties,
+  childElements() {
+    const { topmostDirectoryName, topmostDirectoryCollapsed } = this.properties,
           Entries = this.getEntries(),
           explorer = this,  ///
           collapsed = topmostDirectoryCollapsed,  ///
@@ -356,7 +356,7 @@ class Explorer extends DropTarget {
     return childElements;
   }
 
-  initialise(properties) {
+  initialise() {
     this.assignContext();
   }
 
@@ -385,12 +385,12 @@ class Explorer extends DropTarget {
   ];
 
   static fromClass(Class, properties) {
-    const { onMove = defaultMoveHandler, onOpen = defaultOpenHandler, options = defaultOptions} = properties, ///
+    const { onMove = defaultMoveHandler, onOpen = defaultOpenHandler, options = {} } = properties, ///
           moveHandler = onMove, ///
           openHandler = onOpen, ///
           explorer = DropTarget.fromClass(Class, properties, moveHandler, openHandler, options);
 
-    explorer.initialise(properties);
+    explorer.initialise();
     
     return explorer;
   }
@@ -405,8 +405,6 @@ export default withStyle(Explorer)`
   margin-left: -2.4rem;
 
 `;
-
-const defaultOptions = {};
 
 function defaultOpenHandler(sourcePath) {
   ///

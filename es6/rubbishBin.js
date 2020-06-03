@@ -125,7 +125,7 @@ class RubbishBin extends DropTarget {
     return bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;
   }
 
-  initialise(properties) {
+  initialise() {
     this.close();
   }
 
@@ -145,7 +145,7 @@ class RubbishBin extends DropTarget {
           moveHandler = removeHandler,  ///
           rubbishBin = DropTarget.fromClass(Class, properties, moveHandler);
 
-    rubbishBin.initialise(properties);
+    rubbishBin.initialise();
     
     return rubbishBin;
   }

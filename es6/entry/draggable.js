@@ -21,6 +21,12 @@ class DraggableEntry extends Entry {
     return path;
   }
 
+  getExplorer() {
+    const { explorer } = this.properties;
+
+    return explorer;
+  }
+
   getCollapsedBounds() {
     const bounds = this.getBounds(),
           collapsedBounds = bounds;  ///
@@ -305,7 +311,7 @@ class DraggableEntry extends Entry {
     });
   }
 
-  initialise(properties) {
+  initialise() {
     this.assignContext();
 
     const mouseDownHandler = this.mouseDownHandler.bind(this),
