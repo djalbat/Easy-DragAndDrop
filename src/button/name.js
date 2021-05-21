@@ -18,17 +18,23 @@ class NameButton extends Button {
     return name;
   }
 
-  onDoubleClick(doubleClickHandler) {
-    this.on("dblclick", doubleClickHandler);
+  onDoubleClick(doubleClickHandler, element) {
+    this.on("dblclick", doubleClickHandler, element);
   }
-  
+
+  offDoubleClick(doubleClickHandler, element) {
+    this.off("dblclick", doubleClickHandler, element);
+  }
+
   parentContext() {
 	  const getName = this.getName.bind(this),
-				  onDoubleClick = this.onDoubleClick.bind(this);
+				  onDoubleClick = this.onDoubleClick.bind(this),
+          offDoubleClick = this.offDoubleClick.bind(this);
 
     return ({
       getName,
-      onDoubleClick
+      onDoubleClick,
+      offDoubleClick
     });
   }
 

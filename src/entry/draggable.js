@@ -2,15 +2,15 @@
 
 import withStyle from "easy-with-style";  ///
 
-import { window, constants } from "easy";
+import { window } from "easy";
 
 import Entry from "../entry";
 import options from "../options";
+import draggableMixins from "../mixins/draggable";
 
 import { ESCAPE_KEYCODE, START_DRAGGING_DELAY } from "../constants";
 
-const { LEFT_MOUSE_BUTTON } = constants,
-      { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
+const { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
 class DraggableEntry extends Entry {
   getPath() {
@@ -32,12 +32,6 @@ class DraggableEntry extends Entry {
           collapsedBounds = bounds;  ///
 
     return collapsedBounds;
-  }
-
-  isDragging() {
-    const dragging = this.hasClass("dragging");
-
-    return dragging;
   }
 
   isMouseOver(mouseTop, mouseLeft) {
@@ -93,7 +87,7 @@ class DraggableEntry extends Entry {
 
     this.addClass("dragging");
 
-    this.drag(mouseTop, mouseLeft);
+    this.dragging(mouseTop, mouseLeft);
   }
 
   stopDragging() {
@@ -108,9 +102,24 @@ class DraggableEntry extends Entry {
   }
 
   dragging(mouseTop, mouseLeft) {
-    const explorer = this.getExplorer();
+    const explorer = this.getExplorer(),
+          topOffset = this.getTopOffset(),
+          leftOffset = this.getLeftOffset(),
+          windowScrollTop = window.getScrollTop(),
+          windowScrollLeft = window.getScrollLeft();
 
-    this.drag(mouseTop, mouseLeft);
+    let top = mouseTop + topOffset - windowScrollTop,
+        left = mouseLeft + leftOffset - windowScrollLeft;
+
+    top = `${top}px`; ///
+    left = `${left}px`; ///
+
+    const css = {
+      top,
+      left
+    };
+
+    this.css(css);
 
     explorer.dragging(this);
   }
@@ -146,7 +155,7 @@ class DraggableEntry extends Entry {
         }
       }, START_DRAGGING_DELAY);
       
-      this.setTimeout(timeout);
+      this.updateTimeout(timeout);
     }
   }
 
@@ -157,59 +166,6 @@ class DraggableEntry extends Entry {
       clearTimeout(timeout);
 
       this.resetTimeout();
-    }
-  }
-
-  mouseDownHandler(event, element) {
-    const { button, pageX, pageY } = event,
-          mouseTop = pageY,
-          mouseLeft = pageX;
-
-    window.on("blur", this.mouseUpHandler, this); ///
-
-    window.onMouseUp(this.mouseUpHandler, this);
-
-    window.onMouseMove(this.mouseMoveHandler, this);
-
-    if (button === LEFT_MOUSE_BUTTON) {
-      const dragging = this.isDragging();
-
-      if (!dragging) {
-        this.startWaitingToDrag(mouseTop, mouseLeft);
-      }
-    }
-  }
-
-  mouseUpHandler(event, element) {
-    window.off("blur", this.mouseUpHandler, this);  ///
-
-    window.offMouseUp(this.mouseUpHandler, this);
-
-    window.offMouseMove(this.mouseMoveHandler, this);
-
-    const dragging = this.isDragging();
-
-    if (dragging) {
-      const explorer = this.getExplorer(),
-            draggableEntry = this;  ///
-      
-      explorer.stopDragging(draggableEntry, () => {
-        this.stopDragging();
-      });
-    } else {
-      this.stopWaitingToDrag();
-    }
-  }
-
-  mouseMoveHandler(event, element) {
-    const { pageX, pageY } = event,
-          mouseTop = pageY,
-          mouseLeft = pageX;
-
-    const dragging = this.isDragging();
-
-    if (dragging) {
-      this.dragging(mouseTop, mouseLeft);
     }
   }
 
@@ -229,98 +185,21 @@ class DraggableEntry extends Entry {
       }
     }
   }
-  
-  drag(mouseTop, mouseLeft) {
-    const windowScrollTop = window.getScrollTop(),
-          windowScrollLeft = window.getScrollLeft(),
-          topOffset = this.getTopOffset(),
-          leftOffset = this.getLeftOffset();
 
-    let top = mouseTop + topOffset - windowScrollTop,
-        left = mouseLeft + leftOffset - windowScrollLeft;
+  didMount() {
+    this.enableDragging();
 
-    top = `${top}px`; ///
-    left = `${left}px`; ///
+    this.onDoubleClick(this.doubleClickHandler, this);
+  }
 
-    const css = {
-      top,
-      left
-    };
+  willUnmount() {
+    this.offDoubleClick(this.doubleClickHandler, this);
 
-    this.css(css);
-
-    const explorer = this.getExplorer();
-
-    explorer.dragging(this);
+    this.disableDragging();
   }
   
-  resetTimeout() {
-    const timeout = null;
-    
-    this.setTimeout(timeout);
-  }
-  
-  getTimeout() {
-    const state = this.getState(),
-          { timeout } = state;
-
-    return timeout;
-  }
-
-  getTopOffset() {
-    const state = this.getState(),
-          { topOffset } = state;
-
-    return topOffset;
-  }
-
-  getLeftOffset() {
-    const state = this.getState(),
-          { leftOffset } = state;
-
-    return leftOffset;
-  }
-
-  setTimeout(timeout) {
-    this.updateState({
-      timeout
-    });
-  }
-
-  setTopOffset(topOffset) {
-    this.updateState({
-      topOffset
-    });
-  }
-
-  setLeftOffset(leftOffset) {
-    this.updateState({
-      leftOffset
-    });
-  }
-
-  setInitialState() {
-    const timeout = null,
-          topOffset = null,
-          leftOffset = null;
-    
-    this.setState({
-      timeout,
-      topOffset,
-      leftOffset
-    });
-  }
-
   initialise() {
     this.assignContext();
-
-    const mouseDownHandler = this.mouseDownHandler.bind(this),
-          doubleClickHandler = this.doubleClickHandler.bind(this);
-    
-    this.onMouseDown(mouseDownHandler);
-    this.onDoubleClick(doubleClickHandler);
-
-    this.setInitialState();
   }
 
   static tagName = "li";
@@ -333,6 +212,8 @@ class DraggableEntry extends Entry {
     "explorer"
   ];
 }
+
+Object.assign(DraggableEntry.prototype, draggableMixins);
 
 export default withStyle(DraggableEntry)`
 

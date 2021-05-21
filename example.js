@@ -22600,10 +22600,18 @@
               }
             });
             if (previousEntry === null) {
-              this.append(nextEntry);
+              this.append(entry);
             } else {
-              nextEntry.insertBefore(previousEntry);
+              entry.insertBefore(previousEntry);
             }
+            entry.didMount && entry.didMount();
+          }
+        },
+        {
+          key: "removeEntry",
+          value: function removeEntry(entry) {
+            entry.willUnmount && entry.willUnmount();
+            entry.remove();
           }
         },
         {
@@ -22636,29 +22644,6 @@
           value: function removeMarkerEntry() {
             var markerEntry = this.retrieveMarkerEntry();
             markerEntry.remove();
-          }
-        },
-        {
-          key: "addFileNameDraggableEntry",
-          value: function addFileNameDraggableEntry(fileName) {
-            var name = fileName, explorer = this.getExplorer(), FileNameDraggableEntry = explorer.getFileNameDraggableEntry(), fileNameDraggableEntry = /* @__PURE__ */ React.createElement(FileNameDraggableEntry, {
-              name,
-              explorer
-            }), entry = fileNameDraggableEntry;
-            this.addEntry(entry);
-            return fileNameDraggableEntry;
-          }
-        },
-        {
-          key: "addDirectoryNameDraggableEntry",
-          value: function addDirectoryNameDraggableEntry(directoryName, collapsed) {
-            var name = directoryName, explorer = this.getExplorer(), DirectoryNameDraggableEntry = explorer.getDirectoryNameDraggableEntry(), directoryNameDraggableEntry = /* @__PURE__ */ React.createElement(DirectoryNameDraggableEntry, {
-              name,
-              collapsed,
-              explorer
-            }), entry = directoryNameDraggableEntry;
-            this.addEntry(entry);
-            return directoryNameDraggableEntry;
           }
         },
         {
@@ -22699,13 +22684,19 @@
                 var topmostDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(topmostDirectoryName);
                 if (topmostDirectoryNameDraggableEntry === null) {
                   var collapsed = true;
-                  topmostDirectoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(topmostDirectoryName, collapsed);
+                  topmostDirectoryNameDraggableEntry = this.createDirectoryNameDraggableEntry(topmostDirectoryName, collapsed);
+                  this.addEntry(topmostDirectoryNameDraggableEntry);
                 }
                 var filePath1 = filePathWithoutTopmostDirectoryName;
                 fileNameDraggableEntry = topmostDirectoryNameDraggableEntry.addFilePath(filePath1);
               } else {
                 var fileName = filePath, fileNameDraggableEntryPresent = this.isFileNameDraggableEntryPresent(fileName);
-                fileNameDraggableEntry = fileNameDraggableEntryPresent ? this.findFileNameDraggableEntry(fileName) : this.addFileNameDraggableEntry(fileName);
+                if (fileNameDraggableEntryPresent) {
+                  fileNameDraggableEntry = this.findFileNameDraggableEntry(fileName);
+                } else {
+                  fileNameDraggableEntry = this.createFileNameDraggableEntry(fileName);
+                  this.addEntry(fileNameDraggableEntry);
+                }
               }
             }
             return fileNameDraggableEntry;
@@ -22726,7 +22717,7 @@
                   if (directoryNameDraggableEntry !== topmostDirectoryNameDraggableEntry) {
                     var directoryNameDraggableEntryEmpty = directoryNameDraggableEntry.isEmpty();
                     if (directoryNameDraggableEntryEmpty) {
-                      directoryNameDraggableEntry.remove();
+                      this.removeEntry(directoryNameDraggableEntry);
                     }
                   }
                 }
@@ -22734,7 +22725,7 @@
             } else {
               var fileName = filePath2, fileNameDraggableEntry = this.findFileNameDraggableEntry(fileName);
               if (fileNameDraggableEntry !== null) {
-                fileNameDraggableEntry.remove();
+                this.removeEntry(fileNameDraggableEntry);
               }
             }
           }
@@ -22758,13 +22749,19 @@
                 var topmostDirectoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(topmostDirectoryName);
                 if (topmostDirectoryNameDraggableEntry === null) {
                   var collapsed1 = true;
-                  topmostDirectoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(topmostDirectoryName, collapsed1);
+                  topmostDirectoryNameDraggableEntry = this.createDirectoryNameDraggableEntry(topmostDirectoryName, collapsed1);
+                  this.addEntry(topmostDirectoryNameDraggableEntry);
                 }
                 var directoryPath1 = directoryPathWithoutTopmostDirectoryName;
                 directoryNameDraggableEntry = topmostDirectoryNameDraggableEntry.addDirectoryPath(directoryPath1, collapsed);
               } else {
                 var directoryName = directoryPath, directoryNameDraggableEntryPresent = this.isDirectoryNameDraggableEntryPresent(directoryName);
-                directoryNameDraggableEntry = directoryNameDraggableEntryPresent ? this.findDirectoryNameDraggableEntry(directoryName) : this.addDirectoryNameDraggableEntry(directoryName, collapsed);
+                if (directoryNameDraggableEntryPresent) {
+                  directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
+                } else {
+                  directoryNameDraggableEntry = this.createDirectoryNameDraggableEntry(directoryName, collapsed);
+                  this.addEntry(directoryNameDraggableEntry);
+                }
                 directoryNameDraggableEntry.setCollapsed(collapsed);
               }
             }
@@ -22786,7 +22783,7 @@
                   if (directoryNameDraggableEntry !== topmostDirectoryNameDraggableEntry) {
                     var directoryNameDraggableEntryEmpty = directoryNameDraggableEntry.isEmpty();
                     if (directoryNameDraggableEntryEmpty) {
-                      directoryNameDraggableEntry.remove();
+                      this.removeEntry(directoryNameDraggableEntry);
                     }
                   }
                 }
@@ -22794,9 +22791,30 @@
             } else {
               var directoryName = directoryPath2, directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
               if (directoryNameDraggableEntry !== null) {
-                directoryNameDraggableEntry.remove();
+                this.removeEntry(directoryNameDraggableEntry);
               }
             }
+          }
+        },
+        {
+          key: "createFileNameDraggableEntry",
+          value: function createFileNameDraggableEntry(fileName) {
+            var name = fileName, explorer = this.getExplorer(), FileNameDraggableEntry = explorer.getFileNameDraggableEntry(), fileNameDraggableEntry = /* @__PURE__ */ React.createElement(FileNameDraggableEntry, {
+              name,
+              explorer
+            });
+            return fileNameDraggableEntry;
+          }
+        },
+        {
+          key: "createDirectoryNameDraggableEntry",
+          value: function createDirectoryNameDraggableEntry(directoryName, collapsed2) {
+            var name = directoryName, explorer = this.getExplorer(), DirectoryNameDraggableEntry = explorer.getDirectoryNameDraggableEntry(), directoryNameDraggableEntry = /* @__PURE__ */ React.createElement(DirectoryNameDraggableEntry, {
+              name,
+              collapsed: collapsed2,
+              explorer
+            });
+            return directoryNameDraggableEntry;
           }
         },
         {
@@ -23992,6 +24010,133 @@
     exports.default = FileNameMarkerEntry;
   });
 
+  // lib/utilities/event.js
+  var require_event2 = __commonJS((exports) => {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    exports.mouseTopFromEvent = mouseTopFromEvent;
+    exports.mouseLeftFromEvent = mouseLeftFromEvent;
+    var _easy2 = require_lib();
+    function mouseTopFromEvent(event) {
+      var pageY = event.pageY, scrollTop = _easy2.window.getScrollTop(), mouseTop = pageY + scrollTop;
+      return mouseTop;
+    }
+    function mouseLeftFromEvent(event) {
+      var pageX = event.pageX, scrollLeft = _easy2.window.getScrollLeft(), mouseLeft = pageX + scrollLeft;
+      return mouseLeft;
+    }
+  });
+
+  // lib/mixins/draggable.js
+  var require_draggable = __commonJS((exports) => {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    exports.default = void 0;
+    var _easy2 = require_lib();
+    var _event = require_event2();
+    var LEFT_MOUSE_BUTTON = _easy2.constants.LEFT_MOUSE_BUTTON;
+    function enableDragging() {
+      var timeout = null, topOffset = null, leftOffset = null, startMouseTop = null, startMouseLeft = null;
+      this.setState({
+        timeout,
+        topOffset,
+        leftOffset,
+        startMouseTop,
+        startMouseLeft
+      });
+      this.onMouseDown(mouseDownHandler, this);
+    }
+    function disableDragging() {
+      this.offMouseDown(mouseDownHandler, this);
+    }
+    function isDragging() {
+      var dragging = this.hasClass("dragging");
+      return dragging;
+    }
+    function getTimeout() {
+      var state = this.getState(), timeout = state.timeout;
+      return timeout;
+    }
+    function resetTimeout() {
+      var timeout = null;
+      this.updateTimeout(timeout);
+    }
+    function updateTimeout(timeout) {
+      this.updateState({
+        timeout
+      });
+    }
+    function getTopOffset() {
+      var state = this.getState(), topOffset = state.topOffset;
+      return topOffset;
+    }
+    function getLeftOffset() {
+      var state = this.getState(), leftOffset = state.leftOffset;
+      return leftOffset;
+    }
+    function setTopOffset(topOffset) {
+      this.updateState({
+        topOffset
+      });
+    }
+    function setLeftOffset(leftOffset) {
+      this.updateState({
+        leftOffset
+      });
+    }
+    var _default = {
+      enableDragging,
+      disableDragging,
+      isDragging,
+      getTimeout,
+      resetTimeout,
+      updateTimeout,
+      getTopOffset,
+      getLeftOffset,
+      setTopOffset,
+      setLeftOffset
+    };
+    exports.default = _default;
+    function mouseUpHandler(event, element) {
+      _easy2.window.off("blur", mouseUpHandler, this);
+      _easy2.window.offMouseUp(mouseUpHandler, this);
+      _easy2.window.offMouseMove(mouseMoveHandler, this);
+      var dragging = this.isDragging();
+      if (dragging) {
+        var explorer = this.getExplorer(), draggableEntry = this;
+        explorer.stopDragging(draggableEntry, function() {
+          this.stopDragging();
+        }.bind(this));
+      } else {
+        this.stopWaitingToDrag();
+      }
+    }
+    function mouseDownHandler(event, element) {
+      var button = event.button;
+      _easy2.window.on("blur", mouseUpHandler, this);
+      _easy2.window.onMouseUp(mouseUpHandler, this);
+      _easy2.window.onMouseMove(mouseMoveHandler, this);
+      if (button === LEFT_MOUSE_BUTTON) {
+        var dragging = this.isDragging();
+        if (!dragging) {
+          var mouseTop = (0, _event).mouseTopFromEvent(event), mouseLeft = (0, _event).mouseLeftFromEvent(event);
+          this.startWaitingToDrag(mouseTop, mouseLeft);
+        }
+      }
+    }
+    function mouseMoveHandler(event, element) {
+      var pageX = event.pageX, pageY = event.pageY, mouseTop = pageY, mouseLeft = pageX;
+      var dragging = this.isDragging();
+      if (dragging) {
+        this.dragging(mouseTop, mouseLeft);
+      }
+    }
+  });
+
   // lib/constants.js
   var require_constants6 = __commonJS((exports) => {
     "use strict";
@@ -24006,7 +24151,7 @@
   });
 
   // lib/entry/draggable.js
-  var require_draggable = __commonJS((exports) => {
+  var require_draggable2 = __commonJS((exports) => {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
@@ -24016,6 +24161,7 @@
     var _easy2 = require_lib();
     var _entry = _interopRequireDefault2(require_entry());
     var _options = _interopRequireDefault2(require_options());
+    var _draggable = _interopRequireDefault2(require_draggable());
     var _constants = require_constants6();
     function _assertThisInitialized(self) {
       if (self === void 0) {
@@ -24118,7 +24264,6 @@
       };
       return data;
     }
-    var LEFT_MOUSE_BUTTON = _easy2.constants.LEFT_MOUSE_BUTTON;
     var NO_DRAGGING_SUB_ENTRIES = _options.default.NO_DRAGGING_SUB_ENTRIES;
     var ESCAPE_KEY_STOPS_DRAGGING = _options.default.ESCAPE_KEY_STOPS_DRAGGING;
     var DraggableEntry = /* @__PURE__ */ function(Entry) {
@@ -24147,13 +24292,6 @@
           value: function getCollapsedBounds() {
             var bounds = this.getBounds(), collapsedBounds = bounds;
             return collapsedBounds;
-          }
-        },
-        {
-          key: "isDragging",
-          value: function isDragging() {
-            var dragging = this.hasClass("dragging");
-            return dragging;
           }
         },
         {
@@ -24195,7 +24333,7 @@
               this.onKeyDown(keyDownHandler);
             }
             this.addClass("dragging");
-            this.drag(mouseTop, mouseLeft);
+            this.dragging(mouseTop, mouseLeft);
           }
         },
         {
@@ -24211,8 +24349,15 @@
         {
           key: "dragging",
           value: function dragging(mouseTop, mouseLeft) {
-            var explorer = this.getExplorer();
-            this.drag(mouseTop, mouseLeft);
+            var explorer = this.getExplorer(), topOffset = this.getTopOffset(), leftOffset = this.getLeftOffset(), windowScrollTop = _easy2.window.getScrollTop(), windowScrollLeft = _easy2.window.getScrollLeft();
+            var top = mouseTop + topOffset - windowScrollTop, left = mouseLeft + leftOffset - windowScrollLeft;
+            top = "".concat(top, "px");
+            left = "".concat(left, "px");
+            var css = {
+              top,
+              left
+            };
+            this.css(css);
             explorer.dragging(this);
           }
         },
@@ -24238,7 +24383,7 @@
                   }
                 }
               }.bind(this), _constants.START_DRAGGING_DELAY);
-              this.setTimeout(timeout);
+              this.updateTimeout(timeout);
             }
           }
         },
@@ -24249,48 +24394,6 @@
             if (timeout !== null) {
               clearTimeout(timeout);
               this.resetTimeout();
-            }
-          }
-        },
-        {
-          key: "mouseDownHandler",
-          value: function mouseDownHandler(event, element) {
-            var button = event.button, pageX = event.pageX, pageY = event.pageY, mouseTop = pageY, mouseLeft = pageX;
-            _easy2.window.on("blur", this.mouseUpHandler, this);
-            _easy2.window.onMouseUp(this.mouseUpHandler, this);
-            _easy2.window.onMouseMove(this.mouseMoveHandler, this);
-            if (button === LEFT_MOUSE_BUTTON) {
-              var dragging = this.isDragging();
-              if (!dragging) {
-                this.startWaitingToDrag(mouseTop, mouseLeft);
-              }
-            }
-          }
-        },
-        {
-          key: "mouseUpHandler",
-          value: function mouseUpHandler(event, element) {
-            _easy2.window.off("blur", this.mouseUpHandler, this);
-            _easy2.window.offMouseUp(this.mouseUpHandler, this);
-            _easy2.window.offMouseMove(this.mouseMoveHandler, this);
-            var dragging = this.isDragging();
-            if (dragging) {
-              var explorer = this.getExplorer(), draggableEntry = this;
-              explorer.stopDragging(draggableEntry, function() {
-                this.stopDragging();
-              }.bind(this));
-            } else {
-              this.stopWaitingToDrag();
-            }
-          }
-        },
-        {
-          key: "mouseMoveHandler",
-          value: function mouseMoveHandler(event, element) {
-            var pageX = event.pageX, pageY = event.pageY, mouseTop = pageY, mouseLeft = pageX;
-            var dragging = this.isDragging();
-            if (dragging) {
-              this.dragging(mouseTop, mouseLeft);
             }
           }
         },
@@ -24309,92 +24412,23 @@
           }
         },
         {
-          key: "drag",
-          value: function drag(mouseTop, mouseLeft) {
-            var windowScrollTop = _easy2.window.getScrollTop(), windowScrollLeft = _easy2.window.getScrollLeft(), topOffset = this.getTopOffset(), leftOffset = this.getLeftOffset();
-            var top = mouseTop + topOffset - windowScrollTop, left = mouseLeft + leftOffset - windowScrollLeft;
-            top = "".concat(top, "px");
-            left = "".concat(left, "px");
-            var css = {
-              top,
-              left
-            };
-            this.css(css);
-            var explorer = this.getExplorer();
-            explorer.dragging(this);
+          key: "didMount",
+          value: function didMount() {
+            this.enableDragging();
+            this.onDoubleClick(this.doubleClickHandler, this);
           }
         },
         {
-          key: "resetTimeout",
-          value: function resetTimeout() {
-            var timeout = null;
-            this.setTimeout(timeout);
-          }
-        },
-        {
-          key: "getTimeout",
-          value: function getTimeout() {
-            var state = this.getState(), timeout = state.timeout;
-            return timeout;
-          }
-        },
-        {
-          key: "getTopOffset",
-          value: function getTopOffset() {
-            var state = this.getState(), topOffset = state.topOffset;
-            return topOffset;
-          }
-        },
-        {
-          key: "getLeftOffset",
-          value: function getLeftOffset() {
-            var state = this.getState(), leftOffset = state.leftOffset;
-            return leftOffset;
-          }
-        },
-        {
-          key: "setTimeout",
-          value: function setTimeout2(timeout) {
-            this.updateState({
-              timeout
-            });
-          }
-        },
-        {
-          key: "setTopOffset",
-          value: function setTopOffset(topOffset) {
-            this.updateState({
-              topOffset
-            });
-          }
-        },
-        {
-          key: "setLeftOffset",
-          value: function setLeftOffset(leftOffset) {
-            this.updateState({
-              leftOffset
-            });
-          }
-        },
-        {
-          key: "setInitialState",
-          value: function setInitialState() {
-            var timeout = null, topOffset = null, leftOffset = null;
-            this.setState({
-              timeout,
-              topOffset,
-              leftOffset
-            });
+          key: "willUnmount",
+          value: function willUnmount() {
+            this.offDoubleClick(this.doubleClickHandler, this);
+            this.disableDragging();
           }
         },
         {
           key: "initialise",
           value: function initialise() {
             this.assignContext();
-            var mouseDownHandler = this.mouseDownHandler.bind(this), doubleClickHandler = this.doubleClickHandler.bind(this);
-            this.onMouseDown(mouseDownHandler);
-            this.onDoubleClick(doubleClickHandler);
-            this.setInitialState();
           }
         }
       ]);
@@ -24407,6 +24441,7 @@
     _defineProperty(DraggableEntry, "ignoredProperties", [
       "explorer"
     ]);
+    Object.assign(DraggableEntry.prototype, _draggable.default);
     var _default = (0, _easyWithStyle2).default(DraggableEntry)(_templateObject());
     exports.default = _default;
   });
@@ -24576,17 +24611,24 @@
         },
         {
           key: "onDoubleClick",
-          value: function onDoubleClick(doubleClickHandler) {
-            this.on("dblclick", doubleClickHandler);
+          value: function onDoubleClick(doubleClickHandler, element) {
+            this.on("dblclick", doubleClickHandler, element);
+          }
+        },
+        {
+          key: "offDoubleClick",
+          value: function offDoubleClick(doubleClickHandler, element) {
+            this.off("dblclick", doubleClickHandler, element);
           }
         },
         {
           key: "parentContext",
           value: function parentContext() {
-            var getName = this.getName.bind(this), onDoubleClick = this.onDoubleClick.bind(this);
+            var getName = this.getName.bind(this), onDoubleClick = this.onDoubleClick.bind(this), offDoubleClick = this.offDoubleClick.bind(this);
             return {
               getName,
-              onDoubleClick
+              onDoubleClick,
+              offDoubleClick
             };
           }
         }
@@ -24715,7 +24757,7 @@
       value: true
     });
     exports.default = void 0;
-    var _draggable = _interopRequireDefault2(require_draggable());
+    var _draggable = _interopRequireDefault2(require_draggable2());
     var _file = _interopRequireDefault2(require_file());
     var _name = require_name5();
     var _types = require_types2();
@@ -25293,7 +25335,7 @@
     exports.default = void 0;
     var _necessary = require_browser();
     var _toggle = _interopRequireDefault2(require_toggle());
-    var _draggable = _interopRequireDefault2(require_draggable());
+    var _draggable = _interopRequireDefault2(require_draggable2());
     var _directory = _interopRequireDefault2(require_directory());
     var _types = require_types2();
     function _assertThisInitialized(self) {
@@ -25983,7 +26025,8 @@
             var _properties = this.properties, topmostDirectoryName = _properties.topmostDirectoryName, topmostDirectoryCollapsed = _properties.topmostDirectoryCollapsed, Entries = this.getEntries(), explorer = this, collapsed = topmostDirectoryCollapsed, directoryName = topmostDirectoryName, entries = /* @__PURE__ */ React.createElement(Entries, {
               explorer
             });
-            entries.addDirectoryNameDraggableEntry(directoryName, collapsed);
+            var directoryNameDraggableEntry = entries.createDirectoryNameDraggableEntry(directoryName, collapsed);
+            entries.addEntry(directoryNameDraggableEntry);
             var childElements1 = entries;
             return childElements1;
           }

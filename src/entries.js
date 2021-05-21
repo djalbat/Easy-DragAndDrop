@@ -79,10 +79,18 @@ class Entries extends Element {
           });
 
     if (previousEntry === null) {
-      this.append(nextEntry);
+      this.append(entry);
     } else {
-      nextEntry.insertBefore(previousEntry);
+      entry.insertBefore(previousEntry);
     }
+
+    entry.didMount && entry.didMount(); ///
+  }
+
+  removeEntry(entry) {
+    entry.willUnmount && entry.willUnmount();  ///
+
+    entry.remove();
   }
 
   addMarkerEntry(markerEntryName, draggableEntryType) {
@@ -132,38 +140,6 @@ class Entries extends Element {
     markerEntry.remove();
   }
 
-  addFileNameDraggableEntry(fileName) {
-    const name = fileName,
-          explorer = this.getExplorer(),
-          FileNameDraggableEntry = explorer.getFileNameDraggableEntry(),
-          fileNameDraggableEntry =
-
-            <FileNameDraggableEntry name={name} explorer={explorer} />
-
-          ,
-          entry = fileNameDraggableEntry; ///
-
-    this.addEntry(entry);
-
-    return fileNameDraggableEntry;
-  }
-
-  addDirectoryNameDraggableEntry(directoryName, collapsed) {
-    const name = directoryName,
-          explorer = this.getExplorer(),
-          DirectoryNameDraggableEntry = explorer.getDirectoryNameDraggableEntry(),
-          directoryNameDraggableEntry =
-
-            <DirectoryNameDraggableEntry name={name} collapsed={collapsed} explorer={explorer} />
-
-          ,
-          entry = directoryNameDraggableEntry;  ///
-
-    this.addEntry(entry);
-
-    return directoryNameDraggableEntry;
-  }
-
   addMarker(markerEntryPath, draggableEntryType) {
     const topmostDirectoryName = topmostDirectoryNameFromPath(markerEntryPath);
 
@@ -209,7 +185,9 @@ class Entries extends Element {
         if (topmostDirectoryNameDraggableEntry === null) {
           const collapsed = true; ///
 
-          topmostDirectoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(topmostDirectoryName, collapsed);
+          topmostDirectoryNameDraggableEntry = this.createDirectoryNameDraggableEntry(topmostDirectoryName, collapsed);
+
+          this.addEntry(topmostDirectoryNameDraggableEntry);
         }
 
         const filePath = filePathWithoutTopmostDirectoryName; ///
@@ -219,9 +197,13 @@ class Entries extends Element {
         const fileName = filePath,  ///
               fileNameDraggableEntryPresent = this.isFileNameDraggableEntryPresent(fileName);
 
-        fileNameDraggableEntry = fileNameDraggableEntryPresent ?
-                                   this.findFileNameDraggableEntry(fileName) :
-                                     this.addFileNameDraggableEntry(fileName);
+        if (fileNameDraggableEntryPresent) {
+          fileNameDraggableEntry = this.findFileNameDraggableEntry(fileName);
+        } else {
+          fileNameDraggableEntry = this.createFileNameDraggableEntry(fileName);
+
+          this.addEntry(fileNameDraggableEntry);
+        }
       }
     }
 
@@ -251,7 +233,7 @@ class Entries extends Element {
             const directoryNameDraggableEntryEmpty = directoryNameDraggableEntry.isEmpty();
 
             if (directoryNameDraggableEntryEmpty) {
-              directoryNameDraggableEntry.remove();
+              this.removeEntry(directoryNameDraggableEntry);
             }
           }
         }
@@ -261,7 +243,7 @@ class Entries extends Element {
             fileNameDraggableEntry = this.findFileNameDraggableEntry(fileName);
 
       if (fileNameDraggableEntry !== null) {
-        fileNameDraggableEntry.remove();
+        this.removeEntry(fileNameDraggableEntry);
       }
     }
   }
@@ -290,7 +272,9 @@ class Entries extends Element {
         if (topmostDirectoryNameDraggableEntry === null) {
           const collapsed = true; ///
 
-          topmostDirectoryNameDraggableEntry = this.addDirectoryNameDraggableEntry(topmostDirectoryName, collapsed);
+          topmostDirectoryNameDraggableEntry = this.createDirectoryNameDraggableEntry(topmostDirectoryName, collapsed);
+
+          this.addEntry(topmostDirectoryNameDraggableEntry);
         }
 
         const directoryPath = directoryPathWithoutTopmostDirectoryName; ///
@@ -300,9 +284,13 @@ class Entries extends Element {
         const directoryName = directoryPath,  ///
               directoryNameDraggableEntryPresent = this.isDirectoryNameDraggableEntryPresent(directoryName);
 
-        directoryNameDraggableEntry = directoryNameDraggableEntryPresent ?
-                                        this.findDirectoryNameDraggableEntry(directoryName) :
-                                          this.addDirectoryNameDraggableEntry(directoryName, collapsed);
+        if (directoryNameDraggableEntryPresent) {
+          directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
+        } else {
+          directoryNameDraggableEntry = this.createDirectoryNameDraggableEntry(directoryName, collapsed);
+
+          this.addEntry(directoryNameDraggableEntry);
+        }
 
         directoryNameDraggableEntry.setCollapsed(collapsed);
       }
@@ -334,7 +322,7 @@ class Entries extends Element {
             const directoryNameDraggableEntryEmpty = directoryNameDraggableEntry.isEmpty();
 
             if (directoryNameDraggableEntryEmpty) {
-              directoryNameDraggableEntry.remove();
+              this.removeEntry(directoryNameDraggableEntry);
             }
           }
         }
@@ -344,9 +332,35 @@ class Entries extends Element {
             directoryNameDraggableEntry = this.findDirectoryNameDraggableEntry(directoryName);
 
       if (directoryNameDraggableEntry !== null) {
-        directoryNameDraggableEntry.remove();
+        this.removeEntry(directoryNameDraggableEntry);
       }
     }
+  }
+
+  createFileNameDraggableEntry(fileName) {
+    const name = fileName,
+          explorer = this.getExplorer(),
+          FileNameDraggableEntry = explorer.getFileNameDraggableEntry(),
+          fileNameDraggableEntry =
+
+            <FileNameDraggableEntry name={name} explorer={explorer} />
+
+        ;
+
+    return fileNameDraggableEntry;
+  }
+
+  createDirectoryNameDraggableEntry(directoryName, collapsed) {
+    const name = directoryName,
+          explorer = this.getExplorer(),
+          DirectoryNameDraggableEntry = explorer.getDirectoryNameDraggableEntry(),
+          directoryNameDraggableEntry =
+
+            <DirectoryNameDraggableEntry name={name} collapsed={collapsed} explorer={explorer} />
+
+          ;
+
+    return directoryNameDraggableEntry;
   }
 
   findMarkerEntry() {
