@@ -390,8 +390,6 @@ class Explorer extends DropTarget {
           openHandler = onOpen, ///
           explorer = DropTarget.fromClass(Class, properties, moveHandler, openHandler, options);
 
-    explorer.initialise();
-    
     return explorer;
   }
 }

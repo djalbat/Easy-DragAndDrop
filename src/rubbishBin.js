@@ -145,8 +145,6 @@ class RubbishBin extends DropTarget {
           moveHandler = removeHandler,  ///
           rubbishBin = DropTarget.fromClass(Class, properties, moveHandler);
 
-    rubbishBin.initialise();
-    
     return rubbishBin;
   }
 }

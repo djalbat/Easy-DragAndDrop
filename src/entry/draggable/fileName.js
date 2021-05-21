@@ -76,12 +76,4 @@ export default class FileNameDraggableEntry extends DraggableEntry {
   static defaultProperties = {
     className: "file-name"
   };
-
-  static fromClass(Class, properties) {
-    const fileNameDraggableEntry = DraggableEntry.fromClass(Class, properties);
-
-    fileNameDraggableEntry.initialise();
-
-    return fileNameDraggableEntry;
-  }
 }

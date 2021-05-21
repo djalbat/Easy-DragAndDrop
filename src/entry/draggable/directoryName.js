@@ -179,12 +179,4 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
   static ignoredProperties = [
     "collapsed"
   ];
-
-  static fromClass(Class, properties) {
-    const directoryNameDraggableEntry = DraggableEntry.fromClass(Class, properties);
-
-    directoryNameDraggableEntry.initialise();
-
-    return directoryNameDraggableEntry;
-  }
 }

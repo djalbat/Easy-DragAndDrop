@@ -43,7 +43,7 @@ class DraggableEntry extends Entry {
   isMouseOver(mouseTop, mouseLeft) {
     const collapsedBounds = this.getCollapsedBounds(),
           collapsedBoundsOverlappingMouse = collapsedBounds.isOverlappingMouse(mouseTop, mouseLeft),
-          mouseOver = collapsedBoundsOverlappingMouse;
+          mouseOver = collapsedBoundsOverlappingMouse;  ///
 
     return mouseOver;
   }
