@@ -70,25 +70,9 @@ function startDragging(mouseTop, mouseLeft) {
   this.callHandlers(eventType, relativeMouseTop, relativeMouseLeft);
 
   this.dragging(mouseTop, mouseLeft);
-
-  // const explorer = this.getExplorer(),
-  //       escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
-  //
-  // if (escapeKeyStopsDraggingOptionPresent) {
-  //   const keyDownHandler = this.keyDownHandler.bind(this);
-  //
-  //   this.onKeyDown(keyDownHandler);
-  // }
 }
 
 function stopDragging(mouseTop, mouseLeft) {
-  // const explorer = this.getExplorer(),
-  //       escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
-  //
-  // if (escapeKeyStopsDraggingOptionPresent) {
-  //   this.offKeyDown();
-  // }
-
   const eventType = STOP_DRAGGING,
         startMouseTop = this.getStartMouseTop(),
         startMouseLeft = this.getStartMouseLeft(),
@@ -139,6 +123,14 @@ function callHandlers(eventType, relativeMouseTop, relativeMouseLeft) {
 
     handler.call(element, relativeMouseTop, relativeMouseLeft);
   });
+}
+
+function isMouseOver(mouseTop, mouseLeft) {
+  const bounds = this.getCollapsedBounds(),
+        boundsOverlappingMouse = bounds.isOverlappingMouse(mouseTop, mouseLeft),
+        mouseOver = boundsOverlappingMouse;  ///
+
+  return mouseOver;
 }
 
 function getTimeout() {
@@ -221,6 +213,7 @@ export default {
   stopDragging,
   dragging,
   callHandlers,
+  isMouseOver,
   getTimeout,
   resetTimeout,
   updateTimeout,

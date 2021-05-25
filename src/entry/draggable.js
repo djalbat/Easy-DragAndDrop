@@ -2,15 +2,13 @@
 
 import withStyle from "easy-with-style";  ///
 
-import { window } from "easy";
-
 import Entry from "../entry";
 import options from "../options";
 import draggableMixins from "../mixins/draggable";
 
-import { ESCAPE_KEYCODE, DRAGGING, STOP_DRAGGING, START_DRAGGING, START_DRAGGING_DELAY } from "../constants";
+import { ESCAPE_KEYCODE, START_DRAGGING_DELAY } from "../constants";
 
-const { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
+const { NO_DRAGGING_SUB_ENTRIES } = options;
 
 class DraggableEntry extends Entry {
   getPath() {
@@ -99,6 +97,28 @@ class DraggableEntry extends Entry {
       
       this.updateTimeout(timeout);
     }
+  }
+
+  startDragging(mouseTop, mouseLeft) {
+    const explorer = this.getExplorer(),
+          escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
+
+    super.startDragging(mouseTop, mouseLeft);
+
+    if (escapeKeyStopsDraggingOptionPresent) {
+      this.onKeyDown(this.keyDownHandler, this);
+    }
+  }
+
+  stopDragging(mouseTop, mouseLeft) {
+    const explorer = this.getExplorer(),
+          escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
+
+    if (escapeKeyStopsDraggingOptionPresent) {
+      this.offKeyDown(this.keyDownHandler, this);
+    }
+
+    super.stopDragging(mouseTop, mouseLeft);
   }
 
   keyDownHandler(event, element) {

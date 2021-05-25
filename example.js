@@ -22308,14 +22308,14 @@
     exports.NO_DRAGGING_INTO_SUB_DIRECTORIES = NO_DRAGGING_INTO_SUB_DIRECTORIES;
     var REMOVE_EMPTY_PARENT_DIRECTORIES = "REMOVE_EMPTY_PARENT_DIRECTORIES";
     exports.REMOVE_EMPTY_PARENT_DIRECTORIES = REMOVE_EMPTY_PARENT_DIRECTORIES;
-    var ESCAPE_KEY_STOPS_DRAGGING = "ESCAPE_KEY_STOPS_DRAGGING";
-    exports.ESCAPE_KEY_STOPS_DRAGGING = ESCAPE_KEY_STOPS_DRAGGING;
+    var ESCAPE_KEY_STOPS_DRAGGING2 = "ESCAPE_KEY_STOPS_DRAGGING";
+    exports.ESCAPE_KEY_STOPS_DRAGGING = ESCAPE_KEY_STOPS_DRAGGING2;
     var _default = {
       NO_DRAGGING_WITHIN,
       NO_DRAGGING_SUB_ENTRIES,
       NO_DRAGGING_INTO_SUB_DIRECTORIES,
       REMOVE_EMPTY_PARENT_DIRECTORIES,
-      ESCAPE_KEY_STOPS_DRAGGING
+      ESCAPE_KEY_STOPS_DRAGGING: ESCAPE_KEY_STOPS_DRAGGING2
     };
     exports.default = _default;
   });
@@ -24133,6 +24133,10 @@
         handler.call(element, relativeMouseTop, relativeMouseLeft);
       });
     }
+    function isMouseOver(mouseTop, mouseLeft) {
+      var bounds = this.getCollapsedBounds(), boundsOverlappingMouse = bounds.isOverlappingMouse(mouseTop, mouseLeft), mouseOver = boundsOverlappingMouse;
+      return mouseOver;
+    }
     function getTimeout() {
       var state = this.getState(), timeout = state.timeout;
       return timeout;
@@ -24191,6 +24195,7 @@
       stopDragging,
       dragging,
       callHandlers,
+      isMouseOver,
       getTimeout,
       resetTimeout,
       updateTimeout,
@@ -24248,7 +24253,6 @@
     });
     exports.default = void 0;
     var _easyWithStyle2 = _interopRequireDefault2(require_lib6());
-    var _easy2 = require_lib();
     var _entry = _interopRequireDefault2(require_entry());
     var _options = _interopRequireDefault2(require_options());
     var _draggable = _interopRequireDefault2(require_draggable());
@@ -24294,6 +24298,23 @@
       }
       return obj;
     }
+    function _get(target, property, receiver) {
+      if (typeof Reflect !== "undefined" && Reflect.get) {
+        _get = Reflect.get;
+      } else {
+        _get = function _get2(target2, property2, receiver2) {
+          var base = _superPropBase(target2, property2);
+          if (!base)
+            return;
+          var desc = Object.getOwnPropertyDescriptor(base, property2);
+          if (desc.get) {
+            return desc.get.call(receiver2);
+          }
+          return desc.value;
+        };
+      }
+      return _get(target, property, receiver || target);
+    }
     function _getPrototypeOf(o) {
       _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf2(o2) {
         return o2.__proto__ || Object.getPrototypeOf(o2);
@@ -24332,6 +24353,14 @@
       };
       return _setPrototypeOf(o, p);
     }
+    function _superPropBase(object, property) {
+      while (!Object.prototype.hasOwnProperty.call(object, property)) {
+        object = _getPrototypeOf(object);
+        if (object === null)
+          break;
+      }
+      return object;
+    }
     function _taggedTemplateLiteral(strings, raw) {
       if (!raw) {
         raw = strings.slice(0);
@@ -24355,7 +24384,6 @@
       return data;
     }
     var NO_DRAGGING_SUB_ENTRIES = _options.default.NO_DRAGGING_SUB_ENTRIES;
-    var ESCAPE_KEY_STOPS_DRAGGING = _options.default.ESCAPE_KEY_STOPS_DRAGGING;
     var DraggableEntry = /* @__PURE__ */ function(Entry) {
       _inherits(DraggableEntry2, Entry);
       function DraggableEntry2() {
@@ -24436,6 +24464,26 @@
               }.bind(this), _constants.START_DRAGGING_DELAY);
               this.updateTimeout(timeout);
             }
+          }
+        },
+        {
+          key: "startDragging",
+          value: function startDragging(mouseTop, mouseLeft) {
+            var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
+            _get(_getPrototypeOf(DraggableEntry2.prototype), "startDragging", this).call(this, mouseTop, mouseLeft);
+            if (escapeKeyStopsDraggingOptionPresent) {
+              this.onKeyDown(this.keyDownHandler, this);
+            }
+          }
+        },
+        {
+          key: "stopDragging",
+          value: function stopDragging(mouseTop, mouseLeft) {
+            var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
+            if (escapeKeyStopsDraggingOptionPresent) {
+              this.offKeyDown(this.keyDownHandler, this);
+            }
+            _get(_getPrototypeOf(DraggableEntry2.prototype), "stopDragging", this).call(this, mouseTop, mouseLeft);
           }
         },
         {
