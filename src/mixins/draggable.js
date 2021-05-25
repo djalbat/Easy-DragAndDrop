@@ -7,6 +7,48 @@ import { BLUR, DRAGGING, STOP_DRAGGING, START_DRAGGING } from "../constants";
 
 const { LEFT_MOUSE_BUTTON } = constants;
 
+function onDragging(draggingHandler, element) {
+  const eventType = DRAGGING,
+        handler = draggingHandler;  ///
+
+  this.addEventListener(eventType, handler, element);
+}
+
+function offDragging(draggingHandler, element) {
+  const eventType = DRAGGING,
+        handler = draggingHandler;  ///
+
+  this.removeEventListener(eventType, handler, element);
+}
+
+function onStopDragging(stopDragHandler, element) {
+  const eventType = STOP_DRAGGING,
+        handler = stopDragHandler;  ///
+
+  this.addEventListener(eventType, handler, element);
+}
+
+function offStopDragging(stopDragHandler, element) {
+  const eventType = STOP_DRAGGING,
+        handler = stopDragHandler;  ///
+
+  this.removeEventListener(eventType, handler, element);
+}
+
+function onStartDragging(startDragHandler, element) {
+  const eventType = START_DRAGGING,
+        handler = startDragHandler;  ///
+
+  this.addEventListener(eventType, handler, element);
+}
+
+function offStartDragging(startDragHandler, element) {
+  const eventType = START_DRAGGING,
+        handler = startDragHandler;  ///
+
+  this.removeEventListener(eventType, handler, element);
+}
+
 function enableDragging() {
   const timeout = null,
         topOffset = null,
@@ -109,10 +151,6 @@ function dragging(mouseTop, mouseLeft) {
   this.css(css);
 
   this.callHandlers(eventType, relativeMouseTop, relativeMouseLeft);
-
-  const explorer = this.getExplorer();
-
-  explorer.dragging(this);
 }
 
 function callHandlers(eventType, relativeMouseTop, relativeMouseLeft) {
@@ -205,6 +243,12 @@ function setStartMouseLeft(startMouseLeft) {
 }
 
 export default {
+  onDragging,
+  offDragging,
+  onStopDragging,
+  offStopDragging,
+  onStartDragging,
+  offStartDragging,
   enableDragging,
   disableDragging,
   isDragging,

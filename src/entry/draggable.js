@@ -6,6 +6,7 @@ import Entry from "../entry";
 import options from "../options";
 import draggableMixins from "../mixins/draggable";
 
+import { ESCAPE_KEY_STOPS_DRAGGING } from "../options";
 import { ESCAPE_KEYCODE, START_DRAGGING_DELAY } from "../constants";
 
 const { NO_DRAGGING_SUB_ENTRIES } = options;
@@ -99,26 +100,29 @@ class DraggableEntry extends Entry {
     }
   }
 
-  startDragging(mouseTop, mouseLeft) {
+  startDraggingHandler(mouseTop, mouseLeft) {
     const explorer = this.getExplorer(),
           escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
-
-    super.startDragging(mouseTop, mouseLeft);
 
     if (escapeKeyStopsDraggingOptionPresent) {
       this.onKeyDown(this.keyDownHandler, this);
     }
   }
 
-  stopDragging(mouseTop, mouseLeft) {
+  stopDraggingHandler(mouseTop, mouseLeft) {
     const explorer = this.getExplorer(),
           escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
 
     if (escapeKeyStopsDraggingOptionPresent) {
       this.offKeyDown(this.keyDownHandler, this);
     }
+  }
 
-    super.stopDragging(mouseTop, mouseLeft);
+  draggingHandler(mouseTop, mouseLeft) {
+    const explorer = this.getExplorer(),
+          draggableEntry = this;  ///
+
+    explorer.dragging(draggableEntry);
   }
 
   keyDownHandler(event, element) {
@@ -141,11 +145,19 @@ class DraggableEntry extends Entry {
   didMount() {
     this.enableDragging();
 
+    this.onDragging(this.draggingHandler, this);
+    this.onStopDragging(this.stopDraggingHandler, this);
+    this.onStartDragging(this.startDraggingHandler, this);
+
     this.onDoubleClick(this.doubleClickHandler, this);
   }
 
   willUnmount() {
     this.offDoubleClick(this.doubleClickHandler, this);
+
+    this.offStartDragging(this.startDraggingHandler, this);
+    this.offStopDragging(this.stopDraggingHandler, this);
+    this.offDragging(this.draggingHandler, this);
 
     this.disableDragging();
   }

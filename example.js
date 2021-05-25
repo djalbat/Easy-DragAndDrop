@@ -22308,14 +22308,14 @@
     exports.NO_DRAGGING_INTO_SUB_DIRECTORIES = NO_DRAGGING_INTO_SUB_DIRECTORIES;
     var REMOVE_EMPTY_PARENT_DIRECTORIES = "REMOVE_EMPTY_PARENT_DIRECTORIES";
     exports.REMOVE_EMPTY_PARENT_DIRECTORIES = REMOVE_EMPTY_PARENT_DIRECTORIES;
-    var ESCAPE_KEY_STOPS_DRAGGING2 = "ESCAPE_KEY_STOPS_DRAGGING";
-    exports.ESCAPE_KEY_STOPS_DRAGGING = ESCAPE_KEY_STOPS_DRAGGING2;
+    var ESCAPE_KEY_STOPS_DRAGGING = "ESCAPE_KEY_STOPS_DRAGGING";
+    exports.ESCAPE_KEY_STOPS_DRAGGING = ESCAPE_KEY_STOPS_DRAGGING;
     var _default = {
       NO_DRAGGING_WITHIN,
       NO_DRAGGING_SUB_ENTRIES,
       NO_DRAGGING_INTO_SUB_DIRECTORIES,
       REMOVE_EMPTY_PARENT_DIRECTORIES,
-      ESCAPE_KEY_STOPS_DRAGGING: ESCAPE_KEY_STOPS_DRAGGING2
+      ESCAPE_KEY_STOPS_DRAGGING
     };
     exports.default = _default;
   });
@@ -24072,6 +24072,30 @@
     var _event = require_event2();
     var _constants = require_constants6();
     var LEFT_MOUSE_BUTTON = _easy2.constants.LEFT_MOUSE_BUTTON;
+    function onDragging(draggingHandler, element) {
+      var eventType = _constants.DRAGGING, handler = draggingHandler;
+      this.addEventListener(eventType, handler, element);
+    }
+    function offDragging(draggingHandler, element) {
+      var eventType = _constants.DRAGGING, handler = draggingHandler;
+      this.removeEventListener(eventType, handler, element);
+    }
+    function onStopDragging(stopDragHandler, element) {
+      var eventType = _constants.STOP_DRAGGING, handler = stopDragHandler;
+      this.addEventListener(eventType, handler, element);
+    }
+    function offStopDragging(stopDragHandler, element) {
+      var eventType = _constants.STOP_DRAGGING, handler = stopDragHandler;
+      this.removeEventListener(eventType, handler, element);
+    }
+    function onStartDragging(startDragHandler, element) {
+      var eventType = _constants.START_DRAGGING, handler = startDragHandler;
+      this.addEventListener(eventType, handler, element);
+    }
+    function offStartDragging(startDragHandler, element) {
+      var eventType = _constants.START_DRAGGING, handler = startDragHandler;
+      this.removeEventListener(eventType, handler, element);
+    }
     function enableDragging() {
       var timeout = null, topOffset = null, leftOffset = null, startMouseTop = null, startMouseLeft = null;
       this.setState({
@@ -24123,8 +24147,6 @@
       };
       this.css(css);
       this.callHandlers(eventType, relativeMouseTop, relativeMouseLeft);
-      var explorer = this.getExplorer();
-      explorer.dragging(this);
     }
     function callHandlers(eventType, relativeMouseTop, relativeMouseLeft) {
       var eventListeners = this.findEventListeners(eventType);
@@ -24187,6 +24209,12 @@
       });
     }
     var _default = {
+      onDragging,
+      offDragging,
+      onStopDragging,
+      offStopDragging,
+      onStartDragging,
+      offStartDragging,
       enableDragging,
       disableDragging,
       isDragging,
@@ -24254,7 +24282,7 @@
     exports.default = void 0;
     var _easyWithStyle2 = _interopRequireDefault2(require_lib6());
     var _entry = _interopRequireDefault2(require_entry());
-    var _options = _interopRequireDefault2(require_options());
+    var _options = _interopRequireWildcard(require_options());
     var _draggable = _interopRequireDefault2(require_draggable());
     var _constants = require_constants6();
     function _assertThisInitialized(self) {
@@ -24298,23 +24326,6 @@
       }
       return obj;
     }
-    function _get(target, property, receiver) {
-      if (typeof Reflect !== "undefined" && Reflect.get) {
-        _get = Reflect.get;
-      } else {
-        _get = function _get2(target2, property2, receiver2) {
-          var base = _superPropBase(target2, property2);
-          if (!base)
-            return;
-          var desc = Object.getOwnPropertyDescriptor(base, property2);
-          if (desc.get) {
-            return desc.get.call(receiver2);
-          }
-          return desc.value;
-        };
-      }
-      return _get(target, property, receiver || target);
-    }
     function _getPrototypeOf(o) {
       _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf2(o2) {
         return o2.__proto__ || Object.getPrototypeOf(o2);
@@ -24340,6 +24351,27 @@
         default: obj
       };
     }
+    function _interopRequireWildcard(obj) {
+      if (obj && obj.__esModule) {
+        return obj;
+      } else {
+        var newObj = {};
+        if (obj != null) {
+          for (var key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+              var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {};
+              if (desc.get || desc.set) {
+                Object.defineProperty(newObj, key, desc);
+              } else {
+                newObj[key] = obj[key];
+              }
+            }
+          }
+        }
+        newObj.default = obj;
+        return newObj;
+      }
+    }
     function _possibleConstructorReturn(self, call) {
       if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
@@ -24352,14 +24384,6 @@
         return o2;
       };
       return _setPrototypeOf(o, p);
-    }
-    function _superPropBase(object, property) {
-      while (!Object.prototype.hasOwnProperty.call(object, property)) {
-        object = _getPrototypeOf(object);
-        if (object === null)
-          break;
-      }
-      return object;
     }
     function _taggedTemplateLiteral(strings, raw) {
       if (!raw) {
@@ -24467,23 +24491,28 @@
           }
         },
         {
-          key: "startDragging",
-          value: function startDragging(mouseTop, mouseLeft) {
-            var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
-            _get(_getPrototypeOf(DraggableEntry2.prototype), "startDragging", this).call(this, mouseTop, mouseLeft);
+          key: "startDraggingHandler",
+          value: function startDraggingHandler(mouseTop, mouseLeft) {
+            var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(_options.ESCAPE_KEY_STOPS_DRAGGING);
             if (escapeKeyStopsDraggingOptionPresent) {
               this.onKeyDown(this.keyDownHandler, this);
             }
           }
         },
         {
-          key: "stopDragging",
-          value: function stopDragging(mouseTop, mouseLeft) {
-            var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
+          key: "stopDraggingHandler",
+          value: function stopDraggingHandler(mouseTop, mouseLeft) {
+            var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(_options.ESCAPE_KEY_STOPS_DRAGGING);
             if (escapeKeyStopsDraggingOptionPresent) {
               this.offKeyDown(this.keyDownHandler, this);
             }
-            _get(_getPrototypeOf(DraggableEntry2.prototype), "stopDragging", this).call(this, mouseTop, mouseLeft);
+          }
+        },
+        {
+          key: "draggingHandler",
+          value: function draggingHandler(mouseTop, mouseLeft) {
+            var explorer = this.getExplorer(), draggableEntry = this;
+            explorer.dragging(draggableEntry);
           }
         },
         {
@@ -24504,6 +24533,9 @@
           key: "didMount",
           value: function didMount() {
             this.enableDragging();
+            this.onDragging(this.draggingHandler, this);
+            this.onStopDragging(this.stopDraggingHandler, this);
+            this.onStartDragging(this.startDraggingHandler, this);
             this.onDoubleClick(this.doubleClickHandler, this);
           }
         },
@@ -24511,6 +24543,9 @@
           key: "willUnmount",
           value: function willUnmount() {
             this.offDoubleClick(this.doubleClickHandler, this);
+            this.offStartDragging(this.startDraggingHandler, this);
+            this.offStopDragging(this.stopDraggingHandler, this);
+            this.offDragging(this.draggingHandler, this);
             this.disableDragging();
           }
         },
