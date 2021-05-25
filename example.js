@@ -24090,9 +24090,12 @@
       var dragging2 = this.hasClass("dragging");
       return dragging2;
     }
-    function getTimeout() {
-      var state = this.getState(), timeout = state.timeout;
-      return timeout;
+    function stopWaitingToDrag() {
+      var timeout = this.getTimeout();
+      if (timeout !== null) {
+        clearTimeout(timeout);
+        this.resetTimeout();
+      }
     }
     function startDragging(mouseTop, mouseLeft) {
       var bounds = this.getBounds(), eventType = _constants.START_DRAGGING, boundsTop = bounds.getTop(), boundsLeft = bounds.getLeft(), topOffset = mouseTop - boundsTop, leftOffset = mouseLeft - boundsLeft, startMouseTop = mouseTop, startMouseLeft = mouseLeft, relativeMouseTop = mouseTop - startMouseTop, relativeMouseLeft = mouseLeft - startMouseLeft;
@@ -24129,6 +24132,10 @@
         var handler = eventListener.handler, element = eventListener.element;
         handler.call(element, relativeMouseTop, relativeMouseLeft);
       });
+    }
+    function getTimeout() {
+      var state = this.getState(), timeout = state.timeout;
+      return timeout;
     }
     function resetTimeout() {
       var timeout = null;
@@ -24179,11 +24186,12 @@
       enableDragging,
       disableDragging,
       isDragging,
-      getTimeout,
+      stopWaitingToDrag,
       startDragging,
       stopDragging,
       dragging,
       callHandlers,
+      getTimeout,
       resetTimeout,
       updateTimeout,
       getTopOffset,
@@ -24427,16 +24435,6 @@
                 }
               }.bind(this), _constants.START_DRAGGING_DELAY);
               this.updateTimeout(timeout);
-            }
-          }
-        },
-        {
-          key: "stopWaitingToDrag",
-          value: function stopWaitingToDrag() {
-            var timeout = this.getTimeout();
-            if (timeout !== null) {
-              clearTimeout(timeout);
-              this.resetTimeout();
             }
           }
         },

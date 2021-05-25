@@ -101,16 +101,6 @@ class DraggableEntry extends Entry {
     }
   }
 
-  stopWaitingToDrag() {
-    const timeout = this.getTimeout();
-    
-    if (timeout !== null) {
-      clearTimeout(timeout);
-
-      this.resetTimeout();
-    }
-  }
-
   keyDownHandler(event, element) {
     const { keyCode } = event,
           escapeKey = (keyCode === ESCAPE_KEYCODE);

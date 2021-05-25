@@ -35,11 +35,14 @@ function isDragging() {
   return dragging;
 }
 
-function getTimeout() {
-  const state = this.getState(),
-       { timeout } = state;
+function stopWaitingToDrag() {
+  const timeout = this.getTimeout();
 
-  return timeout;
+  if (timeout !== null) {
+    clearTimeout(timeout);
+
+    this.resetTimeout();
+  }
 }
 
 function startDragging(mouseTop, mouseLeft) {
@@ -138,6 +141,13 @@ function callHandlers(eventType, relativeMouseTop, relativeMouseLeft) {
   });
 }
 
+function getTimeout() {
+  const state = this.getState(),
+      { timeout } = state;
+
+  return timeout;
+}
+
 function resetTimeout() {
   const timeout = null;
 
@@ -206,11 +216,12 @@ export default {
   enableDragging,
   disableDragging,
   isDragging,
-  getTimeout,
+  stopWaitingToDrag,
   startDragging,
   stopDragging,
   dragging,
   callHandlers,
+  getTimeout,
   resetTimeout,
   updateTimeout,
   getTopOffset,
