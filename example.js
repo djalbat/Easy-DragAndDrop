@@ -7,7 +7,7 @@
     return module.exports;
   };
 
-  // node_modules/easy/lib/miscellaneous/offset.js
+  // node_modules/easy/lib/offset.js
   var require_offset = __commonJS((exports) => {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
@@ -61,7 +61,7 @@
     exports.default = Offset;
   });
 
-  // node_modules/easy/lib/miscellaneous/bounds.js
+  // node_modules/easy/lib/bounds.js
   var require_bounds = __commonJS((exports) => {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
@@ -173,13 +173,13 @@
         {
           key: "isOverlappingMouse",
           value: function isOverlappingMouse(mouseTop, mouseLeft) {
-            return this.top < mouseTop && this.left < mouseLeft && this.bottom > mouseTop && this.right > mouseLeft;
+            return this.top <= mouseTop && this.left <= mouseLeft && this.right > mouseLeft && this.bottom > mouseTop;
           }
         },
         {
           key: "areOverlapping",
           value: function areOverlapping(bounds) {
-            return this.top < bounds.bottom && this.left < bounds.right && this.bottom > bounds.top && this.right > bounds.left;
+            return this.top < bounds.bottom && this.left < bounds.right && this.right > bounds.left && this.bottom > bounds.top;
           }
         }
       ], [
@@ -1421,6 +1421,8 @@
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
+    exports.onResize = onResize;
+    exports.offResize = offResize;
     exports.default = void 0;
     var _constants = require_constants();
     function onResize(resizeHandler, element) {
@@ -3454,8 +3456,23 @@
     exports.default = Textarea;
   });
 
-  // node_modules/easy/lib/window.js
+  // node_modules/easy/lib/mixins/window.js
   var require_window = __commonJS((exports) => {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    exports.default = void 0;
+    var _resize = require_resize();
+    var _default = {
+      onResize: _resize.onResize,
+      offResize: _resize.offResize
+    };
+    exports.default = _default;
+  });
+
+  // node_modules/easy/lib/window.js
+  var require_window2 = __commonJS((exports) => {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
@@ -3465,7 +3482,7 @@
     var _event = _interopRequireDefault2(require_event());
     var _mouse = _interopRequireDefault2(require_mouse());
     var _click = _interopRequireDefault2(require_click());
-    var _resize = _interopRequireDefault2(require_resize());
+    var _window = _interopRequireDefault2(require_window());
     var _constants = require_constants();
     function _arrayWithoutHoles(arr) {
       if (Array.isArray(arr)) {
@@ -3516,8 +3533,6 @@
       return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
     };
     var _Object;
-    var onResize = _resize.default.onResize;
-    var offResize = _resize.default.offResize;
     var Window1 = /* @__PURE__ */ function() {
       function Window12() {
         _classCallCheck(this, Window12);
@@ -3577,10 +3592,7 @@
     Object.assign(Window1.prototype, _event.default);
     Object.assign(Window1.prototype, _mouse.default);
     Object.assign(Window1.prototype, _click.default);
-    Object.assign(Window1.prototype, {
-      onResize,
-      offResize
-    });
+    Object.assign(Window1.prototype, _window.default);
     var _default = _typeof(window) === _constants.UNDEFINED ? void 0 : new Window1();
     exports.default = _default;
   });
@@ -3707,7 +3719,7 @@
     var _element = _interopRequireDefault2(require_element2());
     var _textElement = _interopRequireDefault2(require_textElement());
     var _inputElement = _interopRequireDefault2(require_inputElement());
-    var _window = _interopRequireDefault2(require_window());
+    var _window = _interopRequireDefault2(require_window2());
     var _document = _interopRequireDefault2(require_document());
     var _constants = _interopRequireDefault2(require_constants());
     var _bounds = _interopRequireDefault2(require_bounds());
@@ -24010,6 +24022,21 @@
     exports.default = FileNameMarkerEntry;
   });
 
+  // lib/constants.js
+  var require_constants6 = __commonJS((exports) => {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    exports.BLUR = exports.START_DRAGGING_DELAY = exports.ESCAPE_KEYCODE = void 0;
+    var BLUR = "blur";
+    exports.BLUR = BLUR;
+    var ESCAPE_KEYCODE = 27;
+    exports.ESCAPE_KEYCODE = ESCAPE_KEYCODE;
+    var START_DRAGGING_DELAY = 175;
+    exports.START_DRAGGING_DELAY = START_DRAGGING_DELAY;
+  });
+
   // lib/utilities/event.js
   var require_event2 = __commonJS((exports) => {
     "use strict";
@@ -24037,6 +24064,7 @@
     });
     exports.default = void 0;
     var _easy2 = require_lib();
+    var _constants = require_constants6();
     var _event = require_event2();
     var LEFT_MOUSE_BUTTON = _easy2.constants.LEFT_MOUSE_BUTTON;
     function enableDragging() {
@@ -24102,7 +24130,7 @@
     };
     exports.default = _default;
     function mouseUpHandler(event, element) {
-      _easy2.window.off("blur", mouseUpHandler, this);
+      _easy2.window.off(_constants.BLUR, mouseUpHandler, this);
       _easy2.window.offMouseUp(mouseUpHandler, this);
       _easy2.window.offMouseMove(mouseMoveHandler, this);
       var dragging = this.isDragging();
@@ -24117,7 +24145,7 @@
     }
     function mouseDownHandler(event, element) {
       var button = event.button;
-      _easy2.window.on("blur", mouseUpHandler, this);
+      _easy2.window.on(_constants.BLUR, mouseUpHandler, this);
       _easy2.window.onMouseUp(mouseUpHandler, this);
       _easy2.window.onMouseMove(mouseMoveHandler, this);
       if (button === LEFT_MOUSE_BUTTON) {
@@ -24135,19 +24163,6 @@
         this.dragging(mouseTop, mouseLeft);
       }
     }
-  });
-
-  // lib/constants.js
-  var require_constants6 = __commonJS((exports) => {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", {
-      value: true
-    });
-    exports.ESCAPE_KEYCODE = exports.START_DRAGGING_DELAY = void 0;
-    var ESCAPE_KEYCODE = 27;
-    exports.ESCAPE_KEYCODE = ESCAPE_KEYCODE;
-    var START_DRAGGING_DELAY = 175;
-    exports.START_DRAGGING_DELAY = START_DRAGGING_DELAY;
   });
 
   // lib/entry/draggable.js
