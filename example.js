@@ -24114,6 +24114,19 @@
       var dragging2 = this.hasClass("dragging");
       return dragging2;
     }
+    function startWaitingToDrag(mouseTop, mouseLeft) {
+      var timeout = this.getTimeout();
+      if (timeout === null) {
+        timeout = setTimeout(function() {
+          this.resetTimeout();
+          var mouseOver = this.isMouseOver(mouseTop, mouseLeft);
+          if (mouseOver) {
+            this.startDragging(mouseTop, mouseLeft);
+          }
+        }.bind(this), _constants.START_DRAGGING_DELAY);
+        this.updateTimeout(timeout);
+      }
+    }
     function stopWaitingToDrag() {
       var timeout = this.getTimeout();
       if (timeout !== null) {
@@ -24218,6 +24231,7 @@
       enableDragging,
       disableDragging,
       isDragging,
+      startWaitingToDrag,
       stopWaitingToDrag,
       startDragging,
       stopDragging,
@@ -24273,8 +24287,95 @@
     }
   });
 
+  // lib/mixins/entry/draggable.js
+  var require_draggable2 = __commonJS((exports, module) => {
+    "use strict";
+    var _options = _interopRequireDefault2(require_options());
+    var _draggable = _interopRequireDefault2(require_draggable());
+    var _constants = require_constants6();
+    function _interopRequireDefault2(obj) {
+      return obj && obj.__esModule ? obj : {
+        default: obj
+      };
+    }
+    var superStartDragging = _draggable.default.startDragging;
+    var NO_DRAGGING_SUB_ENTRIES = _options.default.NO_DRAGGING_SUB_ENTRIES;
+    var ESCAPE_KEY_STOPS_DRAGGING = _options.default.ESCAPE_KEY_STOPS_DRAGGING;
+    function getCollapsedBounds() {
+      var bounds = this.getBounds(), collapsedBounds = bounds;
+      return collapsedBounds;
+    }
+    function isMouseOver(mouseTop, mouseLeft) {
+      var collapsedBounds = this.getCollapsedBounds(), collapsedBoundsOverlappingMouse = collapsedBounds.isOverlappingMouse(mouseTop, mouseLeft), mouseOver = collapsedBoundsOverlappingMouse;
+      return mouseOver;
+    }
+    function startDragging(mouseTop, mouseLeft) {
+      var explorer = this.getExplorer(), draggableEntry = this, topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry(), subEntry = !topmostDirectoryNameDraggableEntry, startedDragging = explorer.hasStartedDragging(draggableEntry), noDraggingSubEntriesOptionPresent = explorer.isOptionPresent(NO_DRAGGING_SUB_ENTRIES);
+      if (!startedDragging) {
+        return;
+      }
+      if (topmostDirectoryNameDraggableEntry) {
+        return;
+      }
+      if (subEntry && noDraggingSubEntriesOptionPresent) {
+        return;
+      }
+      superStartDragging.call(this, mouseTop, mouseLeft);
+    }
+    function keyDownHandler(event, element) {
+      var keyCode = event.keyCode, escapeKey = keyCode === _constants.ESCAPE_KEYCODE;
+      if (escapeKey) {
+        var dragging = this.isDragging();
+        if (dragging) {
+          var explorer = this.getExplorer();
+          explorer.escapeDragging();
+          this.stopDragging();
+        }
+      }
+    }
+    function draggingHandler(mouseTop, mouseLeft) {
+      var explorer = this.getExplorer(), draggableEntry = this;
+      explorer.dragging(draggableEntry);
+    }
+    function stopDraggingHandler(mouseTop, mouseLeft) {
+      var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
+      if (escapeKeyStopsDraggingOptionPresent) {
+        this.offKeyDown(this.keyDownHandler, this);
+      }
+    }
+    function startDraggingHandler(mouseTop, mouseLeft) {
+      var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
+      if (escapeKeyStopsDraggingOptionPresent) {
+        this.onKeyDown(this.keyDownHandler, this);
+      }
+    }
+    function didMount() {
+      this.enableDragging();
+      this.onDragging(this.draggingHandler, this);
+      this.onStopDragging(this.stopDraggingHandler, this);
+      this.onStartDragging(this.startDraggingHandler, this);
+    }
+    function willUnmount() {
+      this.offStartDragging(this.startDraggingHandler, this);
+      this.offStopDragging(this.stopDraggingHandler, this);
+      this.offDragging(this.draggingHandler, this);
+      this.disableDragging();
+    }
+    module.exports = {
+      getCollapsedBounds,
+      isMouseOver,
+      startDragging,
+      keyDownHandler,
+      draggingHandler,
+      stopDraggingHandler,
+      startDraggingHandler,
+      didMount,
+      willUnmount
+    };
+  });
+
   // lib/entry/draggable.js
-  var require_draggable2 = __commonJS((exports) => {
+  var require_draggable3 = __commonJS((exports) => {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
@@ -24282,9 +24383,8 @@
     exports.default = void 0;
     var _easyWithStyle2 = _interopRequireDefault2(require_lib6());
     var _entry = _interopRequireDefault2(require_entry());
-    var _options = _interopRequireWildcard(require_options());
     var _draggable = _interopRequireDefault2(require_draggable());
-    var _constants = require_constants6();
+    var _draggable1 = _interopRequireDefault2(require_draggable2());
     function _assertThisInitialized(self) {
       if (self === void 0) {
         throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -24351,27 +24451,6 @@
         default: obj
       };
     }
-    function _interopRequireWildcard(obj) {
-      if (obj && obj.__esModule) {
-        return obj;
-      } else {
-        var newObj = {};
-        if (obj != null) {
-          for (var key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
-              var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {};
-              if (desc.get || desc.set) {
-                Object.defineProperty(newObj, key, desc);
-              } else {
-                newObj[key] = obj[key];
-              }
-            }
-          }
-        }
-        newObj.default = obj;
-        return newObj;
-      }
-    }
     function _possibleConstructorReturn(self, call) {
       if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
@@ -24400,14 +24479,13 @@
     };
     function _templateObject() {
       var data = _taggedTemplateLiteral([
-        "\n\n  .dragging {\n    position: fixed;\n    z-index: 10000;\n  }\n\n"
+        "\n\n  .dragging {\n    z-index: 1;\n    position: fixed;\n  }\n\n"
       ]);
       _templateObject = function _templateObject2() {
         return data;
       };
       return data;
     }
-    var NO_DRAGGING_SUB_ENTRIES = _options.default.NO_DRAGGING_SUB_ENTRIES;
     var DraggableEntry = /* @__PURE__ */ function(Entry) {
       _inherits(DraggableEntry2, Entry);
       function DraggableEntry2() {
@@ -24427,20 +24505,6 @@
           value: function getExplorer() {
             var _properties = this.properties, explorer = _properties.explorer;
             return explorer;
-          }
-        },
-        {
-          key: "getCollapsedBounds",
-          value: function getCollapsedBounds() {
-            var bounds = this.getBounds(), collapsedBounds = bounds;
-            return collapsedBounds;
-          }
-        },
-        {
-          key: "isMouseOver",
-          value: function isMouseOver(mouseTop, mouseLeft) {
-            var collapsedBounds = this.getCollapsedBounds(), collapsedBoundsOverlappingMouse = collapsedBounds.isOverlappingMouse(mouseTop, mouseLeft), mouseOver = collapsedBoundsOverlappingMouse;
-            return mouseOver;
           }
         },
         {
@@ -24465,91 +24529,6 @@
           }
         },
         {
-          key: "startWaitingToDrag",
-          value: function startWaitingToDrag(mouseTop, mouseLeft) {
-            var timeout = this.getTimeout();
-            if (timeout === null) {
-              timeout = setTimeout(function() {
-                this.resetTimeout();
-                var explorer = this.getExplorer(), topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry(), subEntry = !topmostDirectoryNameDraggableEntry, noDraggingSubEntriesOptionPresent = explorer.isOptionPresent(NO_DRAGGING_SUB_ENTRIES);
-                if (topmostDirectoryNameDraggableEntry) {
-                  return;
-                }
-                if (subEntry && noDraggingSubEntriesOptionPresent) {
-                  return;
-                }
-                var mouseOver = this.isMouseOver(mouseTop, mouseLeft);
-                if (mouseOver) {
-                  var startedDragging = explorer.startDragging(this);
-                  if (startedDragging) {
-                    this.startDragging(mouseTop, mouseLeft);
-                  }
-                }
-              }.bind(this), _constants.START_DRAGGING_DELAY);
-              this.updateTimeout(timeout);
-            }
-          }
-        },
-        {
-          key: "startDraggingHandler",
-          value: function startDraggingHandler(mouseTop, mouseLeft) {
-            var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(_options.ESCAPE_KEY_STOPS_DRAGGING);
-            if (escapeKeyStopsDraggingOptionPresent) {
-              this.onKeyDown(this.keyDownHandler, this);
-            }
-          }
-        },
-        {
-          key: "stopDraggingHandler",
-          value: function stopDraggingHandler(mouseTop, mouseLeft) {
-            var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(_options.ESCAPE_KEY_STOPS_DRAGGING);
-            if (escapeKeyStopsDraggingOptionPresent) {
-              this.offKeyDown(this.keyDownHandler, this);
-            }
-          }
-        },
-        {
-          key: "draggingHandler",
-          value: function draggingHandler(mouseTop, mouseLeft) {
-            var explorer = this.getExplorer(), draggableEntry = this;
-            explorer.dragging(draggableEntry);
-          }
-        },
-        {
-          key: "keyDownHandler",
-          value: function keyDownHandler(event, element) {
-            var keyCode = event.keyCode, escapeKey = keyCode === _constants.ESCAPE_KEYCODE;
-            if (escapeKey) {
-              var dragging = this.isDragging();
-              if (dragging) {
-                var explorer = this.getExplorer();
-                explorer.escapeDragging();
-                this.stopDragging();
-              }
-            }
-          }
-        },
-        {
-          key: "didMount",
-          value: function didMount() {
-            this.enableDragging();
-            this.onDragging(this.draggingHandler, this);
-            this.onStopDragging(this.stopDraggingHandler, this);
-            this.onStartDragging(this.startDraggingHandler, this);
-            this.onDoubleClick(this.doubleClickHandler, this);
-          }
-        },
-        {
-          key: "willUnmount",
-          value: function willUnmount() {
-            this.offDoubleClick(this.doubleClickHandler, this);
-            this.offStartDragging(this.startDraggingHandler, this);
-            this.offStopDragging(this.stopDraggingHandler, this);
-            this.offDragging(this.draggingHandler, this);
-            this.disableDragging();
-          }
-        },
-        {
           key: "initialise",
           value: function initialise() {
             this.assignContext();
@@ -24566,6 +24545,7 @@
       "explorer"
     ]);
     Object.assign(DraggableEntry.prototype, _draggable.default);
+    Object.assign(DraggableEntry.prototype, _draggable1.default);
     var _default = (0, _easyWithStyle2).default(DraggableEntry)(_templateObject());
     exports.default = _default;
   });
@@ -24881,7 +24861,7 @@
       value: true
     });
     exports.default = void 0;
-    var _draggable = _interopRequireDefault2(require_draggable2());
+    var _draggable = _interopRequireDefault2(require_draggable3());
     var _file = _interopRequireDefault2(require_file());
     var _name = require_name5();
     var _types = require_types2();
@@ -25459,7 +25439,7 @@
     exports.default = void 0;
     var _necessary = require_browser();
     var _toggle = _interopRequireDefault2(require_toggle());
-    var _draggable = _interopRequireDefault2(require_draggable2());
+    var _draggable = _interopRequireDefault2(require_draggable3());
     var _directory = _interopRequireDefault2(require_directory());
     var _types = require_types2();
     function _assertThisInitialized(self) {
@@ -25995,8 +25975,8 @@
           }
         },
         {
-          key: "startDragging",
-          value: function startDragging(draggableEntry) {
+          key: "hasStartedDragging",
+          value: function hasStartedDragging(draggableEntry) {
             var marked = this.isMarked(), startedDragging = !marked;
             if (startedDragging) {
               var previousDraggableEntry = null;

@@ -143,6 +143,8 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
     this.setCollapsed(collapsed);
   }
 
+
+
   childElements() {
     const { name, explorer } = this.properties,
           directoryName = name, ///

@@ -3,7 +3,7 @@
 import { window, constants } from "easy";
 
 import { mouseTopFromEvent, mouseLeftFromEvent } from "../utilities/event";
-import { BLUR, DRAGGING, STOP_DRAGGING, START_DRAGGING } from "../constants";
+import { BLUR, DRAGGING, STOP_DRAGGING, START_DRAGGING, START_DRAGGING_DELAY } from "../constants";
 
 const { LEFT_MOUSE_BUTTON } = constants;
 
@@ -75,6 +75,24 @@ function isDragging() {
   const dragging = this.hasClass("dragging");
 
   return dragging;
+}
+
+function startWaitingToDrag(mouseTop, mouseLeft) {
+  let timeout = this.getTimeout();
+
+  if (timeout === null) {
+    timeout = setTimeout(() => {
+      this.resetTimeout();
+
+      const mouseOver = this.isMouseOver(mouseTop, mouseLeft);
+
+      if (mouseOver) {
+        this.startDragging(mouseTop, mouseLeft);
+      }
+    }, START_DRAGGING_DELAY);
+
+    this.updateTimeout(timeout);
+  }
 }
 
 function stopWaitingToDrag() {
@@ -252,6 +270,7 @@ export default {
   enableDragging,
   disableDragging,
   isDragging,
+  startWaitingToDrag,
   stopWaitingToDrag,
   startDragging,
   stopDragging,

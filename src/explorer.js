@@ -134,7 +134,7 @@ class Explorer extends DropTarget {
     return toBeMarked;
   }
 
-  startDragging(draggableEntry) {
+  hasStartedDragging(draggableEntry) {
     const marked = this.isMarked(),
           startedDragging = !marked;
 
