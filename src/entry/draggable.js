@@ -8,7 +8,7 @@ import Entry from "../entry";
 import options from "../options";
 import draggableMixins from "../mixins/draggable";
 
-import { ESCAPE_KEYCODE, START_DRAGGING_DELAY } from "../constants";
+import { ESCAPE_KEYCODE, DRAGGING, STOP_DRAGGING, START_DRAGGING, START_DRAGGING_DELAY } from "../constants";
 
 const { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
@@ -64,64 +64,6 @@ class DraggableEntry extends Entry {
     }
 
     return topmostDirectoryNameDraggableEntry;
-  }
-
-  startDragging(mouseTop, mouseLeft) {
-    const explorer = this.getExplorer(),
-          escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING),
-          bounds = this.getBounds(),
-          boundsTop = bounds.getTop(),
-          boundsLeft = bounds.getLeft(),
-          topOffset = boundsTop - mouseTop,
-          leftOffset = boundsLeft - mouseLeft;
-
-    this.setTopOffset(topOffset);
-
-    this.setLeftOffset(leftOffset);
-
-    if (escapeKeyStopsDraggingOptionPresent) {
-      const keyDownHandler = this.keyDownHandler.bind(this);
-      
-      this.onKeyDown(keyDownHandler);
-    }
-
-    this.addClass("dragging");
-
-    this.dragging(mouseTop, mouseLeft);
-  }
-
-  stopDragging() {
-    const explorer = this.getExplorer(),
-          escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
-
-    if (escapeKeyStopsDraggingOptionPresent) {
-      this.offKeyDown();
-    }
-
-    this.removeClass("dragging");
-  }
-
-  dragging(mouseTop, mouseLeft) {
-    const explorer = this.getExplorer(),
-          topOffset = this.getTopOffset(),
-          leftOffset = this.getLeftOffset(),
-          windowScrollTop = window.getScrollTop(),
-          windowScrollLeft = window.getScrollLeft();
-
-    let top = mouseTop + topOffset - windowScrollTop,
-        left = mouseLeft + leftOffset - windowScrollLeft;
-
-    top = `${top}px`; ///
-    left = `${left}px`; ///
-
-    const css = {
-      top,
-      left
-    };
-
-    this.css(css);
-
-    explorer.dragging(this);
   }
 
   startWaitingToDrag(mouseTop, mouseLeft) {

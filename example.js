@@ -24022,21 +24022,6 @@
     exports.default = FileNameMarkerEntry;
   });
 
-  // lib/constants.js
-  var require_constants6 = __commonJS((exports) => {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", {
-      value: true
-    });
-    exports.BLUR = exports.START_DRAGGING_DELAY = exports.ESCAPE_KEYCODE = void 0;
-    var BLUR = "blur";
-    exports.BLUR = BLUR;
-    var ESCAPE_KEYCODE = 27;
-    exports.ESCAPE_KEYCODE = ESCAPE_KEYCODE;
-    var START_DRAGGING_DELAY = 175;
-    exports.START_DRAGGING_DELAY = START_DRAGGING_DELAY;
-  });
-
   // lib/utilities/event.js
   var require_event2 = __commonJS((exports) => {
     "use strict";
@@ -24045,15 +24030,35 @@
     });
     exports.mouseTopFromEvent = mouseTopFromEvent;
     exports.mouseLeftFromEvent = mouseLeftFromEvent;
-    var _easy2 = require_lib();
     function mouseTopFromEvent(event) {
-      var pageY = event.pageY, scrollTop = _easy2.window.getScrollTop(), mouseTop = pageY + scrollTop;
+      var pageY = event.pageY, mouseTop = pageY;
       return mouseTop;
     }
     function mouseLeftFromEvent(event) {
-      var pageX = event.pageX, scrollLeft = _easy2.window.getScrollLeft(), mouseLeft = pageX + scrollLeft;
+      var pageX = event.pageX, mouseLeft = pageX;
       return mouseLeft;
     }
+  });
+
+  // lib/constants.js
+  var require_constants6 = __commonJS((exports) => {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    exports.BLUR = exports.STOP_DRAGGING = exports.ESCAPE_KEYCODE = exports.DRAGGING = exports.START_DRAGGING = exports.START_DRAGGING_DELAY = void 0;
+    var BLUR = "blur";
+    exports.BLUR = BLUR;
+    var DRAGGING = "dragging";
+    exports.DRAGGING = DRAGGING;
+    var STOP_DRAGGING = "stopdragging";
+    exports.STOP_DRAGGING = STOP_DRAGGING;
+    var START_DRAGGING = "startdragging";
+    exports.START_DRAGGING = START_DRAGGING;
+    var ESCAPE_KEYCODE = 27;
+    exports.ESCAPE_KEYCODE = ESCAPE_KEYCODE;
+    var START_DRAGGING_DELAY = 175;
+    exports.START_DRAGGING_DELAY = START_DRAGGING_DELAY;
   });
 
   // lib/mixins/draggable.js
@@ -24064,8 +24069,8 @@
     });
     exports.default = void 0;
     var _easy2 = require_lib();
-    var _constants = require_constants6();
     var _event = require_event2();
+    var _constants = require_constants6();
     var LEFT_MOUSE_BUTTON = _easy2.constants.LEFT_MOUSE_BUTTON;
     function enableDragging() {
       var timeout = null, topOffset = null, leftOffset = null, startMouseTop = null, startMouseLeft = null;
@@ -24082,12 +24087,48 @@
       this.offMouseDown(mouseDownHandler, this);
     }
     function isDragging() {
-      var dragging = this.hasClass("dragging");
-      return dragging;
+      var dragging2 = this.hasClass("dragging");
+      return dragging2;
     }
     function getTimeout() {
       var state = this.getState(), timeout = state.timeout;
       return timeout;
+    }
+    function startDragging(mouseTop, mouseLeft) {
+      var bounds = this.getBounds(), eventType = _constants.START_DRAGGING, boundsTop = bounds.getTop(), boundsLeft = bounds.getLeft(), topOffset = mouseTop - boundsTop, leftOffset = mouseLeft - boundsLeft, startMouseTop = mouseTop, startMouseLeft = mouseLeft, relativeMouseTop = mouseTop - startMouseTop, relativeMouseLeft = mouseLeft - startMouseLeft;
+      this.addClass("dragging");
+      this.setTopOffset(topOffset);
+      this.setLeftOffset(leftOffset);
+      this.setStartMouseTop(startMouseTop);
+      this.setStartMouseLeft(startMouseLeft);
+      this.callHandlers(eventType, relativeMouseTop, relativeMouseLeft);
+      this.dragging(mouseTop, mouseLeft);
+    }
+    function stopDragging(mouseTop, mouseLeft) {
+      var eventType = _constants.STOP_DRAGGING, startMouseTop = this.getStartMouseTop(), startMouseLeft = this.getStartMouseLeft(), relativeMouseTop = mouseTop - startMouseTop, relativeMouseLeft = mouseLeft - startMouseLeft;
+      this.callHandlers(eventType, relativeMouseTop, relativeMouseLeft);
+      this.removeClass("dragging");
+    }
+    function dragging(mouseTop, mouseLeft) {
+      var eventType = _constants.DRAGGING, scrollTop = _easy2.window.getScrollTop(), scrollLeft = _easy2.window.getScrollLeft(), topOffset = this.getTopOffset(), leftOffset = this.getLeftOffset(), startMouseTop = this.getStartMouseTop(), startMouseLeft = this.getStartMouseLeft(), relativeMouseTop = mouseTop - startMouseTop, relativeMouseLeft = mouseLeft - startMouseLeft;
+      var top = startMouseTop + relativeMouseTop - topOffset - scrollTop, left = startMouseLeft + relativeMouseLeft - leftOffset - scrollLeft;
+      top = "".concat(top, "px");
+      left = "".concat(left, "px");
+      var css = {
+        top,
+        left
+      };
+      this.css(css);
+      this.callHandlers(eventType, relativeMouseTop, relativeMouseLeft);
+      var explorer = this.getExplorer();
+      explorer.dragging(this);
+    }
+    function callHandlers(eventType, relativeMouseTop, relativeMouseLeft) {
+      var eventListeners = this.findEventListeners(eventType);
+      eventListeners.forEach(function(eventListener) {
+        var handler = eventListener.handler, element = eventListener.element;
+        handler.call(element, relativeMouseTop, relativeMouseLeft);
+      });
     }
     function resetTimeout() {
       var timeout = null;
@@ -24106,6 +24147,14 @@
       var state = this.getState(), leftOffset = state.leftOffset;
       return leftOffset;
     }
+    function getStartMouseTop() {
+      var state = this.getState(), startMouseTop = state.startMouseTop;
+      return startMouseTop;
+    }
+    function getStartMouseLeft() {
+      var state = this.getState(), startMouseLeft = state.startMouseLeft;
+      return startMouseLeft;
+    }
     function setTopOffset(topOffset) {
       this.updateState({
         topOffset
@@ -24116,25 +24165,43 @@
         leftOffset
       });
     }
+    function setStartMouseTop(startMouseTop) {
+      this.updateState({
+        startMouseTop
+      });
+    }
+    function setStartMouseLeft(startMouseLeft) {
+      this.updateState({
+        startMouseLeft
+      });
+    }
     var _default = {
       enableDragging,
       disableDragging,
       isDragging,
       getTimeout,
+      startDragging,
+      stopDragging,
+      dragging,
+      callHandlers,
       resetTimeout,
       updateTimeout,
       getTopOffset,
       getLeftOffset,
+      getStartMouseTop,
+      getStartMouseLeft,
       setTopOffset,
-      setLeftOffset
+      setLeftOffset,
+      setStartMouseTop,
+      setStartMouseLeft
     };
     exports.default = _default;
     function mouseUpHandler(event, element) {
       _easy2.window.off(_constants.BLUR, mouseUpHandler, this);
       _easy2.window.offMouseUp(mouseUpHandler, this);
       _easy2.window.offMouseMove(mouseMoveHandler, this);
-      var dragging = this.isDragging();
-      if (dragging) {
+      var dragging1 = this.isDragging();
+      if (dragging1) {
         var explorer = this.getExplorer(), draggableEntry = this;
         explorer.stopDragging(draggableEntry, function() {
           this.stopDragging();
@@ -24149,17 +24216,17 @@
       _easy2.window.onMouseUp(mouseUpHandler, this);
       _easy2.window.onMouseMove(mouseMoveHandler, this);
       if (button === LEFT_MOUSE_BUTTON) {
-        var dragging = this.isDragging();
-        if (!dragging) {
+        var dragging1 = this.isDragging();
+        if (!dragging1) {
           var mouseTop = (0, _event).mouseTopFromEvent(event), mouseLeft = (0, _event).mouseLeftFromEvent(event);
           this.startWaitingToDrag(mouseTop, mouseLeft);
         }
       }
     }
     function mouseMoveHandler(event, element) {
-      var pageX = event.pageX, pageY = event.pageY, mouseTop = pageY, mouseLeft = pageX;
-      var dragging = this.isDragging();
-      if (dragging) {
+      var dragging2 = this.isDragging();
+      if (dragging2) {
+        var mouseTop = (0, _event).mouseTopFromEvent(event), mouseLeft = (0, _event).mouseLeftFromEvent(event);
         this.dragging(mouseTop, mouseLeft);
       }
     }
@@ -24335,45 +24402,6 @@
               }
             }
             return topmostDirectoryNameDraggableEntry;
-          }
-        },
-        {
-          key: "startDragging",
-          value: function startDragging(mouseTop, mouseLeft) {
-            var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING), bounds = this.getBounds(), boundsTop = bounds.getTop(), boundsLeft = bounds.getLeft(), topOffset = boundsTop - mouseTop, leftOffset = boundsLeft - mouseLeft;
-            this.setTopOffset(topOffset);
-            this.setLeftOffset(leftOffset);
-            if (escapeKeyStopsDraggingOptionPresent) {
-              var keyDownHandler = this.keyDownHandler.bind(this);
-              this.onKeyDown(keyDownHandler);
-            }
-            this.addClass("dragging");
-            this.dragging(mouseTop, mouseLeft);
-          }
-        },
-        {
-          key: "stopDragging",
-          value: function stopDragging() {
-            var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
-            if (escapeKeyStopsDraggingOptionPresent) {
-              this.offKeyDown();
-            }
-            this.removeClass("dragging");
-          }
-        },
-        {
-          key: "dragging",
-          value: function dragging(mouseTop, mouseLeft) {
-            var explorer = this.getExplorer(), topOffset = this.getTopOffset(), leftOffset = this.getLeftOffset(), windowScrollTop = _easy2.window.getScrollTop(), windowScrollLeft = _easy2.window.getScrollLeft();
-            var top = mouseTop + topOffset - windowScrollTop, left = mouseLeft + leftOffset - windowScrollLeft;
-            top = "".concat(top, "px");
-            left = "".concat(left, "px");
-            var css = {
-              top,
-              left
-            };
-            this.css(css);
-            explorer.dragging(this);
           }
         },
         {
