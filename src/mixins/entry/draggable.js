@@ -8,11 +8,20 @@ import { ESCAPE_KEYCODE } from "../../constants";
 const { startDragging: superStartDragging } = draggableMixins,
       { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
-function getCollapsedBounds() {
-  const bounds = this.getBounds(),
-        collapsedBounds = bounds;  ///
+function didMount() {
+  this.enableDragging();
 
-  return collapsedBounds;
+  this.onDragging(draggingHandler, this);
+  this.onStopDragging(stopDraggingHandler, this);
+  this.onStartDragging(startDraggingHandler, this);
+}
+
+function willUnmount() {
+  this.offStartDragging(startDraggingHandler, this);
+  this.offStopDragging(stopDraggingHandler, this);
+  this.offDragging(draggingHandler, this);
+
+  this.disableDragging();
 }
 
 function isMouseOver(mouseTop, mouseLeft) {
@@ -46,6 +55,21 @@ function startDragging(mouseTop, mouseLeft) {
   superStartDragging.call(this, mouseTop, mouseLeft);
 }
 
+function getCollapsedBounds() {
+  const bounds = this.getBounds(),
+        collapsedBounds = bounds;  ///
+
+  return collapsedBounds;
+}
+
+module.exports = {
+  didMount,
+  willUnmount,
+  isMouseOver,
+  startDragging,
+  getCollapsedBounds
+};
+
 function keyDownHandler(event, element) {
   const { keyCode } = event,
         escapeKey = (keyCode === ESCAPE_KEYCODE);
@@ -75,7 +99,7 @@ function stopDraggingHandler(mouseTop, mouseLeft) {
         escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
 
   if (escapeKeyStopsDraggingOptionPresent) {
-    this.offKeyDown(this.keyDownHandler, this);
+    this.offKeyDown(keyDownHandler, this);
   }
 }
 
@@ -84,34 +108,6 @@ function startDraggingHandler(mouseTop, mouseLeft) {
         escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
 
   if (escapeKeyStopsDraggingOptionPresent) {
-    this.onKeyDown(this.keyDownHandler, this);
+    this.onKeyDown(keyDownHandler, this);
   }
 }
-
-function didMount() {
-  this.enableDragging();
-
-  this.onDragging(this.draggingHandler, this);
-  this.onStopDragging(this.stopDraggingHandler, this);
-  this.onStartDragging(this.startDraggingHandler, this);
-}
-
-function willUnmount() {
-  this.offStartDragging(this.startDraggingHandler, this);
-  this.offStopDragging(this.stopDraggingHandler, this);
-  this.offDragging(this.draggingHandler, this);
-
-  this.disableDragging();
-}
-
-module.exports = {
-  getCollapsedBounds,
-  isMouseOver,
-  startDragging,
-  keyDownHandler,
-  draggingHandler,
-  stopDraggingHandler,
-  startDraggingHandler,
-  didMount,
-  willUnmount
-};

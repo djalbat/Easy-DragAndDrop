@@ -24301,9 +24301,17 @@
     var superStartDragging = _draggable.default.startDragging;
     var NO_DRAGGING_SUB_ENTRIES = _options.default.NO_DRAGGING_SUB_ENTRIES;
     var ESCAPE_KEY_STOPS_DRAGGING = _options.default.ESCAPE_KEY_STOPS_DRAGGING;
-    function getCollapsedBounds() {
-      var bounds = this.getBounds(), collapsedBounds = bounds;
-      return collapsedBounds;
+    function didMount() {
+      this.enableDragging();
+      this.onDragging(draggingHandler, this);
+      this.onStopDragging(stopDraggingHandler, this);
+      this.onStartDragging(startDraggingHandler, this);
+    }
+    function willUnmount() {
+      this.offStartDragging(startDraggingHandler, this);
+      this.offStopDragging(stopDraggingHandler, this);
+      this.offDragging(draggingHandler, this);
+      this.disableDragging();
     }
     function isMouseOver(mouseTop, mouseLeft) {
       var collapsedBounds = this.getCollapsedBounds(), collapsedBoundsOverlappingMouse = collapsedBounds.isOverlappingMouse(mouseTop, mouseLeft), mouseOver = collapsedBoundsOverlappingMouse;
@@ -24322,6 +24330,17 @@
       }
       superStartDragging.call(this, mouseTop, mouseLeft);
     }
+    function getCollapsedBounds() {
+      var bounds = this.getBounds(), collapsedBounds = bounds;
+      return collapsedBounds;
+    }
+    module.exports = {
+      didMount,
+      willUnmount,
+      isMouseOver,
+      startDragging,
+      getCollapsedBounds
+    };
     function keyDownHandler(event, element) {
       var keyCode = event.keyCode, escapeKey = keyCode === _constants.ESCAPE_KEYCODE;
       if (escapeKey) {
@@ -24340,38 +24359,15 @@
     function stopDraggingHandler(mouseTop, mouseLeft) {
       var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
       if (escapeKeyStopsDraggingOptionPresent) {
-        this.offKeyDown(this.keyDownHandler, this);
+        this.offKeyDown(keyDownHandler, this);
       }
     }
     function startDraggingHandler(mouseTop, mouseLeft) {
       var explorer = this.getExplorer(), escapeKeyStopsDraggingOptionPresent = explorer.isOptionPresent(ESCAPE_KEY_STOPS_DRAGGING);
       if (escapeKeyStopsDraggingOptionPresent) {
-        this.onKeyDown(this.keyDownHandler, this);
+        this.onKeyDown(keyDownHandler, this);
       }
     }
-    function didMount() {
-      this.enableDragging();
-      this.onDragging(this.draggingHandler, this);
-      this.onStopDragging(this.stopDraggingHandler, this);
-      this.onStartDragging(this.startDraggingHandler, this);
-    }
-    function willUnmount() {
-      this.offStartDragging(this.startDraggingHandler, this);
-      this.offStopDragging(this.stopDraggingHandler, this);
-      this.offDragging(this.draggingHandler, this);
-      this.disableDragging();
-    }
-    module.exports = {
-      getCollapsedBounds,
-      isMouseOver,
-      startDragging,
-      keyDownHandler,
-      draggingHandler,
-      stopDraggingHandler,
-      startDraggingHandler,
-      didMount,
-      willUnmount
-    };
   });
 
   // lib/entry/draggable.js
@@ -26302,7 +26298,7 @@
     };
     function _templateObject() {
       var data = _taggedTemplateLiteral([
-        '\n\n  background-image: url("css/image/rubbish-bin.png");\n  background-repeat: no-repeat;\n  width: 4rem;\n  height: 4rem;\n  \n  .open {\n    background-image: url("css/image/open-rubbish-bin.png");\n  }\n\n'
+        '\n\n  width: 4rem;\n  height: 4rem;\n  background-image: url("css/image/rubbish-bin.png");\n  background-repeat: no-repeat;\n  \n  .open {\n    background-image: url("css/image/open-rubbish-bin.png");\n  }\n\n'
       ]);
       _templateObject = function _templateObject2() {
         return data;
@@ -27052,7 +27048,7 @@
     };
     function _templateObject() {
       var data = _taggedTemplateLiteral([
-        "\n\n  font-size: 1.2rem;\n  font-weight: bold;\n  font-family: monospace;\n  \n"
+        "\n\n  grid-area: explorer;\n  font-size: 1.2rem;\n  font-weight: bold;\n  font-family: monospace;\n  \n"
       ]);
       _templateObject = function _templateObject2() {
         return data;
@@ -27078,6 +27074,43 @@
     exports.default = _default;
   });
 
+  // lib/example/rubbishBin.js
+  var require_rubbishBin2 = __commonJS((exports) => {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    exports.default = void 0;
+    var _easyWithStyle2 = _interopRequireDefault2(require_lib6());
+    var _index = require_lib7();
+    function _interopRequireDefault2(obj) {
+      return obj && obj.__esModule ? obj : {
+        default: obj
+      };
+    }
+    function _taggedTemplateLiteral(strings, raw) {
+      if (!raw) {
+        raw = strings.slice(0);
+      }
+      return Object.freeze(Object.defineProperties(strings, {
+        raw: {
+          value: Object.freeze(raw)
+        }
+      }));
+    }
+    function _templateObject() {
+      var data = _taggedTemplateLiteral([
+        "\n\n  grid-area: rubbish-bin;\n  \n"
+      ]);
+      _templateObject = function _templateObject2() {
+        return data;
+      };
+      return data;
+    }
+    var _default = (0, _easyWithStyle2).default(_index.RubbishBin)(_templateObject());
+    exports.default = _default;
+  });
+
   // lib/example/view.js
   var require_view = __commonJS((exports) => {
     "use strict";
@@ -27085,19 +27118,39 @@
       value: true
     });
     exports.default = void 0;
-    var _index = require_lib7();
+    var _easyWithStyle2 = _interopRequireDefault2(require_lib6());
     var _explorer = _interopRequireDefault2(require_explorer2());
+    var _rubbishBin = _interopRequireDefault2(require_rubbishBin2());
     function _interopRequireDefault2(obj) {
       return obj && obj.__esModule ? obj : {
         default: obj
       };
     }
+    function _taggedTemplateLiteral(strings, raw) {
+      if (!raw) {
+        raw = strings.slice(0);
+      }
+      return Object.freeze(Object.defineProperties(strings, {
+        raw: {
+          value: Object.freeze(raw)
+        }
+      }));
+    }
+    function _templateObject() {
+      var data = _taggedTemplateLiteral([
+        '\n\n  display: grid;\n  min-height: 100vh;\n      \n  grid-template-rows: auto auto auto;\n  grid-template-columns: auto auto auto;  \n  grid-template-areas:\n  \n       "rubbish-bin . ."\n    \n        ". explorer ."        \n    \n           ". . ."\n    \n  ;\n\n'
+      ]);
+      _templateObject = function _templateObject2() {
+        return data;
+      };
+      return data;
+    }
     var View = function(properties) {
-      var explorer = /* @__PURE__ */ React.createElement(_explorer.default, {
+      var className = properties.className, explorer = /* @__PURE__ */ React.createElement(_explorer.default, {
         topmostDirectoryName: "explorer",
         onOpen: openHandler,
         onMove: moveHandler
-      }), rubbishBin = /* @__PURE__ */ React.createElement(_index.RubbishBin, {
+      }), rubbishBin = /* @__PURE__ */ React.createElement(_rubbishBin.default, {
         onRemove: removeHandler
       });
       explorer.addDirectoryPath("explorer/directory1");
@@ -27108,10 +27161,10 @@
       explorer.addDropTarget(rubbishBin);
       rubbishBin.addDropTarget(explorer);
       return /* @__PURE__ */ React.createElement("div", {
-        className: "view"
+        className: "".concat(className, " view")
       }, explorer, rubbishBin);
     };
-    var _default = View;
+    var _default = (0, _easyWithStyle2).default(View)(_templateObject());
     exports.default = _default;
     function openHandler(filePath) {
       alert(filePath);

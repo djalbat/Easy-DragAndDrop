@@ -151,10 +151,10 @@ class RubbishBin extends DropTarget {
 
 export default withStyle(RubbishBin)`
 
-  background-image: url("css/image/rubbish-bin.png");
-  background-repeat: no-repeat;
   width: 4rem;
   height: 4rem;
+  background-image: url("css/image/rubbish-bin.png");
+  background-repeat: no-repeat;
   
   .open {
     background-image: url("css/image/open-rubbish-bin.png");

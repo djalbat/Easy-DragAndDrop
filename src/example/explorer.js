@@ -22,6 +22,7 @@ export default withStyle(class extends Explorer {
   static DirectoryNameDraggableEntry = DirectoryNameDraggableEntry;
 })`
 
+  grid-area: explorer;
   font-size: 1.2rem;
   font-weight: bold;
   font-family: monospace;

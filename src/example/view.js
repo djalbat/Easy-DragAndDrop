@@ -1,11 +1,13 @@
 "use strict";
 
-import { RubbishBin } from "../index";  ///
+import withStyle from "easy-with-style";  ///
 
 import Explorer from "./explorer";
+import RubbishBin from "./rubbishBin";
 
 const View = (properties) => {
-  const explorer =
+  const { className } = properties,
+        explorer =
 
           <Explorer topmostDirectoryName="explorer" onOpen={openHandler} onMove={moveHandler} />
 
@@ -28,7 +30,7 @@ const View = (properties) => {
 
   return (
 
-    <div className="view">
+    <div className={`${className} view`}>
       {explorer}
       {rubbishBin}
     </div>
@@ -36,7 +38,24 @@ const View = (properties) => {
   );
 };
 
-export default View;
+export default withStyle(View)`
+
+  display: grid;
+  min-height: 100vh;
+      
+  grid-template-rows: auto auto auto;
+  grid-template-columns: auto auto auto;  
+  grid-template-areas:
+  
+       "rubbish-bin . ."
+    
+        ". explorer ."        
+    
+           ". . ."
+    
+  ;
+
+`;
 
 function openHandler(filePath) {
   alert(filePath)
