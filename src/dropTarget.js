@@ -3,6 +3,8 @@
 import { Element } from "easy";
 import { arrayUtilities } from "necessary";
 
+import dropMixins from "./mixins/drop";
+
 import { REMOVE_EMPTY_PARENT_DIRECTORIES } from "./options";
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE } from "./types";
 
@@ -13,14 +15,6 @@ export default class DropTarget extends Element {
     super(selector);
 
     this.moveHandler = moveHandler;
-  }
-
-  isOverlappingDragEntry(dragEntryCollapsedBounds) {
-    const bounds = this.getBounds(),
-          boundsOverlappingDragEntry = bounds.areOverlapping(dragEntryCollapsedBounds),
-          overlappingDragEntry = boundsOverlappingDragEntry;
-
-    return overlappingDragEntry;
   }
 
   getDropTargetToBeMarked(dragEntry) {
@@ -148,45 +142,11 @@ export default class DropTarget extends Element {
     return dragEntry;
   }
   
-  addDropTarget(dropTarget, reciprocated = false) {
-    const state = this.getState(),
-          { dropTargets } = state;
-
-    dropTargets.push(dropTarget);
-
-    if (reciprocated) {
-      dropTarget.addDropTarget(this); ///
-    }
-  }
-
-  removeDropTarget(dropTarget, reciprocated = false) {
-    const state = this.getState(),
-          { dropTargets } = state,
-          index = dropTargets.indexOf(dropTarget);
-
-    if (index !== -1) {
-      const start = index,  ///
-            deleteCount = 1;
-      
-      dropTargets.splice(start, deleteCount);
-    }
-
-    if (reciprocated) {
-      dropTarget.removeDropTarget(this); ///
-    }
-  }
-
-  initialise() {
-    const dropTargets = [];
-
-    this.setState({
-      dropTargets
-    });
-  }
-
   static fromClass(Class, properties, moveHandler, ...remainingArguments) {
     const dropTarget = Element.fromClass(Class, properties, moveHandler, ...remainingArguments);
 
     return dropTarget;
   }
 }
+
+Object.assign(DropTarget.prototype, dropMixins);

@@ -23179,6 +23179,46 @@
     exports.default = _default;
   });
 
+  // lib/mixins/drop.js
+  var require_drop = __commonJS((exports, module) => {
+    "use strict";
+    function initialise() {
+      var dropTargets = [];
+      this.setState({
+        dropTargets
+      });
+    }
+    function addDropTarget(dropTarget, param) {
+      var reciprocated = param === void 0 ? false : param;
+      var state = this.getState(), dropTargets = state.dropTargets;
+      dropTargets.push(dropTarget);
+      if (reciprocated) {
+        dropTarget.addDropTarget(this);
+      }
+    }
+    function removeDropTarget(dropTarget, param) {
+      var reciprocated = param === void 0 ? false : param;
+      var state = this.getState(), dropTargets = state.dropTargets, index = dropTargets.indexOf(dropTarget);
+      if (index !== -1) {
+        var start = index, deleteCount = 1;
+        dropTargets.splice(start, deleteCount);
+      }
+      if (reciprocated) {
+        dropTarget.removeDropTarget(this);
+      }
+    }
+    function isOverlappingDragEntry(dragEntryCollapsedBounds) {
+      var bounds = this.getBounds(), boundsOverlappingDragEntry = bounds.areOverlapping(dragEntryCollapsedBounds), overlappingDragEntry = boundsOverlappingDragEntry;
+      return overlappingDragEntry;
+    }
+    module.exports = {
+      initialise,
+      addDropTarget,
+      removeDropTarget,
+      isOverlappingDragEntry
+    };
+  });
+
   // lib/dropTarget.js
   var require_dropTarget = __commonJS((exports) => {
     "use strict";
@@ -23188,6 +23228,7 @@
     exports.default = void 0;
     var _easy2 = require_lib();
     var _necessary = require_browser();
+    var _drop = _interopRequireDefault2(require_drop());
     var _options = require_options();
     var _types = require_types2();
     function _arrayWithoutHoles(arr) {
@@ -23279,6 +23320,11 @@
       if (superClass)
         _setPrototypeOf(subClass, superClass);
     }
+    function _interopRequireDefault2(obj) {
+      return obj && obj.__esModule ? obj : {
+        default: obj
+      };
+    }
     function _isNativeFunction(fn) {
       return Function.toString.call(fn).indexOf("[native code]") !== -1;
     }
@@ -23349,13 +23395,6 @@
         return _this;
       }
       _createClass(DropTarget2, [
-        {
-          key: "isOverlappingDragEntry",
-          value: function isOverlappingDragEntry(dragEntryCollapsedBounds) {
-            var bounds = this.getBounds(), boundsOverlappingDragEntry = bounds.areOverlapping(dragEntryCollapsedBounds), overlappingDragEntry = boundsOverlappingDragEntry;
-            return overlappingDragEntry;
-          }
-        },
         {
           key: "getDropTargetToBeMarked",
           value: function getDropTargetToBeMarked(dragEntry) {
@@ -23450,40 +23489,6 @@
             }
             return dragEntry;
           }
-        },
-        {
-          key: "addDropTarget",
-          value: function addDropTarget(dropTarget, param) {
-            var reciprocated = param === void 0 ? false : param;
-            var state = this.getState(), dropTargets = state.dropTargets;
-            dropTargets.push(dropTarget);
-            if (reciprocated) {
-              dropTarget.addDropTarget(this);
-            }
-          }
-        },
-        {
-          key: "removeDropTarget",
-          value: function removeDropTarget(dropTarget, param) {
-            var reciprocated = param === void 0 ? false : param;
-            var state = this.getState(), dropTargets = state.dropTargets, index = dropTargets.indexOf(dropTarget);
-            if (index !== -1) {
-              var start = index, deleteCount = 1;
-              dropTargets.splice(start, deleteCount);
-            }
-            if (reciprocated) {
-              dropTarget.removeDropTarget(this);
-            }
-          }
-        },
-        {
-          key: "initialise",
-          value: function initialise() {
-            var dropTargets = [];
-            this.setState({
-              dropTargets
-            });
-          }
         }
       ], [
         {
@@ -23504,6 +23509,7 @@
       return DropTarget2;
     }(_wrapNativeSuper(_easy2.Element));
     exports.default = DropTarget;
+    Object.assign(DropTarget.prototype, _drop.default);
   });
 
   // lib/entry.js
