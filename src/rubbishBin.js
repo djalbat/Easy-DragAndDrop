@@ -21,7 +21,7 @@ class RubbishBin extends DropTarget {
     return open;
   }
 
-  mark(draggableEntry, previousDraggableEntry) {
+  mark(dragEntry, previousDragEntry) {
     this.open();
   }
 
@@ -36,76 +36,76 @@ class RubbishBin extends DropTarget {
     return marked;
   }
 
-  isToBeMarked(draggableEntry) {
+  isToBeMarked(dragEntry) {
     const bounds = this.getBounds(),
-          draggableEntryCollapsedBounds = draggableEntry.getCollapsedBounds(),
-          overlappingDraggableEntryCollapsedBounds = bounds.areOverlapping(draggableEntryCollapsedBounds),
-          toBeMarked = overlappingDraggableEntryCollapsedBounds; ///
+          dragEntryCollapsedBounds = dragEntry.getCollapsedBounds(),
+          overlappingDragEntryCollapsedBounds = bounds.areOverlapping(dragEntryCollapsedBounds),
+          toBeMarked = overlappingDragEntryCollapsedBounds; ///
 
     return toBeMarked;
   }
 
-  dragging(draggableEntry) {
-    const explorer = draggableEntry.getExplorer(),
+  dragging(dragEntry) {
+    const explorer = dragEntry.getExplorer(),
           markedDropTarget = this.getMarkedDropTarget();
 
     if (markedDropTarget !== this) {
       return;
     }
 
-    const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
+    const dropTargetToBeMarked = this.getDropTargetToBeMarked(dragEntry);
 
     if (dropTargetToBeMarked === this) {
       ///
     } else if (dropTargetToBeMarked !== null) {
-      dropTargetToBeMarked.markDraggableEntry(draggableEntry);
+      dropTargetToBeMarked.markDragEntry(dragEntry);
 
       this.unmark();
     } else {
       const dropTargetToBeMarked = explorer,  ///
-            previousDraggableEntry = null;
+            previousDragEntry = null;
 
-      dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
+      dropTargetToBeMarked.mark(dragEntry, previousDragEntry);
 
       this.unmark();
     }
   }
 
-  markDraggableEntry(draggableEntry) {
-    const previousDraggableEntry = null;
+  markDragEntry(dragEntry) {
+    const previousDragEntry = null;
 
-    this.mark(draggableEntry, previousDraggableEntry);
+    this.mark(dragEntry, previousDragEntry);
   }
 
-  moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath) {
-    const draggableEntry = null;
+  moveFileNameDragEntry(fileNameDragEntry, sourceFilePath, targetFilePath) {
+    const dragEntry = null;
 
     if (targetFilePath === null) {
-      const explorer = fileNameDraggableEntry.getExplorer(),
+      const explorer = fileNameDragEntry.getExplorer(),
             filePath = sourceFilePath;  ///
 
       explorer.removeFilePath(filePath);
     }
 
-    return draggableEntry;
+    return dragEntry;
   }
 
-  moveDirectoryNameDraggableEntry(directoryNameDraggableEntry, sourceDirectoryPath, targetDirectoryPath) {
-    const draggableEntry = null;
+  moveDirectoryNameDragEntry(directoryNameDragEntry, sourceDirectoryPath, targetDirectoryPath) {
+    const dragEntry = null;
 
     if (targetDirectoryPath === null) {
-      const explorer = directoryNameDraggableEntry.getExplorer(),
+      const explorer = directoryNameDragEntry.getExplorer(),
             directoryPath = sourceDirectoryPath;  ///
 
       explorer.removeDirectoryPath(directoryPath);
     }
 
-    return draggableEntry;
+    return dragEntry;
   }
 
-  pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
-    const pathMaps = draggableEntries.map((draggableEntry) => {
-      const pathMap = pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath);
+  pathMapsFromDragEntries(dragEntries, sourcePath, targetPath) {
+    const pathMaps = dragEntries.map((dragEntry) => {
+      const pathMap = pathMapFromDragEntry(dragEntry, sourcePath, targetPath);
       
       return pathMap;
     });
@@ -113,16 +113,16 @@ class RubbishBin extends DropTarget {
     return pathMaps;
   }
 
-  retrieveMarkedDirectoryNameDraggableEntry() {
-    const markedDirectoryNameDraggableEntry = null; ///
+  retrieveMarkedDirectoryNameDragEntry() {
+    const markedDirectoryNameDragEntry = null; ///
 
-    return markedDirectoryNameDraggableEntry;
+    return markedDirectoryNameDragEntry;
   }
 
-  retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry) {
-    const bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = null; ///
+  retrieveBottommostDirectoryNameDragEntryOverlappingDragEntry(dragEntry) {
+    const bottommostDirectoryNameDragEntryOverlappingDragEntry = null; ///
 
-    return bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;
+    return bottommostDirectoryNameDragEntryOverlappingDragEntry;
   }
 
   initialise() {
@@ -166,15 +166,15 @@ function defaultRemoveHandler(pathMaps, done) {
   done();
 }
 
-function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
-  const draggableEntryPath = draggableEntry.getPath(),
-        draggableEntryType = draggableEntry.getType(),
-        draggableEntryDirectoryNameDraggableEntry = (draggableEntryType === DIRECTORY_NAME_TYPE),
-        directory = draggableEntryDirectoryNameDraggableEntry;  ///
+function pathMapFromDragEntry(dragEntry, sourcePath, targetPath) {
+  const dragEntryPath = dragEntry.getPath(),
+        dragEntryType = dragEntry.getType(),
+        dragEntryDirectoryNameDragEntry = (dragEntryType === DIRECTORY_NAME_TYPE),
+        directory = dragEntryDirectoryNameDragEntry;  ///
 
   targetPath = null;  ///
 
-  sourcePath = draggableEntryPath;  ///
+  sourcePath = dragEntryPath;  ///
 
   const pathMap = {
     sourcePath,

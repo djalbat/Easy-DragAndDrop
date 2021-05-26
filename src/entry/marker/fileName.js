@@ -8,17 +8,17 @@ import { FILE_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_TYPE } from "../.
 export default class FileNameMarkerEntry extends MarkerEntry {
   type = FILE_NAME_MARKER_TYPE;
 
-  isBefore(draggableEntry) {
+  isBefore(dragEntry) {
     let before;
 
-    const draggableEntryType = draggableEntry.getType();
+    const dragEntryType = dragEntry.getType();
 
-    switch (draggableEntryType) {
+    switch (dragEntryType) {
       case FILE_NAME_TYPE:
         const name = this.getName(),
-              draggableEntryName = draggableEntry.getName();
+              dragEntryName = dragEntry.getName();
 
-        before = nameIsBeforeEntryName(name, draggableEntryName);
+        before = nameIsBeforeEntryName(name, dragEntryName);
         break;
 
       case DIRECTORY_NAME_TYPE:

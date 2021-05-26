@@ -6,10 +6,10 @@ import { pathUtilities, arrayUtilities } from "necessary";
 
 import Entries from "./entries";
 import DropTarget from "./dropTarget";
+import FileNameDragEntry from "./entry/drag/fileName";
 import FileNameMarkerEntry from "./entry/marker/fileName";
-import FileNameDraggableEntry from "./entry/draggable/fileName";
+import DirectoryNameDragEntry from "./entry/drag/directoryName";
 import DirectoryNameMarkerEntry from "./entry/marker/directoryName";
-import DirectoryNameDraggableEntry from "./entry/draggable/directoryName";
 
 import { NO_DRAGGING_WITHIN } from "./options";
 import { DIRECTORY_NAME_TYPE } from "./types";
@@ -57,9 +57,9 @@ class Explorer extends DropTarget {
   }
 
   getTopmostDirectoryName() {
-    const topmostDirectoryNameDraggableEntry = this.findTopmostDirectoryNameDraggableEntry(),
-          topmostDirectoryNameDraggableEntryName = topmostDirectoryNameDraggableEntry.getName(),
-          topmostDirectoryName = topmostDirectoryNameDraggableEntryName;  ///
+    const topmostDirectoryNameDragEntry = this.findTopmostDirectoryNameDragEntry(),
+          topmostDirectoryNameDragEntryName = topmostDirectoryNameDragEntry.getName(),
+          topmostDirectoryName = topmostDirectoryNameDragEntryName;  ///
 
     return topmostDirectoryName;
   }
@@ -76,10 +76,10 @@ class Explorer extends DropTarget {
     return FileNameMarkerEntry;
   }
 
-  getFileNameDraggableEntry() {
-    const { FileNameDraggableEntry } = this.constructor;
+  getFileNameDragEntry() {
+    const { FileNameDragEntry } = this.constructor;
 
-    return FileNameDraggableEntry;
+    return FileNameDragEntry;
   }
 
   getDirectoryNameMarkerEntry() {
@@ -88,32 +88,32 @@ class Explorer extends DropTarget {
     return DirectoryNameMarkerEntry;
   }
 
-  getDirectoryNameDraggableEntry() {
-    const { DirectoryNameDraggableEntry } = this.constructor;
+  getDirectoryNameDragEntry() {
+    const { DirectoryNameDragEntry } = this.constructor;
 
-    return DirectoryNameDraggableEntry;
+    return DirectoryNameDragEntry;
   }
 
-  mark(draggableEntry, previousDraggableEntry) {
+  mark(dragEntry, previousDragEntry) {
     let markerEntryPath,
-        draggableEntryType;
+        dragEntryType;
 
-    const draggableEntryPath = draggableEntry.getPath();
+    const dragEntryPath = dragEntry.getPath();
 
-    if (previousDraggableEntry !== null) {
-      const previousDraggableEntryName = previousDraggableEntry.getName(),
-            previousDraggableEntryType = previousDraggableEntry.getType();
+    if (previousDragEntry !== null) {
+      const previousDragEntryName = previousDragEntry.getName(),
+            previousDragEntryType = previousDragEntry.getType();
 
-      markerEntryPath = `${draggableEntryPath}/${previousDraggableEntryName}`;
+      markerEntryPath = `${dragEntryPath}/${previousDragEntryName}`;
 
-      draggableEntryType = previousDraggableEntryType;  ///
+      dragEntryType = previousDragEntryType;  ///
     } else {
-      draggableEntryType = draggableEntry.getType();
+      dragEntryType = dragEntry.getType();
 
-      markerEntryPath = draggableEntryPath; ///
+      markerEntryPath = dragEntryPath; ///
     }
 
-    this.addMarker(markerEntryPath, draggableEntryType);
+    this.addMarker(markerEntryPath, dragEntryType);
   }
 
   unmark() {
@@ -121,43 +121,43 @@ class Explorer extends DropTarget {
   }
 
   isMarked() {
-    const markedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry(),
-          marked = (markedDirectoryNameDraggableEntry !== null);
+    const markedDirectoryNameDragEntry = this.retrieveMarkedDirectoryNameDragEntry(),
+          marked = (markedDirectoryNameDragEntry !== null);
 
     return marked;
   }
 
-  isToBeMarked(draggableEntry) {
-    const bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry),
-          toBeMarked = (bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry !== null);
+  isToBeMarked(dragEntry) {
+    const bottommostDirectoryNameDragEntryOverlappingDragEntry = this.retrieveBottommostDirectoryNameDragEntryOverlappingDragEntry(dragEntry),
+          toBeMarked = (bottommostDirectoryNameDragEntryOverlappingDragEntry !== null);
 
     return toBeMarked;
   }
 
-  hasStartedDragging(draggableEntry) {
+  hasStartedDragging(dragEntry) {
     const marked = this.isMarked(),
           startedDragging = !marked;
 
     if (startedDragging) {
-      const previousDraggableEntry = null;
+      const previousDragEntry = null;
 
-      this.mark(draggableEntry, previousDraggableEntry);
+      this.mark(dragEntry, previousDragEntry);
     }
 
     return startedDragging;
   }
 
-  dragging(draggableEntry) {
-    const explorer = draggableEntry.getExplorer(),
+  dragging(dragEntry) {
+    const explorer = dragEntry.getExplorer(),
           markedDropTarget = this.getMarkedDropTarget();
 
     if (markedDropTarget !== this) {
-      markedDropTarget.dragging(draggableEntry);
+      markedDropTarget.dragging(dragEntry);
 
       return;
     }
 
-    const dropTargetToBeMarked = this.getDropTargetToBeMarked(draggableEntry);
+    const dropTargetToBeMarked = this.getDropTargetToBeMarked(dragEntry);
 
     if (dropTargetToBeMarked === this) {
       const draggingWithin = (explorer === this), ///
@@ -167,53 +167,53 @@ class Explorer extends DropTarget {
         return;
       }
 
-      const markedDirectoryNameDraggableEntry = this.retrieveMarkedDirectoryNameDraggableEntry(),
-            bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
+      const markedDirectoryNameDragEntry = this.retrieveMarkedDirectoryNameDragEntry(),
+            bottommostDirectoryNameDragEntryOverlappingDragEntry = this.retrieveBottommostDirectoryNameDragEntryOverlappingDragEntry(dragEntry);
 
-      if (markedDirectoryNameDraggableEntry !== bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry) {
-        const previousDraggableEntry = draggableEntry;  ///
+      if (markedDirectoryNameDragEntry !== bottommostDirectoryNameDragEntryOverlappingDragEntry) {
+        const previousDragEntry = dragEntry;  ///
 
-        draggableEntry = bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;  ///
+        dragEntry = bottommostDirectoryNameDragEntryOverlappingDragEntry;  ///
 
         this.unmark();
 
-        this.mark(draggableEntry, previousDraggableEntry);
+        this.mark(dragEntry, previousDragEntry);
       }
     } else if (dropTargetToBeMarked !== null) {
-      dropTargetToBeMarked.markDraggableEntry(draggableEntry);
+      dropTargetToBeMarked.markDragEntry(dragEntry);
 
       this.unmark();
     } else {
       const dropTargetToBeMarked = explorer,  ///
-            previousDraggableEntry = null;
+            previousDragEntry = null;
 
-      dropTargetToBeMarked.mark(draggableEntry, previousDraggableEntry);
+      dropTargetToBeMarked.mark(dragEntry, previousDragEntry);
 
       this.unmark();
     }
   }
 
-  stopDragging(draggableEntry, done) {
+  stopDragging(dragEntry, done) {
     const markedDropTarget = this.getMarkedDropTarget(),
-          draggableEntryPath = draggableEntry.getPath(),
-          markedDirectoryNameDraggableEntry = markedDropTarget.retrieveMarkedDirectoryNameDraggableEntry(),
-          draggableEntryPathWithoutBottommostName = pathWithoutBottommostNameFromPath(draggableEntryPath),
-          sourcePath = draggableEntryPathWithoutBottommostName; ///
+          dragEntryPath = dragEntry.getPath(),
+          markedDirectoryNameDragEntry = markedDropTarget.retrieveMarkedDirectoryNameDragEntry(),
+          dragEntryPathWithoutBottommostName = pathWithoutBottommostNameFromPath(dragEntryPath),
+          sourcePath = dragEntryPathWithoutBottommostName; ///
 
     let targetPath = null,
         duplicate = false;
 
-    if (markedDirectoryNameDraggableEntry !== null) {
-      const draggableEntryName = draggableEntry.getName(),
-            name = draggableEntryName,  ///
-            draggableEntryPresent = markedDirectoryNameDraggableEntry.isDraggableEntryPresent(name);
+    if (markedDirectoryNameDragEntry !== null) {
+      const dragEntryName = dragEntry.getName(),
+            name = dragEntryName,  ///
+            dragEntryPresent = markedDirectoryNameDragEntry.isDragEntryPresent(name);
 
-      if (draggableEntryPresent) {
+      if (dragEntryPresent) {
         duplicate = true;
       } else {
-        const markedDirectoryNameDraggableEntryPath = markedDirectoryNameDraggableEntry.getPath();
+        const markedDirectoryNameDragEntryPath = markedDirectoryNameDragEntry.getPath();
 
-        targetPath = markedDirectoryNameDraggableEntryPath; ///
+        targetPath = markedDirectoryNameDragEntryPath; ///
       }
     }
 
@@ -224,14 +224,14 @@ class Explorer extends DropTarget {
 
       done();
     } else {
-      const draggableEntrySubEntries = draggableEntry.retrieveDraggableSubEntries(),
-            draggableEntries = draggableEntrySubEntries; ///
+      const dragEntrySubEntries = dragEntry.retrieveDragSubEntries(),
+            dragEntries = dragEntrySubEntries; ///
 
-      draggableEntries.reverse();
+      dragEntries.reverse();
 
-      draggableEntries.push(draggableEntry);
+      dragEntries.push(dragEntry);
 
-      markedDropTarget.moveDraggableEntries(draggableEntries, sourcePath, targetPath, () => {
+      markedDropTarget.moveDragEntries(dragEntries, sourcePath, targetPath, () => {
         markedDropTarget.unmark();
 
         done();
@@ -243,29 +243,29 @@ class Explorer extends DropTarget {
     this.unmarkGlobally();
   }
 
-  markDraggableEntry(draggableEntry) {
-    const explorer = draggableEntry.getExplorer(),
+  markDragEntry(dragEntry) {
+    const explorer = dragEntry.getExplorer(),
           draggingWithin = (explorer === this), ///
           noDraggingWithinOptionPresent = this.isOptionPresent(NO_DRAGGING_WITHIN);
 
     if (draggingWithin && noDraggingWithinOptionPresent) {
-      const previousDraggableEntry = null;
+      const previousDragEntry = null;
 
-      this.mark(draggableEntry, previousDraggableEntry);
+      this.mark(dragEntry, previousDragEntry);
     } else {
-      const previousDraggableEntry = draggableEntry,  ///
-            bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry = this.retrieveBottommostDirectoryNameDraggableEntryOverlappingDraggableEntry(draggableEntry);
+      const previousDragEntry = dragEntry,  ///
+            bottommostDirectoryNameDragEntryOverlappingDragEntry = this.retrieveBottommostDirectoryNameDragEntryOverlappingDragEntry(dragEntry);
 
-      draggableEntry = bottommostDirectoryNameDraggableEntryOverlappingDraggableEntry;  ///
+      dragEntry = bottommostDirectoryNameDragEntryOverlappingDragEntry;  ///
 
-      this.mark(draggableEntry, previousDraggableEntry);
+      this.mark(dragEntry, previousDragEntry);
     }
   }
 
-  moveFileNameDraggableEntry(fileNameDraggableEntry, sourceFilePath, targetFilePath) {
-    let draggableEntry = null;
+  moveFileNameDragEntry(fileNameDragEntry, sourceFilePath, targetFilePath) {
+    let dragEntry = null;
     
-    const explorer = fileNameDraggableEntry.getExplorer();
+    const explorer = fileNameDragEntry.getExplorer();
 
     let filePath;
 
@@ -282,18 +282,18 @@ class Explorer extends DropTarget {
 
       filePath = targetFilePath; ///
 
-      fileNameDraggableEntry = this.addFilePath(filePath);
+      fileNameDragEntry = this.addFilePath(filePath);
 
-      draggableEntry = fileNameDraggableEntry;  ///
+      dragEntry = fileNameDragEntry;  ///
     }
     
-    return draggableEntry;
+    return dragEntry;
   }
   
-  moveDirectoryNameDraggableEntry(directoryNameDraggableEntry, sourceDirectoryPath, targetDirectoryPath) {
-    let draggableEntry = null;
+  moveDirectoryNameDragEntry(directoryNameDragEntry, sourceDirectoryPath, targetDirectoryPath) {
+    let dragEntry = null;
     
-    const explorer = directoryNameDraggableEntry.getExplorer();
+    const explorer = directoryNameDragEntry.getExplorer();
     
     let directoryPath;
     
@@ -310,26 +310,26 @@ class Explorer extends DropTarget {
 
       directoryPath = targetDirectoryPath; ///
 
-      const collapsed = directoryNameDraggableEntry.isCollapsed();
+      const collapsed = directoryNameDragEntry.isCollapsed();
 
-      directoryNameDraggableEntry = this.addDirectoryPath(directoryPath, collapsed);
+      directoryNameDragEntry = this.addDirectoryPath(directoryPath, collapsed);
 
-      draggableEntry = directoryNameDraggableEntry; ///
+      dragEntry = directoryNameDragEntry; ///
     }
     
-    return draggableEntry;
+    return dragEntry;
   }
 
-  openFileNameDraggableEntry(fileNameDraggableEntry) {
-    const fileNameDraggableEntryPath = fileNameDraggableEntry.getPath(),
-          filePath = fileNameDraggableEntryPath;  ///
+  openFileNameDragEntry(fileNameDragEntry) {
+    const fileNameDragEntryPath = fileNameDragEntry.getPath(),
+          filePath = fileNameDragEntryPath;  ///
 
     this.openHandler(filePath);
   }
 
-  pathMapsFromDraggableEntries(draggableEntries, sourcePath, targetPath) {
-    const pathMaps = draggableEntries.map((draggableEntry) => {
-      const pathMap = pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath);
+  pathMapsFromDragEntries(dragEntries, sourcePath, targetPath) {
+    const pathMaps = dragEntries.map((dragEntry) => {
+      const pathMap = pathMapFromDragEntry(dragEntry, sourcePath, targetPath);
 
       return pathMap;
     });
@@ -349,9 +349,9 @@ class Explorer extends DropTarget {
 
           ;
 
-    const directoryNameDraggableEntry = entries.createDirectoryNameDraggableEntry(directoryName, collapsed);
+    const directoryNameDragEntry = entries.createDirectoryNameDragEntry(directoryName, collapsed);
 
-    entries.addEntry(directoryNameDraggableEntry);
+    entries.addEntry(directoryNameDragEntry);
 
     const childElements = entries;  ///
 
@@ -366,11 +366,11 @@ class Explorer extends DropTarget {
 
   static FileNameMarkerEntry = FileNameMarkerEntry;
 
-  static FileNameDraggableEntry = FileNameDraggableEntry;
+  static FileNameDragEntry = FileNameDragEntry;
 
   static DirectoryNameMarkerEntry = DirectoryNameMarkerEntry;
 
-  static DirectoryNameDraggableEntry = DirectoryNameDraggableEntry;
+  static DirectoryNameDragEntry = DirectoryNameDragEntry;
 
   static tagName = "div";
 
@@ -414,17 +414,17 @@ function defaultMoveHandler(pathMaps, done) {
   done();
 }
 
-function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
-  const draggableEntryPath = draggableEntry.getPath(),
-        draggableEntryType = draggableEntry.getType(),
-        draggableEntryDirectoryNameDraggableEntry = (draggableEntryType === DIRECTORY_NAME_TYPE),
-        directory = draggableEntryDirectoryNameDraggableEntry;  ///
+function pathMapFromDragEntry(dragEntry, sourcePath, targetPath) {
+  const dragEntryPath = dragEntry.getPath(),
+        dragEntryType = dragEntry.getType(),
+        dragEntryDirectoryNameDragEntry = (dragEntryType === DIRECTORY_NAME_TYPE),
+        directory = dragEntryDirectoryNameDragEntry;  ///
 
   targetPath = (sourcePath === null) ?
-                  prependTargetPathToDraggableEntryPath(draggableEntryPath, targetPath) :  ///
-                    replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath); ///
+                  prependTargetPathToDragEntryPath(dragEntryPath, targetPath) :  ///
+                    replaceSourcePathWithTargetPathInDragEntryPath(dragEntryPath, sourcePath, targetPath); ///
 
-  sourcePath = draggableEntryPath;  ///
+  sourcePath = dragEntryPath;  ///
 
   const pathMap = {
     sourcePath,
@@ -435,20 +435,20 @@ function pathMapFromDraggableEntry(draggableEntry, sourcePath, targetPath) {
   return pathMap;
 }
 
-function prependTargetPathToDraggableEntryPath(draggableEntryPath,  targetPath) {
-  draggableEntryPath = `${targetPath}/${draggableEntryPath}`;
+function prependTargetPathToDragEntryPath(dragEntryPath,  targetPath) {
+  dragEntryPath = `${targetPath}/${dragEntryPath}`;
 
-  return draggableEntryPath;
+  return dragEntryPath;
 }
 
-function replaceSourcePathWithTargetPathInDraggableEntryPath(draggableEntryPath, sourcePath, targetPath) {
+function replaceSourcePathWithTargetPathInDragEntryPath(dragEntryPath, sourcePath, targetPath) {
   sourcePath = sourcePath.replace(/\(/g, "\\(").replace(/\)/g, "\\)");  ///
 
   const regExp = new RegExp(`^${sourcePath}(.*$)`),
-        matches = draggableEntryPath.match(regExp),
+        matches = dragEntryPath.match(regExp),
         secondMatch = second(matches);
 
-  draggableEntryPath = targetPath + secondMatch; ///
+  dragEntryPath = targetPath + secondMatch; ///
 
-  return draggableEntryPath;
+  return dragEntryPath;
 }

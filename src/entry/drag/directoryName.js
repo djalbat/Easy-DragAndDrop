@@ -2,15 +2,15 @@
 
 import { pathUtilities } from "necessary";
 
+import DragEntry from "../../entry/drag";
 import ToggleButton from "../../button/toggle";
-import DraggableEntry from "../../entry/draggable";
 import DirectoryNameButton from "../../button/name/directory";
 
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
 
 const { pathWithoutTopmostDirectoryNameFromPath } = pathUtilities;
 
-export default class DirectoryNameDraggableEntry extends DraggableEntry {
+export default class DirectoryNameDragEntry extends DragEntry {
   type = DIRECTORY_NAME_TYPE; ///
 
   getCollapsedBounds() {
@@ -80,33 +80,33 @@ export default class DirectoryNameDraggableEntry extends DraggableEntry {
     return topmost;
   }
 
-  isFileNameDraggableEntry() {
+  isFileNameDragEntry() {
     return false;
   }
 
-  isDirectoryNameDraggableEntry() {
+  isDirectoryNameDragEntry() {
     return true;
   }
 
-  isOverlappingDraggableEntry(draggableEntry) {
-    let overlappingDraggableEntry;
+  isOverlappingDragEntry(dragEntry) {
+    let overlappingDragEntry;
     
-    if (this === draggableEntry) {
-      overlappingDraggableEntry = false;
+    if (this === dragEntry) {
+      overlappingDragEntry = false;
     } else {
       const collapsed = this.isCollapsed();
       
       if (collapsed) {
-        overlappingDraggableEntry = false;
+        overlappingDragEntry = false;
       } else {
-        const draggableEntryCollapsedBounds = draggableEntry.getCollapsedBounds(),
-              overlappingDraggableEntryCollapsedBounds = super.isOverlappingCollapsedBounds(draggableEntryCollapsedBounds);
+        const dragEntryCollapsedBounds = dragEntry.getCollapsedBounds(),
+              overlappingDragEntryCollapsedBounds = super.isOverlappingCollapsedBounds(dragEntryCollapsedBounds);
 
-        overlappingDraggableEntry = overlappingDraggableEntryCollapsedBounds;
+        overlappingDragEntry = overlappingDragEntryCollapsedBounds;
       }
     }
 
-    return overlappingDraggableEntry;
+    return overlappingDragEntry;
   }
 
   toggleButtonClickHandler() {

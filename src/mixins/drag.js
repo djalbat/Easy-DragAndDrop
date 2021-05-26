@@ -301,9 +301,9 @@ function mouseUpHandler(event, element) {
 
   if (dragging) {
     const explorer = this.getExplorer(),
-          draggableEntry = this;  ///
+          dragEntry = this;  ///
 
-    explorer.stopDragging(draggableEntry, () => {
+    explorer.stopDragging(dragEntry, () => {
       this.stopDragging();
     });
   } else {

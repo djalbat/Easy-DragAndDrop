@@ -1,12 +1,12 @@
 "use strict";
 
-import DraggableEntry from "../../entry/draggable";
+import DragEntry from "../../entry/drag";
 import FileNameButton from "../../button/name/file";
 
 import { nameIsBeforeEntryName } from "../../utilities/name";
 import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE, FILE_NAME_MARKER_TYPE, DIRECTORY_NAME_MARKER_TYPE } from "../../types";
 
-export default class FileNameDraggableEntry extends DraggableEntry {
+export default class FileNameDragEntry extends DragEntry {
   type = FILE_NAME_TYPE;  ///
 
   getFileNameButton() {
@@ -38,25 +38,25 @@ export default class FileNameDraggableEntry extends DraggableEntry {
     return before;
   }
 
-  isFileNameDraggableEntry() {
+  isFileNameDragEntry() {
     return true;
   }
 
-  isDirectoryNameDraggableEntry() {
+  isDirectoryNameDragEntry() {
     return false;
   }
 
-  retrieveDraggableSubEntries() {
-    const draggableSubEntries = [];  ///
+  retrieveDragSubEntries() {
+    const dragSubEntries = [];  ///
     
-    return draggableSubEntries;
+    return dragSubEntries;
   }
   
   doubleClickHandler() {
     const explorer = this.getExplorer(),
           file = this; ///
     
-    explorer.openFileNameDraggableEntry(file);
+    explorer.openFileNameDragEntry(file);
   }
 
   childElements() {

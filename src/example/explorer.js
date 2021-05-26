@@ -5,21 +5,21 @@ import withStyle from "easy-with-style";  ///
 import { Explorer } from "../index";  ///
 
 import Entries from "./entries";
+import FileNameDragEntry from "./entry/drag/fileName";
 import FileNameMarkerEntry from "./entry/marker/fileName";
-import FileNameDraggableEntry from "./entry/draggable/fileName";
+import DirectoryNameDragEntry from "./entry/drag/directoryName";
 import DirectoryNameMarkerEntry from "./entry/marker/directoryName";
-import DirectoryNameDraggableEntry from "./entry/draggable/directoryName";
 
 export default withStyle(class extends Explorer {
   static Entries = Entries;
 
   static FileNameMarkerEntry = FileNameMarkerEntry;
 
-  static FileNameDraggableEntry = FileNameDraggableEntry;
+  static FileNameDragEntry = FileNameDragEntry;
 
   static DirectoryNameMarkerEntry = DirectoryNameMarkerEntry;
 
-  static DirectoryNameDraggableEntry = DirectoryNameDraggableEntry;
+  static DirectoryNameDragEntry = DirectoryNameDragEntry;
 })`
 
   grid-area: explorer;

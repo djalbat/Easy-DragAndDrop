@@ -1,11 +1,11 @@
 "use strict";
 
 import options from "../../options";
-import draggableMixins from "../../mixins/draggable";
+import dragMixins from "../../mixins/drag";
 
 import { ESCAPE_KEYCODE } from "../../constants";
 
-const { startDragging: superStartDragging } = draggableMixins,
+const { startDragging: superStartDragging } = dragMixins,
       { NO_DRAGGING_SUB_ENTRIES, ESCAPE_KEY_STOPS_DRAGGING } = options;
 
 function didMount() {
@@ -34,17 +34,17 @@ function isMouseOver(mouseTop, mouseLeft) {
 
 function startDragging(mouseTop, mouseLeft) {
   const explorer = this.getExplorer(),
-        draggableEntry = this,  ///
-        topmostDirectoryNameDraggableEntry = this.isTopmostDirectoryNameDraggableEntry(),
-        subEntry = !topmostDirectoryNameDraggableEntry,
-        startedDragging = explorer.hasStartedDragging(draggableEntry),
+        dragEntry = this,  ///
+        topmostDirectoryNameDragEntry = this.isTopmostDirectoryNameDragEntry(),
+        subEntry = !topmostDirectoryNameDragEntry,
+        startedDragging = explorer.hasStartedDragging(dragEntry),
         noDraggingSubEntriesOptionPresent = explorer.isOptionPresent(NO_DRAGGING_SUB_ENTRIES);
 
   if (!startedDragging) {
     return;
   }
 
-  if (topmostDirectoryNameDraggableEntry) {
+  if (topmostDirectoryNameDragEntry) {
     return;
   }
 
@@ -89,9 +89,9 @@ function keyDownHandler(event, element) {
 
 function draggingHandler(mouseTop, mouseLeft) {
   const explorer = this.getExplorer(),
-        draggableEntry = this;  ///
+        dragEntry = this;  ///
 
-  explorer.dragging(draggableEntry);
+  explorer.dragging(dragEntry);
 }
 
 function stopDraggingHandler(mouseTop, mouseLeft) {
