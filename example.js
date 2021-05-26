@@ -23341,11 +23341,10 @@
     var last = _necessary.arrayUtilities.last;
     var DropTarget = /* @__PURE__ */ function(Element1) {
       _inherits(DropTarget2, Element1);
-      function DropTarget2(selector, dropTargets, moveHandler) {
+      function DropTarget2(selector, moveHandler) {
         _classCallCheck(this, DropTarget2);
         var _this;
         _this = _possibleConstructorReturn(this, _getPrototypeOf(DropTarget2).call(this, selector));
-        _this.dropTargets = dropTargets;
         _this.moveHandler = moveHandler;
         return _this;
       }
@@ -23361,11 +23360,11 @@
           key: "getDropTargetToBeMarked",
           value: function getDropTargetToBeMarked(dragEntry) {
             var dropTargetToBeMarked = null;
-            var toBeMarked = this.isToBeMarked(dragEntry);
+            var state = this.getState(), dropTargets = state.dropTargets, toBeMarked = this.isToBeMarked(dragEntry);
             if (toBeMarked) {
               dropTargetToBeMarked = this;
             } else {
-              this.dropTargets.some(function(dropTarget) {
+              dropTargets.some(function(dropTarget) {
                 var toBeMarked1 = dropTarget.isToBeMarked(dragEntry);
                 if (toBeMarked1) {
                   dropTargetToBeMarked = dropTarget;
@@ -23380,11 +23379,11 @@
           key: "getMarkedDropTarget",
           value: function getMarkedDropTarget() {
             var markedDropTarget = null;
-            var marked = this.isMarked();
+            var state = this.getState(), dropTargets = state.dropTargets, marked = this.isMarked();
             if (marked) {
               markedDropTarget = this;
             } else {
-              this.dropTargets.some(function(dropTarget) {
+              dropTargets.some(function(dropTarget) {
                 var dropTargetMarked = dropTarget.isMarked();
                 if (dropTargetMarked) {
                   markedDropTarget = dropTarget;
@@ -23456,7 +23455,8 @@
           key: "addDropTarget",
           value: function addDropTarget(dropTarget, param) {
             var reciprocated = param === void 0 ? false : param;
-            this.dropTargets.push(dropTarget);
+            var state = this.getState(), dropTargets = state.dropTargets;
+            dropTargets.push(dropTarget);
             if (reciprocated) {
               dropTarget.addDropTarget(this);
             }
@@ -23466,14 +23466,23 @@
           key: "removeDropTarget",
           value: function removeDropTarget(dropTarget, param) {
             var reciprocated = param === void 0 ? false : param;
-            var index = this.dropTargets.indexOf(dropTarget);
+            var state = this.getState(), dropTargets = state.dropTargets, index = dropTargets.indexOf(dropTarget);
             if (index !== -1) {
               var start = index, deleteCount = 1;
-              this.dropTargets.splice(start, deleteCount);
+              dropTargets.splice(start, deleteCount);
             }
             if (reciprocated) {
               dropTarget.removeDropTarget(this);
             }
+          }
+        },
+        {
+          key: "initialise",
+          value: function initialise() {
+            var dropTargets = [];
+            this.setState({
+              dropTargets
+            });
           }
         }
       ], [
@@ -23483,10 +23492,9 @@
             for (var _len = arguments.length, remainingArguments = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
               remainingArguments[_key - 3] = arguments[_key];
             }
-            var dropTargets = [], dropTarget = (_Element = _easy2.Element).fromClass.apply(_Element, [
+            var dropTarget = (_Element = _easy2.Element).fromClass.apply(_Element, [
               Class,
               properties,
-              dropTargets,
               moveHandler
             ].concat(_toConsumableArray(remainingArguments)));
             return dropTarget;
@@ -25780,6 +25788,23 @@
       }
       return obj;
     }
+    function _get(target, property, receiver) {
+      if (typeof Reflect !== "undefined" && Reflect.get) {
+        _get = Reflect.get;
+      } else {
+        _get = function _get2(target2, property2, receiver2) {
+          var base = _superPropBase(target2, property2);
+          if (!base)
+            return;
+          var desc = Object.getOwnPropertyDescriptor(base, property2);
+          if (desc.get) {
+            return desc.get.call(receiver2);
+          }
+          return desc.value;
+        };
+      }
+      return _get(target, property, receiver || target);
+    }
     function _getPrototypeOf(o) {
       _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf2(o2) {
         return o2.__proto__ || Object.getPrototypeOf(o2);
@@ -25818,6 +25843,14 @@
       };
       return _setPrototypeOf(o, p);
     }
+    function _superPropBase(object, property) {
+      while (!Object.prototype.hasOwnProperty.call(object, property)) {
+        object = _getPrototypeOf(object);
+        if (object === null)
+          break;
+      }
+      return object;
+    }
     function _taggedTemplateLiteral(strings, raw) {
       if (!raw) {
         raw = strings.slice(0);
@@ -25844,10 +25877,10 @@
     var pathWithoutBottommostNameFromPath = _necessary.pathUtilities.pathWithoutBottommostNameFromPath;
     var Explorer = /* @__PURE__ */ function(DropTarget) {
       _inherits(Explorer2, DropTarget);
-      function Explorer2(selector, dropTargets, moveHandler, openHandler, options) {
+      function Explorer2(selector, moveHandler, openHandler, options) {
         _classCallCheck(this, Explorer2);
         var _this;
-        _this = _possibleConstructorReturn(this, _getPrototypeOf(Explorer2).call(this, selector, dropTargets, moveHandler));
+        _this = _possibleConstructorReturn(this, _getPrototypeOf(Explorer2).call(this, selector, moveHandler));
         _this.openHandler = openHandler;
         _this.options = options;
         return _this;
@@ -26135,6 +26168,7 @@
           key: "initialise",
           value: function initialise() {
             this.assignContext();
+            _get(_getPrototypeOf(Explorer2.prototype), "initialise", this).call(this);
           }
         }
       ], [
@@ -26245,6 +26279,23 @@
       }
       return obj;
     }
+    function _get(target, property, receiver) {
+      if (typeof Reflect !== "undefined" && Reflect.get) {
+        _get = Reflect.get;
+      } else {
+        _get = function _get2(target2, property2, receiver2) {
+          var base = _superPropBase(target2, property2);
+          if (!base)
+            return;
+          var desc = Object.getOwnPropertyDescriptor(base, property2);
+          if (desc.get) {
+            return desc.get.call(receiver2);
+          }
+          return desc.value;
+        };
+      }
+      return _get(target, property, receiver || target);
+    }
     function _getPrototypeOf(o) {
       _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf2(o2) {
         return o2.__proto__ || Object.getPrototypeOf(o2);
@@ -26282,6 +26333,14 @@
         return o2;
       };
       return _setPrototypeOf(o, p);
+    }
+    function _superPropBase(object, property) {
+      while (!Object.prototype.hasOwnProperty.call(object, property)) {
+        object = _getPrototypeOf(object);
+        if (object === null)
+          break;
+      }
+      return object;
     }
     function _taggedTemplateLiteral(strings, raw) {
       if (!raw) {
@@ -26433,6 +26492,7 @@
           key: "initialise",
           value: function initialise() {
             this.close();
+            _get(_getPrototypeOf(RubbishBin2.prototype), "initialise", this).call(this);
           }
         }
       ], [

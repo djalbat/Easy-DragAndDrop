@@ -9,10 +9,8 @@ import { FILE_NAME_TYPE, DIRECTORY_NAME_TYPE } from "./types";
 const { first, last } = arrayUtilities;
 
 export default class DropTarget extends Element {
-  constructor(selector, dropTargets, moveHandler) {
+  constructor(selector, moveHandler) {
     super(selector);
-
-    this.dropTargets = dropTargets;
 
     this.moveHandler = moveHandler;
   }
@@ -28,12 +26,14 @@ export default class DropTarget extends Element {
   getDropTargetToBeMarked(dragEntry) {
     let dropTargetToBeMarked = null;
 
-    const toBeMarked = this.isToBeMarked(dragEntry);
+    const state = this.getState(),
+          { dropTargets } = state,
+          toBeMarked = this.isToBeMarked(dragEntry);
 
     if (toBeMarked) {
       dropTargetToBeMarked = this;  ///
     } else {
-      this.dropTargets.some((dropTarget) => {
+      dropTargets.some((dropTarget) => {
         const toBeMarked = dropTarget.isToBeMarked(dragEntry);
 
         if (toBeMarked) {
@@ -50,12 +50,14 @@ export default class DropTarget extends Element {
   getMarkedDropTarget() {
     let markedDropTarget = null;
 
-    const marked = this.isMarked();
+    const state = this.getState(),
+          { dropTargets } = state,
+          marked = this.isMarked();
 
     if (marked) {
       markedDropTarget = this;  ///
     } else {
-      this.dropTargets.some((dropTarget) => {
+      dropTargets.some((dropTarget) => {
         const dropTargetMarked = dropTarget.isMarked();
 
         if (dropTargetMarked) {
@@ -147,7 +149,10 @@ export default class DropTarget extends Element {
   }
   
   addDropTarget(dropTarget, reciprocated = false) {
-    this.dropTargets.push(dropTarget);
+    const state = this.getState(),
+          { dropTargets } = state;
+
+    dropTargets.push(dropTarget);
 
     if (reciprocated) {
       dropTarget.addDropTarget(this); ///
@@ -155,13 +160,15 @@ export default class DropTarget extends Element {
   }
 
   removeDropTarget(dropTarget, reciprocated = false) {
-    const index = this.dropTargets.indexOf(dropTarget);
+    const state = this.getState(),
+          { dropTargets } = state,
+          index = dropTargets.indexOf(dropTarget);
 
     if (index !== -1) {
       const start = index,  ///
             deleteCount = 1;
       
-      this.dropTargets.splice(start, deleteCount);
+      dropTargets.splice(start, deleteCount);
     }
 
     if (reciprocated) {
@@ -169,9 +176,16 @@ export default class DropTarget extends Element {
     }
   }
 
+  initialise() {
+    const dropTargets = [];
+
+    this.setState({
+      dropTargets
+    });
+  }
+
   static fromClass(Class, properties, moveHandler, ...remainingArguments) {
-    const dropTargets = [],
-          dropTarget = Element.fromClass(Class, properties, dropTargets, moveHandler, ...remainingArguments);
+    const dropTarget = Element.fromClass(Class, properties, moveHandler, ...remainingArguments);
 
     return dropTarget;
   }

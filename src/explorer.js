@@ -18,8 +18,8 @@ const { second } = arrayUtilities,
       { pathWithoutBottommostNameFromPath } = pathUtilities;
 
 class Explorer extends DropTarget {
-  constructor(selector, dropTargets, moveHandler, openHandler, options) {
-    super(selector, dropTargets, moveHandler);
+  constructor(selector, moveHandler, openHandler, options) {
+    super(selector, moveHandler);
 
     this.openHandler = openHandler;
 
@@ -360,6 +360,8 @@ class Explorer extends DropTarget {
 
   initialise() {
     this.assignContext();
+
+    super.initialise();
   }
 
   static Entries = Entries;

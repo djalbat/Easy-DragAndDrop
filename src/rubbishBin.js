@@ -127,6 +127,8 @@ class RubbishBin extends DropTarget {
 
   initialise() {
     this.close();
+
+    super.initialise();
   }
 
   static tagName = "div";
