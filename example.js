@@ -23950,7 +23950,8 @@
       if (dragging1) {
         var explorer = this.getExplorer(), dragEntry = this;
         explorer.stopDragging(dragEntry, function() {
-          this.stopDragging();
+          var mouseTop = (0, _event).mouseTopFromEvent(event), mouseLeft = (0, _event).mouseLeftFromEvent(event);
+          this.stopDragging(mouseTop, mouseLeft);
         }.bind(this));
       } else {
         this.stopWaitingToDrag();

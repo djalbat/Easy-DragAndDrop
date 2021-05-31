@@ -304,7 +304,10 @@ function mouseUpHandler(event, element) {
           dragEntry = this;  ///
 
     explorer.stopDragging(dragEntry, () => {
-      this.stopDragging();
+      const mouseTop = mouseTopFromEvent(event),
+            mouseLeft = mouseLeftFromEvent(event);
+
+      this.stopDragging(mouseTop, mouseLeft);
     });
   } else {
     this.stopWaitingToDrag();
